@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -7,43 +8,46 @@ import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { CalendarIcon, User, Mail, Phone, Users } from 'lucide-react';
+
 const LeadForm = () => {
   const [date, setDate] = useState<Date>();
-  return <form className="w-full max-w-md bg-white/90 backdrop-blur-md p-6 shadow-lg border border-white/20 rounded-sm">
-      <h3 className="text-xl font-semibold text-spiti-dark mb-6">Book Your Tour</h3>
+  
+  return (
+    <form className="w-full max-w-md bg-white/90 backdrop-blur-md p-4 shadow-lg border border-white/20 rounded-sm">
+      <h3 className="text-lg font-semibold text-spiti-dark mb-4">Book Your Tour</h3>
       
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div>
           <Label htmlFor="name">Full Name</Label>
           <div className="relative">
-            <User className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-            <Input id="name" className="pl-10" placeholder="Enter your name" />
+            <User className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+            <Input id="name" className="pl-10 h-9" placeholder="Enter your name" />
           </div>
         </div>
 
         <div>
           <Label htmlFor="email">Email</Label>
           <div className="relative">
-            <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-            <Input id="email" type="email" className="pl-10" placeholder="Enter your email" />
+            <Mail className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+            <Input id="email" type="email" className="pl-10 h-9" placeholder="Enter your email" />
           </div>
         </div>
 
         <div>
           <Label htmlFor="phone">Phone</Label>
           <div className="relative">
-            <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-            <Input id="phone" type="tel" className="pl-10" placeholder="Enter your phone number" />
+            <Phone className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+            <Input id="phone" type="tel" className="pl-10 h-9" placeholder="Enter your phone number" />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <div>
             <Label>Travel Date</Label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full pl-10 justify-start text-left font-normal relative">
-                  <CalendarIcon className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                <Button variant="outline" className="w-full pl-10 h-9 justify-start text-left font-normal relative">
+                  <CalendarIcon className="absolute left-3 top-2 h-4 w-4 text-gray-500" />
                   {date ? format(date, "PPP") : <span>Pick a date</span>}
                 </Button>
               </PopoverTrigger>
@@ -56,21 +60,23 @@ const LeadForm = () => {
           <div>
             <Label htmlFor="guests">Number of Guests</Label>
             <div className="relative">
-              <Users className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-              <Input id="guests" type="number" min="1" className="pl-10" placeholder="Guests" />
+              <Users className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+              <Input id="guests" type="number" min="1" className="pl-10 h-9" placeholder="Guests" />
             </div>
           </div>
         </div>
 
         <div>
           <Label htmlFor="message">Message</Label>
-          <Textarea id="message" placeholder="Tell us about your travel plans..." className="h-24" />
+          <Textarea id="message" placeholder="Tell us about your travel plans..." className="h-20 resize-none" />
         </div>
 
         <Button type="submit" className="w-full bg-gradient-to-r from-spiti-blue to-spiti-green hover:opacity-90">
           Submit Request
         </Button>
       </div>
-    </form>;
+    </form>
+  );
 };
+
 export default LeadForm;
