@@ -10,7 +10,7 @@ const Index = () => {
       
       {/* Hero Section */}
       <section 
-        className="h-[90vh] pt-16 relative flex items-center"
+        className="min-h-[calc(100vh-4rem)] mt-16 relative flex items-center py-8 md:py-12"
         style={{
           backgroundImage: `linear-gradient(to bottom, rgba(51, 38, 30, 0.8), rgba(51, 38, 30, 0.9)), url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
           backgroundSize: 'cover',
