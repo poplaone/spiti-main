@@ -13,7 +13,7 @@ const LeadForm = () => {
   const [date, setDate] = useState<Date>();
   
   return (
-    <form className="w-full max-w-md bg-white/80 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20">
+    <form className="w-full max-w-md bg-white/90 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20">
       <h3 className="text-xl font-semibold text-spiti-dark mb-6">Book Your Tour</h3>
       
       <div className="space-y-4">
@@ -41,41 +41,42 @@ const LeadForm = () => {
           </div>
         </div>
 
-        <div>
-          <Label>Travel Date</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="w-full pl-10 justify-start text-left font-normal relative">
-                <CalendarIcon className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                initialFocus
-                className="rounded-md pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label>Travel Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full pl-10 justify-start text-left font-normal relative">
+                  <CalendarIcon className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
 
-        <div>
-          <Label htmlFor="guests">Number of Guests</Label>
-          <div className="relative">
-            <Users className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-            <Input id="guests" type="number" min="1" className="pl-10" placeholder="Number of guests" />
+          <div>
+            <Label htmlFor="guests">Number of Guests</Label>
+            <div className="relative">
+              <Users className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+              <Input id="guests" type="number" min="1" className="pl-10" placeholder="Guests" />
+            </div>
           </div>
         </div>
 
         <div>
           <Label htmlFor="message">Message</Label>
-          <Textarea id="message" placeholder="Tell us about your travel plans..." />
+          <Textarea id="message" placeholder="Tell us about your travel plans..." className="h-24" />
         </div>
 
-        <Button type="submit" className="w-full bg-spiti-blue hover:bg-spiti-blue/90">
+        <Button type="submit" className="w-full bg-gradient-to-r from-spiti-blue to-spiti-green hover:opacity-90">
           Submit Request
         </Button>
       </div>

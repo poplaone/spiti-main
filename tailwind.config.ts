@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,8 +64,10 @@ export default {
           ring: 'hsl(var(--sidebar-ring))'
         },
         spiti: {
-          blue: "#082F49",
-          green: "#68D391",
+          blue: "#3B82F6",     // Sky blue for lakes
+          green: "#68D391",    // Vegetation
+          brown: "#33261E",    // Rocky desert
+          sand: "#E2D1C3",     // Desert sand
           gray: "#F7FAFC",
           dark: "#1A202C",
           accent: "#3B82F6"
