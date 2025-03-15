@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,9 +15,17 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-md' : 'bg-transparent'
-    }`}>
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-white/10 backdrop-blur-md shadow-lg' 
+          : 'bg-transparent'
+      } border-b border-white/10`}
+      style={{
+        transform: `translateY(${isScrolled ? '0' : '-2px'})`,
+        transition: 'transform 0.3s ease-in-out'
+      }}
+    >
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-16 md:h-20">
           <a href="/" className="text-2xl font-bold text-spiti-dark">

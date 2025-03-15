@@ -1,27 +1,26 @@
-
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 const photos = [
   {
-    url: "https://images.unsplash.com/photo-1472396961693-142e6e269027",
+    url: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=600&q=80",
     alt: "Spiti Valley Landscape"
   },
   {
-    url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb",
+    url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=600&q=80",
     alt: "Mountain River"
   },
   {
-    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+    url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80",
     alt: "Mountain Sunrise"
   },
   {
-    url: "https://images.unsplash.com/photo-1501854140801-50d01698950b",
+    url: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
     alt: "Aerial Mountain View"
   },
   {
-    url: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3",
+    url: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=600&q=80",
     alt: "Rocky Mountains"
   }
 ];

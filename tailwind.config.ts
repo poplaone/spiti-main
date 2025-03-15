@@ -63,10 +63,11 @@ export default {
           ring: 'hsl(var(--sidebar-ring))'
         },
         spiti: {
-          blue: "#2C5282",
+          blue: "#082F49",
           green: "#68D391",
           gray: "#F7FAFC",
-          dark: "#1A202C"
+          dark: "#1A202C",
+          accent: "#3B82F6"
         }
       },
       borderRadius: {
