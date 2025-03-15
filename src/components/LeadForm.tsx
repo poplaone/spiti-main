@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -8,12 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { CalendarIcon, User, Mail, Phone, Users } from 'lucide-react';
-
 const LeadForm = () => {
   const [date, setDate] = useState<Date>();
-  
-  return (
-    <form className="w-full max-w-md bg-white/90 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20">
+  return <form className="w-full max-w-md bg-white/90 backdrop-blur-md p-6 shadow-lg border border-white/20 rounded-sm">
       <h3 className="text-xl font-semibold text-spiti-dark mb-6">Book Your Tour</h3>
       
       <div className="space-y-4">
@@ -52,12 +48,7 @@ const LeadForm = () => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                />
+                <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
               </PopoverContent>
             </Popover>
           </div>
@@ -80,8 +71,6 @@ const LeadForm = () => {
           Submit Request
         </Button>
       </div>
-    </form>
-  );
+    </form>;
 };
-
 export default LeadForm;
