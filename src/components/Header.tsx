@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from 'lucide-react';
@@ -18,7 +19,7 @@ const Header = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/10 backdrop-blur-md shadow-lg' 
+          ? 'bg-spiti-brown/30 backdrop-blur-md shadow-lg' 
           : 'bg-transparent'
       } border-b border-white/10`}
       style={{

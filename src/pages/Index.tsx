@@ -1,4 +1,3 @@
-
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import PhotoGallery from "@/components/PhotoGallery";
@@ -12,38 +11,30 @@ const Index = () => {
       <section 
         className="min-h-[calc(100vh-4rem)] mt-16 relative flex items-center py-8 md:py-12"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(51, 38, 30, 0.8), rgba(51, 38, 30, 0.9)), url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
+          backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex-1 text-white max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-fade-in-up bg-gradient-to-r from-white to-spiti-green bg-clip-text text-transparent">
-              Leave the office behind
+        <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8">
+          <div className="flex-1 text-white max-w-2xl space-y-6">
+            <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-white to-spiti-sand bg-clip-text text-transparent">
+              SPITI VALLEY TOUR PACKAGES
             </h1>
-            <p className="text-3xl mb-6 animate-fade-in-up text-spiti-green" style={{ animationDelay: '0.2s' }}>
-              Upto 40% off
+            <p className="text-xl md:text-2xl text-spiti-sand">
+              Customized Tours from Trusted Local Agents At Lowest Prices
             </p>
-            <div className="space-y-4 text-lg">
-              <p className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                Get Multiple Itineraries & Personalised Suggestions from our Experts
-              </p>
-              <p className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                Best Priced Packages within your budget
-              </p>
-              <p className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
-                Friendly Customer Support
-              </p>
-              <p className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-                100% Money Safe Guarantee
-              </p>
-              <p className="animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
-                Secure & Safe Online Transactions
-              </p>
+            <div className="space-y-3 text-base md:text-lg">
+              <p>Best Priced Packages within your budget</p>
+              <p>Friendly Customer Support</p>
+              <p>100% Money Safe Guarantee</p>
+              <p>Secure & Safe Online Transactions</p>
             </div>
+            <button className="bg-gradient-to-r from-spiti-brown/80 to-spiti-sand/80 backdrop-blur-sm px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity text-white">
+              Explore Tours
+            </button>
           </div>
-          <div className="w-full md:w-[400px] animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <div className="w-full md:w-[400px]">
             <LeadForm />
           </div>
         </div>
