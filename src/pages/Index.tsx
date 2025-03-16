@@ -20,20 +20,24 @@ const Index = () => {
         <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8">
           <div className="flex-1 text-white max-w-2xl space-y-6">
             <h1 className="text-3xl md:text-5xl font-bold bg-black/30 backdrop-blur-sm inline-block px-4 py-2 rounded">
-              SPITI VALLEY TOUR PACKAGES
+              <span className="bg-gradient-to-r from-green-400 via-yellow-300 to-orange-500 text-transparent bg-clip-text">
+                SPITI VALLEY TOUR PACKAGES
+              </span>
             </h1>
             <p className="text-xl md:text-2xl bg-black/30 backdrop-blur-sm px-4 py-2 rounded">
-              Customized Tours from Trusted Local Agents At Lowest Prices
+              <span className="bg-gradient-to-r from-green-300 via-yellow-200 to-orange-400 text-transparent bg-clip-text">
+                Customized Tours from Trusted Local Agents At Lowest Prices
+              </span>
             </p>
             <div className="space-y-3 text-base md:text-lg">
               {[
                 "Best Priced Packages within your budget",
-                "Friendly Customer Support",
-                "100% Money Safe Guarantee",
-                "Secure & Safe Online Transactions"
+                "Friendly Customer Support"
               ].map((text, index) => (
                 <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
-                  {text}
+                  <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
+                    {text}
+                  </span>
                 </p>
               ))}
             </div>
