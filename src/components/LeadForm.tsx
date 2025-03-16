@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -7,12 +6,38 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { CalendarIcon, User, Mail, Phone, Users } from 'lucide-react';
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const LeadForm = () => {
   const [date, setDate] = useState<Date>();
+  const [bookingType, setBookingType] = useState("packages");
   
   return (
-    <form className="w-full max-w-md bg-spiti-brown/30 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
+    <form className="w-full max-w-md bg-white/20 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
+      <div className="mb-4">
+        <ToggleGroup 
+          type="single" 
+          value={bookingType} 
+          onValueChange={(value) => value && setBookingType(value)}
+          className="w-full border border-white/20 rounded-sm bg-white/10"
+        >
+          <ToggleGroupItem 
+            value="hotels" 
+            aria-label="Hotels"
+            className="flex-1 data-[state=on]:bg-spiti-blue data-[state=on]:text-white"
+          >
+            Hotels
+          </ToggleGroupItem>
+          <ToggleGroupItem 
+            value="packages" 
+            aria-label="Packages"
+            className="flex-1 data-[state=on]:bg-spiti-blue data-[state=on]:text-white"
+          >
+            Packages
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+
       <h3 className="text-base md:text-lg font-semibold text-white mb-3">Book Your Tour</h3>
       
       <div className="space-y-2">
@@ -65,7 +90,7 @@ const LeadForm = () => {
           </div>
         </div>
 
-        <Button type="submit" className="w-full h-8 bg-gradient-to-r from-spiti-brown/80 to-spiti-sand/80 backdrop-blur-sm hover:opacity-90 text-sm text-white">
+        <Button type="submit" className="w-full h-8 bg-spiti-blue hover:bg-spiti-blue/90 text-sm text-white">
           Submit Request
         </Button>
       </div>
