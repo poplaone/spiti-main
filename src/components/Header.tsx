@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from 'lucide-react';
@@ -9,8 +10,9 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      const atTop = window.scrollY === 0;
+      setIsAtTop(atTop);
       setIsScrolled(window.scrollY > 10);
-      setIsAtTop(window.scrollY === 0);
     };
     window.addEventListener('scroll', handleScroll);
     handleScroll(); // Check initial position
@@ -21,15 +23,15 @@ const Header = () => {
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isAtTop 
-          ? 'bg-transparent md:bg-transparent' 
-          : isScrolled 
-            ? 'bg-white/20 backdrop-blur-md shadow-lg' 
-            : 'bg-transparent'
+          ? 'bg-transparent'
+          : 'bg-white/20 backdrop-blur-md shadow-lg'
       } border-b border-white/10`}
     >
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16 md:h-20">
-          <a href="/" className={`text-2xl font-bold text-spiti-dark ${
+        <nav className={`flex items-center justify-between h-16 md:h-20 ${
+          isAtTop ? 'md:justify-center' : ''
+        }`}>
+          <a href="/" className={`text-2xl font-bold text-white ${
             isAtTop ? 'md:mx-auto' : ''
           }`}>
             Spiti Valley
@@ -39,10 +41,10 @@ const Header = () => {
           <div className={`hidden md:flex items-center space-x-8 ${
             isAtTop ? 'absolute right-4' : ''
           }`}>
-            <a href="#" className="text-spiti-dark hover:text-spiti-blue transition-colors">Home</a>
-            <a href="#packages" className="text-spiti-dark hover:text-spiti-blue transition-colors">Tour Packages</a>
-            <a href="#destinations" className="text-spiti-dark hover:text-spiti-blue transition-colors">Destinations</a>
-            <a href="#about" className="text-spiti-dark hover:text-spiti-blue transition-colors">About Us</a>
+            <a href="#" className="text-white hover:text-spiti-blue transition-colors">Home</a>
+            <a href="#packages" className="text-white hover:text-spiti-blue transition-colors">Tour Packages</a>
+            <a href="#destinations" className="text-white hover:text-spiti-blue transition-colors">Destinations</a>
+            <a href="#about" className="text-white hover:text-spiti-blue transition-colors">About Us</a>
             <Button variant="default" className="bg-spiti-blue hover:bg-spiti-blue/90 text-white">
               Book Now
             </Button>
@@ -50,7 +52,7 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-spiti-dark absolute right-4"
+            className="md:hidden text-white absolute right-4"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}

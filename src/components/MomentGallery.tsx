@@ -80,7 +80,7 @@ const MomentGallery = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="gallery-container">
+    <div ref={containerRef} className="gallery-container -mt-4">
       <div className="rope-container">
         <div className="rope"></div>
       </div>

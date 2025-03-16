@@ -1,3 +1,4 @@
+
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import MomentGallery from "@/components/MomentGallery";
@@ -11,7 +12,7 @@ const Index = () => {
       <section 
         className="min-h-[calc(100vh-4rem)] mt-16 relative flex items-center py-8 md:py-12"
         style={{
-          backgroundImage: `url(https://images.unsplash.com/photo-1506057776723-ddd5f6c77f1f?w=800&q=70)`,
+          backgroundImage: `url(https://images.unsplash.com/photo-1619837374214-f5b9eb80876d?w=1600&q=80)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -28,18 +29,6 @@ const Index = () => {
                 Customized Tours from Trusted Local Agents At Lowest Prices
               </span>
             </p>
-            <div className="space-y-3 text-base md:text-lg">
-              {[
-                "Best Priced Packages within your budget",
-                "Friendly Customer Support"
-              ].map((text, index) => (
-                <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
-                  <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
-                    {text}
-                  </span>
-                </p>
-              ))}
-            </div>
             <button className="bg-spiti-blue hover:bg-spiti-blue/90 px-8 py-3 rounded-lg font-semibold transition-opacity">
               Explore Tours
             </button>
@@ -51,7 +40,7 @@ const Index = () => {
       </section>
 
       {/* Best Moments Gallery */}
-      <section className="py-8">
+      <section className="py-4">
         <MomentGallery />
       </section>
     </div>
