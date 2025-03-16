@@ -1,7 +1,6 @@
-
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
-import PhotoGallery from "@/components/PhotoGallery";
+import MomentGallery from "@/components/MomentGallery";
 
 const Index = () => {
   return (
@@ -12,7 +11,7 @@ const Index = () => {
       <section 
         className="min-h-[calc(100vh-4rem)] mt-16 relative flex items-center py-8 md:py-12"
         style={{
-          backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
+          backgroundImage: `url(https://images.unsplash.com/photo-1506057776723-ddd5f6c77f1f?w=800&q=70)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -51,31 +50,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="py-16 bg-[#E2D1C3]">
-        <div className="container mx-auto px-4">
-          <PhotoGallery />
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section 
-        className="py-16 relative"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(51, 38, 30, 0.9), rgba(51, 38, 30, 0.95)), url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=70)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Your Adventure?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Explore our curated collection of Spiti Valley tours and create memories that last a lifetime.
-          </p>
-          <button className="bg-gradient-to-r from-spiti-green to-spiti-blue px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
-            Explore Tours
-          </button>
-        </div>
+      {/* Best Moments Gallery */}
+      <section className="py-8">
+        <MomentGallery />
       </section>
     </div>
   );
