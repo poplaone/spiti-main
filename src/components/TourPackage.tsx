@@ -81,7 +81,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         {/* Price */}
         <div className="mb-2 flex items-center">
           <span className="text-lg font-bold text-green-600">INR {formatPrice(discountedPrice)}/-</span>
-          <span className="text-sm line-through ml-2 text-red-600">INR {formatPrice(originalPrice)}/-</span>
+          <span className="text-sm line-through ml-2 text-fuchsia-600">INR {formatPrice(originalPrice)}/-</span>
           <span className="ml-auto text-sm text-gray-600">Onwards</span>
         </div>
         
