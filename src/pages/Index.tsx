@@ -2,6 +2,7 @@
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import PhotoGallery from "@/components/PhotoGallery";
+import TourPackages from "@/components/TourPackages";
 
 const Index = () => {
   return (
@@ -50,6 +51,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Tour Packages Section */}
+      <TourPackages />
 
       {/* Gallery Section */}
       <section className="py-16 bg-[#E2D1C3]">
