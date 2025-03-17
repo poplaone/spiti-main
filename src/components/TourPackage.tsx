@@ -1,19 +1,13 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Bike, Car, Calendar, Users, Clock, Coffee, MapPin, Home, 
-  Warehouse, MessageSquareMore, Send 
-} from 'lucide-react';
+import { Bike, Car, Calendar, Users, Clock, Coffee, MapPin, Home, Warehouse, MessageSquareMore, Send } from 'lucide-react';
 import { Link } from "react-router-dom";
-
 interface NightStay {
   location: string;
   nights: number;
 }
-
 export interface TourPackageProps {
   title: string;
   image: string;
@@ -30,11 +24,9 @@ export interface TourPackageProps {
   isWomenOnly?: boolean;
   index?: number;
 }
-
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
-
 const TourPackage: React.FC<TourPackageProps> = ({
   title,
   image,
@@ -49,12 +41,10 @@ const TourPackage: React.FC<TourPackageProps> = ({
   index
 }) => {
   // Format the night stays for display
-  const formattedStays = nightStays.map((stay, index) => (
-    <React.Fragment key={stay.location}>
-      <span className="text-spiti-blue">{stay.nights} night {stay.location}</span>
+  const formattedStays = nightStays.map((stay, index) => <React.Fragment key={stay.location}>
+      <span className="text-black">{stay.nights} night {stay.location}</span>
       {index < nightStays.length - 1 && " | "}
-    </React.Fragment>
-  ));
+    </React.Fragment>);
 
   // Choose the appropriate transport icon
   const getTransportIcon = () => {
@@ -62,9 +52,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
     if (transportType === 'car') return <Car className="text-spiti-blue w-5 h-5" />;
     return <Car className="text-spiti-blue w-5 h-5" />;
   };
-
-  return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group h-full flex flex-col">
+  return <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group h-full flex flex-col">
       <div className="relative">
         {/* Discount badge */}
         <div className="absolute top-3 left-3 z-10">
@@ -74,21 +62,15 @@ const TourPackage: React.FC<TourPackageProps> = ({
         </div>
 
         {/* Women only badge */}
-        {isWomenOnly && (
-          <div className="absolute top-3 right-3 z-10">
+        {isWomenOnly && <div className="absolute top-3 right-3 z-10">
             <Badge className="bg-pink-500 text-white font-medium text-sm px-3 py-1 rounded-md">
               Women Only
             </Badge>
-          </div>
-        )}
+          </div>}
 
         {/* Image */}
         <div className="h-48 overflow-hidden">
-          <img 
-            src={image} 
-            alt={title} 
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
-          />
+          <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
         </div>
       </div>
       
@@ -118,8 +100,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         {/* Inclusions list with icons */}
         <ul className="text-sm text-gray-700 mb-4 flex-1">
-          {inclusions.map((inclusion, index) => (
-            <li key={index} className="mb-1 flex items-start">
+          {inclusions.map((inclusion, index) => <li key={index} className="mb-1 flex items-start">
               <div className="mr-2 mt-1">
                 {inclusion.includes('Pick up') && <MapPin className="w-4 h-4 text-spiti-blue" />}
                 {inclusion.includes('Sightseeing') && getTransportIcon()}
@@ -131,8 +112,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
                 {inclusion.includes('Group Leader') && <Users className="w-4 h-4 text-spiti-blue" />}
               </div>
               <span>{inclusion}</span>
-            </li>
-          ))}
+            </li>)}
         </ul>
         
         {/* Buttons */}
@@ -151,11 +131,9 @@ const TourPackage: React.FC<TourPackageProps> = ({
 
         {/* WhatsApp floating button */}
         <Link to="https://wa.me/919876543210" className="absolute bottom-4 left-4 bg-green-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.2 8.4c.5.38.8.96.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10c.64 0 1.22.3 1.6.8"/><path d="m22 2-8.15 8.15"/><path d="M16 2h6v6"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.2 8.4c.5.38.8.96.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10c.64 0 1.22.3 1.6.8" /><path d="m22 2-8.15 8.15" /><path d="M16 2h6v6" /></svg>
         </Link>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default TourPackage;
