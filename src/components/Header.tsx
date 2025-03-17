@@ -2,8 +2,14 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import LeadForm from "@/components/LeadForm";
 
-const Header = () => {
+interface HeaderProps {
+  scrollToPackages?: () => void;
+}
+
+const Header = ({ scrollToPackages }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -14,6 +20,23 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    
+    if (id === 'packages' && scrollToPackages) {
+      scrollToPackages();
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
 
   return (
     <header 
@@ -35,13 +58,44 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-spiti-dark hover:text-spiti-blue transition-colors">Home</a>
-            <a href="#packages" className="text-spiti-dark hover:text-spiti-blue transition-colors">Tour Packages</a>
-            <a href="#destinations" className="text-spiti-dark hover:text-spiti-blue transition-colors">Destinations</a>
-            <a href="#about" className="text-spiti-dark hover:text-spiti-blue transition-colors">About Us</a>
-            <Button variant="default" className="bg-spiti-blue hover:bg-spiti-blue/90 text-white">
-              Book Now
-            </Button>
+            <a 
+              href="#" 
+              className="text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'top')}
+            >
+              Home
+            </a>
+            <a 
+              href="#packages" 
+              className="text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'packages')}
+            >
+              Tour Packages
+            </a>
+            <a 
+              href="#destinations" 
+              className="text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'destinations')}
+            >
+              Destinations
+            </a>
+            <a 
+              href="#about" 
+              className="text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'about')}
+            >
+              About Us
+            </a>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="default" className="bg-spiti-blue hover:bg-spiti-blue/90 text-white">
+                  Book Now
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <LeadForm />
+              </DialogContent>
+            </Dialog>
           </div>
 
           {/* Mobile Menu Button */}
@@ -56,13 +110,44 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
-            <a href="#" className="block text-spiti-dark hover:text-spiti-blue transition-colors">Home</a>
-            <a href="#packages" className="block text-spiti-dark hover:text-spiti-blue transition-colors">Tour Packages</a>
-            <a href="#destinations" className="block text-spiti-dark hover:text-spiti-blue transition-colors">Destinations</a>
-            <a href="#about" className="block text-spiti-dark hover:text-spiti-blue transition-colors">About Us</a>
-            <Button variant="default" className="w-full bg-spiti-blue hover:bg-spiti-blue/90 text-white">
-              Book Now
-            </Button>
+            <a 
+              href="#" 
+              className="block text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'top')}
+            >
+              Home
+            </a>
+            <a 
+              href="#packages" 
+              className="block text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'packages')}
+            >
+              Tour Packages
+            </a>
+            <a 
+              href="#destinations" 
+              className="block text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'destinations')}
+            >
+              Destinations
+            </a>
+            <a 
+              href="#about" 
+              className="block text-spiti-dark hover:text-spiti-blue transition-colors"
+              onClick={(e) => handleNavClick(e, 'about')}
+            >
+              About Us
+            </a>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="default" className="w-full bg-spiti-blue hover:bg-spiti-blue/90 text-white">
+                  Book Now
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <LeadForm />
+              </DialogContent>
+            </Dialog>
           </div>
         )}
       </div>

@@ -1,4 +1,5 @@
 
+import { useRef } from 'react';
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import PhotoGallery from "@/components/PhotoGallery";
@@ -8,9 +9,15 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  const packagesSectionRef = useRef<HTMLElement>(null);
+  
+  const scrollToPackages = () => {
+    packagesSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  
   return (
     <div className="min-h-screen">
-      <Header />
+      <Header scrollToPackages={scrollToPackages} />
       
       {/* Hero Section */}
       <section 
@@ -46,19 +53,43 @@ const Index = () => {
                 </p>
               ))}
             </div>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-spiti-blue hover:bg-spiti-blue/90 px-8 py-3 rounded-lg font-semibold transition-opacity">
-                  Enquire Now
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <LeadForm />
-              </DialogContent>
-            </Dialog>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-spiti-blue hover:bg-spiti-blue/90 px-8 py-3 rounded-lg font-semibold transition-opacity">
+                    Enquire Now
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <LeadForm />
+                </DialogContent>
+              </Dialog>
+              
+              <Button 
+                className="bg-spiti-green hover:bg-spiti-green/90 px-8 py-3 rounded-lg font-semibold transition-opacity"
+                onClick={scrollToPackages}
+              >
+                Explore Packages
+              </Button>
+            </div>
           </div>
+          
           <div className="w-full md:w-[400px] bg-white/20 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
+            <LeadForm />
+          </div>
+        </div>
+      </section>
+
+      {/* Tour Packages Section */}
+      <section 
+        id="tour-packages" 
+        ref={packagesSectionRef}
+        className="py-16 bg-white"
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
+            {/* Booking Card - Moved from Hero section */}
+            <div className="w-full md:w-[350px] bg-white p-6 rounded-lg shadow-lg order-2 md:order-1">
               <h2 className="text-2xl font-bold text-center text-spiti-dark mb-4">Book Your Spiti Adventure</h2>
               <div className="space-y-4">
                 <div className="text-center">
@@ -83,34 +114,39 @@ const Index = () => {
                     Safe Travel in High Altitude Desert
                   </p>
                 </div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="w-full bg-green-500 hover:bg-green-600 py-2">Book Now</Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <LeadForm />
-                  </DialogContent>
-                </Dialog>
+                <div className="space-y-3">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="w-full bg-green-500 hover:bg-green-600 py-2">Book Now</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                      <LeadForm />
+                    </DialogContent>
+                  </Dialog>
+                  
+                  <Button 
+                    className="w-full bg-spiti-blue hover:bg-spiti-blue/90 py-2"
+                    onClick={scrollToPackages}
+                  >
+                    Packages
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Tour Packages Section */}
-      <section id="tour-packages" className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">Explore Unforgettable Spiti Valley Tour Packages</h2>
-            <p className="text-gray-600 mb-4">
-              Discover the breathtaking landscapes of the Himalayan cold desert with our carefully curated tour packages. 
-              From Buddhist monasteries and high-altitude villages to pristine lakes and snow-capped peaks, our all-inclusive 
-              packages offer the perfect blend of adventure, culture, and natural beauty.
-            </p>
-            <p className="text-gray-600">
-              Whether you're seeking a thrilling bike tour, a women-only expedition, or a family adventure in your own car, 
-              we have the ideal Spiti Valley experience waiting for you.
-            </p>
+            {/* Section heading and text */}
+            <div className="max-w-3xl mx-auto text-left md:text-left order-1 md:order-2">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">Explore Unforgettable Spiti Valley Tour Packages</h2>
+              <p className="text-gray-600 mb-4">
+                Discover the breathtaking landscapes of the Himalayan cold desert with our carefully curated tour packages. 
+                From Buddhist monasteries and high-altitude villages to pristine lakes and snow-capped peaks, our all-inclusive 
+                packages offer the perfect blend of adventure, culture, and natural beauty.
+              </p>
+              <p className="text-gray-600">
+                Whether you're seeking a thrilling bike tour, a women-only expedition, or a family adventure in your own car, 
+                we have the ideal Spiti Valley experience waiting for you.
+              </p>
+            </div>
           </div>
           <TourPackages />
         </div>
