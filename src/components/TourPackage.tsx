@@ -130,9 +130,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         </div>
 
         {/* WhatsApp floating button */}
-        <Link to="https://wa.me/919876543210" className="absolute bottom-4 left-4 bg-green-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.2 8.4c.5.38.8.96.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10c.64 0 1.22.3 1.6.8" /><path d="m22 2-8.15 8.15" /><path d="M16 2h6v6" /></svg>
-        </Link>
+        
       </CardContent>
     </Card>;
 };
