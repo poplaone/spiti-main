@@ -28,6 +28,7 @@ export interface TourPackageProps {
   inclusions: string[];
   transportType?: 'bike' | 'car' | 'innova';
   isWomenOnly?: boolean;
+  index?: number;
 }
 
 const formatPrice = (price: number) => {
@@ -44,7 +45,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
   nightStays,
   inclusions,
   transportType,
-  isWomenOnly
+  isWomenOnly,
+  index
 }) => {
   // Format the night stays for display
   const formattedStays = nightStays.map((stay, index) => (
@@ -135,9 +137,11 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         {/* Buttons */}
         <div className="flex gap-2 mt-auto">
-          <Button variant="default" className="w-1/2 bg-blue-500 hover:bg-blue-600">
-            <MessageSquareMore className="mr-1 w-4 h-4" />
-            <span>More Details</span>
+          <Button variant="default" className="w-1/2 bg-blue-500 hover:bg-blue-600" asChild>
+            <Link to={typeof index === 'number' ? `/tour/${index}` : '#'}>
+              <MessageSquareMore className="mr-1 w-4 h-4" />
+              <span>More Details</span>
+            </Link>
           </Button>
           <Button variant="default" className="w-1/2 bg-yellow-500 hover:bg-yellow-600">
             <Send className="mr-1 w-4 h-4" />

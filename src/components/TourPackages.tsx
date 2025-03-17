@@ -2,7 +2,7 @@
 import React from 'react';
 import TourPackage, { TourPackageProps } from './TourPackage';
 
-const tourPackagesData: TourPackageProps[] = [
+export const tourPackagesData: TourPackageProps[] = [
   {
     title: "LAHAUL SPITI - BIKE TOUR",
     image: "public/lovable-uploads/f3302b9e-3a1e-4963-a96b-1338bf4881db.png",
@@ -200,7 +200,7 @@ const TourPackages = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tourPackagesData.map((tour, index) => (
-            <TourPackage key={index} {...tour} />
+            <TourPackage key={index} {...tour} index={index} />
           ))}
         </div>
       </div>
