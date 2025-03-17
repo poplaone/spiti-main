@@ -89,7 +89,7 @@ const TourDetail = () => {
                 </div>
                 <div className="flex items-baseline justify-between mb-2">
                   <span className="text-lg text-gray-700">Discount:</span>
-                  <span className="text-lg text-red-500">{tour.discount}% OFF</span>
+                  <span className="text-lg text-fuchsia-600">{tour.discount}% OFF</span>
                 </div>
                 <div className="flex items-baseline justify-between border-t pt-2 mt-2">
                   <span className="text-xl font-bold text-gray-900">You Pay:</span>
