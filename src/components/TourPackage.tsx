@@ -123,7 +123,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
               <span>More Details</span>
             </Link>
           </Button>
-          <Button variant="default" className="w-1/2 bg-yellow-500 hover:bg-yellow-600">
+          <Button variant="default" className="w-1/2 bg-green-600 hover:bg-green-500">
             <Send className="mr-1 w-4 h-4" />
             <span>Send Enquiry</span>
           </Button>
