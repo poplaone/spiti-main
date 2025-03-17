@@ -126,7 +126,7 @@ const TourDetail = () => {
               
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full mb-4 text-lg py-6 bg-red-600 hover:bg-red-500 text-slate-50">
+                  <Button variant="outline" className="w-full mb-4 text-lg py-6 text-slate-50 bg-fuchsia-600 hover:bg-fuchsia-500">
                     Enquire Now
                   </Button>
                 </DialogTrigger>
