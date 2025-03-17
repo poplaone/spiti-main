@@ -172,7 +172,7 @@ const LeadForm = () => {
   return <form className="w-full max-w-md bg-white/20 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
       <div className="mb-4">
         <ToggleGroup type="single" value={bookingType} onValueChange={handleBookingTypeChange} className="w-full border border-white/20 rounded-sm bg-white/10">
-          <ToggleGroupItem value="hotels" aria-label="Hotels" className="flex-1 data-[state=on]:text-white bg-fuchsia-600 hover:bg-fuchsia-500">
+          <ToggleGroupItem value="hotels" aria-label="Hotels" className="flex-1 bg-fuchsia-600 hover:bg-fuchsia-500 text-zinc-950">
             Hotels
           </ToggleGroupItem>
           <ToggleGroupItem value="packages" aria-label="Packages" className="flex-1 data-[state=on]:text-white bg-indigo-600 hover:bg-indigo-500">
