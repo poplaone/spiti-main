@@ -115,7 +115,7 @@ const TourDetail = () => {
 
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="w-full mb-3 text-lg py-6 bg-fuchsia-600 hover:bg-fuchsia-500">
+                  <Button className="w-full mb-3 bg-green-500 hover:bg-green-600 text-lg py-6">
                     Book Now
                   </Button>
                 </DialogTrigger>
@@ -126,7 +126,7 @@ const TourDetail = () => {
               
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full mb-4 text-lg py-6 text-slate-50 bg-indigo-700 hover:bg-indigo-600">
+                  <Button variant="outline" className="w-full mb-4 text-lg py-6 bg-red-600 hover:bg-red-500 text-slate-50">
                     Enquire Now
                   </Button>
                 </DialogTrigger>
