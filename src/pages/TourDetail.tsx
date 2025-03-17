@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -7,39 +6,33 @@ import TourPackage, { TourPackageProps } from "@/components/TourPackage";
 import { tourPackagesData } from "@/components/TourPackages";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { 
-  Car, Bike, Clock, Calendar, Users, Coffee, Home, MapPin, 
-  Check, ChevronRight, ArrowRight, ShieldCheck, Sunrise, Mountain
-} from "lucide-react";
+import { Car, Bike, Clock, Calendar, Users, Coffee, Home, MapPin, Check, ChevronRight, ArrowRight, ShieldCheck, Sunrise, Mountain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
-
 const TourDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const {
+    id
+  } = useParams<{
+    id: string;
+  }>();
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
-
   useEffect(() => {
     window.scrollTo(0, 0);
-    
     if (id) {
       const selectedTour = tourPackagesData.find((_, index) => index.toString() === id);
       if (selectedTour) {
         setTour(selectedTour);
-        
+
         // Get other tours for the "More Popular Tours" section
-        const others = tourPackagesData
-          .filter((_, index) => index.toString() !== id)
-          .slice(0, 4); // Get up to 4 other tours
+        const others = tourPackagesData.filter((_, index) => index.toString() !== id).slice(0, 4); // Get up to 4 other tours
         setOtherTours(others);
       }
     }
   }, [id]);
-
   if (!tour) {
     return <div>Loading...</div>;
   }
-
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN').format(price);
   };
@@ -50,29 +43,19 @@ const TourDetail = () => {
     if (tour.transportType === 'car') return <Car className="text-spiti-blue w-6 h-6" />;
     return <Car className="text-spiti-blue w-6 h-6" />;
   };
-  
+
   // Format night stays for readability
-  const formattedStays = tour.nightStays
-    .map(stay => `${stay.nights} night${stay.nights > 1 ? 's' : ''} in ${stay.location}`)
-    .join(", ");
-
-  const seoTitle = tour.title.toLowerCase().includes('spiti') 
-    ? tour.title 
-    : `${tour.title} - Spiti Valley Adventure`;
-
-  return (
-    <div className="min-h-screen">
+  const formattedStays = tour.nightStays.map(stay => `${stay.nights} night${stay.nights > 1 ? 's' : ''} in ${stay.location}`).join(", ");
+  const seoTitle = tour.title.toLowerCase().includes('spiti') ? tour.title : `${tour.title} - Spiti Valley Adventure`;
+  return <div className="min-h-screen">
       <Header />
       
       {/* Hero Section - similar styling to the Index page */}
-      <section 
-        className="min-h-[60vh] mt-16 relative flex items-center py-8 md:py-12"
-        style={{
-          backgroundImage: `url(https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <section className="min-h-[60vh] mt-16 relative flex items-center py-8 md:py-12" style={{
+      backgroundImage: `url(https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8">
           <div className="flex-1 text-white max-w-2xl space-y-6 bg-black/30 backdrop-blur-sm p-6 rounded">
             <h1 className="text-3xl md:text-5xl font-bold">
@@ -143,7 +126,7 @@ const TourDetail = () => {
               
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full mb-4 text-lg py-6">
+                  <Button variant="outline" className="w-full mb-4 text-lg py-6 bg-red-600 hover:bg-red-500 text-slate-50">
                     Enquire Now
                   </Button>
                 </DialogTrigger>
@@ -154,7 +137,7 @@ const TourDetail = () => {
               
               <div className="text-center">
                 <Link to="https://wa.me/919876543210" className="flex items-center justify-center text-green-600 hover:text-green-700">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1zm0 0a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 mr-2"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" /><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1zm0 0a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" /></svg>
                   Chat on WhatsApp
                 </Link>
               </div>
@@ -218,8 +201,9 @@ const TourDetail = () => {
                   From ancient monasteries to quaint villages and breathtaking lakes, each day offers unique experiences in this Himalayan paradise.
                 </p>
                 <div className="border-l-2 border-spiti-blue pl-4 space-y-6">
-                  {Array.from({ length: tour.duration.days }).map((_, index) => (
-                    <div key={index} className="mb-4">
+                  {Array.from({
+                  length: tour.duration.days
+                }).map((_, index) => <div key={index} className="mb-4">
                       <h3 className="text-lg font-bold text-spiti-dark flex items-center">
                         <span className="inline-flex items-center justify-center w-8 h-8 bg-spiti-blue text-white rounded-full mr-2">
                           {index + 1}
@@ -227,15 +211,9 @@ const TourDetail = () => {
                         Day {index + 1}: {tour.nightStays[index]?.location || "Tour End"}
                       </h3>
                       <p className="mt-2 text-gray-600">
-                        {index === 0 
-                          ? "Start your journey from your pickup location and drive to your first destination. Enjoy the scenic beauty as you enter the highland regions." 
-                          : index === tour.duration.days - 1
-                          ? "After breakfast, check out from the hotel and end your journey with beautiful memories of Spiti Valley that will last a lifetime."
-                          : `Explore the beautiful landscapes of ${tour.nightStays[index]?.location || "the region"} and visit local attractions, ancient monasteries, and experience the unique culture of this Himalayan region.`
-                        }
+                        {index === 0 ? "Start your journey from your pickup location and drive to your first destination. Enjoy the scenic beauty as you enter the highland regions." : index === tour.duration.days - 1 ? "After breakfast, check out from the hotel and end your journey with beautiful memories of Spiti Valley that will last a lifetime." : `Explore the beautiful landscapes of ${tour.nightStays[index]?.location || "the region"} and visit local attractions, ancient monasteries, and experience the unique culture of this Himalayan region.`}
                       </p>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </div>
               
@@ -246,12 +224,10 @@ const TourDetail = () => {
                   of this Himalayan region while enjoying stunning mountain views:
                 </p>
                 <div className="space-y-2">
-                  {tour.nightStays.map((stay, index) => (
-                    <div key={index} className="flex items-center">
+                  {tour.nightStays.map((stay, index) => <div key={index} className="flex items-center">
                       <Check className="text-green-500 w-5 h-5 mr-2" />
                       <span>{stay.nights} night{stay.nights > 1 ? 's' : ''} in {stay.location} - Experience the unique charm of this Himalayan destination</span>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </div>
               
@@ -261,12 +237,10 @@ const TourDetail = () => {
                   Our all-inclusive Spiti Valley package ensures you have everything you need for a comfortable and memorable journey:
                 </p>
                 <ul className="space-y-2">
-                  {tour.inclusions.map((inclusion, index) => (
-                    <li key={index} className="flex items-start">
+                  {tour.inclusions.map((inclusion, index) => <li key={index} className="flex items-start">
                       <Check className="text-green-500 w-5 h-5 mr-2 mt-1" />
                       <span>{inclusion}</span>
-                    </li>
-                  ))}
+                    </li>)}
                 </ul>
               </div>
             </div>
@@ -291,18 +265,14 @@ const TourDetail = () => {
             journeys, find the perfect package for your next mountain getaway.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {otherTours.map((tour, index) => (
-              <div key={index} className="h-full">
+            {otherTours.map((tour, index) => <div key={index} className="h-full">
                 <TourPackage {...tour} index={tourPackagesData.findIndex(t => t.title === tour.title)} />
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default TourDetail;
