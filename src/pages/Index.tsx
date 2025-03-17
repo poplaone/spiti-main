@@ -54,7 +54,7 @@ const Index = () => {
                 </DialogContent>
               </Dialog>
               
-              <Button onClick={scrollToPackages} className="px-8 py-3 rounded-lg font-semibold transition-opacity bg-green-700 hover:bg-green-600">
+              <Button onClick={scrollToPackages} className="px-8 py-3 rounded-lg font-semibold transition-opacity bg-indigo-600 hover:bg-indigo-500">
                 Explore Packages
               </Button>
             </div>
@@ -106,7 +106,7 @@ const Index = () => {
                     </DialogContent>
                   </Dialog>
                   
-                  <Button className="w-full bg-spiti-blue hover:bg-spiti-blue/90 py-2" onClick={scrollToPackages}>
+                  <Button onClick={scrollToPackages} className="w-full py-2 bg-indigo-600 hover:bg-indigo-500">
                     Packages
                   </Button>
                 </div>

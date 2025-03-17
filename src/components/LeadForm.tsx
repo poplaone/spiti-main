@@ -175,7 +175,7 @@ const LeadForm = () => {
           <ToggleGroupItem value="hotels" aria-label="Hotels" className="flex-1 data-[state=on]:bg-spiti-blue data-[state=on]:text-white">
             Hotels
           </ToggleGroupItem>
-          <ToggleGroupItem value="packages" aria-label="Packages" className="flex-1 data-[state=on]:text-white bg-fuchsia-600 hover:bg-fuchsia-500">
+          <ToggleGroupItem value="packages" aria-label="Packages" className="flex-1 data-[state=on]:text-white bg-indigo-600 hover:bg-indigo-500">
             Packages
           </ToggleGroupItem>
         </ToggleGroup>
