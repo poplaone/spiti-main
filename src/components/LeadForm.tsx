@@ -181,7 +181,7 @@ const LeadForm = () => {
         </ToggleGroup>
       </div>
 
-      <h3 className="text-base md:text-lg mb-3 font-semibold text-center text-neutral-50">Get Free Tour Plan</h3>
+      <h3 className="text-base md:text-lg mb-3 font-semibold text-center text-stone-950">Get Free Tour Plan</h3>
       
       <div className={`transition-transform duration-300 ${isFlipping ? 'animate-[flip-out_0.3s_ease-in-out]' : 'animate-[flip-in_0.3s_ease-in-out]'}`}>
         {bookingType === 'packages' ? <PackagesForm date={date} setDate={setDate} /> : <HotelsForm date={date} setDate={setDate} />}
