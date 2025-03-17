@@ -79,7 +79,7 @@ const PackagesForm = ({
       </div>
     </div>
 
-    <Button type="submit" className="w-full h-8 bg-spiti-blue hover:bg-spiti-blue/90 text-sm text-white">
+    <Button type="submit" className="w-full h-8 text-sm text-white bg-fuchsia-600 hover:bg-fuchsia-500">
       Submit Request
     </Button>
   </div>;
@@ -175,7 +175,7 @@ const LeadForm = () => {
           <ToggleGroupItem value="hotels" aria-label="Hotels" className="flex-1 data-[state=on]:bg-spiti-blue data-[state=on]:text-white">
             Hotels
           </ToggleGroupItem>
-          <ToggleGroupItem value="packages" aria-label="Packages" className="flex-1 data-[state=on]:bg-spiti-blue data-[state=on]:text-white">
+          <ToggleGroupItem value="packages" aria-label="Packages" className="flex-1 data-[state=on]:text-white bg-fuchsia-600 hover:bg-fuchsia-500">
             Packages
           </ToggleGroupItem>
         </ToggleGroup>
