@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
@@ -8,27 +7,22 @@ import SpitiCircuitMap from "@/components/SpitiCircuitMap";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
-
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
-  
   const scrollToPackages = () => {
-    packagesSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+    packagesSectionRef.current?.scrollIntoView({
+      behavior: 'smooth'
+    });
   };
-  
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Header scrollToPackages={scrollToPackages} />
       
       {/* Hero Section */}
-      <section 
-        className="min-h-[calc(100vh-4rem)] mt-16 relative flex items-center py-8 md:py-12"
-        style={{
-          backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <section className="min-h-[calc(100vh-4rem)] mt-16 relative flex items-center py-8 md:py-12" style={{
+      backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8">
           <div className="flex-1 text-white max-w-2xl space-y-6">
             <h1 className="text-3xl md:text-5xl font-bold bg-black/30 backdrop-blur-sm inline-block px-4 py-2 rounded">
@@ -42,17 +36,11 @@ const Index = () => {
               </span>
             </p>
             <div className="space-y-3 text-base md:text-lg">
-              {[
-                "Best Priced Spiti Valley Packages within your budget",
-                "Expert Local Guides for Authentic Himalayan Experiences",
-                "Safe and Comfortable Travel in the High-Altitude Desert"
-              ].map((text, index) => (
-                <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
+              {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
                   <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
                     {text}
                   </span>
-                </p>
-              ))}
+                </p>)}
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <Dialog>
@@ -66,10 +54,7 @@ const Index = () => {
                 </DialogContent>
               </Dialog>
               
-              <Button 
-                className="bg-spiti-green hover:bg-spiti-green/90 px-8 py-3 rounded-lg font-semibold transition-opacity"
-                onClick={scrollToPackages}
-              >
+              <Button onClick={scrollToPackages} className="px-8 py-3 rounded-lg font-semibold transition-opacity bg-green-700 hover:bg-green-600">
                 Explore Packages
               </Button>
             </div>
@@ -82,11 +67,7 @@ const Index = () => {
       </section>
 
       {/* Tour Packages Section */}
-      <section 
-        id="tour-packages" 
-        ref={packagesSectionRef}
-        className="py-16 bg-white"
-      >
+      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card - Moved from Hero section */}
@@ -99,19 +80,19 @@ const Index = () => {
                 </div>
                 <div className="space-y-2">
                   <p className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5" /></svg>
                     Expert Himalayan Local Guides
                   </p>
                   <p className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5" /></svg>
                     Comfortable Stays at Scenic Locations
                   </p>
                   <p className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5" /></svg>
                     Authentic Cultural Experiences
                   </p>
                   <p className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5" /></svg>
                     Safe Travel in High Altitude Desert
                   </p>
                 </div>
@@ -125,10 +106,7 @@ const Index = () => {
                     </DialogContent>
                   </Dialog>
                   
-                  <Button 
-                    className="w-full bg-spiti-blue hover:bg-spiti-blue/90 py-2"
-                    onClick={scrollToPackages}
-                  >
+                  <Button className="w-full bg-spiti-blue hover:bg-spiti-blue/90 py-2" onClick={scrollToPackages}>
                     Packages
                   </Button>
                 </div>
@@ -173,14 +151,11 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section 
-        className="py-16 relative"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(51, 38, 30, 0.9), rgba(51, 38, 30, 0.95)), url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=70)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <section className="py-16 relative" style={{
+      backgroundImage: `linear-gradient(to bottom, rgba(51, 38, 30, 0.9), rgba(51, 38, 30, 0.95)), url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=70)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Your Spiti Valley Adventure?</h2>
           <p className="text-xl mb-4 max-w-2xl mx-auto">
@@ -205,8 +180,6 @@ const Index = () => {
       </section>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
