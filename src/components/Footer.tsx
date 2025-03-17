@@ -1,19 +1,17 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, MapPin, Mail, Phone } from 'lucide-react';
-
 const Footer = () => {
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({
+        behavior: 'smooth'
+      });
     }
   };
-  
-  return (
-    <footer className="bg-spiti-dark text-white py-12">
+  return <footer className="text-white py-12 bg-neutral-950">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -40,47 +38,27 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a 
-                  href="#" 
-                  className="hover:text-spiti-green transition-colors"
-                  onClick={(e) => handleScrollToSection(e, 'top')}
-                >
+                <a href="#" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'top')}>
                   Home
                 </a>
               </li>
               <li>
-                <a 
-                  href="#tour-packages" 
-                  className="hover:text-spiti-green transition-colors"
-                  onClick={(e) => handleScrollToSection(e, 'tour-packages')}
-                >
+                <a href="#tour-packages" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'tour-packages')}>
                   Tour Packages
                 </a>
               </li>
               <li>
-                <a 
-                  href="#gallery" 
-                  className="hover:text-spiti-green transition-colors"
-                  onClick={(e) => handleScrollToSection(e, 'gallery')}
-                >
+                <a href="#gallery" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'gallery')}>
                   Gallery
                 </a>
               </li>
               <li>
-                <a 
-                  href="#about-spiti" 
-                  className="hover:text-spiti-green transition-colors"
-                  onClick={(e) => handleScrollToSection(e, 'about-spiti')}
-                >
+                <a href="#about-spiti" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'about-spiti')}>
                   About Spiti
                 </a>
               </li>
               <li>
-                <a 
-                  href="#contact-us" 
-                  className="hover:text-spiti-green transition-colors"
-                  onClick={(e) => handleScrollToSection(e, 'contact-us')}
-                >
+                <a href="#contact-us" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'contact-us')}>
                   Contact Us
                 </a>
               </li>
@@ -137,8 +115,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
