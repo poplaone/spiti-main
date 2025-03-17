@@ -3,6 +3,9 @@ import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import PhotoGallery from "@/components/PhotoGallery";
 import TourPackages from "@/components/TourPackages";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -27,13 +30,14 @@ const Index = () => {
             </h1>
             <p className="text-xl md:text-2xl bg-black/30 backdrop-blur-sm px-4 py-2 rounded">
               <span className="bg-gradient-to-r from-green-300 via-yellow-200 to-orange-400 text-transparent bg-clip-text">
-                Customized Tours from Trusted Local Agents At Lowest Prices
+                Experience the Himalayan Adventure with Customized Tours from Trusted Local Agents
               </span>
             </p>
             <div className="space-y-3 text-base md:text-lg">
               {[
-                "Best Priced Packages within your budget",
-                "Friendly Customer Support"
+                "Best Priced Spiti Valley Packages within your budget",
+                "Expert Local Guides for Authentic Himalayan Experiences",
+                "Safe and Comfortable Travel in the High-Altitude Desert"
               ].map((text, index) => (
                 <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
                   <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
@@ -42,22 +46,87 @@ const Index = () => {
                 </p>
               ))}
             </div>
-            <button className="bg-spiti-blue hover:bg-spiti-blue/90 px-8 py-3 rounded-lg font-semibold transition-opacity">
-              Explore Tours
-            </button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="bg-spiti-blue hover:bg-spiti-blue/90 px-8 py-3 rounded-lg font-semibold transition-opacity">
+                  Enquire Now
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <LeadForm />
+              </DialogContent>
+            </Dialog>
           </div>
-          <div className="w-full md:w-[400px]">
-            <LeadForm />
+          <div className="w-full md:w-[400px] bg-white/20 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold text-center text-spiti-dark mb-4">Book Your Spiti Adventure</h2>
+              <div className="space-y-4">
+                <div className="text-center">
+                  <p className="text-xl font-bold text-green-600">Starting from ₹18,900/-</p>
+                  <p className="text-sm text-gray-600">All-inclusive packages with accommodation, meals & transport</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    Expert Himalayan Local Guides
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    Comfortable Stays at Scenic Locations
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    Authentic Cultural Experiences
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5"/></svg>
+                    Safe Travel in High Altitude Desert
+                  </p>
+                </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="w-full bg-green-500 hover:bg-green-600 py-2">Book Now</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <LeadForm />
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Tour Packages Section */}
-      <TourPackages />
+      <section id="tour-packages" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">Explore Unforgettable Spiti Valley Tour Packages</h2>
+            <p className="text-gray-600 mb-4">
+              Discover the breathtaking landscapes of the Himalayan cold desert with our carefully curated tour packages. 
+              From Buddhist monasteries and high-altitude villages to pristine lakes and snow-capped peaks, our all-inclusive 
+              packages offer the perfect blend of adventure, culture, and natural beauty.
+            </p>
+            <p className="text-gray-600">
+              Whether you're seeking a thrilling bike tour, a women-only expedition, or a family adventure in your own car, 
+              we have the ideal Spiti Valley experience waiting for you.
+            </p>
+          </div>
+          <TourPackages />
+        </div>
+      </section>
 
       {/* Gallery Section */}
       <section className="py-16 bg-[#E2D1C3]">
         <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">Spiti Valley Photo Gallery</h2>
+            <p className="text-gray-700 mb-4">
+              Immerse yourself in the breathtaking vistas and cultural wonders of Spiti Valley through our curated collection of photographs.
+              From ancient monasteries perched on hilltops to the crystal-clear Chandrataal Lake and the rugged terrain of the Himalayan cold desert,
+              these images offer a glimpse into the remote paradise awaiting your exploration.
+            </p>
+          </div>
           <PhotoGallery />
         </div>
       </section>
@@ -72,15 +141,29 @@ const Index = () => {
         }}
       >
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Your Adventure?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Explore our curated collection of Spiti Valley tours and create memories that last a lifetime.
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Your Spiti Valley Adventure?</h2>
+          <p className="text-xl mb-4 max-w-2xl mx-auto">
+            Explore our curated collection of Spiti Valley tours and create memories that last a lifetime. Our expert local guides
+            are waiting to show you the hidden gems of this Himalayan wonderland.
           </p>
-          <button className="bg-gradient-to-r from-spiti-green to-spiti-blue px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
-            Explore Tours
-          </button>
+          <p className="mb-8 max-w-2xl mx-auto">
+            Book your journey through the ancient monasteries, remote villages, and breathtaking landscapes of the Tibetan Buddhist 
+            culture tucked away in the Indian Himalayas.
+          </p>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-spiti-green to-spiti-blue px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                Plan Your Journey Now
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <LeadForm />
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
+      
+      <Footer />
     </div>
   );
 };
