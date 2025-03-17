@@ -45,7 +45,7 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button className="px-8 py-3 rounded-lg font-semibold transition-opacity bg-fuchsia-600 hover:bg-fuchsia-500">
+                  <Button className="bg-spiti-blue hover:bg-spiti-blue/90 px-8 py-3 rounded-lg font-semibold transition-opacity">
                     Enquire Now
                   </Button>
                 </DialogTrigger>
@@ -99,7 +99,7 @@ const Index = () => {
                 <div className="space-y-3">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="w-full py-2 bg-fuchsia-600 hover:bg-fuchsia-500">Book Now</Button>
+                      <Button className="w-full bg-green-500 hover:bg-green-600 py-2">Book Now</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
                       <LeadForm />
