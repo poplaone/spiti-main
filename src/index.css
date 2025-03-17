@@ -101,6 +101,7 @@
   }
 }
 
+/* Animation keyframes */
 @keyframes flip-out {
   0% {
     transform: rotateY(0deg);
@@ -117,4 +118,34 @@
   100% {
     transform: rotateY(0deg);
   }
+}
+
+/* Spiti Circuit Map Styles */
+.location {
+  @apply absolute w-[30px] h-[30px] md:w-[40px] md:h-[40px] lg:w-[50px] lg:h-[50px]
+  -translate-x-1/2 -translate-y-1/2 z-[3] transition-all duration-300 ease-in-out;
+}
+
+.location:hover {
+  @apply -translate-x-1/2 -translate-y-1/2 scale-125 z-[4];
+}
+
+.location-img {
+  @apply w-full h-full rounded-full bg-spiti-blue bg-opacity-80 border-2 border-white shadow-md;
+}
+
+.location-img::before {
+  content: '';
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 
+  bg-spiti-sand rounded-full border border-white opacity-75;
+}
+
+.location-name {
+  @apply absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap font-bold text-[10px] md:text-xs 
+  uppercase tracking-wide text-spiti-dark bg-white/80 px-1.5 py-0.5 rounded shadow-sm;
+}
+
+.marker {
+  @apply absolute w-[15px] h-[15px] md:w-[20px] md:h-[20px] bg-spiti-green
+  rounded-full -translate-x-1/2 -translate-y-1/2 z-[2] shadow;
 }

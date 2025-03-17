@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
 import PhotoGallery from "@/components/PhotoGallery";
 import TourPackages from "@/components/TourPackages";
+import SpitiCircuitMap from "@/components/SpitiCircuitMap";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
@@ -148,6 +149,10 @@ const Index = () => {
               </p>
             </div>
           </div>
+
+          {/* Add the Spiti Circuit Map here */}
+          <SpitiCircuitMap />
+          
           <TourPackages />
         </div>
       </section>
