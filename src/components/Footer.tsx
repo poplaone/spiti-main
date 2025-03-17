@@ -16,11 +16,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Spiti Valley Tours</h3>
+            <h3 className="text-xl font-bold mb-4 text-sky-600">Spiti Valley Tours</h3>
             <p className="mb-4">
               Experience the magic of the Himalayan cold desert with our expert-guided tours. Discover ancient monasteries, high-altitude villages, and stunning landscapes of Spiti Valley.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 bg-transparent">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-spiti-green transition-colors">
                 <Facebook size={20} />
               </a>
@@ -35,7 +35,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+            <h3 className="text-xl font-bold mb-4 text-spiti-accent">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'top')}>
@@ -67,7 +67,7 @@ const Footer = () => {
 
           {/* Popular Tours */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Popular Tours</h3>
+            <h3 className="text-xl font-bold mb-4 text-spiti-blue">Popular Tours</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/tour/0" className="hover:text-spiti-green transition-colors">Spiti Valley Bike Tour</Link>
@@ -89,7 +89,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">Contact Us</h3>
+            <h3 className="text-xl font-bold mb-4 text-spiti-blue">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin className="mr-2 mt-1 text-spiti-green" size={18} />
@@ -108,7 +108,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-700 mt-10 pt-6 text-center text-sm">
-          <p>© {new Date().getFullYear()} Spiti Valley Tours. All rights reserved.</p>
+          <p className="text-fuchsia-600">© {new Date().getFullYear()} Spiti Valley Tours. All rights reserved.</p>
           <p className="mt-2">
             <Link to="/privacy-policy" className="hover:text-spiti-green transition-colors mr-4">Privacy Policy</Link>
             <Link to="/terms-of-service" className="hover:text-spiti-green transition-colors">Terms of Service</Link>
