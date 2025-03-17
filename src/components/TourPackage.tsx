@@ -56,7 +56,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
       <div className="relative">
         {/* Discount badge */}
         <div className="absolute top-3 left-3 z-10">
-          <Badge className="bg-red-500 text-white font-medium text-sm px-3 py-1 rounded-md">
+          <Badge className="text-white font-medium text-sm px-3 py-1 rounded-md bg-fuchsia-600">
             {discount}% off
           </Badge>
         </div>
@@ -123,7 +123,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
               <span>More Details</span>
             </Link>
           </Button>
-          <Button variant="default" className="w-1/2 bg-green-600 hover:bg-green-500">
+          <Button variant="default" className="w-1/2 bg-fuchsia-600 hover:bg-fuchsia-500">
             <Send className="mr-1 w-4 h-4" />
             <span>Send Enquiry</span>
           </Button>
