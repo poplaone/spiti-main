@@ -67,7 +67,7 @@ const Index = () => {
       </section>
 
       {/* Tour Packages Section */}
-      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-stone-200">
+      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card - Moved from Hero section */}
