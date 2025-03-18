@@ -1,4 +1,3 @@
-
 import React from 'react';
 import TourPackage, { TourPackageProps } from './TourPackage';
 
@@ -187,24 +186,22 @@ export const tourPackagesData: TourPackageProps[] = [
 
 const TourPackages = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">
-            Discover Spiti Valley
-          </h2>
-          <p className="max-w-2xl mx-auto text-gray-600">
-            Explore our carefully crafted tour packages designed to provide you with an unforgettable Spiti Valley experience. Choose from a variety of options to match your preferences and budget.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tourPackagesData.map((tour, index) => (
-            <TourPackage key={index} {...tour} index={index} />
-          ))}
-        </div>
+    <div className="w-full">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white bg-black/20 backdrop-blur-sm inline-block px-6 py-2 rounded">
+          Discover Spiti Valley
+        </h2>
+        <p className="max-w-2xl mx-auto text-white bg-black/30 backdrop-blur-sm px-4 py-2 rounded">
+          Explore our carefully crafted tour packages designed to provide you with an unforgettable Spiti Valley experience. Choose from a variety of options to match your preferences and budget.
+        </p>
       </div>
-    </section>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tourPackagesData.map((tour, index) => (
+          <TourPackage key={index} {...tour} index={index} />
+        ))}
+      </div>
+    </div>
   );
 };
 

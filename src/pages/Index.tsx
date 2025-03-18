@@ -1,3 +1,4 @@
+
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
@@ -67,14 +68,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Tour Packages Section - Updated background image */}
+      {/* Tour Packages Section - Updated with new background image */}
       <section id="tour-packages" ref={packagesSectionRef} className="py-16 relative" style={{
-      backgroundImage: `url(public/lovable-uploads/439d44cf-b459-4b3c-b69c-650fafbf80dc.png)`,
+      backgroundImage: `url(public/lovable-uploads/d8ef17c9-eef3-440b-a714-7150e1ed1500.png)`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }}>
-        <div className="absolute inset-0 backdrop-blur-[2px] bg-neutral-700"></div>
-        <div className="container mx-auto px-4 relative z-10 bg-neutral-700">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
             <div className="w-full md:w-[350px] bg-white/30 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20 order-2 md:order-1">
