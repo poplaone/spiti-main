@@ -73,7 +73,7 @@ const Index = () => {
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }}>
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
+        <div className="absolute inset-0 backdrop-blur-[2px] bg-neutral-700"></div>
         <div className="container mx-auto px-4 relative z-10 bg-neutral-700">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
