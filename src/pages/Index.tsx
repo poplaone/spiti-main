@@ -83,7 +83,7 @@ const Index = () => {
         ref={packagesSectionRef} 
         className="py-16 relative"
         style={{
-          backgroundImage: `url(public/lovable-uploads/2552f30c-b44a-466a-b6f2-f0be5a98175e.png)`,
+          backgroundImage: `url(public/lovable-uploads/db139286-2744-49e4-a753-80f01b454b76.png)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
