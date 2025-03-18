@@ -149,10 +149,10 @@ const Index = () => {
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }}>
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
+        <div className="absolute inset-0 backdrop-blur-[1px] bg-zinc-800"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center mb-12 bg-black/30 backdrop-blur-md p-6 rounded-lg border border-white/20">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Spiti Valley Photo Gallery</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-fuchsia-600">Spiti Valley Photo Gallery</h2>
             <p className="text-white mb-4">
               Immerse yourself in the breathtaking vistas and cultural wonders of Spiti Valley through our curated collection of photographs.
               From ancient monasteries perched on hilltops to the crystal-clear Chandrataal Lake and the rugged terrain of the Himalayan cold desert,
