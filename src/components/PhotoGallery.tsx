@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -46,20 +47,20 @@ const PhotoGallery = () => {
 
   return (
     <div className="relative py-12">
-      <h2 className="text-2xl font-semibold text-spiti-dark mb-6 text-center">
+      <h2 className="text-2xl font-semibold text-white mb-6 text-center">
         Discover Spiti Valley
       </h2>
       
       <div className="relative overflow-hidden">
         <div 
           id="gallery"
-          className="flex gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory"
+          className="flex gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory pb-4"
           style={{ scrollBehavior: 'smooth' }}
         >
           {photos.map((photo, index) => (
             <div
               key={index}
-              className="min-w-[300px] h-[300px] snap-center rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300"
+              className="min-w-[300px] h-[300px] snap-center rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300 bg-white/20 backdrop-blur-md border border-white/20 shadow-lg"
             >
               <img
                 src={photo.url}
@@ -74,19 +75,19 @@ const PhotoGallery = () => {
         <Button
           variant="outline"
           size="icon"
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm hover:bg-white"
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/40 border border-white/30"
           onClick={() => scroll('left')}
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-4 w-4 text-white" />
         </Button>
 
         <Button
           variant="outline"
           size="icon"
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm hover:bg-white"
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm hover:bg-white/40 border border-white/30"
           onClick={() => scroll('right')}
         >
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRight className="h-4 w-4 text-white" />
         </Button>
       </div>
     </div>

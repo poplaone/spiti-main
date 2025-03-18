@@ -1,13 +1,12 @@
+
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bike, Car, Calendar, Users, Clock, Coffee, MapPin, Home, Warehouse, MessageSquareMore, Send } from 'lucide-react';
-import { Link } from "react-router-dom";
-interface NightStay {
-  location: string;
-  nights: number;
-}
+import { MapPin, Users, Calendar, Check } from 'lucide-react';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import LeadForm from "@/components/LeadForm";
+import { Link } from 'react-router-dom';
+
 export interface TourPackageProps {
   title: string;
   image: string;
@@ -18,16 +17,17 @@ export interface TourPackageProps {
     nights: number;
     days: number;
   };
-  nightStays: NightStay[];
+  nightStays: {
+    location: string;
+    nights: number;
+  }[];
   inclusions: string[];
-  transportType?: 'bike' | 'car' | 'innova';
+  transportType: "car" | "bike";
   isWomenOnly?: boolean;
   index?: number;
 }
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-IN').format(price);
-};
-const TourPackage: React.FC<TourPackageProps> = ({
+
+const TourPackage = ({
   title,
   image,
   originalPrice,
@@ -38,100 +38,132 @@ const TourPackage: React.FC<TourPackageProps> = ({
   inclusions,
   transportType,
   isWomenOnly,
-  index
-}) => {
-  // Format the night stays for display
-  const formattedStays = nightStays.map((stay, index) => <React.Fragment key={stay.location}>
-      <span className="text-black">{stay.nights} night {stay.location}</span>
-      {index < nightStays.length - 1 && " | "}
-    </React.Fragment>);
+  index = 0
+}: TourPackageProps) => {
+  const formatter = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 0,
+  });
 
-  // Choose the appropriate transport icon
-  const getTransportIcon = () => {
-    if (transportType === 'bike') return <Bike className="text-spiti-blue w-5 h-5" />;
-    if (transportType === 'car') return <Car className="text-spiti-blue w-5 h-5" />;
-    return <Car className="text-spiti-blue w-5 h-5" />;
-  };
-  return <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group h-full flex flex-col">
+  const originPrice = formatter.format(originalPrice);
+  const discPrice = formatter.format(discountedPrice);
+
+  return (
+    <Card className="overflow-hidden transition-all hover:shadow-xl bg-white/30 backdrop-blur-md border-white/30">
       <div className="relative">
-        {/* Discount badge */}
-        <div className="absolute top-3 left-3 z-10">
-          <Badge className="text-white font-medium text-sm px-3 py-1 rounded-md bg-fuchsia-600">
-            {discount}% off
-          </Badge>
-        </div>
+        <img 
+          src={image} 
+          alt={title} 
+          className="w-full h-48 object-cover"
+        />
+        
+        {discount > 0 && (
+          <div className="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+            {discount}% OFF
+          </div>
+        )}
+        
+        {isWomenOnly && (
+          <div className="absolute top-4 left-4 bg-pink-500 text-white px-2 py-1 rounded-md text-xs font-bold">
+            Women Only
+          </div>
+        )}
 
-        {/* Women only badge */}
-        {isWomenOnly && <div className="absolute top-3 right-3 z-10">
-            <Badge className="bg-pink-500 text-white font-medium text-sm px-3 py-1 rounded-md">
-              Women Only
-            </Badge>
-          </div>}
-
-        {/* Image */}
-        <div className="h-48 overflow-hidden">
-          <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+          <h3 className="text-white font-bold text-lg">{title}</h3>
         </div>
       </div>
       
-      <CardContent className="p-4 flex-1 flex flex-col">
-        {/* Title */}
-        <h3 className="text-xl font-bold text-spiti-dark mb-2">{title}</h3>
-        
-        {/* Price */}
-        <div className="mb-2 flex items-center">
-          <span className="text-lg font-bold text-green-600">INR {formatPrice(discountedPrice)}/-</span>
-          <span className="text-sm line-through ml-2 text-fuchsia-600">INR {formatPrice(originalPrice)}/-</span>
-          <span className="ml-auto text-sm text-gray-600">Onwards</span>
+      <CardHeader className="pt-4 pb-2">
+        <div className="flex justify-between items-center">
+          <div>
+            <span className="text-sm text-gray-500 line-through">{originPrice}</span>
+            <CardTitle className="text-xl font-bold text-green-600">{discPrice}</CardTitle>
+          </div>
+          <div className="flex items-center gap-1 text-gray-500">
+            <Calendar size={16} />
+            <span className="text-sm">{duration.nights}N/{duration.days}D</span>
+          </div>
         </div>
-        
-        {/* Duration */}
-        <div className="flex items-center text-sm text-gray-600 mb-3">
-          <Clock className="w-4 h-4 mr-1" />
-          <span>{duration.nights} {duration.nights === 1 ? 'Night' : 'Nights'}/{duration.days} {duration.days === 1 ? 'Day' : 'Days'}</span>
-        </div>
-        
-        {/* Night stays - using a scrollbar for long text */}
-        <div className="text-xs text-gray-600 mb-4 overflow-x-auto whitespace-nowrap pb-1 scrollbar-thin scrollbar-thumb-gray-300">
-          {formattedStays}
-        </div>
-        
-        <h4 className="font-semibold text-spiti-dark mb-2">Package Inclusions:</h4>
-        
-        {/* Inclusions list with icons */}
-        <ul className="text-sm text-gray-700 mb-4 flex-1">
-          {inclusions.map((inclusion, index) => <li key={index} className="mb-1 flex items-start">
-              <div className="mr-2 mt-1">
-                {inclusion.includes('Pick up') && <MapPin className="w-4 h-4 text-spiti-blue" />}
-                {inclusion.includes('Sightseeing') && getTransportIcon()}
-                {inclusion.includes('Nights accommodation') && <Home className="w-4 h-4 text-spiti-blue" />}
-                {inclusion.includes('breakfasts') && <Coffee className="w-4 h-4 text-spiti-blue" />}
-                {inclusion.includes('Hotel taxes') && <Warehouse className="w-4 h-4 text-spiti-blue" />}
-                {inclusion.includes('Helmet') && <Bike className="w-4 h-4 text-spiti-blue" />}
-                {inclusion.includes('Oxygen') && <Users className="w-4 h-4 text-spiti-blue" />}
-                {inclusion.includes('Group Leader') && <Users className="w-4 h-4 text-spiti-blue" />}
+      </CardHeader>
+      
+      <CardContent className="space-y-4 pb-2">
+        <div>
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">Night Stays:</h4>
+          <div className="flex flex-wrap gap-1">
+            {nightStays.slice(0, 3).map((stay, i) => (
+              <div key={i} className="flex items-center gap-1 bg-spiti-sand/50 px-2 py-1 rounded-full text-xs">
+                <MapPin size={12} className="text-spiti-brown" />
+                {stay.location}
+                {stay.nights > 1 && <span>({stay.nights}N)</span>}
               </div>
-              <span>{inclusion}</span>
-            </li>)}
-        </ul>
-        
-        {/* Buttons */}
-        <div className="flex gap-2 mt-auto">
-          <Button variant="default" className="w-1/2 bg-blue-500 hover:bg-blue-600" asChild>
-            <Link to={typeof index === 'number' ? `/tour/${index}` : '#'}>
-              <MessageSquareMore className="mr-1 w-4 h-4" />
-              <span>More Details</span>
-            </Link>
-          </Button>
-          <Button variant="default" className="w-1/2 bg-fuchsia-600 hover:bg-fuchsia-500">
-            <Send className="mr-1 w-4 h-4" />
-            <span>Send Enquiry</span>
-          </Button>
+            ))}
+            {nightStays.length > 3 && (
+              <div className="flex items-center gap-1 bg-spiti-sand/50 px-2 py-1 rounded-full text-xs">
+                <span>+{nightStays.length - 3} more</span>
+              </div>
+            )}
+          </div>
         </div>
-
-        {/* WhatsApp floating button */}
         
+        <div>
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">Inclusions:</h4>
+          <div className="grid grid-cols-1 gap-1">
+            {inclusions.slice(0, 2).map((inclusion, i) => (
+              <div key={i} className="flex items-start gap-1 text-xs">
+                <Check size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
+                <span className="text-gray-600">{inclusion}</span>
+              </div>
+            ))}
+            {inclusions.length > 2 && (
+              <div className="text-xs text-blue-600">+ {inclusions.length - 2} more inclusions</div>
+            )}
+          </div>
+        </div>
       </CardContent>
-    </Card>;
+      
+      <CardFooter className="flex flex-col gap-2 pt-0">
+        <div className="w-full flex gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="default" className="w-full text-sm bg-fuchsia-600 hover:bg-fuchsia-500">
+                Enquire Now
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <LeadForm packageName={title} />
+            </DialogContent>
+          </Dialog>
+          
+          <Link to={`/tour/${index}`} className="w-full">
+            <Button variant="outline" className="w-full text-sm border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white">
+              View Details
+            </Button>
+          </Link>
+        </div>
+        
+        <div className="w-full flex justify-center items-center gap-1 text-xs text-gray-500">
+          <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
+            transportType === 'car' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'
+          }`}>
+            {transportType === 'car' ? '🚘' : '🏍️'}
+          </div>
+          <span>{transportType === 'car' ? 'Car Tour' : 'Bike Tour'}</span>
+          
+          {isWomenOnly && (
+            <>
+              <span className="mx-1">•</span>
+              <div className="w-4 h-4 rounded-full flex items-center justify-center bg-pink-100 text-pink-600">
+                👩
+              </div>
+              <span>Women Only</span>
+            </>
+          )}
+        </div>
+      </CardFooter>
+    </Card>
+  );
 };
+
 export default TourPackage;
