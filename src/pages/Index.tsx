@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
@@ -8,29 +7,22 @@ import SpitiCircuitMap from "@/components/SpitiCircuitMap";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
-
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
-  
   const scrollToPackages = () => {
     packagesSectionRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   };
-  
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       <Header scrollToPackages={scrollToPackages} />
       
       {/* Hero Section - Added pt-16 md:pt-20 to fix header overlap */}
-      <section 
-        className="min-h-[calc(100vh)] relative flex items-center py-8 md:py-12 pt-16 md:pt-20" 
-        style={{
-          backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <section className="min-h-[calc(100vh)] relative flex items-center py-8 md:py-12 pt-16 md:pt-20" style={{
+      backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8 relative z-10">
           <div className="flex-1 text-white max-w-2xl space-y-6">
@@ -45,13 +37,11 @@ const Index = () => {
               </span>
             </p>
             <div className="space-y-3 text-base md:text-lg">
-              {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => (
-                <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
+              {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
                   <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
                     {text}
                   </span>
-                </p>
-              ))}
+                </p>)}
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <Dialog>
@@ -78,18 +68,13 @@ const Index = () => {
       </section>
 
       {/* Tour Packages Section - Updated background image */}
-      <section 
-        id="tour-packages" 
-        ref={packagesSectionRef} 
-        className="py-16 relative"
-        style={{
-          backgroundImage: `url(public/lovable-uploads/439d44cf-b459-4b3c-b69c-650fafbf80dc.png)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <section id="tour-packages" ref={packagesSectionRef} className="py-16 relative" style={{
+      backgroundImage: `url(public/lovable-uploads/439d44cf-b459-4b3c-b69c-650fafbf80dc.png)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-10 bg-neutral-700">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
             <div className="w-full md:w-[350px] bg-white/30 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20 order-2 md:order-1">
@@ -159,14 +144,11 @@ const Index = () => {
       </section>
 
       {/* Gallery Section */}
-      <section 
-        className="py-16 relative"
-        style={{
-          backgroundImage: `url(public/lovable-uploads/2c721e96-fc7b-4945-b1ee-5078a2398571.png)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <section className="py-16 relative" style={{
+      backgroundImage: `url(public/lovable-uploads/2c721e96-fc7b-4945-b1ee-5078a2398571.png)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center mb-12 bg-black/30 backdrop-blur-md p-6 rounded-lg border border-white/20">
@@ -182,14 +164,11 @@ const Index = () => {
       </section>
 
       {/* Discover Section */}
-      <section 
-        className="py-16 relative"
-        style={{
-          backgroundImage: `url(public/lovable-uploads/97184aed-98be-4a28-a800-b8ad75fa1ab1.png)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
+      <section className="py-16 relative" style={{
+      backgroundImage: `url(public/lovable-uploads/97184aed-98be-4a28-a800-b8ad75fa1ab1.png)`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready for Your Spiti Valley Adventure?</h2>
@@ -215,8 +194,6 @@ const Index = () => {
       </section>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
