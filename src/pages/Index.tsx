@@ -22,9 +22,9 @@ const Index = () => {
     <div className="min-h-screen">
       <Header scrollToPackages={scrollToPackages} />
       
-      {/* Hero Section */}
+      {/* Hero Section - Added pt-16 md:pt-20 to fix header overlap */}
       <section 
-        className="min-h-[calc(100vh)] relative flex items-center py-8 md:py-12" 
+        className="min-h-[calc(100vh)] relative flex items-center py-8 md:py-12 pt-16 md:pt-20" 
         style={{
           backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
           backgroundSize: 'cover',
@@ -77,13 +77,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Tour Packages Section */}
+      {/* Tour Packages Section - Updated background image */}
       <section 
         id="tour-packages" 
         ref={packagesSectionRef} 
         className="py-16 relative"
         style={{
-          backgroundImage: `url(public/lovable-uploads/db139286-2744-49e4-a753-80f01b454b76.png)`,
+          backgroundImage: `url(public/lovable-uploads/439d44cf-b459-4b3c-b69c-650fafbf80dc.png)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
