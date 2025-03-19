@@ -40,8 +40,8 @@ const HeroCarousel = () => {
   }, [api, current]);
 
   return (
-    <div className="absolute inset-0 z-0">
-      <Carousel setApi={setApi} opts={{ loop: true }}>
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <Carousel setApi={setApi} opts={{ loop: true }} className="h-full">
         <CarouselContent className="h-full">
           {images.map((image, index) => (
             <CarouselItem key={index} className="h-full">
@@ -49,6 +49,11 @@ const HeroCarousel = () => {
                 className="w-full h-full bg-cover bg-center"
                 style={{ 
                   backgroundImage: `url(${image})`,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
                 }}
               />
             </CarouselItem>

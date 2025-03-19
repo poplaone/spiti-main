@@ -19,7 +19,7 @@ const Index = () => {
   };
   
   return (
-    <div className="min-h-screen bg-fixed bg-cover bg-center relative">
+    <div className="min-h-screen relative">
       {/* Hero Carousel */}
       <HeroCarousel />
       
