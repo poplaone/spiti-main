@@ -4,28 +4,30 @@ import LeadForm from "@/components/LeadForm";
 import PhotoGallery from "@/components/PhotoGallery";
 import TourPackages from "@/components/TourPackages";
 import SpitiCircuitMap from "@/components/SpitiCircuitMap";
+import HeroCarousel from "@/components/HeroCarousel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
+
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
+  
   const scrollToPackages = () => {
     packagesSectionRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   };
-  return <div className="min-h-screen bg-fixed bg-cover bg-center relative" style={{
-    backgroundImage: `url(/public/lovable-uploads/182c9f01-198f-4364-97d2-f59816a8132f.png)`
-  }}>
-      {/* Global overlay to ensure content readability */}
-      <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
+  
+  return (
+    <div className="min-h-screen bg-fixed bg-cover bg-center relative">
+      {/* Hero Carousel */}
+      <HeroCarousel />
       
       <div className="relative z-10">
         <Header scrollToPackages={scrollToPackages} />
         
         {/* Hero Section */}
         <section className="min-h-[calc(100vh)] relative flex items-center py-8 md:py-12 pt-20 md:pt-24">
-          <div className="absolute inset-0 backdrop-blur-[1px]"></div>
           <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8 relative z-10">
             <div className="flex-1 text-white max-w-2xl space-y-6">
               <h1 className="text-3xl md:text-5xl font-bold bg-black/30 backdrop-blur-sm inline-block px-4 py-2 rounded">
@@ -39,11 +41,13 @@ const Index = () => {
                 </span>
               </p>
               <div className="space-y-3 text-base md:text-lg">
-                {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
+                {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => (
+                  <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
                     <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
                       {text}
                     </span>
-                  </p>)}
+                  </p>
+                ))}
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Dialog>
@@ -185,6 +189,8 @@ const Index = () => {
         
         <Footer />
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
