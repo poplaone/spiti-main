@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
@@ -8,7 +7,6 @@ import SpitiCircuitMap from "@/components/SpitiCircuitMap";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
-
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -16,14 +14,9 @@ const Index = () => {
       behavior: 'smooth'
     });
   };
-  
-  return (
-    <div 
-      className="min-h-screen bg-fixed bg-cover bg-center relative" 
-      style={{
-        backgroundImage: `url(/public/lovable-uploads/182c9f01-198f-4364-97d2-f59816a8132f.png)`
-      }}
-    >
+  return <div className="min-h-screen bg-fixed bg-cover bg-center relative" style={{
+    backgroundImage: `url(/public/lovable-uploads/182c9f01-198f-4364-97d2-f59816a8132f.png)`
+  }}>
       {/* Global overlay to ensure content readability */}
       <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       
@@ -83,7 +76,7 @@ const Index = () => {
             <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
               {/* Booking Card */}
               <div className="w-full md:w-[350px] bg-black/40 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20 order-2 md:order-1">
-                <h2 className="text-2xl font-bold text-center text-white mb-4">Book Your Spiti Adventure</h2>
+                <h2 className="text-2xl font-bold text-center mb-4 text-blue-500">Book Your Spiti Adventure</h2>
                 <div className="space-y-4">
                   <div className="text-center">
                     <p className="text-xl font-bold text-white">Starting from ₹18,900/-</p>
@@ -126,7 +119,7 @@ const Index = () => {
 
               {/* Section heading and text */}
               <div className="max-w-3xl mx-auto text-left md:text-left order-1 md:order-2 bg-black/40 backdrop-blur-md p-6 rounded-lg border border-white/10">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Explore Unforgettable Spiti Valley Tour Packages</h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-fuchsia-600 text-center">Explore Unforgettable Spiti Valley Tour Packages</h2>
                 <p className="text-white mb-4">
                   Discover the breathtaking landscapes of the Himalayan cold desert with our carefully curated tour packages. 
                   From Buddhist monasteries and high-altitude villages to pristine lakes and snow-capped peaks, our all-inclusive 
@@ -168,7 +161,7 @@ const Index = () => {
         <section className="py-16 relative">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
           <div className="container mx-auto px-4 text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready for Your Spiti Valley Adventure?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-fuchsia-600">Ready for Your Spiti Valley Adventure?</h2>
             <p className="text-xl mb-4 max-w-2xl mx-auto text-white">
               Explore our curated collection of Spiti Valley tours and create memories that last a lifetime. Our expert local guides
               are waiting to show you the hidden gems of this Himalayan wonderland.
@@ -192,8 +185,6 @@ const Index = () => {
         
         <Footer />
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
