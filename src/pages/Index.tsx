@@ -1,3 +1,4 @@
+
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import LeadForm from "@/components/LeadForm";
@@ -7,6 +8,7 @@ import SpitiCircuitMap from "@/components/SpitiCircuitMap";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
+
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -14,6 +16,7 @@ const Index = () => {
       behavior: 'smooth'
     });
   };
+  
   return <div className="min-h-screen">
       <Header scrollToPackages={scrollToPackages} />
       
@@ -67,17 +70,18 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Tour Packages Section - Updated with new background image */}
+      {/* Tour Packages Section - Updated with monastery mountain image */}
       <section id="tour-packages" ref={packagesSectionRef} className="py-16 relative" style={{
-      backgroundImage: `url(public/lovable-uploads/d8ef17c9-eef3-440b-a714-7150e1ed1500.png)`,
+      backgroundImage: `url(public/lovable-uploads/e355b2f6-2523-4313-aa2e-bf41130f35cf.png)`,
       backgroundSize: 'cover',
-      backgroundPosition: 'center'
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed'
     }}>
-        <div className="absolute inset-0 bg-zinc-800"></div>
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
-            <div className="w-full md:w-[350px] bg-white/30 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20 order-2 md:order-1">
+            <div className="w-full md:w-[350px] bg-white/20 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20 order-2 md:order-1">
               <h2 className="text-2xl font-bold text-center text-white mb-4">Book Your Spiti Adventure</h2>
               <div className="space-y-4">
                 <div className="text-center">
@@ -196,4 +200,5 @@ const Index = () => {
       <Footer />
     </div>;
 };
+
 export default Index;
