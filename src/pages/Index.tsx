@@ -21,18 +21,18 @@ const Index = () => {
     <div 
       className="min-h-screen bg-fixed bg-cover bg-center relative" 
       style={{
-        backgroundImage: `url(public/lovable-uploads/182c9f01-198f-4364-97d2-f59816a8132f.png)`
+        backgroundImage: `url(/public/lovable-uploads/182c9f01-198f-4364-97d2-f59816a8132f.png)`
       }}
     >
       {/* Global overlay to ensure content readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/40 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-black/50 pointer-events-none"></div>
       
       <div className="relative z-10">
         <Header scrollToPackages={scrollToPackages} />
         
         {/* Hero Section */}
         <section className="min-h-[calc(100vh)] relative flex items-center py-8 md:py-12 pt-20 md:pt-24">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
+          <div className="absolute inset-0 backdrop-blur-[1px]"></div>
           <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8 relative z-10">
             <div className="flex-1 text-white max-w-2xl space-y-6">
               <h1 className="text-3xl md:text-5xl font-bold bg-black/30 backdrop-blur-sm inline-block px-4 py-2 rounded">
@@ -78,11 +78,11 @@ const Index = () => {
 
         {/* Tour Packages Section */}
         <section id="tour-packages" ref={packagesSectionRef} className="py-16 relative">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
               {/* Booking Card */}
-              <div className="w-full md:w-[350px] bg-white/20 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20 order-2 md:order-1">
+              <div className="w-full md:w-[350px] bg-black/40 backdrop-blur-md p-6 rounded-lg shadow-lg border border-white/20 order-2 md:order-1">
                 <h2 className="text-2xl font-bold text-center text-white mb-4">Book Your Spiti Adventure</h2>
                 <div className="space-y-4">
                   <div className="text-center">
@@ -125,7 +125,7 @@ const Index = () => {
               </div>
 
               {/* Section heading and text */}
-              <div className="max-w-3xl mx-auto text-left md:text-left order-1 md:order-2 bg-black/30 backdrop-blur-md p-6 rounded-lg border border-white/10">
+              <div className="max-w-3xl mx-auto text-left md:text-left order-1 md:order-2 bg-black/40 backdrop-blur-md p-6 rounded-lg border border-white/10">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Explore Unforgettable Spiti Valley Tour Packages</h2>
                 <p className="text-white mb-4">
                   Discover the breathtaking landscapes of the Himalayan cold desert with our carefully curated tour packages. 
@@ -150,9 +150,9 @@ const Index = () => {
 
         {/* Gallery Section */}
         <section className="py-16 relative">
-          <div className="absolute inset-0 backdrop-blur-[2px] bg-black/50"></div>
+          <div className="absolute inset-0 backdrop-blur-[2px] bg-black/60"></div>
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-3xl mx-auto text-center mb-12 bg-black/30 backdrop-blur-md p-6 rounded-lg border border-white/20">
+            <div className="max-w-3xl mx-auto text-center mb-12 bg-black/40 backdrop-blur-md p-6 rounded-lg border border-white/20">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-fuchsia-600">Spiti Valley Photo Gallery</h2>
               <p className="text-white mb-4">
                 Immerse yourself in the breathtaking vistas and cultural wonders of Spiti Valley through our curated collection of photographs.
