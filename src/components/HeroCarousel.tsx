@@ -7,9 +7,9 @@ import {
 } from "@/components/ui/carousel";
 
 const images = [
-  "/public/lovable-uploads/2a1dbbda-65cd-414a-8341-495c998b6f0f.png",
-  "/public/lovable-uploads/c36c169a-830e-4218-b5c9-5490ec761ecb.png",
-  "/public/lovable-uploads/407fca67-8dd0-418e-8794-8fdff739b7ee.png"
+  "/lovable-uploads/2a1dbbda-65cd-414a-8341-495c998b6f0f.png",
+  "/lovable-uploads/c36c169a-830e-4218-b5c9-5490ec761ecb.png",
+  "/lovable-uploads/407fca67-8dd0-418e-8794-8fdff739b7ee.png"
 ];
 
 const HeroCarousel = () => {
@@ -30,7 +30,7 @@ const HeroCarousel = () => {
       if (current === images.length - 1) {
         api.scrollTo(0);
       } else {
-        api.next();
+        api.scrollTo(current + 1);
       }
     }, 2000);
 
