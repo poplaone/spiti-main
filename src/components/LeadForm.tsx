@@ -8,16 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { format } from "date-fns";
 import { CalendarIcon, User, Mail, Phone, Users } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-interface PackagesFormProps {
-  date: Date | undefined;
-  setDate: (date: Date | undefined) => void;
-  packageName?: string;
-}
 const PackagesForm = ({
   date,
-  setDate,
-  packageName
-}: PackagesFormProps) => <div className="space-y-2">
+  setDate
+}: {
+  date: Date | undefined;
+  setDate: (date: Date | undefined) => void;
+}) => <div className="space-y-2">
     <div>
       <Label htmlFor="name" className="text-sm text-white">Full Name</Label>
       <div className="relative">
@@ -86,16 +83,13 @@ const PackagesForm = ({
       Submit Request
     </Button>
   </div>;
-interface HotelsFormProps {
-  date: Date | undefined;
-  setDate: (date: Date | undefined) => void;
-  packageName?: string;
-}
 const HotelsForm = ({
   date,
-  setDate,
-  packageName
-}: HotelsFormProps) => <div className="space-y-2">
+  setDate
+}: {
+  date: Date | undefined;
+  setDate: (date: Date | undefined) => void;
+}) => <div className="space-y-2">
     <div>
       <Label htmlFor="name" className="text-sm text-white">Full Name</Label>
       <div className="relative">
@@ -162,12 +156,7 @@ const HotelsForm = ({
       Submit Request
     </Button>
   </div>;
-interface LeadFormProps {
-  packageName?: string;
-}
-const LeadForm = ({
-  packageName
-}: LeadFormProps) => {
+const LeadForm = () => {
   const [date, setDate] = useState<Date>();
   const [bookingType, setBookingType] = useState("packages");
   const [isFlipping, setIsFlipping] = useState(false);
@@ -180,6 +169,23 @@ const LeadForm = ({
       }, 300);
     }
   };
-  return;
+  return <form className="w-full max-w-md bg-white/20 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
+      <div className="mb-4">
+        <ToggleGroup type="single" value={bookingType} onValueChange={handleBookingTypeChange} className="w-full border border-white/20 rounded-sm bg-white/10">
+          <ToggleGroupItem value="hotels" aria-label="Hotels" className="flex-1 data-[state=on]:bg-spiti-blue data-[state=on]:text-white">
+            Hotels
+          </ToggleGroupItem>
+          <ToggleGroupItem value="packages" aria-label="Packages" className="flex-1 data-[state=on]:bg-spiti-blue data-[state=on]:text-white">
+            Packages
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+
+      <h3 className="text-base md:text-lg mb-3 font-semibold text-center text-stone-950">Get Free Tour Plan</h3>
+      
+      <div className={`transition-transform duration-300 ${isFlipping ? 'animate-[flip-out_0.3s_ease-in-out]' : 'animate-[flip-in_0.3s_ease-in-out]'}`}>
+        {bookingType === 'packages' ? <PackagesForm date={date} setDate={setDate} /> : <HotelsForm date={date} setDate={setDate} />}
+      </div>
+    </form>;
 };
 export default LeadForm;
