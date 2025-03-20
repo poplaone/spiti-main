@@ -7,7 +7,7 @@ import TourPackage, { TourPackageProps } from "@/components/TourPackage";
 import { tourPackagesData } from "@/components/TourPackages";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Car, Bike, Clock, Calendar, Users, Coffee, Home, MapPin, Check, ChevronRight, ArrowRight, ShieldCheck, Sunrise, Mountain, PhoneCall, MessageSquare } from "lucide-react";
+import { Car, Bike, Clock, Calendar, Users, Coffee, Home, MapPin, Check, ChevronRight, ArrowRight, ShieldCheck, Sunrise, Mountain, PhoneCall, MessageSquare, Facebook, Instagram, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
