@@ -102,18 +102,14 @@ const Header = ({
               <a href="#" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'top')}>
                 Road Trips
               </a>
-              <a href="#packages" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'packages')}>
-                Treks
-              </a>
+              
               <a href="#destinations" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'destinations')}>
                 Fixed Departures
               </a>
               <a href="#about" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'about')}>
                 About
               </a>
-              <a href="#work" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'work')}>
-                Work in Spiti
-              </a>
+              
               <a href="#contact" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'contact')}>
                 Contact
               </a>
