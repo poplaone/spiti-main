@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { PhoneCall, MessageSquare, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Phone, MessageSquare, Facebook, Instagram, Twitter } from 'lucide-react';
 
 const ContactBar = () => {
   return (
@@ -8,7 +8,7 @@ const ContactBar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center gap-4">
           <a href="tel:+918626888979" className="flex items-center gap-1 hover:text-gray-300">
-            <PhoneCall className="w-3.5 h-3.5" /> +91 86268 88979 / +91 70188 71513
+            <Phone className="w-3.5 h-3.5" /> +91 86268 88979 / +91 70188 71513
           </a>
           <a href="mailto:hello@spitiholiday.com" className="flex items-center gap-1 hover:text-gray-300">
             <MessageSquare className="w-3.5 h-3.5" /> hello@spitiholiday.com

@@ -4,6 +4,7 @@ import { Clock } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TourPackageProps } from "@/components/TourPackage";
+import { Button } from "@/components/ui/button";
 
 interface TourHeroProps {
   tour: TourPackageProps;
@@ -35,10 +36,6 @@ const TourHero: React.FC<TourHeroProps> = ({ tour, selectedMonth, setSelectedMon
               <Clock className="w-5 h-5 mr-2" />
               <span>{tour.duration.nights} Nights / {tour.duration.days} Days Himalayan Adventure</span>
             </div>
-            <p className="text-lg">
-              Explore the breathtaking landscapes of Spiti Valley with our expertly crafted tour package. 
-              Journey through ancient monasteries, remote villages, and pristine high-altitude lakes.
-            </p>
             
             {/* Price displayed below image on mobile */}
             <div className="flex items-center space-x-4 lg:hidden">
@@ -63,6 +60,11 @@ const TourHero: React.FC<TourHeroProps> = ({ tour, selectedMonth, setSelectedMon
                 </SelectContent>
               </Select>
             </div>
+            
+            {/* View details button */}
+            <Button variant="outline" className="border-white text-white hover:bg-white/20 hover:text-white">
+              View Tour Details
+            </Button>
           </div>
         </div>
       </div>

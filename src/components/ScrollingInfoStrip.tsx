@@ -1,6 +1,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const ScrollingInfoStrip = () => {
   const infoItems = [
@@ -14,17 +15,19 @@ const ScrollingInfoStrip = () => {
   // For auto scrolling on mobile carousel
   const carouselRef = useRef<HTMLDivElement>(null);
   const autoScrollInterval = useRef<NodeJS.Timeout | null>(null);
+  const isMobile = useIsMobile();
+  const [currentIndex, setCurrentIndex] = React.useState(0);
 
   useEffect(() => {
     // Auto scroll functionality for mobile
     const startAutoScroll = () => {
-      if (window.innerWidth < 768) { // Only for mobile
-        let currentIndex = 0;
-        
+      if (isMobile) {
         autoScrollInterval.current = setInterval(() => {
+          const nextIndex = (currentIndex + 1) % infoItems.length;
+          setCurrentIndex(nextIndex);
+          
           if (carouselRef.current) {
-            currentIndex = (currentIndex + 1) % infoItems.length;
-            const scrollAmount = currentIndex * (carouselRef.current.scrollWidth / infoItems.length);
+            const scrollAmount = nextIndex * (carouselRef.current.scrollWidth / infoItems.length);
             carouselRef.current.scrollTo({
               left: scrollAmount,
               behavior: 'smooth'
@@ -42,10 +45,10 @@ const ScrollingInfoStrip = () => {
         clearInterval(autoScrollInterval.current);
       }
     };
-  }, []);
+  }, [currentIndex, isMobile, infoItems.length]);
 
   return (
-    <div className="bg-spiti-forest text-white py-2 overflow-hidden">
+    <div className="bg-spiti-forest text-white py-1 overflow-hidden">
       <div className="relative">
         {/* Desktop version - static */}
         <div className="hidden md:flex justify-between items-center container mx-auto px-4">

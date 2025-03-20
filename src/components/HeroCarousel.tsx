@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -38,12 +39,12 @@ const HeroCarousel = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
         </div>)}
       
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-16">
-        <img alt="Spiti Logo" className="w-28 h-28 mb-8" style={{
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-0 md:mt-16">
+        <img alt="Spiti Logo" className="w-28 h-28 mb-4 md:mb-8 mt-[-90px] md:mt-0" style={{
         filter: 'brightness(0) invert(1)'
       }} src="/lovable-uploads/2d33bd3b-463f-448a-ad98-e5722ad15898.png" />
-        <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">Spiti Valley &amp; Zanskar</h1>
-        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">Safe and Comfortable Travel in the High-Altitude Desert</p>
+        <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley &amp; Zanskar</h1>
+        <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Safe and Comfortable Travel in the High-Altitude Desert</p>
       </div>
       
       <Button variant="ghost" className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 hover:text-white z-20" onClick={goToPrevious}>
