@@ -7,7 +7,6 @@ import { tourPackagesData } from "@/components/TourPackages";
 import { Car } from "lucide-react";
 
 // Import refactored components
-import ContactBar from "@/components/tour/ContactBar";
 import TourHero from "@/components/tour/TourHero";
 import BookingCard from "@/components/tour/BookingCard";
 import TourOverview from "@/components/tour/TourOverview";
@@ -16,6 +15,7 @@ import TourAccommodation from "@/components/tour/TourAccommodation";
 import TourInclusions from "@/components/tour/TourInclusions";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
+import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
 
 const TourDetailUnexplored = () => {
   // Using second tour (Unexplored Spiti)
@@ -51,9 +51,7 @@ const TourDetailUnexplored = () => {
 
   return (
     <div className="min-h-screen bg-spiti-cream">
-      {/* Top contact bar */}
-      <ContactBar />
-      
+      <ScrollingInfoStrip />
       <Header />
       
       {/* Hero Section with Tour Title and Image */}
@@ -61,7 +59,8 @@ const TourDetailUnexplored = () => {
         tour={tour} 
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
-        formatPrice={formatPrice} 
+        formatPrice={formatPrice}
+        heroImage="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&q=80"
       />
 
       {/* Package Details Section */}

@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import TourPackage, { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/components/TourPackage";
 import { tourPackagesData } from "@/components/TourPackages";
 import { Bike, Car } from "lucide-react";
 
 // Import refactored components
-import ContactBar from "@/components/tour/ContactBar";
 import TourHero from "@/components/tour/TourHero";
 import BookingCard from "@/components/tour/BookingCard";
 import TourOverview from "@/components/tour/TourOverview";
@@ -17,6 +16,18 @@ import TourAccommodation from "@/components/tour/TourAccommodation";
 import TourInclusions from "@/components/tour/TourInclusions";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
+import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
+
+// Array of hero images for different tour types
+const heroImages = [
+  "https://images.unsplash.com/photo-1561731216-c3a4d99437d5?q=80&w=1200", // Bike tour
+  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&q=80", // Unexplored
+  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&q=80", // Buddhist
+  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&q=80", // Women
+  "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=1200&q=80", // Own Car
+  "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200&q=80", // Hidden Heaven
+  "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&q=80", // Default
+];
 
 const TourDetail = () => {
   const { id } = useParams<{ id: string; }>();
@@ -27,12 +38,13 @@ const TourDetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (id) {
-      const selectedTour = tourPackagesData.find((_, index) => index.toString() === id);
+      const numId = parseInt(id, 10);
+      const selectedTour = tourPackagesData.find((_, index) => index === numId);
       if (selectedTour) {
         setTour(selectedTour);
 
         // Get other tours for the "More Popular Tours" section
-        const others = tourPackagesData.filter((_, index) => index.toString() !== id).slice(0, 4); // Get up to 4 other tours
+        const others = tourPackagesData.filter((_, index) => index !== numId).slice(0, 4);
         setOtherTours(others);
       }
     }
@@ -53,11 +65,14 @@ const TourDetail = () => {
     return <Car className="text-spiti-blue w-6 h-6" />;
   };
 
+  // Select hero image based on tour id
+  const heroImage = id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) < heroImages.length 
+    ? heroImages[parseInt(id, 10)] 
+    : heroImages[heroImages.length - 1];
+
   return (
     <div className="min-h-screen bg-spiti-cream">
-      {/* Top contact bar */}
-      <ContactBar />
-      
+      <ScrollingInfoStrip />
       <Header />
       
       {/* Hero Section with Tour Title and Image */}
@@ -65,7 +80,8 @@ const TourDetail = () => {
         tour={tour} 
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
-        formatPrice={formatPrice} 
+        formatPrice={formatPrice}
+        heroImage={heroImage}
       />
 
       {/* Package Details Section */}

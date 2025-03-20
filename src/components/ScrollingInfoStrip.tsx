@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -16,7 +16,7 @@ const ScrollingInfoStrip = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const autoScrollInterval = useRef<NodeJS.Timeout | null>(null);
   const isMobile = useIsMobile();
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     // Auto scroll functionality for mobile
@@ -33,7 +33,7 @@ const ScrollingInfoStrip = () => {
               behavior: 'smooth'
             });
           }
-        }, 3000); // Scroll every 3 seconds
+        }, 1000); // Scroll every 1 second
       }
     };
 
