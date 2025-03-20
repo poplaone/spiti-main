@@ -8,18 +8,14 @@ import HeroCarousel from "@/components/HeroCarousel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Footer from "@/components/Footer";
-
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
-  
   const scrollToPackages = () => {
     packagesSectionRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   };
-  
-  return (
-    <div className="min-h-screen relative">
+  return <div className="min-h-screen relative">
       {/* Hero Carousel */}
       <HeroCarousel />
       
@@ -41,13 +37,11 @@ const Index = () => {
                 </span>
               </p>
               <div className="space-y-3 text-base md:text-lg">
-                {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => (
-                  <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
+                {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
                     <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
                       {text}
                     </span>
-                  </p>
-                ))}
+                  </p>)}
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Dialog>
@@ -67,9 +61,7 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="w-full md:w-[400px] bg-white/20 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
-              <LeadForm />
-            </div>
+            
           </div>
         </section>
 
@@ -189,8 +181,6 @@ const Index = () => {
         
         <Footer />
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
