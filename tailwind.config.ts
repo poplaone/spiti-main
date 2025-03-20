@@ -70,12 +70,19 @@ export default {
           sand: "#E2E8F0",     // Light background
           gray: "#F7FAFC",
           dark: "#1A202C",
-          accent: "#ED64A6"    // Pink accent color
+          accent: "#ED64A6",    // Pink accent color
+          cream: "#F2EAE2",     // Soft cream background
+          stone: "#E2D1C3",     // Stone/earth tone
+          forest: "#2D3A3A",    // Forest green-gray
+          slate: "#334155",     // Slate blue
+          mountain: "#4A5568"   // Mountain gray
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Montserrat', 'system-ui', 'sans-serif'],
+        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
+        heading: ['Raleway', 'system-ui', 'sans-serif'],
+        body: ['Lato', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -123,6 +130,11 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in-up': 'fade-in-up 0.5s ease-out',
         'slide-in': 'slide-in 0.5s ease-out'
+      },
+      backgroundImage: {
+        'gradient-soft': 'linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)',
+        'gradient-warm': 'linear-gradient(to top, #e6b980 0%, #eacda3 100%)',
+        'gradient-cool': 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)',
       }
     }
   },

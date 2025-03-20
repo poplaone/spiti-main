@@ -1,16 +1,20 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, MessageSquare, Facebook, Instagram, Twitter } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
+
 interface HeaderProps {
   scrollToPackages?: () => void;
 }
+
 const Header = ({
   scrollToPackages
 }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -18,6 +22,7 @@ const Header = ({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     if (id === 'packages' && scrollToPackages) {
@@ -34,9 +39,10 @@ const Header = ({
       setIsMenuOpen(false);
     }
   };
+
   return <>
       {/* Top Bar with contact info and social media */}
-      <div className="bg-gray-800 text-white py-1.5 px-4 text-sm hidden md:block">
+      <div className="bg-spiti-forest text-white py-1.5 px-4 text-sm hidden md:block">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
             <a href="tel:+918626888979" className="flex items-center gap-1 hover:text-gray-300">
@@ -56,32 +62,32 @@ const Header = ({
       </div>
       
       {/* Main Header */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm text-spiti-dark' : 'bg-transparent text-white'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16 md:h-20">
-            <a href="/" className="font-display font-bold text-xl">
-              
+            <a href="/" className="font-display font-bold text-xl text-white">
+              Spiti Holiday
             </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'top')}>
+              <a href="#" className="font-medium transition-colors text-white hover:text-spiti-green" onClick={e => handleNavClick(e, 'top')}>
                 Road Trips
               </a>
               
-              <a href="#destinations" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'destinations')}>
+              <a href="#destinations" className="font-medium transition-colors text-white hover:text-spiti-green" onClick={e => handleNavClick(e, 'destinations')}>
                 Fixed Departures
               </a>
-              <a href="#about" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'about')}>
+              <a href="#about" className="font-medium transition-colors text-white hover:text-spiti-green" onClick={e => handleNavClick(e, 'about')}>
                 About
               </a>
               
-              <a href="#contact" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'contact')}>
+              <a href="#contact" className="font-medium transition-colors text-white hover:text-spiti-green" onClick={e => handleNavClick(e, 'contact')}>
                 Contact
               </a>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="bg-slate-600 hover:bg-slate-500">
+                  <Button variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-spiti-forest">
                     Enquire
                   </Button>
                 </DialogTrigger>
@@ -92,25 +98,25 @@ const Header = ({
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </nav>
 
           {/* Mobile Navigation */}
-          {isMenuOpen && <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
-              <a href="#" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'top')}>
+          {isMenuOpen && <div className="md:hidden absolute top-16 left-0 right-0 bg-spiti-forest/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
+              <a href="#" className="block text-white hover:text-spiti-green transition-colors" onClick={e => handleNavClick(e, 'top')}>
                 Road Trips
               </a>
               
-              <a href="#destinations" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'destinations')}>
+              <a href="#destinations" className="block text-white hover:text-spiti-green transition-colors" onClick={e => handleNavClick(e, 'destinations')}>
                 Fixed Departures
               </a>
-              <a href="#about" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'about')}>
+              <a href="#about" className="block text-white hover:text-spiti-green transition-colors" onClick={e => handleNavClick(e, 'about')}>
                 About
               </a>
               
-              <a href="#contact" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'contact')}>
+              <a href="#contact" className="block text-white hover:text-spiti-green transition-colors" onClick={e => handleNavClick(e, 'contact')}>
                 Contact
               </a>
               <Dialog>
@@ -128,4 +134,5 @@ const Header = ({
       </header>
     </>;
 };
+
 export default Header;

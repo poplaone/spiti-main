@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
-import { Phone, MessageSquare } from 'lucide-react';
+import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
 
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
@@ -27,12 +27,12 @@ const Index = () => {
       <Header scrollToPackages={scrollToPackages} />
       
       {/* Tour Packages Section */}
-      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-stone-200">
+      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-gradient-to-b from-spiti-cream to-spiti-stone">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
             <div className="w-full md:w-[350px] bg-white p-6 rounded-lg shadow-lg order-2 md:order-1">
-              <h2 className="text-2xl font-bold text-center text-spiti-dark mb-4">Book Your Spiti Adventure</h2>
+              <h2 className="text-2xl font-heading font-bold text-center text-spiti-forest mb-4">Book Your Spiti Adventure</h2>
               <div className="space-y-4">
                 <div className="text-center">
                   <p className="text-xl font-bold text-green-600">Starting from ₹18,900/-</p>
@@ -59,7 +59,7 @@ const Index = () => {
                 <div className="space-y-3">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="w-full py-2 bg-fuchsia-600 hover:bg-fuchsia-500">Book Now</Button>
+                      <Button className="w-full py-2 bg-spiti-forest hover:bg-spiti-forest/90">Book Now</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
                       <LeadForm />
@@ -75,31 +75,41 @@ const Index = () => {
 
             {/* Section heading and text */}
             <div className="max-w-3xl mx-auto text-left md:text-left order-1 md:order-2">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">Explore Unforgettable Spiti Valley Tour Packages</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Explore Unforgettable Spiti Valley Tour Packages</h2>
+              <p className="text-gray-700 mb-4">
                 Discover the breathtaking landscapes of the Himalayan cold desert with our carefully curated tour packages. 
                 From Buddhist monasteries and high-altitude villages to pristine lakes and snow-capped peaks, our all-inclusive 
                 packages offer the perfect blend of adventure, culture, and natural beauty.
               </p>
-              <p className="text-gray-600">
+              <p className="text-gray-700">
                 Whether you're seeking a thrilling bike tour, a women-only expedition, or a family adventure in your own car, 
                 we have the ideal Spiti Valley experience waiting for you.
               </p>
             </div>
           </div>
 
-          {/* Add the Spiti Circuit Map here */}
-          <SpitiCircuitMap />
-          
+          {/* First display the Tour Packages section */}
           <TourPackages />
+          
+          {/* Then show the Spiti Circuit Map section */}
+          <div className="mt-16">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Circuit Tour Map</h2>
+              <p className="text-gray-700 max-w-3xl mx-auto">
+                Explore the scenic route through Spiti Valley, from ancient monasteries to high-altitude lakes. 
+                Our expert guides will take you on an unforgettable journey across this Himalayan wonderland.
+              </p>
+            </div>
+            <SpitiCircuitMap />
+          </div>
         </div>
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 bg-[#E2D1C3]">
+      <section className="py-16 bg-gradient-to-b from-spiti-stone to-spiti-cream">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">Spiti Valley Photo Gallery</h2>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Photo Gallery</h2>
             <p className="text-gray-700 mb-4">
               Immerse yourself in the breathtaking vistas and cultural wonders of Spiti Valley through our curated collection of photographs.
               From ancient monasteries perched on hilltops to the crystal-clear Chandrataal Lake and the rugged terrain of the Himalayan cold desert,
@@ -112,12 +122,12 @@ const Index = () => {
 
       {/* Call to Action Section */}
       <section className="py-16 relative" style={{
-      backgroundImage: `linear-gradient(to bottom, rgba(51, 38, 30, 0.9), rgba(51, 38, 30, 0.95)), url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=70)`,
+      backgroundImage: `linear-gradient(to bottom, rgba(45, 58, 58, 0.9), rgba(45, 58, 58, 0.95)), url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=70)`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }}>
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Your Spiti Valley Adventure?</h2>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Ready for Your Spiti Valley Adventure?</h2>
           <p className="text-xl mb-4 max-w-2xl mx-auto">
             Explore our curated collection of Spiti Valley tours and create memories that last a lifetime. Our expert local guides
             are waiting to show you the hidden gems of this Himalayan wonderland.
@@ -140,11 +150,11 @@ const Index = () => {
       </section>
       
       {/* Mobile Sticky Footer */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-spiti-forest shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
         <div className="flex items-center">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="flex-1 rounded-none h-14 bg-spiti-blue hover:bg-spiti-blue/90 text-white">
+              <Button className="flex-1 rounded-none h-14 bg-spiti-slate hover:bg-spiti-slate/90 text-white">
                 <MessageSquare className="mr-2 h-5 w-5" />
                 Send Enquiry
               </Button>
@@ -158,7 +168,7 @@ const Index = () => {
             href="tel:+918626888979" 
             className="flex-1 flex items-center justify-center h-14 bg-green-600 hover:bg-green-700 text-white"
           >
-            <Phone className="mr-2 h-5 w-5" />
+            <PhoneCall className="mr-2 h-5 w-5" />
             Call Now
           </a>
         </div>
