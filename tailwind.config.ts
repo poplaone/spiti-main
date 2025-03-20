@@ -64,14 +64,18 @@ export default {
           ring: 'hsl(var(--sidebar-ring))'
         },
         spiti: {
-          blue: "#3B82F6",     // Sky blue for lakes
+          blue: "#2C5282",     // Deeper blue for primary
           green: "#68D391",    // Vegetation
-          brown: "#33261E",    // Rocky desert
-          sand: "#E2D1C3",     // Desert sand
+          lightblue: "#63B3ED", // Lighter blue for accents
+          sand: "#E2E8F0",     // Light background
           gray: "#F7FAFC",
           dark: "#1A202C",
-          accent: "#3B82F6"
+          accent: "#ED64A6"    // Pink accent color
         }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Montserrat', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
