@@ -1,7 +1,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import LeadForm from "@/components/LeadForm";
 
 const images = [
   "/lovable-uploads/c8d818d4-0cbc-4134-a656-4c78ea481271.png", // Using the uploaded image as first slide
@@ -44,7 +46,7 @@ const HeroCarousel = () => {
       {images.map((src, index) => (
         <div
           key={index}
-          className={`absolute top-0 left-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
             index === current ? 'opacity-100' : 'opacity-0'
           }`}
         >
@@ -53,27 +55,34 @@ const HeroCarousel = () => {
             alt={`Slide ${index + 1}`}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
         </div>
       ))}
       
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-16">
         <img 
           src="/lovable-uploads/c8d818d4-0cbc-4134-a656-4c78ea481271.png" 
           alt="Spiti Logo" 
-          className="w-24 h-24 mb-6"
+          className="w-28 h-28 mb-8"
           style={{ filter: 'brightness(0) invert(1)' }}
         />
-        <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
+        <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
           Let us show you Spiti Valley & Zanskar
         </h1>
-        <p className="text-lg md:text-xl text-white/90 mb-6 max-w-2xl">
+        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
           Customizable Road Trips & Treks from ₹14,750
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <Button className="bg-white text-spiti-dark hover:bg-white/90 font-medium px-6 py-6">
-            Plan My Trip
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-white text-spiti-dark hover:bg-white/90 font-medium px-6 py-6">
+                Plan My Trip
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <LeadForm />
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
       

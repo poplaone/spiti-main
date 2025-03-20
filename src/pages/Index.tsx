@@ -1,76 +1,36 @@
+
 import { useRef } from 'react';
 import Header from "@/components/Header";
-import LeadForm from "@/components/LeadForm";
+import HeroCarousel from "@/components/HeroCarousel";
 import PhotoGallery from "@/components/PhotoGallery";
 import TourPackages from "@/components/TourPackages";
 import SpitiCircuitMap from "@/components/SpitiCircuitMap";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
+import { Phone, MessageSquare } from 'lucide-react';
+
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
+  
   const scrollToPackages = () => {
     packagesSectionRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   };
-  return <div className="min-h-screen">
+  
+  return (
+    <div className="min-h-screen">
+      {/* Hero Carousel with overlaid Header */}
+      <HeroCarousel />
       <Header scrollToPackages={scrollToPackages} />
       
-      {/* Hero Section */}
-      <section className="min-h-[calc(100vh-4rem)] mt-16 relative flex items-center py-8 md:py-12" style={{
-      backgroundImage: `url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&q=70)`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }}>
-        <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8">
-          <div className="flex-1 text-white max-w-2xl space-y-6">
-            <h1 className="text-3xl md:text-5xl font-bold bg-black/30 backdrop-blur-sm inline-block px-4 py-2 rounded">
-              <span className="bg-gradient-to-r from-green-400 via-yellow-300 to-orange-500 text-transparent bg-clip-text">
-                SPITI VALLEY TOUR PACKAGES
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl bg-black/30 backdrop-blur-sm px-4 py-2 rounded">
-              <span className="bg-gradient-to-r from-green-300 via-yellow-200 to-orange-400 text-transparent bg-clip-text">
-                Experience the Himalayan Adventure with Customized Tours from Trusted Local Agents
-              </span>
-            </p>
-            <div className="space-y-3 text-base md:text-lg">
-              {["Best Priced Spiti Valley Packages within your budget", "Expert Local Guides for Authentic Himalayan Experiences", "Safe and Comfortable Travel in the High-Altitude Desert"].map((text, index) => <p key={index} className="bg-black/30 backdrop-blur-sm px-4 py-2 rounded inline-block">
-                  <span className="bg-gradient-to-r from-green-200 via-yellow-100 to-orange-300 text-transparent bg-clip-text">
-                    {text}
-                  </span>
-                </p>)}
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="bg-spiti-blue hover:bg-spiti-blue/90 px-8 py-3 rounded-lg font-semibold transition-opacity">
-                    Enquire Now
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <LeadForm />
-                </DialogContent>
-              </Dialog>
-              
-              <Button onClick={scrollToPackages} className="px-8 py-3 rounded-lg font-semibold transition-opacity bg-fuchsia-600 hover:bg-fuchsia-500">
-                Explore Packages
-              </Button>
-            </div>
-          </div>
-          
-          <div className="w-full md:w-[400px] bg-white/20 backdrop-blur-md p-3 md:p-4 shadow-lg border border-white/20 rounded-sm">
-            <LeadForm />
-          </div>
-        </div>
-      </section>
-
       {/* Tour Packages Section */}
       <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-stone-200">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
-            {/* Booking Card - Moved from Hero section */}
+            {/* Booking Card */}
             <div className="w-full md:w-[350px] bg-white p-6 rounded-lg shadow-lg order-2 md:order-1">
               <h2 className="text-2xl font-bold text-center text-spiti-dark mb-4">Book Your Spiti Adventure</h2>
               <div className="space-y-4">
@@ -179,7 +139,34 @@ const Index = () => {
         </div>
       </section>
       
+      {/* Mobile Sticky Footer */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
+        <div className="flex items-center">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="flex-1 rounded-none h-14 bg-spiti-blue hover:bg-spiti-blue/90 text-white">
+                <MessageSquare className="mr-2 h-5 w-5" />
+                Send Enquiry
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <LeadForm />
+            </DialogContent>
+          </Dialog>
+          
+          <a 
+            href="tel:+918626888979" 
+            className="flex-1 flex items-center justify-center h-14 bg-green-600 hover:bg-green-700 text-white"
+          >
+            <Phone className="mr-2 h-5 w-5" />
+            Call Now
+          </a>
+        </div>
+      </div>
+      
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
