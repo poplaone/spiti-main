@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -10,25 +9,21 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
-
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
-  
   const scrollToPackages = () => {
     packagesSectionRef.current?.scrollIntoView({
       behavior: 'smooth'
     });
   };
-  
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Hero Carousel with overlaid Header */}
       <HeroCarousel />
       <Header scrollToPackages={scrollToPackages} />
       
       {/* Tour Packages Section */}
       <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-gradient-to-b from-spiti-cream to-spiti-stone">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 bg-slate-300">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
             <div className="w-full md:w-[350px] bg-white p-6 rounded-lg shadow-lg order-2 md:order-1">
@@ -107,7 +102,7 @@ const Index = () => {
 
       {/* Gallery Section */}
       <section className="py-16 bg-gradient-to-b from-spiti-stone to-spiti-cream">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 bg-slate-300">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Photo Gallery</h2>
             <p className="text-gray-700 mb-4">
@@ -164,10 +159,7 @@ const Index = () => {
             </DialogContent>
           </Dialog>
           
-          <a 
-            href="tel:+918626888979" 
-            className="flex-1 flex items-center justify-center h-14 bg-green-600 hover:bg-green-700 text-white"
-          >
+          <a href="tel:+918626888979" className="flex-1 flex items-center justify-center h-14 bg-green-600 hover:bg-green-700 text-white">
             <PhoneCall className="mr-2 h-5 w-5" />
             Call Now
           </a>
@@ -175,8 +167,6 @@ const Index = () => {
       </div>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
