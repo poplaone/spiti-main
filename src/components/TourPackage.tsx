@@ -46,6 +46,21 @@ const TourPackage: React.FC<TourPackageProps> = ({
   isWomenOnly,
   index
 }) => {
+  // Function to get the correct route based on tour index
+  const getDetailRoute = () => {
+    if (typeof index !== 'number') return '#';
+    
+    switch (index) {
+      case 0: return '/tour-bike';
+      case 1: return '/tour-unexplored';
+      case 2: return '/tour-buddhist';
+      case 3: return '/tour-women';
+      case 4: return '/tour-owncar';
+      case 5: return '/tour-hiddenheaven';
+      default: return `/tour/${index}`;
+    }
+  };
+
   return (
     <div className="group h-full overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300">
       <div className="relative h-52 overflow-hidden">
@@ -111,7 +126,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         {/* Buttons */}
         <div className="flex gap-2">
           <Button variant="outline" className="flex-1 border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white" asChild>
-            <Link to={typeof index === 'number' ? `/tour/${index}` : '#'}>
+            <Link to={getDetailRoute()}>
               <MessageSquareMore className="mr-1 w-4 h-4" />
               <span>Details</span>
             </Link>

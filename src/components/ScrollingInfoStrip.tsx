@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 const ScrollingInfoStrip = () => {
   const infoItems = [
@@ -10,8 +11,41 @@ const ScrollingInfoStrip = () => {
     "Road Trips to Zanskar & Ladakh"
   ];
 
+  // For auto scrolling on mobile carousel
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const autoScrollInterval = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Auto scroll functionality for mobile
+    const startAutoScroll = () => {
+      if (window.innerWidth < 768) { // Only for mobile
+        let currentIndex = 0;
+        
+        autoScrollInterval.current = setInterval(() => {
+          if (carouselRef.current) {
+            currentIndex = (currentIndex + 1) % infoItems.length;
+            const scrollAmount = currentIndex * (carouselRef.current.scrollWidth / infoItems.length);
+            carouselRef.current.scrollTo({
+              left: scrollAmount,
+              behavior: 'smooth'
+            });
+          }
+        }, 3000); // Scroll every 3 seconds
+      }
+    };
+
+    startAutoScroll();
+
+    // Clean up interval on unmount
+    return () => {
+      if (autoScrollInterval.current) {
+        clearInterval(autoScrollInterval.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="bg-spiti-forest text-white py-3 overflow-hidden">
+    <div className="bg-spiti-forest text-white py-2 overflow-hidden">
       <div className="relative">
         {/* Desktop version - static */}
         <div className="hidden md:flex justify-between items-center container mx-auto px-4">
@@ -22,15 +56,19 @@ const ScrollingInfoStrip = () => {
           ))}
         </div>
         
-        {/* Mobile version - auto-scrolling */}
+        {/* Mobile version - manual swipeable and auto-scrolling */}
         <div className="md:hidden">
-          <div className="flex whitespace-nowrap animate-marquee">
-            {[...infoItems, ...infoItems].map((item, index) => (
-              <div key={index} className="text-sm px-6">
-                {item}
-              </div>
-            ))}
-          </div>
+          <Carousel className="w-full">
+            <CarouselContent className="py-1" ref={carouselRef}>
+              {infoItems.map((item, index) => (
+                <CarouselItem key={index} className="basis-full">
+                  <div className="text-center text-xs px-2 py-1">
+                    {item}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </div>
