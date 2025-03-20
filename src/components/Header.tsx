@@ -1,23 +1,35 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, MessageSquare, Facebook, Instagram, Twitter } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
+
 interface HeaderProps {
   scrollToPackages?: () => void;
 }
+
 const Header = ({
   scrollToPackages
 }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [logoVisible, setLogoVisible] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 10);
+      
+      // Show logo in header when scrolled down enough (past the hero section)
+      setLogoVisible(scrollPosition > window.innerHeight * 0.6);
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     if (id === 'packages' && scrollToPackages) {
@@ -34,7 +46,9 @@ const Header = ({
       setIsMenuOpen(false);
     }
   };
-  return <>
+
+  return (
+    <>
       {/* Top Bar with contact info and social media */}
       <div className="bg-spiti-forest text-white py-1.5 px-4 text-sm hidden md:block">
         <div className="container mx-auto flex justify-between items-center">
@@ -56,10 +70,22 @@ const Header = ({
       </div>
       
       {/* Main Header */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
+      <header ref={headerRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16 md:h-20">
-            <a href="/" className="font-display font-bold text-xl text-white">Spiti </a>
+            <a href="/" className="font-display font-bold text-xl text-white flex items-center">
+              {/* Logo that appears on scroll on mobile */}
+              <div className={`transition-all duration-500 ${logoVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75 -translate-y-4'} md:opacity-100 md:scale-100 md:translate-y-0`}>
+                {logoVisible && (
+                  <img 
+                    src="/lovable-uploads/2d33bd3b-463f-448a-ad98-e5722ad15898.png" 
+                    alt="Spiti Logo" 
+                    className="h-8 w-auto mr-2 filter brightness-0 invert" 
+                  />
+                )}
+              </div>
+              <span className="hidden md:inline">Spiti</span>
+            </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
@@ -126,4 +152,5 @@ const Header = ({
       </header>
     </>;
 };
+
 export default Header;

@@ -48,16 +48,13 @@ const TourPackage: React.FC<TourPackageProps> = ({
 }) => {
   return (
     <div className="group h-full overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300">
-      <div className="relative h-60 overflow-hidden">
-        {/* Image */}
+      <div className="relative h-52 overflow-hidden">
+        {/* Image without text */}
         <img 
           src={image} 
           alt={title} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
         />
-        
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
         
         {/* Discount badge */}
         <div className="absolute top-3 left-3 z-10">
@@ -74,28 +71,31 @@ const TourPackage: React.FC<TourPackageProps> = ({
             </Badge>
           </div>
         )}
-        
-        {/* Title overlaid on image */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="font-heading text-xl text-white font-bold mb-1">{title}</h3>
-          
-          {/* Duration */}
-          <div className="flex items-center text-white/90 text-sm mb-2">
-            <Clock className="w-4 h-4 mr-1" />
-            <span>{duration.nights} {duration.nights === 1 ? 'Night' : 'Nights'} / {duration.days} {duration.days === 1 ? 'Day' : 'Days'}</span>
-          </div>
-        </div>
       </div>
       
       <div className="p-4 bg-white">
+        {/* Title moved to content section */}
+        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2">{title}</h3>
+        
+        {/* Available months */}
+        <div className="text-sm text-gray-600 mb-2">
+          Available from March to July
+        </div>
+        
+        {/* Duration */}
+        <div className="flex items-center text-gray-700 text-sm mb-3">
+          <Clock className="w-4 h-4 mr-1" />
+          <span>{duration.nights} {duration.nights === 1 ? 'Night' : 'Nights'} / {duration.days} {duration.days === 1 ? 'Day' : 'Days'}</span>
+        </div>
+        
         {/* Price section */}
-        <div className="flex items-end justify-between mb-3 border-b pb-3">
+        <div className="flex items-end justify-between mb-4 border-b pb-3">
           <div>
             <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
             <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
           </div>
           
-          {/* Fixed Departures and Customizable */}
+          {/* Fixed Departures and Customizable - now in content part instead of on image */}
           <div className="text-xs space-y-1 text-right">
             <div className="flex items-center justify-end text-spiti-forest font-medium">
               <CalendarCheck className="w-3.5 h-3.5 mr-1" />

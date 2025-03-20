@@ -1,3 +1,4 @@
+
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -9,6 +10,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
+import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
+
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -16,17 +19,22 @@ const Index = () => {
       behavior: 'smooth'
     });
   };
-  return <div className="min-h-screen">
+  
+  return (
+    <div className="min-h-screen">
       {/* Hero Carousel with overlaid Header */}
       <HeroCarousel />
       <Header scrollToPackages={scrollToPackages} />
       
+      {/* Add the scrolling info strip between sections */}
+      <ScrollingInfoStrip />
+      
       {/* Tour Packages Section */}
       <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-gradient-to-b from-spiti-cream to-spiti-stone">
-        <div className="container mx-auto px-4 bg-slate-300">
+        <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
-            <div className="w-full md:w-[350px] bg-white p-6 rounded-lg shadow-lg order-2 md:order-1">
+            <div className="w-full md:w-[350px] bg-white/90 p-6 rounded-lg shadow-lg order-2 md:order-1">
               <h2 className="text-2xl font-heading font-bold text-center text-spiti-forest mb-4">Book Your Spiti Adventure</h2>
               <div className="space-y-4">
                 <div className="text-center">
@@ -83,10 +91,10 @@ const Index = () => {
             </div>
           </div>
 
-          {/* First display the Tour Packages section */}
+          {/* First display the Discover Spiti Valley section */}
           <TourPackages />
           
-          {/* Then show the Spiti Circuit Map section */}
+          {/* Then show the Spiti Circuit Map section - moved as requested */}
           <div className="mt-16">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Circuit Tour Map</h2>
@@ -102,7 +110,7 @@ const Index = () => {
 
       {/* Gallery Section */}
       <section className="py-16 bg-gradient-to-b from-spiti-stone to-spiti-cream">
-        <div className="container mx-auto px-4 bg-slate-300">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Photo Gallery</h2>
             <p className="text-gray-700 mb-4">
@@ -167,6 +175,8 @@ const Index = () => {
       </div>
       
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
