@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,12 +6,10 @@ import { Calendar, Clock, MapPin, MessageSquareMore, Send, CalendarCheck, Settin
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
-
 interface NightStay {
   location: string;
   nights: number;
 }
-
 export interface TourPackageProps {
   title: string;
   image: string;
@@ -29,11 +26,9 @@ export interface TourPackageProps {
   isWomenOnly?: boolean;
   index?: number;
 }
-
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
-
 const TourPackage: React.FC<TourPackageProps> = ({
   title,
   image,
@@ -47,15 +42,10 @@ const TourPackage: React.FC<TourPackageProps> = ({
   isWomenOnly,
   index
 }) => {
-  return (
-    <Card className="group h-full flex flex-col overflow-hidden rounded-lg border-0 shadow-md hover:shadow-xl transition-all duration-300">
+  return <Card className="group h-full flex flex-col overflow-hidden rounded-lg border-0 shadow-md hover:shadow-xl transition-all duration-300">
       <div className="relative h-56 overflow-hidden">
         {/* Image with overlay */}
-        <img 
-          src={image} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-        />
+        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
         
         {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
@@ -76,13 +66,11 @@ const TourPackage: React.FC<TourPackageProps> = ({
         </div>
 
         {/* Women only badge */}
-        {isWomenOnly && (
-          <div className="absolute top-3 right-3 z-10">
+        {isWomenOnly && <div className="absolute top-3 right-3 z-10">
             <Badge className="bg-pink-500 text-white font-medium text-sm px-3 py-1 rounded-md">
               Women Only
             </Badge>
-          </div>
-        )}
+          </div>}
         
         {/* Fixed Departures and Customizable */}
         <div className="absolute bottom-12 left-3 right-3 flex items-center gap-2 text-white text-sm bg-black/30 backdrop-blur-sm p-1.5 rounded">
@@ -110,21 +98,12 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </div>
           
           {/* Locations visited */}
-          <div className="flex items-start gap-2">
-            <MapPin className="w-4 h-4 text-spiti-blue/70 mt-0.5 shrink-0" />
-            <p className="text-sm text-gray-600 line-clamp-1">
-              {nightStays.map(stay => stay.location).join(' • ')}
-            </p>
-          </div>
+          
         </div>
         
         {/* Buttons */}
         <div className="flex gap-2 mt-auto">
-          <Button 
-            variant="outline" 
-            className="flex-1 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white" 
-            asChild
-          >
+          <Button variant="outline" className="flex-1 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white" asChild>
             <Link to={typeof index === 'number' ? `/tour/${index}` : '#'}>
               <MessageSquareMore className="mr-1 w-4 h-4" />
               <span>Details</span>
@@ -132,10 +111,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button 
-                variant="default" 
-                className="flex-1 bg-spiti-accent hover:bg-spiti-accent/90"
-              >
+              <Button variant="default" className="flex-1 bg-spiti-accent hover:bg-spiti-accent/90">
                 <Send className="mr-1 w-4 h-4" />
                 <span>Enquiry</span>
               </Button>
@@ -146,8 +122,6 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Dialog>
         </div>
       </div>
-    </Card>
-  );
+    </Card>;
 };
-
 export default TourPackage;

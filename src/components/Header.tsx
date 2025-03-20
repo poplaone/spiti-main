@@ -1,18 +1,16 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, MessageSquare, Facebook, Instagram, Twitter } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
-
 interface HeaderProps {
   scrollToPackages?: () => void;
 }
-
-const Header = ({ scrollToPackages }: HeaderProps) => {
+const Header = ({
+  scrollToPackages
+}: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -20,7 +18,6 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     if (id === 'packages' && scrollToPackages) {
@@ -37,9 +34,7 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
       setIsMenuOpen(false);
     }
   };
-
-  return (
-    <>
+  return <>
       {/* Top Bar with contact info and social media */}
       <div className="bg-gray-800 text-white py-1.5 px-4 text-sm hidden md:block">
         <div className="container mx-auto flex justify-between items-center">
@@ -61,72 +56,34 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
       </div>
       
       {/* Main Header */}
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm text-spiti-dark' : 'bg-transparent text-white'
-        }`}
-      >
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm text-spiti-dark' : 'bg-transparent text-white'}`}>
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16 md:h-20">
             <a href="/" className="font-display font-bold text-xl">
-              <img 
-                src="/lovable-uploads/c8d818d4-0cbc-4134-a656-4c78ea481271.png" 
-                alt="Spiti Valley" 
-                className="h-12 w-auto"
-                style={{ filter: isScrolled ? 'none' : 'brightness(0) invert(1)' }}
-              />
+              <img src="/lovable-uploads/c8d818d4-0cbc-4134-a656-4c78ea481271.png" alt="Spiti Valley" className="h-12 w-auto" style={{
+              filter: isScrolled ? 'none' : 'brightness(0) invert(1)'
+            }} />
             </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a 
-                href="#" 
-                className="font-medium transition-colors hover:text-spiti-blue" 
-                onClick={e => handleNavClick(e, 'top')}
-              >
+              <a href="#" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'top')}>
                 Road Trips
               </a>
-              <a 
-                href="#packages" 
-                className="font-medium transition-colors hover:text-spiti-blue"
-                onClick={e => handleNavClick(e, 'packages')}
-              >
-                Treks
-              </a>
-              <a 
-                href="#destinations" 
-                className="font-medium transition-colors hover:text-spiti-blue" 
-                onClick={e => handleNavClick(e, 'destinations')}
-              >
+              
+              <a href="#destinations" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'destinations')}>
                 Fixed Departures
               </a>
-              <a 
-                href="#about" 
-                className="font-medium transition-colors hover:text-spiti-blue" 
-                onClick={e => handleNavClick(e, 'about')}
-              >
+              <a href="#about" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'about')}>
                 About
               </a>
-              <a 
-                href="#work" 
-                className="font-medium transition-colors hover:text-spiti-blue" 
-                onClick={e => handleNavClick(e, 'work')}
-              >
-                Work in Spiti
-              </a>
-              <a 
-                href="#contact" 
-                className="font-medium transition-colors hover:text-spiti-blue" 
-                onClick={e => handleNavClick(e, 'contact')}
-              >
+              
+              <a href="#contact" className="font-medium transition-colors hover:text-spiti-blue" onClick={e => handleNavClick(e, 'contact')}>
                 Contact
               </a>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    className={isScrolled ? "border-spiti-blue text-spiti-blue hover:bg-spiti-blue/10" : "border-white text-white hover:bg-white/10"}
-                  >
+                  <Button variant="outline" className={isScrolled ? "border-spiti-blue text-spiti-blue hover:bg-spiti-blue/10" : "border-white text-white hover:bg-white/10"}>
                     Enquire
                   </Button>
                 </DialogTrigger>
@@ -137,57 +94,29 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
             </div>
 
             {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
+            <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </nav>
 
           {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
-              <a 
-                href="#" 
-                className="block text-spiti-dark hover:text-spiti-blue transition-colors" 
-                onClick={e => handleNavClick(e, 'top')}
-              >
+          {isMenuOpen && <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
+              <a href="#" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'top')}>
                 Road Trips
               </a>
-              <a 
-                href="#packages" 
-                className="block text-spiti-dark hover:text-spiti-blue transition-colors" 
-                onClick={e => handleNavClick(e, 'packages')}
-              >
+              <a href="#packages" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'packages')}>
                 Treks
               </a>
-              <a 
-                href="#destinations" 
-                className="block text-spiti-dark hover:text-spiti-blue transition-colors" 
-                onClick={e => handleNavClick(e, 'destinations')}
-              >
+              <a href="#destinations" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'destinations')}>
                 Fixed Departures
               </a>
-              <a 
-                href="#about" 
-                className="block text-spiti-dark hover:text-spiti-blue transition-colors" 
-                onClick={e => handleNavClick(e, 'about')}
-              >
+              <a href="#about" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'about')}>
                 About
               </a>
-              <a 
-                href="#work" 
-                className="block text-spiti-dark hover:text-spiti-blue transition-colors" 
-                onClick={e => handleNavClick(e, 'work')}
-              >
+              <a href="#work" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'work')}>
                 Work in Spiti
               </a>
-              <a 
-                href="#contact" 
-                className="block text-spiti-dark hover:text-spiti-blue transition-colors" 
-                onClick={e => handleNavClick(e, 'contact')}
-              >
+              <a href="#contact" className="block text-spiti-dark hover:text-spiti-blue transition-colors" onClick={e => handleNavClick(e, 'contact')}>
                 Contact
               </a>
               <Dialog>
@@ -200,12 +129,9 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
                   <LeadForm />
                 </DialogContent>
               </Dialog>
-            </div>
-          )}
+            </div>}
         </div>
       </header>
-    </>
-  );
+    </>;
 };
-
 export default Header;
