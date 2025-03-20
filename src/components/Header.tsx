@@ -60,9 +60,7 @@ const Header = ({
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16 md:h-20">
             <a href="/" className="font-display font-bold text-xl">
-              <img src="/lovable-uploads/c8d818d4-0cbc-4134-a656-4c78ea481271.png" alt="Spiti Valley" className="h-12 w-auto" style={{
-              filter: isScrolled ? 'none' : 'brightness(0) invert(1)'
-            }} />
+              
             </a>
 
             {/* Desktop Navigation */}
