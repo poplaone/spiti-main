@@ -1,27 +1,24 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
-
 const images = [
-  // Using stunning Spiti Valley related images from Unsplash
-  "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80", // Spiti Valley
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80", // Mountain landscape
-  "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1200&q=80" // Spiti valley type landscape
+// Using stunning Spiti Valley related images from Unsplash
+"https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80",
+// Spiti Valley
+"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
+// Mountain landscape
+"https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1200&q=80" // Spiti valley type landscape
 ];
-
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
   const timeoutRef = useRef<number | null>(null);
-  
   const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   };
-  
   useEffect(() => {
     resetTimeout();
     timeoutRef.current = window.setTimeout(() => setCurrent(prevIndex => (prevIndex + 1) % images.length), 5000);
@@ -29,15 +26,12 @@ const HeroCarousel = () => {
       resetTimeout();
     };
   }, [current]);
-  
   const goToPrevious = () => {
     setCurrent(current === 0 ? images.length - 1 : current - 1);
   };
-  
   const goToNext = () => {
     setCurrent((current + 1) % images.length);
   };
-  
   return <div className="relative w-full h-screen overflow-hidden">
       {images.map((src, index) => <div key={index} className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}>
           <img src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
@@ -51,9 +45,7 @@ const HeroCarousel = () => {
         <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
           Let us show you Spiti Valley & Zanskar
         </h1>
-        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">
-          Customizable Road Trips & Treks from ₹14,750
-        </p>
+        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl">Safe and Comfortable Travel in the High-Altitude Desert</p>
       </div>
       
       <Button variant="ghost" className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 hover:text-white z-20" onClick={goToPrevious}>
@@ -69,5 +61,4 @@ const HeroCarousel = () => {
       </div>
     </div>;
 };
-
 export default HeroCarousel;
