@@ -26,11 +26,7 @@ const Index = () => {
         <section className="min-h-[calc(100vh)] relative flex items-center py-8 md:py-12 pt-20 md:pt-24">
           <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center justify-between gap-8 relative z-10">
             <div className="flex-1 text-white max-w-2xl space-y-6">
-              <h1 className="text-3xl md:text-5xl font-bold bg-black/30 backdrop-blur-sm inline-block px-4 py-2 rounded">
-                <span className="bg-gradient-to-r from-green-400 via-yellow-300 to-orange-500 text-transparent bg-clip-text">
-                  SPITI VALLEY TOUR PACKAGES
-                </span>
-              </h1>
+              
               <p className="text-xl md:text-2xl bg-black/30 backdrop-blur-sm px-4 py-2 rounded">
                 <span className="bg-gradient-to-r from-green-300 via-yellow-200 to-orange-400 text-transparent bg-clip-text">
                   Experience the Himalayan Adventure with Customized Tours from Trusted Local Agents
