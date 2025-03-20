@@ -27,6 +27,7 @@ export interface TourPackageProps {
   transportType?: 'bike' | 'car' | 'innova';
   isWomenOnly?: boolean;
   index?: number;
+  className?: string;
 }
 
 const formatPrice = (price: number) => {
@@ -44,7 +45,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
   inclusions,
   transportType,
   isWomenOnly,
-  index
+  index,
+  className = ""
 }) => {
   // Function to get the correct route based on tour index
   const getDetailRoute = () => {
@@ -62,7 +64,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
   };
 
   return (
-    <div className="group h-full overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300">
+    <div className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className}`}>
       <div className="relative h-52 overflow-hidden">
         {/* Image without text */}
         <img 
@@ -88,7 +90,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         )}
       </div>
       
-      <div className="p-4 bg-white">
+      <div className="p-4">
         {/* Title moved to content section */}
         <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2">{title}</h3>
         

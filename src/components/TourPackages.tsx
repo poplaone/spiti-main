@@ -187,7 +187,11 @@ export const tourPackagesData: TourPackageProps[] = [
 
 const TourPackages = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-16 relative bg-cover bg-center bg-no-repeat" 
+      style={{ 
+        backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=80&w=1920&auto=format&fit=crop')`,
+        backgroundAttachment: 'fixed'
+      }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">
@@ -200,7 +204,9 @@ const TourPackages = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tourPackagesData.map((tour, index) => (
-            <TourPackage key={index} {...tour} index={index} />
+            <div key={index} className="transform transition duration-300 hover:scale-102 hover:z-10">
+              <TourPackage key={index} {...tour} index={index} className="bg-white/80 backdrop-blur-sm" />
+            </div>
           ))}
         </div>
       </div>
