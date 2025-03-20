@@ -81,7 +81,7 @@ const Header = ({
               </a>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className={isScrolled ? "border-spiti-blue text-spiti-blue hover:bg-spiti-blue/10" : "border-white text-white hover:bg-white/10"}>
+                  <Button variant="outline" className="">
                     Enquire
                   </Button>
                 </DialogTrigger>
