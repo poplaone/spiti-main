@@ -27,7 +27,7 @@ const Index = () => {
       
       {/* Tour Packages Section */}
       <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-gradient-to-b from-spiti-cream to-spiti-stone bg-transparent">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 bg-transparent">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
             <div className="w-full md:w-[350px] bg-white/90 p-6 rounded-lg shadow-lg order-2 md:order-1">
