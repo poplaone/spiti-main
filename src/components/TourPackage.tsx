@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -59,7 +58,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
       case 3: return '/tour-women';
       case 4: return '/tour-owncar';
       case 5: return '/tour-hiddenheaven';
-      default: return `/tour/${index}`;
+      default: return '/';
     }
   };
 

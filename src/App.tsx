@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import TourDetail from "./pages/TourDetail";
 import NotFound from "./pages/NotFound";
 
 // Import individual tour detail pages
@@ -26,9 +25,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/tour/:id" element={<TourDetail />} />
           
-          {/* Individual tour detail pages */}
+          {/* Individual tour detail pages with simplified routes */}
           <Route path="/tour-bike" element={<TourDetailBike />} />
           <Route path="/tour-unexplored" element={<TourDetailUnexplored />} />
           <Route path="/tour-buddhist" element={<TourDetailBuddhist />} />
@@ -36,7 +34,7 @@ const App = () => (
           <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
           <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
           
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
