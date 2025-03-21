@@ -2,7 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
-// Import the plugin with the correct path
+// Import the plugin with the correct package version
 import Autoplay from 'embla-carousel-autoplay';
 
 const ScrollingInfoStrip = () => {
