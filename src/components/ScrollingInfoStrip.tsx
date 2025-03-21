@@ -2,6 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
+import Autoplay from 'embla-carousel-autoplay';
 
 const ScrollingInfoStrip = () => {
   const infoItems = [
@@ -12,40 +13,14 @@ const ScrollingInfoStrip = () => {
     "Road Trips to Zanskar & Ladakh"
   ];
 
-  // For auto scrolling on mobile carousel
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const autoScrollInterval = useRef<NodeJS.Timeout | null>(null);
+  const autoplayOptions = {
+    delay: 3000,
+    stopOnInteraction: false,
+  };
+  
   const isMobile = useIsMobile();
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    // Auto scroll functionality for mobile
-    const startAutoScroll = () => {
-      if (isMobile) {
-        autoScrollInterval.current = setInterval(() => {
-          const nextIndex = (currentIndex + 1) % infoItems.length;
-          setCurrentIndex(nextIndex);
-          
-          if (carouselRef.current) {
-            const scrollAmount = nextIndex * (carouselRef.current.scrollWidth / infoItems.length);
-            carouselRef.current.scrollTo({
-              left: scrollAmount,
-              behavior: 'smooth'
-            });
-          }
-        }, 1000); // Scroll every 1 second
-      }
-    };
-
-    startAutoScroll();
-
-    // Clean up interval on unmount
-    return () => {
-      if (autoScrollInterval.current) {
-        clearInterval(autoScrollInterval.current);
-      }
-    };
-  }, [currentIndex, isMobile, infoItems.length]);
+  const [api, setApi] = useState<any>(null);
+  const autoplayPlugin = useRef(Autoplay(autoplayOptions));
 
   return (
     <div className="bg-spiti-forest text-white py-1 overflow-hidden">
@@ -59,10 +34,18 @@ const ScrollingInfoStrip = () => {
           ))}
         </div>
         
-        {/* Mobile version - manual swipeable and auto-scrolling */}
+        {/* Mobile version - with auto-scrolling */}
         <div className="md:hidden">
-          <Carousel className="w-full">
-            <CarouselContent className="py-1" ref={carouselRef}>
+          <Carousel 
+            className="w-full"
+            setApi={setApi}
+            plugins={[autoplayPlugin.current]}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="py-1">
               {infoItems.map((item, index) => (
                 <CarouselItem key={index} className="basis-full">
                   <div className="text-center text-xs px-2 py-1">
