@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -11,7 +10,6 @@ import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
 import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
-
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -19,9 +17,7 @@ const Index = () => {
       behavior: 'smooth'
     });
   };
-  
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Hero Carousel with overlaid Header */}
       <HeroCarousel />
       <Header scrollToPackages={scrollToPackages} />
@@ -30,7 +26,7 @@ const Index = () => {
       <ScrollingInfoStrip />
       
       {/* Tour Packages Section */}
-      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-gradient-to-b from-spiti-cream to-spiti-stone">
+      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-gradient-to-b from-spiti-cream to-spiti-stone bg-transparent">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
@@ -175,8 +171,6 @@ const Index = () => {
       </div>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
