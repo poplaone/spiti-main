@@ -27,13 +27,13 @@ const App = () => (
           {/* Home page route */}
           <Route path="/" element={<Index />} />
           
-          {/* Tour detail pages */}
-          <Route path="/tours/bike" element={<TourDetailBike />} />
-          <Route path="/tours/unexplored" element={<TourDetailUnexplored />} />
-          <Route path="/tours/buddhist" element={<TourDetailBuddhist />} />
-          <Route path="/tours/women" element={<TourDetailWomen />} />
-          <Route path="/tours/owncar" element={<TourDetailOwnCar />} />
-          <Route path="/tours/hiddenheaven" element={<TourDetailHiddenHeaven />} />
+          {/* Tour detail pages with clean routes */}
+          <Route path="/tour-bike" element={<TourDetailBike />} />
+          <Route path="/tour-unexplored" element={<TourDetailUnexplored />} />
+          <Route path="/tour-buddhist" element={<TourDetailBuddhist />} />
+          <Route path="/tour-women" element={<TourDetailWomen />} />
+          <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
+          <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
