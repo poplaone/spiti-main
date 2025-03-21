@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
-import { tourPackagesData } from "@/components/TourPackages";
+import { tourPackagesData } from "@/data/tourPackagesData";
 import { Bike } from "lucide-react";
 
 // Import refactored components

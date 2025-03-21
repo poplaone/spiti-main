@@ -1,13 +1,13 @@
 
 import React from 'react';
 import TourPackage, { TourPackageProps } from "@/components/TourPackage";
-import { tourPackagesData } from "@/data/tourPackagesData";
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
+  tourPackagesData: TourPackageProps[]; // Add this prop
 }
 
-const RelatedTours: React.FC<RelatedToursProps> = ({ tours }) => {
+const RelatedTours: React.FC<RelatedToursProps> = ({ tours, tourPackagesData }) => {
   return (
     <section className="py-16 bg-spiti-stone">
       <div className="container mx-auto px-4">
