@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -43,7 +42,7 @@ const HeroCarousel = () => {
         <img alt="Spiti Logo" className="w-28 h-28 mb-4 md:mb-8 mt-[-90px] md:mt-0" style={{
         filter: 'brightness(0) invert(1)'
       }} src="/lovable-uploads/2d33bd3b-463f-448a-ad98-e5722ad15898.png" />
-        <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley &amp; Zanskar</h1>
+        <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley &amp; bla bla</h1>
         <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Safe and Comfortable Travel in the High-Altitude Desert</p>
       </div>
       
