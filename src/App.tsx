@@ -24,9 +24,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Home page route */}
           <Route path="/" element={<Index />} />
           
-          {/* Individual tour detail pages with simplified routes */}
+          {/* Tour detail pages with clean routes */}
           <Route path="/tour-bike" element={<TourDetailBike />} />
           <Route path="/tour-unexplored" element={<TourDetailUnexplored />} />
           <Route path="/tour-buddhist" element={<TourDetailBuddhist />} />

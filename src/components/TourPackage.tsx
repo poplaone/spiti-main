@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -49,7 +50,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
 }) => {
   // Function to get the correct route based on tour index
   const getDetailRoute = () => {
-    if (typeof index !== 'number') return '#';
+    if (typeof index !== 'number') return '/';
     
     switch (index) {
       case 0: return '/tour-bike';
