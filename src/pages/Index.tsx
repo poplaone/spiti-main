@@ -1,3 +1,4 @@
+
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -25,8 +26,8 @@ const Index = () => {
       {/* Add the scrolling info strip between sections */}
       <ScrollingInfoStrip />
       
-      {/* Tour Packages Section */}
-      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-gradient-to-b from-spiti-cream to-spiti-stone bg-transparent">
+      {/* Tour Packages Section - Updated to remove cream gradient */}
+      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-transparent">
         <div className="container mx-auto px-4 bg-transparent">
           <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
             {/* Booking Card */}
@@ -99,8 +100,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="py-16 bg-gradient-to-b from-spiti-stone to-spiti-cream">
+      {/* Gallery Section - Updated to maintain bluish background */}
+      <section className="py-16 bg-transparent">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Photo Gallery</h2>
