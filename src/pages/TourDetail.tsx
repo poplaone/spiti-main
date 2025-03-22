@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -73,7 +72,7 @@ const TourDetail = () => {
     <div className="min-h-screen bg-spiti-cream">
       <Header />
       
-      {/* Hero Section with Tour Title and Image */}
+      {/* Updated Hero Section with improved mobile styling */}
       <TourHero 
         tour={tour} 
         selectedMonth={selectedMonth} 

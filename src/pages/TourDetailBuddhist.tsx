@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
 import { tourPackagesData } from "@/data/tourPackagesData";
-import { Car, Mountain, Flag, CompassIcon } from 'lucide-react';
+import { Car } from "lucide-react";
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -52,7 +51,7 @@ const TourDetailBuddhist = () => {
     <div className="min-h-screen bg-spiti-cream">
       <Header />
       
-      {/* Hero Section with Tour Title and Image */}
+      {/* Updated Hero Section with improved mobile styling */}
       <TourHero 
         tour={tour} 
         selectedMonth={selectedMonth} 
@@ -61,7 +60,7 @@ const TourDetailBuddhist = () => {
         heroImage="https://images.unsplash.com/photo-1544071013-fb2176ad56d5?w=1200&q=80"
       />
 
-      {/* Package Details Section */}
+      {/* Package Details Section remains the same */}
       <section className="py-16 bg-spiti-cream">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
