@@ -43,7 +43,7 @@ const HeroCarousel = () => {
         filter: 'brightness(0) invert(1)'
       }} src="/lovable-uploads/2d33bd3b-463f-448a-ad98-e5722ad15898.png" />
         <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
-        <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Safe and Comfortable Travel in the High-Altitude Desert</p>
+        <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Begin your Spiti adventure with us – your local guides to explore more...</p>
       </div>
       
       <Button variant="ghost" className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 hover:text-white z-20" onClick={goToPrevious}>
