@@ -65,9 +65,7 @@ const Index = () => {
                     </DialogContent>
                   </Dialog>
                   
-                  <Button className="w-full bg-spiti-blue hover:bg-spiti-blue/90 py-2" onClick={scrollToPackages}>
-                    Packages
-                  </Button>
+                  
                 </div>
               </div>
             </div>
