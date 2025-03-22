@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Clock, Home, Calendar, Users } from 'lucide-react';
+import { Clock, Home, Calendar, Users, MapPin, Mountain, Compass } from 'lucide-react';
 import { TourPackageProps } from "@/components/TourPackage";
 
 interface TourOverviewProps {
@@ -16,9 +16,9 @@ const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon }) =
         <span className="ml-2">Tour Overview</span>
       </h2>
       <p className="text-gray-700 mb-6">
-        Experience the magic of Spiti Valley with our {tour.duration.nights}-night, {tour.duration.days}-day adventure through the breathtaking
+        {tour.overview || `Experience the magic of Spiti Valley with our ${tour.duration.nights}-night, ${tour.duration.days}-day adventure through the breathtaking
         Himalayan landscape. Journey through ancient Buddhist monasteries, remote high-altitude villages, and pristine
-        natural wonders in this trans-Himalayan region often called "Little Tibet" or the "Middle Land."
+        natural wonders in this trans-Himalayan region often called "Little Tibet" or the "Middle Land."`}
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex items-center">
@@ -47,6 +47,20 @@ const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon }) =
           <div>
             <p className="text-gray-600 text-sm">Group Size</p>
             <p className="font-medium">2-10 People</p>
+          </div>
+        </div>
+        <div className="flex items-center">
+          <Mountain className="text-spiti-blue w-5 h-5 mr-3" />
+          <div>
+            <p className="text-gray-600 text-sm">Terrain</p>
+            <p className="font-medium">Himalayan Mountain Passes</p>
+          </div>
+        </div>
+        <div className="flex items-center">
+          <Compass className="text-spiti-blue w-5 h-5 mr-3" />
+          <div>
+            <p className="text-gray-600 text-sm">Elevation</p>
+            <p className="font-medium">2,000 - 4,550 meters</p>
           </div>
         </div>
       </div>

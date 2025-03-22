@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
 import { tourPackagesData } from "@/data/tourPackagesData";
-import { Car } from "lucide-react";
+import { Car, Mountain, Flag, CompassIcon } from 'lucide-react';
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -58,7 +58,7 @@ const TourDetailBuddhist = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1200&q=80"
+        heroImage="https://images.unsplash.com/photo-1544071013-fb2176ad56d5?w=1200&q=80"
       />
 
       {/* Package Details Section */}

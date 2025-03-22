@@ -12,6 +12,12 @@ interface NightStay {
   nights: number;
 }
 
+interface ItineraryDay {
+  day: number;
+  title: string;
+  description: string;
+}
+
 export interface TourPackageProps {
   title: string;
   image: string;
@@ -24,6 +30,9 @@ export interface TourPackageProps {
   };
   nightStays: NightStay[];
   inclusions: string[];
+  exclusions?: string[];
+  itinerary?: ItineraryDay[];
+  overview?: string;
   transportType?: 'bike' | 'car' | 'innova';
   isWomenOnly?: boolean;
   index?: number;
