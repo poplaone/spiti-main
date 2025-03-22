@@ -78,10 +78,9 @@ const Index = () => {
               <p className="mb-4 text-neutral-950">Embark on an extraordinary journey through the breathtaking landscapes of Spiti Valley, where rugged terrains meet ancient monasteries, pristine lakes, and towering Himalayan peaks. Our meticulously designed tour packages ensure an immersive experience, blending adventure, culture, and natural beauty.
 
             </p>
-              <p className="text-gray-700">
-                Whether you're seeking a thrilling bike tour, a women-only expedition, or a family adventure in your own car, 
-                we have the ideal Spiti Valley experience waiting for you.
-              </p>
+              <p className="text-neutral-950">Whether you crave the thrill of a bike expedition, a women-only adventure, or a family road trip, we have the perfect itinerary tailored for you. Choose from our all-inclusive packages and let us take care of the details while you soak in the magic of Spiti.
+
+            </p>
             </div>
           </div>
 
