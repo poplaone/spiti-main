@@ -1,11 +1,9 @@
-
 import React from 'react';
 import { Clock, Calendar, Mountain, MapPin } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TourPackageProps } from "@/components/TourPackage";
 import { Button } from "@/components/ui/button";
-
 interface TourHeroProps {
   tour: TourPackageProps;
   selectedMonth: string;
@@ -13,22 +11,19 @@ interface TourHeroProps {
   formatPrice: (price: number) => string;
   heroImage?: string;
 }
-
-const TourHero: React.FC<TourHeroProps> = ({ 
-  tour, 
-  selectedMonth, 
-  setSelectedMonth, 
+const TourHero: React.FC<TourHeroProps> = ({
+  tour,
+  selectedMonth,
+  setSelectedMonth,
   formatPrice,
-  heroImage = "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80" 
+  heroImage = "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80"
 }) => {
   const seoTitle = tour.title.toLowerCase().includes('spiti') ? tour.title : `${tour.title} - Spiti Valley Adventure`;
-
-  return (
-    <section className="relative h-[70vh] mt-8 sm:mt-0" style={{
-      backgroundImage: `url(${heroImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }}>
+  return <section className="relative h-[70vh] mt-8 sm:mt-0" style={{
+    backgroundImage: `url(${heroImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center'
+  }}>
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/20"></div>
       
       <div className="container mx-auto px-4 h-full flex items-center relative z-10">
@@ -64,7 +59,7 @@ const TourHero: React.FC<TourHeroProps> = ({
             <Button size="lg" className="bg-spiti-blue hover:bg-spiti-forest text-white">
               Book Now
             </Button>
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/20 hover:text-white">
+            <Button variant="outline" size="lg" className="border-white text-white hover:text-white bg-transparent">
               View Itinerary
             </Button>
           </div>
@@ -72,8 +67,6 @@ const TourHero: React.FC<TourHeroProps> = ({
       </div>
       
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-20"></div>
-    </section>
-  );
+    </section>;
 };
-
 export default TourHero;
