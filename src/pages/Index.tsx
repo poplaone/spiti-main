@@ -75,11 +75,9 @@ const Index = () => {
             {/* Section heading and text */}
             <div className="max-w-3xl mx-auto text-left md:text-left order-1 md:order-2">
               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Explore Unforgettable Spiti Valley Tour Packages</h2>
-              <p className="text-gray-700 mb-4">
-                Discover the breathtaking landscapes of the Himalayan cold desert with our carefully curated tour packages. 
-                From Buddhist monasteries and high-altitude villages to pristine lakes and snow-capped peaks, our all-inclusive 
-                packages offer the perfect blend of adventure, culture, and natural beauty.
-              </p>
+              <p className="mb-4 text-neutral-950">Embark on an extraordinary journey through the breathtaking landscapes of Spiti Valley, where rugged terrains meet ancient monasteries, pristine lakes, and towering Himalayan peaks. Our meticulously designed tour packages ensure an immersive experience, blending adventure, culture, and natural beauty.
+
+            </p>
               <p className="text-gray-700">
                 Whether you're seeking a thrilling bike tour, a women-only expedition, or a family adventure in your own car, 
                 we have the ideal Spiti Valley experience waiting for you.
