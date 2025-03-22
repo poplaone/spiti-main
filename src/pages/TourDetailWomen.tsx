@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -14,7 +15,6 @@ import TourAccommodation from "@/components/tour/TourAccommodation";
 import TourInclusions from "@/components/tour/TourInclusions";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
-import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
 
 const TourDetailWomen = () => {
   // Using fourth tour (Women Only Tour)
@@ -50,7 +50,6 @@ const TourDetailWomen = () => {
 
   return (
     <div className="min-h-screen bg-spiti-cream">
-      <ScrollingInfoStrip />
       <Header />
       
       {/* Hero Section with Tour Title and Image */}

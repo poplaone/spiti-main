@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -15,7 +16,6 @@ import TourAccommodation from "@/components/tour/TourAccommodation";
 import TourInclusions from "@/components/tour/TourInclusions";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
-import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
 
 // Array of hero images for different tour types
 const heroImages = [
@@ -71,7 +71,6 @@ const TourDetail = () => {
 
   return (
     <div className="min-h-screen bg-spiti-cream">
-      <ScrollingInfoStrip />
       <Header />
       
       {/* Hero Section with Tour Title and Image */}
