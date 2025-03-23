@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { tourPackagesData } from '@/data/tourPackagesData';
+import { useTourFilters } from '@/hooks/useTourFilters';
 import Logo from './header/Logo';
 import DesktopMenu from './header/DesktopMenu';
 import MobileMenu from './header/MobileMenu';
@@ -19,6 +20,9 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const isTourPage = location.pathname.includes('tour-');
+  
+  // Using our custom hook to filter tours
+  const { roadTripsTours, fixedDepartureTours } = useTourFilters(tourPackagesData);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,33 +43,6 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHomePage]);
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    if (id === 'packages' && scrollToPackages) {
-      scrollToPackages();
-    } else {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
-    }
-    if (isMenuOpen) {
-      setIsMenuOpen(false);
-    }
-  };
-
-  // Filter road trip tours - check if the tour has any of the relevant tags
-  const roadTripsTours = tourPackagesData.filter(tour => 
-    tour.transportType === 'bike' || tour.transportType === 'car'
-  );
-
-  // Filter fixed departure tours - we'll use the common fixed departure tours
-  const fixedDepartureTours = tourPackagesData.filter(tour => 
-    tour.isWomenOnly === true || tour.title.includes('FIXED')
-  );
 
   return (
     <header ref={headerRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
