@@ -109,7 +109,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         {/* Price section */}
         <div className="flex items-end justify-between mb-4 border-b pb-3">
           <div>
-            <div className="font-bold text-sm text-rose-500">₹{formatPrice(discountedPrice)}</div>
+            <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
             <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
           </div>
           
@@ -128,7 +128,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         {/* Buttons */}
         <div className="flex gap-2">
-          <Button variant="outline" asChild className="flex-1 border-spiti-forest text-spiti-forest hover:text-white bg-spiti-forest">
+          <Button variant="outline" className="flex-1 border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white" asChild>
             <Link to={getDetailRoute()}>
               <MessageSquareMore className="mr-1 w-4 h-4" />
               <span>Details</span>
@@ -136,7 +136,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="default" className="flex-1 bg-spiti-slate hover:bg-spiti-forest">
+              <Button variant="default" className="flex-1 bg-neutral-900 hover:bg-neutral-800">
                 <Send className="mr-1 w-4 h-4" />
                 <span>Enquiry</span>
               </Button>

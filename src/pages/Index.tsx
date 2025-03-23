@@ -58,7 +58,7 @@ const Index = () => {
                 <div className="space-y-3">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="w-full py-2 bg-spiti-forest">Book Now</Button>
+                      <Button className="w-full py-2 bg-neutral-900 hover:bg-neutral-800">Book Now</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-md">
                       <LeadForm />
