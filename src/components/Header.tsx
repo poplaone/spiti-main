@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -16,7 +15,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import TourPackageGrid from "@/components/tour/TourPackageGrid";
 import { Card } from "@/components/ui/card";
-import tourPackagesData from '@/data/tourPackagesData';
+import { tourPackagesData } from '@/data/tourPackagesData';
 
 interface HeaderProps {
   scrollToPackages?: () => void;
