@@ -1,6 +1,8 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Twitter, MapPin, Mail, Phone } from 'lucide-react';
+import { Facebook, Instagram, Twitter, MapPin, Mail, Phone, ChevronRight } from 'lucide-react';
+
 const Footer = () => {
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -11,7 +13,9 @@ const Footer = () => {
       });
     }
   };
-  return <footer className="text-white py-12 bg-neutral-950">
+
+  return (
+    <footer className="text-white py-12 bg-neutral-950">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -33,33 +37,38 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - Updated with new pages */}
           <div>
             <h3 className="text-xl font-bold mb-4 text-sky-500">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'top')}>
-                  Home
+                <Link to="/" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> FAQ
+                </Link>
+              </li>
+              <li>
+                <a href="#tour-packages" className="hover:text-spiti-green transition-colors flex items-center" onClick={e => handleScrollToSection(e, 'tour-packages')}>
+                  <ChevronRight size={16} className="mr-1" /> Tour Packages
                 </a>
               </li>
               <li>
-                <a href="#tour-packages" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'tour-packages')}>
-                  Tour Packages
-                </a>
-              </li>
-              <li>
-                <a href="#gallery" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'gallery')}>
-                  Gallery
-                </a>
-              </li>
-              <li>
-                <a href="#about-spiti" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'about-spiti')}>
-                  About Spiti
-                </a>
-              </li>
-              <li>
-                <a href="#contact-us" className="hover:text-spiti-green transition-colors" onClick={e => handleScrollToSection(e, 'contact-us')}>
-                  Contact Us
+                <a href="#gallery" className="hover:text-spiti-green transition-colors flex items-center" onClick={e => handleScrollToSection(e, 'gallery')}>
+                  <ChevronRight size={16} className="mr-1" /> Gallery
                 </a>
               </li>
             </ul>
@@ -70,19 +79,29 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4 text-sky-500">Popular Tours</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/tour/0" className="hover:text-spiti-green transition-colors">Spiti Valley Bike Tour</Link>
+                <Link to="/tour-bike" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Spiti Valley Bike Tour
+                </Link>
               </li>
               <li>
-                <Link to="/tour/2" className="hover:text-spiti-green transition-colors">Buddhist and Tribal Circuit</Link>
+                <Link to="/tour-buddhist" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Buddhist and Tribal Circuit
+                </Link>
               </li>
               <li>
-                <Link to="/tour/3" className="hover:text-spiti-green transition-colors">Women Only Tour</Link>
+                <Link to="/tour-women" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Women Only Tour
+                </Link>
               </li>
               <li>
-                <Link to="/tour/5" className="hover:text-spiti-green transition-colors">Hidden Heaven Tour</Link>
+                <Link to="/tour-hiddenheaven" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Hidden Heaven Tour
+                </Link>
               </li>
               <li>
-                <Link to="/tour/1" className="hover:text-spiti-green transition-colors">Unexplored Spiti</Link>
+                <Link to="/tour-unexplored" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
+                </Link>
               </li>
             </ul>
           </div>
@@ -115,6 +134,8 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;
