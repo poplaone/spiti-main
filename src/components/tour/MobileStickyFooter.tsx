@@ -4,25 +4,37 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 
-const MobileStickyFooter: React.FC = () => {
+interface MobileStickyFooterProps {
+  discountedPrice: number;
+  originalPrice: number;
+  formatPrice: (price: number) => string;
+}
+
+const MobileStickyFooter: React.FC<MobileStickyFooterProps> = ({ 
+  discountedPrice, 
+  originalPrice,
+  formatPrice 
+}) => {
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-spiti-forest shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-slate-800 to-spiti-forest shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
       <div className="flex items-center">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="flex-1 rounded-none h-14 bg-green-600 hover:bg-green-700 text-white">
-              Book Now
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <LeadForm />
-          </DialogContent>
-        </Dialog>
+        {/* Price Section */}
+        <div className="flex-1 px-3 py-2 text-white">
+          <div className="flex flex-col">
+            <span className="text-xs font-medium">Starting from</span>
+            <div className="flex items-baseline">
+              <span className="text-xl font-bold text-green-400">₹{formatPrice(discountedPrice)}/-</span>
+              <span className="text-xs line-through opacity-75 ml-1">₹{formatPrice(originalPrice)}</span>
+            </div>
+            <span className="text-xs">per person</span>
+          </div>
+        </div>
         
+        {/* Book/Customize Button */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="flex-1 rounded-none h-14 bg-spiti-slate hover:bg-spiti-forest text-white">
-              Customize
+            <Button className="flex-1 rounded-none rounded-l-full h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold">
+              Book/Customize
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">

@@ -25,7 +25,7 @@ const TourItinerary: React.FC<TourItineraryProps> = ({ tour }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="bg-white/90 p-6 rounded-lg shadow-sm tour-itinerary">
       <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">
         <Calendar className="text-spiti-forest w-6 h-6 mr-2" />
         Tour Itinerary

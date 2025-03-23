@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -69,7 +70,12 @@ const TourDetail = () => {
     : heroImages[heroImages.length - 1];
 
   return (
-    <div className="min-h-screen bg-spiti-cream">
+    <div className="min-h-screen" style={{
+      backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=80&w=1920&auto=format&fit=crop')`,
+      backgroundAttachment: 'fixed',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
       <Header />
       
       {/* Updated Hero Section with improved mobile styling */}
@@ -82,7 +88,7 @@ const TourDetail = () => {
       />
 
       {/* Package Details Section */}
-      <section className="py-16 bg-spiti-cream">
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Package details */}
@@ -112,7 +118,11 @@ const TourDetail = () => {
       <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
       
       {/* Mobile Sticky Footer */}
-      <MobileStickyFooter />
+      <MobileStickyFooter 
+        discountedPrice={tour.discountedPrice}
+        originalPrice={tour.originalPrice}
+        formatPrice={formatPrice}
+      />
       
       <Footer />
     </div>

@@ -28,52 +28,37 @@ const TourHero: React.FC<TourHeroProps> = ({
   // Array of available months
   const months = ["January", "February", "March", "April", "May", "June", 
                  "July", "August", "September", "October", "November", "December"];
+                 
+  // Function to scroll to itinerary section
+  const scrollToItinerary = () => {
+    const itinerarySection = document.querySelector('.tour-itinerary');
+    if (itinerarySection) {
+      itinerarySection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section 
-      className="relative h-[75vh] sm:h-[70vh] mt-0" 
+      className="relative h-[80vh] sm:h-[70vh] mt-0" 
       style={{
         backgroundImage: `url(${heroImage})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundPosition: 'center',
+        marginTop: '0',
+        paddingTop: '0'
       }}
     >
       {/* Darkening overlay - reduced opacity on mobile for better image visibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/80 sm:from-black/70 sm:via-black/50 sm:to-black/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 sm:from-black/70 sm:via-black/50 sm:to-black/20"></div>
       
       <div className="container mx-auto px-4 h-full flex items-end sm:items-center pb-16 sm:pb-0 relative z-10">
         <div className="max-w-3xl space-y-4 sm:space-y-6">
-          {/* Icon badges instead of text badges */}
-          <div className="flex items-center gap-3 mt-2">
-            {tour.transportType === 'bike' ? (
-              <Badge className="bg-orange-500 p-1.5">
-                <Bike className="w-4 h-4" />
-                <span className="ml-1 hidden sm:inline">Bike Expedition</span>
-              </Badge>
-            ) : (
-              <Badge className="bg-green-500 p-1.5">
-                <Car className="w-4 h-4" />
-                <span className="ml-1 hidden sm:inline">Car Journey</span>
-              </Badge>
-            )}
-            
-            {/* Added badges for Fixed Departures and Customizable */}
-            <Badge className="bg-purple-500 p-1.5">
-              <CalendarIcon className="w-4 h-4" />
-              <span className="ml-1 hidden sm:inline">Fixed Departures</span>
-            </Badge>
-            
-            <Badge className="bg-blue-400 p-1.5">
-              <Settings className="w-4 h-4" /> 
-              <span className="ml-1 hidden sm:inline">Customizable</span>
-            </Badge>
-          </div>
-          
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-white leading-tight">
             {seoTitle}
           </h1>
           
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-white">
+          {/* Tour details in a horizontal layout for better space usage */}
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-5 text-white">
             <div className="flex items-center">
               <Clock className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-spiti-blue" />
               <span className="text-sm sm:text-base">{tour.duration.nights} Nights / {tour.duration.days} Days</span>
@@ -84,8 +69,44 @@ const TourHero: React.FC<TourHeroProps> = ({
             </div>
           </div>
           
-          {/* Month selection dropdown */}
-          <div className="flex items-center text-white">
+          {/* Badges moved to be in line with View Itinerary button */}
+          <div className="flex flex-wrap items-center gap-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={scrollToItinerary}
+              className="border-white text-white hover:text-white bg-transparent sm:size-lg"
+            >
+              View Itinerary
+            </Button>
+            
+            {tour.transportType === 'bike' ? (
+              <Badge className="bg-orange-500 p-1.5">
+                <Bike className="w-4 h-4" />
+              </Badge>
+            ) : (
+              <Badge className="bg-green-500 p-1.5">
+                <Car className="w-4 h-4" />
+              </Badge>
+            )}
+            
+            <Badge className="bg-purple-500 p-1.5">
+              <CalendarIcon className="w-4 h-4" />
+            </Badge>
+            
+            <Badge className="bg-blue-400 p-1.5">
+              <Settings className="w-4 h-4" /> 
+            </Badge>
+          </div>
+          
+          <div className="flex items-center space-x-2 mt-1 sm:mt-4">
+            <span className="text-2xl sm:text-3xl font-bold text-green-400">₹{formatPrice(tour.discountedPrice)}/-</span>
+            <span className="text-sm sm:text-lg line-through opacity-75 text-white">₹{formatPrice(tour.originalPrice)}/-</span>
+            <Badge className="bg-red-500 text-sm sm:text-base px-2 sm:px-3 py-0.5 sm:py-1">{tour.discount}% OFF</Badge>
+          </div>
+          
+          {/* Month selection dropdown moved to the bottom */}
+          <div className="flex items-center text-white mt-2">
             <Calendar className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-spiti-blue" />
             <Select value={selectedMonth} onValueChange={setSelectedMonth}>
               <SelectTrigger className="w-32 sm:w-40 h-8 sm:h-10 bg-white/10 border-white/20 text-white text-sm">
@@ -97,21 +118,6 @@ const TourHero: React.FC<TourHeroProps> = ({
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          
-          <div className="flex items-center space-x-2 mt-1 sm:mt-4">
-            <span className="text-2xl sm:text-3xl font-bold text-green-400">₹{formatPrice(tour.discountedPrice)}/-</span>
-            <span className="text-sm sm:text-lg line-through opacity-75 text-white">₹{formatPrice(tour.originalPrice)}/-</span>
-            <Badge className="bg-red-500 text-sm sm:text-base px-2 sm:px-3 py-0.5 sm:py-1">{tour.discount}% OFF</Badge>
-          </div>
-          
-          <div className="flex flex-wrap gap-3 mt-2 sm:mt-4">
-            <Button size="sm" className="bg-spiti-blue hover:bg-spiti-forest text-white sm:size-lg">
-              Book Now
-            </Button>
-            <Button variant="outline" size="sm" className="border-white text-white hover:text-white bg-transparent sm:size-lg">
-              View Itinerary
-            </Button>
           </div>
         </div>
       </div>
