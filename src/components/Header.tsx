@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -69,12 +70,14 @@ const Header = ({
     }
   };
 
+  // Filter road trip tours - check if the tour has any of the relevant tags
   const roadTripsTours = tourPackagesData.filter(tour => 
-    tour.tags.includes('road-trip') || tour.tags.includes('bike-tour') || tour.tags.includes('car-tour')
+    tour.transportType === 'bike' || tour.transportType === 'car'
   );
 
+  // Filter fixed departure tours - we'll use the common fixed departure tours
   const fixedDepartureTours = tourPackagesData.filter(tour => 
-    tour.tags.includes('fixed-departure')
+    tour.isWomenOnly === true || tour.title.includes('FIXED')
   );
 
   return (
@@ -101,8 +104,8 @@ const Header = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg">
                       {roadTripsTours.map((tour) => (
                         <Link 
-                          key={tour.id} 
-                          to={tour.route} 
+                          key={tour.title} 
+                          to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`} 
                           className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                         >
                           <Card className="border-0 overflow-hidden bg-transparent">
@@ -130,8 +133,8 @@ const Header = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg">
                       {fixedDepartureTours.map((tour) => (
                         <Link 
-                          key={tour.id} 
-                          to={tour.route} 
+                          key={tour.title} 
+                          to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`} 
                           className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                         >
                           <Card className="border-0 overflow-hidden bg-transparent">
@@ -204,8 +207,8 @@ const Header = ({
                 <div className="grid grid-cols-1 gap-4">
                   {roadTripsTours.map((tour) => (
                     <Link 
-                      key={tour.id} 
-                      to={tour.route} 
+                      key={tour.title} 
+                      to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
                       className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -215,7 +218,9 @@ const Header = ({
                         </div>
                         <div>
                           <h3 className="font-medium">{tour.title}</h3>
-                          <p className="text-xs text-gray-300">{tour.duration}</p>
+                          <p className="text-xs text-gray-300">
+                            {tour.duration.nights} Nights / {tour.duration.days} Days
+                          </p>
                         </div>
                       </div>
                     </Link>
@@ -234,8 +239,8 @@ const Header = ({
                 <div className="grid grid-cols-1 gap-4">
                   {fixedDepartureTours.map((tour) => (
                     <Link 
-                      key={tour.id} 
-                      to={tour.route} 
+                      key={tour.title} 
+                      to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
                       className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -245,7 +250,9 @@ const Header = ({
                         </div>
                         <div>
                           <h3 className="font-medium">{tour.title}</h3>
-                          <p className="text-xs text-gray-300">{tour.duration}</p>
+                          <p className="text-xs text-gray-300">
+                            {tour.duration.nights} Nights / {tour.duration.days} Days
+                          </p>
                         </div>
                       </div>
                     </Link>
