@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -149,7 +148,7 @@ const Index = () => {
         <div className="flex items-center">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="flex-1 rounded-none h-14 bg-spiti-slate hover:bg-spiti-slate/90 text-white">
+              <Button className="flex-1 rounded-none h-14 text-white bg-spiti-forest">
                 <MessageSquare className="mr-2 h-5 w-5" />
                 Send Enquiry
               </Button>
