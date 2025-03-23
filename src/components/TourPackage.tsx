@@ -109,7 +109,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         {/* Price section */}
         <div className="flex items-end justify-between mb-4 border-b pb-3">
           <div>
-            <div className="font-bold text-sm text-rose-500">₹{formatPrice(discountedPrice)}</div>
+            <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
             <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
           </div>
           
