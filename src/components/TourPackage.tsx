@@ -128,7 +128,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         {/* Buttons */}
         <div className="flex gap-2">
-          <Button variant="outline" className="flex-1 border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white" asChild>
+          <Button variant="outline" asChild className="flex-1 border-spiti-forest text-spiti-forest hover:text-white bg-spiti-forest">
             <Link to={getDetailRoute()}>
               <MessageSquareMore className="mr-1 w-4 h-4" />
               <span>Details</span>
@@ -136,7 +136,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="default" className="flex-1 bg-neutral-900 hover:bg-neutral-800">
+              <Button variant="default" className="flex-1 bg-spiti-slate hover:bg-spiti-forest">
                 <Send className="mr-1 w-4 h-4" />
                 <span>Enquiry</span>
               </Button>
