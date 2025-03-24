@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,18 +5,15 @@ import { Calendar, Clock, MapPin, MessageSquareMore, Send, CalendarCheck, Settin
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
-
 interface NightStay {
   location: string;
   nights: number;
 }
-
 interface ItineraryDay {
   day: number;
   title: string;
   description: string;
 }
-
 export interface TourPackageProps {
   title: string;
   image: string;
@@ -38,7 +34,6 @@ export interface TourPackageProps {
   index?: number;
   className?: string;
 }
-
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
@@ -52,7 +47,6 @@ const getRouteMap = {
   4: '/tour-owncar',
   5: '/tour-hiddenheaven'
 };
-
 const TourPackage: React.FC<TourPackageProps> = ({
   title,
   image,
@@ -72,18 +66,10 @@ const TourPackage: React.FC<TourPackageProps> = ({
     if (typeof index !== 'number') return '/';
     return getRouteMap[index as keyof typeof getRouteMap] || '/';
   };
-
-  return (
-    <div className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className}`}>
+  return <div className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className}`}>
       <div className="relative h-52 overflow-hidden">
         {/* Image without text - optimized for performance with loading="lazy" */}
-        <img 
-          src={image} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          loading="lazy" 
-          decoding="async"
-        />
+        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
         
         {/* Discount badge */}
         <div className="absolute top-3 left-3 z-10">
@@ -93,13 +79,11 @@ const TourPackage: React.FC<TourPackageProps> = ({
         </div>
 
         {/* Women only badge */}
-        {isWomenOnly && (
-          <div className="absolute top-3 right-3 z-10">
+        {isWomenOnly && <div className="absolute top-3 right-3 z-10">
             <Badge className="bg-pink-500 text-white font-medium text-sm px-3 py-1 rounded-md border-none">
               Women Only
             </Badge>
-          </div>
-        )}
+          </div>}
       </div>
       
       <div className="p-4">
@@ -147,7 +131,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="default" className="flex-1 bg-spiti-slate hover:bg-spiti-forest">
+              <Button variant="default" className="flex-1 bg-spiti-forest">
                 <Send className="mr-1 w-4 h-4" />
                 <span>Enquiry</span>
               </Button>
@@ -158,8 +142,6 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Dialog>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default React.memo(TourPackage);
