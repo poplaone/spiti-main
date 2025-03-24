@@ -74,7 +74,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Popular Tours */}
+          {/* Popular Tours - Fixed links to correct routes */}
           <div>
             <h3 className="text-xl font-bold mb-4 text-sky-500">Popular Tours</h3>
             <ul className="space-y-2">

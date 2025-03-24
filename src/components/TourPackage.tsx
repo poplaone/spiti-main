@@ -43,6 +43,16 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
 
+// Create a memoized route mapping function to prevent unnecessary recalculations
+const getRouteMap = {
+  0: '/tour-bike',
+  1: '/tour-unexplored',
+  2: '/tour-buddhist',
+  3: '/tour-women',
+  4: '/tour-owncar',
+  5: '/tour-hiddenheaven'
+};
+
 const TourPackage: React.FC<TourPackageProps> = ({
   title,
   image,
@@ -57,29 +67,22 @@ const TourPackage: React.FC<TourPackageProps> = ({
   index,
   className = ""
 }) => {
-  // Function to get the correct route based on tour index
+  // Function to get the correct route based on tour index - optimized
   const getDetailRoute = () => {
     if (typeof index !== 'number') return '/';
-    
-    switch (index) {
-      case 0: return '/tour-bike';
-      case 1: return '/tour-unexplored';
-      case 2: return '/tour-buddhist';
-      case 3: return '/tour-women';
-      case 4: return '/tour-owncar';
-      case 5: return '/tour-hiddenheaven';
-      default: return '/';
-    }
+    return getRouteMap[index as keyof typeof getRouteMap] || '/';
   };
 
   return (
     <div className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className}`}>
       <div className="relative h-52 overflow-hidden">
-        {/* Image without text */}
+        {/* Image without text - optimized for performance with loading="lazy" */}
         <img 
           src={image} 
           alt={title} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy" 
+          decoding="async"
         />
         
         {/* Discount badge */}
@@ -159,4 +162,4 @@ const TourPackage: React.FC<TourPackageProps> = ({
   );
 };
 
-export default TourPackage;
+export default React.memo(TourPackage);
