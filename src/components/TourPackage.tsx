@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, MessageSquareMore, Send, CalendarCheck, Settings2 } from 'lucide-react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 interface NightStay {
@@ -61,12 +62,27 @@ const TourPackage: React.FC<TourPackageProps> = ({
   index,
   className = ""
 }) => {
+  const navigate = useNavigate();
+  
   // Function to get the correct route based on tour index - optimized
   const getDetailRoute = () => {
     if (typeof index !== 'number') return '/';
     return getRouteMap[index as keyof typeof getRouteMap] || '/';
   };
-  return <div className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className}`}>
+  
+  // Handler for card click to navigate to detail page
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Prevent navigation if clicking on the Enquiry button or its child elements
+    if ((e.target as HTMLElement).closest('.enquiry-btn')) {
+      return;
+    }
+    navigate(getDetailRoute());
+  };
+  
+  return <div 
+    className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className} cursor-pointer`}
+    onClick={handleCardClick}
+  >
       <div className="relative h-52 overflow-hidden">
         {/* Image without text - optimized for performance with loading="lazy" */}
         <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
@@ -131,7 +147,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="default" className="flex-1 bg-spiti-forest">
+              <Button variant="default" className="flex-1 bg-spiti-forest enquiry-btn">
                 <Send className="mr-1 w-4 h-4" />
                 <span>Enquiry</span>
               </Button>

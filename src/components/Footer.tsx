@@ -84,6 +84,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/tour-unexplored" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
+                </Link>
+              </li>
+              <li>
                 <Link to="/tour-buddhist" className="hover:text-spiti-green transition-colors flex items-center">
                   <ChevronRight size={16} className="mr-1" /> Buddhist and Tribal Circuit
                 </Link>
@@ -94,13 +99,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/tour-hiddenheaven" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Hidden Heaven Tour
+                <Link to="/tour-owncar" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Own Car Tour
                 </Link>
               </li>
               <li>
-                <Link to="/tour-unexplored" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
+                <Link to="/tour-hiddenheaven" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Hidden Heaven Tour
                 </Link>
               </li>
             </ul>
