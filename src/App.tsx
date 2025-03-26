@@ -35,7 +35,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
           
-          {/* Tour detail pages with clean routes */}
+          {/* Tour detail pages with clean routes - all 6 tour types */}
           <Route path="/tour-bike" element={<TourDetailBike />} />
           <Route path="/tour-unexplored" element={<TourDetailUnexplored />} />
           <Route path="/tour-buddhist" element={<TourDetailBuddhist />} />
