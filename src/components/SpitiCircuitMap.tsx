@@ -1,5 +1,7 @@
 
 import { useEffect, useRef } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Location data for the map
 const locations = [
@@ -37,9 +39,13 @@ const markerPositions = [
   0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95
 ];
 
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiZXhhbXBsZXVzZXIiLCJhIjoiY2s1eWJuc2c3MGlyNjNsbzQ2ajhyN2JwcyJ9.example'; // Replace with your token
+
 const SpitiCircuitMap = () => {
   const pathRef = useRef<SVGPathElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapboxMapRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
     if (!pathRef.current || !mapContainerRef.current) return;
@@ -103,6 +109,26 @@ const SpitiCircuitMap = () => {
     };
   }, []);
 
+  // Initialize Mapbox map
+  useEffect(() => {
+    if (!mapboxMapRef.current) return;
+    
+    mapboxgl.accessToken = MAPBOX_TOKEN;
+    
+    mapRef.current = new mapboxgl.Map({
+      container: mapboxMapRef.current,
+      style: 'mapbox://styles/mapbox/outdoors-v12', // Use outdoor style for terrain
+      center: [78.0999, 32.2432], // Spiti Valley coordinates
+      zoom: 7,
+      interactive: false, // Disable interactivity to prevent interference
+      attributionControl: false
+    });
+
+    return () => {
+      mapRef.current?.remove();
+    };
+  }, []);
+
   return (
     <div className="my-12 py-8 bg-white rounded-lg shadow-md">
       <div className="mx-auto px-4 text-center mb-8">
@@ -114,10 +140,20 @@ const SpitiCircuitMap = () => {
         </p>
       </div>
       
-      <div className="hero-container relative w-full h-[500px] md:h-[600px] flex justify-center items-center bg-white overflow-hidden">
+      <div className="hero-container relative w-full h-[500px] md:h-[600px] flex justify-center items-center overflow-hidden">
+        {/* Base Mapbox Map Layer */}
+        <div 
+          ref={mapboxMapRef} 
+          className="absolute inset-0 w-full h-full opacity-60"
+        ></div>
+        
+        {/* Semi-transparent overlay */}
+        <div className="absolute inset-0 bg-white/30 z-[1]"></div>
+        
+        {/* Circuit Map Overlay */}
         <div 
           ref={mapContainerRef} 
-          className="map-container relative w-[90%] h-[90%] max-w-5xl"
+          className="map-container relative w-[90%] h-[90%] max-w-5xl z-[2]"
         >
           <svg className="route absolute w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
             <path 
@@ -127,19 +163,11 @@ const SpitiCircuitMap = () => {
               className="fill-none stroke-spiti-brown stroke-[8px] sm:stroke-[12px] rounded-full"
             /> 
           </svg>
-          
-          <div className="title absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10 pointer-events-none">
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-spiti-dark leading-tight uppercase mb-2 font-['Arial_Black'] tracking-tighter">
-              Spiti Valley<br/>Whole Circuit Tour
-            </h1>
-            <div className="mt-2 sm:mt-4 text-base sm:text-lg md:text-xl font-bold text-spiti-blue">
-              JOIN US THIS SEASON
-            </div>
-            <div className="mt-1 text-base sm:text-lg md:text-xl font-bold text-green-600">
-              8353040008
-            </div>
-          </div>
         </div>
+      </div>
+      
+      <div className="mt-4 text-center text-sm text-gray-500">
+        <p>Use this map as a reference for our Spiti Valley Circuit Tour. For detailed itinerary, contact us at <span className="font-semibold">8353040008</span></p>
       </div>
     </div>
   );
