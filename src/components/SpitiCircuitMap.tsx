@@ -1,7 +1,11 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { InfoIcon } from 'lucide-react';
 
 // Location data for the map
 const locations = [
@@ -39,14 +43,18 @@ const markerPositions = [
   0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95
 ];
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiZXhhbXBsZXVzZXIiLCJhIjoiY2s1eWJuc2c3MGlyNjNsbzQ2ajhyN2JwcyJ9.example'; // Replace with your token
+// Default fallback background color
+const fallbackBackground = "bg-gradient-to-r from-blue-100 to-cyan-100";
 
 const SpitiCircuitMap = () => {
   const pathRef = useRef<SVGPathElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapboxMapRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
-
+  const [mapboxToken, setMapboxToken] = useState<string>(localStorage.getItem('mapbox_token') || '');
+  const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
+  const [mapError, setMapError] = useState<string>('');
+  
   useEffect(() => {
     if (!pathRef.current || !mapContainerRef.current) return;
 
@@ -109,23 +117,58 @@ const SpitiCircuitMap = () => {
     };
   }, []);
 
-  // Initialize Mapbox map
+  // Initialize Mapbox map when token is provided
+  const initializeMap = () => {
+    if (!mapboxMapRef.current || !mapboxToken) return;
+    
+    // Clean up previous map if any
+    if (mapRef.current) {
+      mapRef.current.remove();
+      mapRef.current = null;
+    }
+    
+    setMapError('');
+    
+    try {
+      mapboxgl.accessToken = mapboxToken;
+      
+      mapRef.current = new mapboxgl.Map({
+        container: mapboxMapRef.current,
+        style: 'mapbox://styles/mapbox/outdoors-v12', // Use outdoor style for terrain
+        center: [78.0999, 32.2432], // Spiti Valley coordinates
+        zoom: 7,
+        interactive: false, // Disable interactivity to prevent interference
+        attributionControl: false
+      });
+      
+      mapRef.current.on('load', () => {
+        setIsMapLoaded(true);
+        // Save token to localStorage for future visits
+        localStorage.setItem('mapbox_token', mapboxToken);
+      });
+      
+      mapRef.current.on('error', (e) => {
+        console.error('Mapbox error:', e);
+        setMapError('Failed to load map. Please check your Mapbox token.');
+        setIsMapLoaded(false);
+      });
+    } catch (error) {
+      console.error('Error initializing map:', error);
+      setMapError('Error initializing map. Please try again.');
+      setIsMapLoaded(false);
+    }
+  };
+  
+  // Try to initialize map on first load if token exists
   useEffect(() => {
-    if (!mapboxMapRef.current) return;
+    if (mapboxToken) {
+      initializeMap();
+    }
     
-    mapboxgl.accessToken = MAPBOX_TOKEN;
-    
-    mapRef.current = new mapboxgl.Map({
-      container: mapboxMapRef.current,
-      style: 'mapbox://styles/mapbox/outdoors-v12', // Use outdoor style for terrain
-      center: [78.0999, 32.2432], // Spiti Valley coordinates
-      zoom: 7,
-      interactive: false, // Disable interactivity to prevent interference
-      attributionControl: false
-    });
-
     return () => {
-      mapRef.current?.remove();
+      if (mapRef.current) {
+        mapRef.current.remove();
+      }
     };
   }, []);
 
@@ -140,15 +183,44 @@ const SpitiCircuitMap = () => {
         </p>
       </div>
       
-      <div className="hero-container relative w-full h-[500px] md:h-[600px] flex justify-center items-center overflow-hidden">
+      {/* Mapbox token input */}
+      {!isMapLoaded && (
+        <div className="max-w-xl mx-auto px-4 mb-8">
+          <Alert className="mb-4 bg-amber-50 border-amber-200">
+            <InfoIcon className="h-5 w-5 text-amber-500" />
+            <AlertDescription className="ml-2 text-sm">
+              To see the interactive map background, please enter your Mapbox access token. You can get a free token by signing up at <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" className="underline text-blue-600">mapbox.com</a>.
+            </AlertDescription>
+          </Alert>
+          
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              placeholder="Enter your Mapbox access token"
+              value={mapboxToken}
+              onChange={(e) => setMapboxToken(e.target.value)}
+              className="flex-1"
+            />
+            <Button onClick={initializeMap} variant="default">
+              Load Map
+            </Button>
+          </div>
+          
+          {mapError && (
+            <p className="mt-2 text-sm text-red-500">{mapError}</p>
+          )}
+        </div>
+      )}
+      
+      <div className={`hero-container relative w-full h-[500px] md:h-[600px] flex justify-center items-center overflow-hidden ${!isMapLoaded ? fallbackBackground : ''}`}>
         {/* Base Mapbox Map Layer */}
         <div 
           ref={mapboxMapRef} 
-          className="absolute inset-0 w-full h-full opacity-60"
+          className="absolute inset-0 w-full h-full opacity-70"
         ></div>
         
         {/* Semi-transparent overlay */}
-        <div className="absolute inset-0 bg-white/30 z-[1]"></div>
+        <div className="absolute inset-0 bg-white/20 z-[1]"></div>
         
         {/* Circuit Map Overlay */}
         <div 
