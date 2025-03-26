@@ -28,14 +28,14 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) 
               Road Trips
             </NavigationMenuTrigger>
             <NavigationMenuContent className="bg-spiti-forest/95 backdrop-blur-lg border-spiti-green">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg max-h-[80vh] overflow-y-auto">
                 {roadTripsTours.map((tour) => (
                   <Link 
                     key={tour.title} 
                     to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`} 
                     className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                   >
-                    <Card className="border-0 overflow-hidden bg-transparent">
+                    <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
                       <div className="relative h-40 overflow-hidden rounded-t-lg">
                         <img 
                           src={tour.image} 
@@ -57,14 +57,14 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) 
               Fixed Departures
             </NavigationMenuTrigger>
             <NavigationMenuContent className="bg-spiti-forest/95 backdrop-blur-lg border-spiti-green">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg max-h-[80vh] overflow-y-auto">
                 {fixedDepartureTours.map((tour) => (
                   <Link 
                     key={tour.title} 
                     to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`} 
                     className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                   >
-                    <Card className="border-0 overflow-hidden bg-transparent">
+                    <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
                       <div className="relative h-40 overflow-hidden rounded-t-lg">
                         <img 
                           src={tour.image} 
@@ -84,6 +84,12 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) 
           <NavigationMenuItem>
             <Link to="/about" className="font-medium transition-colors text-white hover:text-spiti-green flex items-center justify-center h-10 px-4 py-2">
               About
+            </Link>
+          </NavigationMenuItem>
+          
+          <NavigationMenuItem>
+            <Link to="/blog" className="font-medium transition-colors text-white hover:text-spiti-green flex items-center justify-center h-10 px-4 py-2">
+              Blog
             </Link>
           </NavigationMenuItem>
           

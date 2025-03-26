@@ -1,24 +1,27 @@
+
 import { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
+
 const images = [
-// Using stunning Spiti Valley related images from Unsplash
-"https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80",
-// Spiti Valley
-"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
-// Mountain landscape
-"https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1200&q=80" // Spiti valley type landscape
+  // Using stunning Spiti Valley related images from Unsplash
+  "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80", // First slide - Spiti Valley
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80", // Mountain landscape
+  "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1200&q=80" // Spiti valley type landscape
 ];
+
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
   const timeoutRef = useRef<number | null>(null);
+
   const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   };
+
   useEffect(() => {
     resetTimeout();
     timeoutRef.current = window.setTimeout(() => setCurrent(prevIndex => (prevIndex + 1) % images.length), 5000);
@@ -26,12 +29,15 @@ const HeroCarousel = () => {
       resetTimeout();
     };
   }, [current]);
+
   const goToPrevious = () => {
     setCurrent(current === 0 ? images.length - 1 : current - 1);
   };
+
   const goToNext = () => {
     setCurrent((current + 1) % images.length);
   };
+
   return <div className="relative w-full h-screen overflow-hidden">
       {images.map((src, index) => <div key={index} className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}>
           <img src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
@@ -59,4 +65,5 @@ const HeroCarousel = () => {
       </div>
     </div>;
 };
+
 export default HeroCarousel;

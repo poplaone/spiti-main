@@ -36,7 +36,7 @@ const MobileMenu = ({
               <Link 
                 key={tour.title} 
                 to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
-                className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 onClick={onClose}
               >
                 <div className="flex items-center space-x-3">
@@ -68,7 +68,7 @@ const MobileMenu = ({
               <Link 
                 key={tour.title} 
                 to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
-                className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 onClick={onClose}
               >
                 <div className="flex items-center space-x-3">
@@ -90,6 +90,10 @@ const MobileMenu = ({
       
       <Link to="/about" className="block text-white hover:text-spiti-green transition-colors" onClick={onClose}>
         About
+      </Link>
+
+      <Link to="/blog" className="block text-white hover:text-spiti-green transition-colors" onClick={onClose}>
+        Blog
       </Link>
       
       <Link to="/faq" className="block text-white hover:text-spiti-green transition-colors" onClick={onClose}>
