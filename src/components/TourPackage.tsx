@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -77,10 +78,11 @@ const TourPackage: React.FC<TourPackageProps> = ({
     navigate(getDetailRoute());
   };
   
-  return <div 
-    className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className} cursor-pointer`}
-    onClick={handleCardClick}
-  >
+  return (
+    <div 
+      className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className} cursor-pointer`}
+      onClick={handleCardClick}
+    >
       <div className="relative h-52 overflow-hidden">
         <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
         
@@ -101,7 +103,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
         <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2">{title}</h3>
         
         <div className="text-sm text-gray-600 mb-2">
-          Available from March to July
+          Available from June to October
         </div>
         
         <div className="flex items-center text-gray-700 text-sm mb-3">
@@ -147,7 +149,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Dialog>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default React.memo(TourPackage);

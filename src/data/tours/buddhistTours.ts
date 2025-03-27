@@ -46,6 +46,7 @@ export const buddhistTours: TourPackageProps[] = [
       "Any other services not specified above.",
       "Additional Costs due to Flight Cancellations, Road blocks, natural calamities and Political strikes."
     ],
+    overview: "Start your 11-day journey for Spiti Valley, a land of rugged mountains, ancient monasteries, and remote villages. Travel through stunning landscapes, from the lush hills of Shimla to the high-altitude deserts of Spiti. Explore charming villages, visit historic monasteries and witness the breathtaking beauty of Chandratal Lake. Experience thrilling drives through high mountain passes, cross Asia's highest suspension bridge, and soak in the serene vibes of Spitian culture. The journey ends in Manali, leaving you with unforgettable memories of the Himalayas.",
     itinerary: [
       {
         day: 1,
@@ -75,7 +76,7 @@ export const buddhistTours: TourPackageProps[] = [
       {
         day: 6,
         title: "Nako to Mudh - Ancient Monasteries & the Mystical Mummy",
-        description: "Wakeup early. After breakfast start your journey to Mudh Village. Visit Gue Village to see the 500-year-old Mummy of Sangha Tenzing (Buddhist monk). Stop at Tabo Monastery (1000 years old), known as the 'Ajanta of the Himalayas'. Explore Dhankar Monastery, perched dramatically on a cliff and witness the breathtaking confluence of the Pin and Spiti River. Enter Pin Valley National Park, home to the elusive Snow Leopard. Reach Mudh Village, the last village of Pin Valley. Overnight stay in Mudh."
+        description: "Wakeup early. After breakfast start your journey to Mudh Village. Visit Gue Village to see the 500-year-old Mummy of Sangha Tenzing(Buddhist monk). Stop at Tabo Monastery (1000 years old), known as the \"Ajanta of the Himalayas\". Explore Dhankar Monastery, perched dramatically on a cliff and witness the breathtaking confluence of the Pin and Spiti River. Enter Pin Valley National Park, home to the elusive Snow Leopard. Reach Mudh Village, the last village of Pin Valley. Overnight stay in Mudh."
       },
       {
         day: 7,
@@ -84,18 +85,18 @@ export const buddhistTours: TourPackageProps[] = [
       },
       {
         day: 8,
-        title: "Kaza - Hikkim - Komic - Langza - Kaza - World's Highest Villages & Fossils",
-        description: "After breakfast visit Kaza Monastery and Market (if missed last day). Visit Hikkim, home to the world's highest post office (send a postcard!). Explore Komic (world's highest motorable village) and its ancient Tangyud Monastery. Drive to Langza, known for fossils and the giant Buddha statue. Capture breathtaking views of Peaks. Return to Kaza for an overnight stay."
+        title: "Kaza - Hikkim - Komic - Langza - kaza - World's Highest Villages & Fossils",
+        description: "After breakfast visit Kaza Monastery and Market(if missed last day). Visit Hikkim, home to the world's highest post office (send a postcard). Explore Komic (world's highest motorable village) and its ancient Tangyud Monastery. Drive to Langza, known for fossils and the giant Buddha statue. Capture breathtaking views of Peaks. Return to Kaza for an overnight stay."
       },
       {
         day: 9,
         title: "Langza - Key - Kibber - Chandratal - Monasteries, Bridges & A Magical Lake",
-        description: "After breakfast start your journey for Chandratal Lake. Visit Key Monastery, the largest in Spiti, a renowned Tibetan Buddhist gompa that also serves as a training center for young monks. Interact with them to learn about their way of life. Explore Kibber Village, the starting point of the Parang La Trek to Ladakh and a popular spot for spotting snow leopards in winter. Cross Chicham Bridge, Asia's highest suspension bridge. Stop at Losar (last village of Spiti Valley) for lunch. Visit Kunzum Pass and Temple situated at an altitude of 4551 mtrs. Reach Chandratal Lake, the 'Moon Lake' till evening. Check in to the Camps. Visit lake if time permits or visit early morning before breakfast. Overnight stay at camps."
+        description: "After breakfast start your journey for Chandratal Lake. Visit Key Monastery, the largest in Spiti, a renowned Tibetan Buddhist gompa that also serves as a training center for young monks. Interact with them to learn about their way of life. Explore Kibber Village, the starting point of the Parang La Trek to Ladakh and a popular spot for spotting snow leopards in winter. Cross Chicham Bridge, Asia's highest suspension bridge. Stop at Losar (last village of Spiti Valley) for lunch. Visit Kunzum Pass and Temple situated at an altitude of 4551 mtrs. Reach Chandratal Lake, the \"Moon Lake\" till evening. Check in to the Camps. Visit lake if time permits or visit early morning before breakfast. Overnight stay at camps."
       },
       {
         day: 10,
         title: "Chandratal to Manali - Offroad Thrill & Tunnel Adventure",
-        description: "Wake early and visit Chandratal Lake (if skipped Last day). After breakfast start your journey for Manali. Start your drive via Batal – Gramphu, one of the most thrilling off-road routes. Stop at the Chacha-Chachi Dhaba for tea/snacks. Cross the Atal Tunnel (9 kms), the world's longest highway tunnel above 10,000 feet. Reach Manali, check in, and relax. Explore Mall Road & Café. Overnight stay in Manali."
+        description: "Wake early and visit Chandratal Lake.(if skipped Last day). After breakfast start your journey for Manali. Start your drive via Batal – Gramphu, one of the most thrilling off-road routes. Stop at the Chacha-Chachi Dhaba for tea/snacks. Cross the Atal Tunnel (9 kms), the world's longest highway tunnel above 10,000 feet. Reach Manali, check in, and relax. Explore Mall Road & Café. Overnight stay in Manali."
       },
       {
         day: 11,
@@ -103,7 +104,6 @@ export const buddhistTours: TourPackageProps[] = [
         description: "Enjoy a relaxed breakfast with a view of the mountains. Begin your journey back to Chandigarh, driving through lush valleys and scenic landscapes. Drop at Chandigarh Airport/Railway Station in the evening. Trip concludes with unforgettable memories of Spiti Valley. TOUR END"
       }
     ],
-    overview: "Embark on an 11-day journey through Spiti Valley, a land of rugged mountains, ancient monasteries, and remote villages. Travel through stunning landscapes, from the lush hills of Shimla to the high-altitude deserts of Spiti. Explore charming villages, visit historic monasteries and witness the breathtaking beauty of Chandratal Lake. Experience thrilling drives through high mountain passes, cross Asia's highest suspension bridge, and soak in the serene vibes of Spitian culture. The journey ends in Manali, leaving you with unforgettable memories of the Himalayas.",
     transportType: "car"
   }
 ];

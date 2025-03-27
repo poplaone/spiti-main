@@ -78,7 +78,7 @@ const TourDetail = () => {
     }}>
       <Header />
       
-      {/* Updated Hero Section with improved mobile styling */}
+      {/* Hero Section with Tour Title and Image */}
       <TourHero 
         tour={tour} 
         selectedMonth={selectedMonth} 

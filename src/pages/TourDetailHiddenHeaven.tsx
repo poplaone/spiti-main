@@ -17,7 +17,7 @@ import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 
 const TourDetailHiddenHeaven = () => {
-  // Using sixth tour (Hidden Heaven)
+  // Using Hidden Heaven tour
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
