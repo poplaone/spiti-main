@@ -1,7 +1,5 @@
 
 import { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -46,15 +44,76 @@ const markerPositions = [
 // Default fallback background color
 const fallbackBackground = "bg-gradient-to-r from-blue-100 to-cyan-100";
 
+// Spiti Valley center coordinates
+const SPITI_CENTER = { lat: 32.2432, lng: 78.0999 };
+
 const SpitiCircuitMap = () => {
   const pathRef = useRef<SVGPathElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapboxMapRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
-  const [mapboxToken, setMapboxToken] = useState<string>(localStorage.getItem('mapbox_token') || '');
+  const googleMapRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const [googleMapsKey, setGoogleMapsKey] = useState<string>(localStorage.getItem('google_maps_key') || '');
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
   const [mapError, setMapError] = useState<string>('');
+  const [scriptLoaded, setScriptLoaded] = useState<boolean>(false);
   
+  // Load Google Maps API script
+  useEffect(() => {
+    if (!googleMapsKey || scriptLoaded) return;
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    
+    // Define the callback function globally
+    window.initMap = () => {
+      setScriptLoaded(true);
+    };
+    
+    script.onerror = () => {
+      setMapError('Failed to load Google Maps. Please check your API key.');
+      setIsMapLoaded(false);
+    };
+    
+    document.head.appendChild(script);
+    
+    return () => {
+      document.head.removeChild(script);
+      delete window.initMap;
+    };
+  }, [googleMapsKey, scriptLoaded]);
+
+  // Initialize Google Map when script is loaded
+  useEffect(() => {
+    if (!scriptLoaded || !googleMapRef.current) return;
+    
+    try {
+      mapRef.current = new google.maps.Map(googleMapRef.current, {
+        center: SPITI_CENTER,
+        zoom: 9,
+        mapTypeId: google.maps.MapTypeId.TERRAIN,
+        disableDefaultUI: true,
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false
+      });
+      
+      setIsMapLoaded(true);
+      setMapError('');
+      
+      // Save token to localStorage for future visits
+      localStorage.setItem('google_maps_key', googleMapsKey);
+    } catch (error) {
+      console.error('Error initializing map:', error);
+      setMapError('Error initializing map. Please try again.');
+      setIsMapLoaded(false);
+    }
+  }, [scriptLoaded, googleMapsKey]);
+
   useEffect(() => {
     if (!pathRef.current || !mapContainerRef.current) return;
 
@@ -117,59 +176,64 @@ const SpitiCircuitMap = () => {
     };
   }, []);
 
-  // Initialize Mapbox map when token is provided
+  // Initialize Google Map when token is provided
   const initializeMap = () => {
-    if (!mapboxMapRef.current || !mapboxToken) return;
-    
-    // Clean up previous map if any
-    if (mapRef.current) {
-      mapRef.current.remove();
-      mapRef.current = null;
-    }
+    if (!googleMapRef.current || !googleMapsKey) return;
     
     setMapError('');
     
-    try {
-      mapboxgl.accessToken = mapboxToken;
+    // Load the Google Maps script if it hasn't been loaded already
+    if (!scriptLoaded) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMap`;
+      script.async = true;
+      script.defer = true;
       
-      mapRef.current = new mapboxgl.Map({
-        container: mapboxMapRef.current,
-        style: 'mapbox://styles/mapbox/outdoors-v12', // Use outdoor style for terrain
-        center: [78.0999, 32.2432], // Spiti Valley coordinates
-        zoom: 7,
-        interactive: false, // Disable interactivity to prevent interference
-        attributionControl: false
-      });
+      // Define the callback function globally
+      window.initMap = () => {
+        setScriptLoaded(true);
+      };
       
-      mapRef.current.on('load', () => {
-        setIsMapLoaded(true);
-        // Save token to localStorage for future visits
-        localStorage.setItem('mapbox_token', mapboxToken);
-      });
-      
-      mapRef.current.on('error', (e) => {
-        console.error('Mapbox error:', e);
-        setMapError('Failed to load map. Please check your Mapbox token.');
+      script.onerror = () => {
+        setMapError('Failed to load Google Maps. Please check your API key.');
         setIsMapLoaded(false);
-      });
-    } catch (error) {
-      console.error('Error initializing map:', error);
-      setMapError('Error initializing map. Please try again.');
-      setIsMapLoaded(false);
+      };
+      
+      document.head.appendChild(script);
+    } else {
+      // If script is already loaded, initialize the map directly
+      try {
+        mapRef.current = new google.maps.Map(googleMapRef.current, {
+          center: SPITI_CENTER,
+          zoom: 9,
+          mapTypeId: google.maps.MapTypeId.TERRAIN,
+          disableDefaultUI: true,
+          zoomControl: false,
+          mapTypeControl: false,
+          scaleControl: false,
+          streetViewControl: false,
+          rotateControl: false,
+          fullscreenControl: false
+        });
+        
+        setIsMapLoaded(true);
+        setMapError('');
+        
+        // Save token to localStorage for future visits
+        localStorage.setItem('google_maps_key', googleMapsKey);
+      } catch (error) {
+        console.error('Error initializing map:', error);
+        setMapError('Error initializing map. Please try again.');
+        setIsMapLoaded(false);
+      }
     }
   };
   
   // Try to initialize map on first load if token exists
   useEffect(() => {
-    if (mapboxToken) {
+    if (googleMapsKey) {
       initializeMap();
     }
-    
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-      }
-    };
   }, []);
 
   return (
@@ -183,22 +247,22 @@ const SpitiCircuitMap = () => {
         </p>
       </div>
       
-      {/* Mapbox token input */}
+      {/* Google Maps API key input */}
       {!isMapLoaded && (
         <div className="max-w-xl mx-auto px-4 mb-8">
           <Alert className="mb-4 bg-amber-50 border-amber-200">
             <InfoIcon className="h-5 w-5 text-amber-500" />
             <AlertDescription className="ml-2 text-sm">
-              To see the interactive map background, please enter your Mapbox access token. You can get a free token by signing up at <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" className="underline text-blue-600">mapbox.com</a>.
+              To see the interactive map background, please enter your Google Maps API key. You can get a free API key by visiting the <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank" rel="noopener noreferrer" className="underline text-blue-600">Google Maps Platform</a>.
             </AlertDescription>
           </Alert>
           
           <div className="flex gap-2">
             <Input
               type="text"
-              placeholder="Enter your Mapbox access token"
-              value={mapboxToken}
-              onChange={(e) => setMapboxToken(e.target.value)}
+              placeholder="Enter your Google Maps API key"
+              value={googleMapsKey}
+              onChange={(e) => setGoogleMapsKey(e.target.value)}
               className="flex-1"
             />
             <Button onClick={initializeMap} variant="default">
@@ -213,9 +277,9 @@ const SpitiCircuitMap = () => {
       )}
       
       <div className={`hero-container relative w-full h-[500px] md:h-[600px] flex justify-center items-center overflow-hidden ${!isMapLoaded ? fallbackBackground : ''}`}>
-        {/* Base Mapbox Map Layer */}
+        {/* Base Google Map Layer */}
         <div 
-          ref={mapboxMapRef} 
+          ref={googleMapRef} 
           className="absolute inset-0 w-full h-full opacity-70"
         ></div>
         
@@ -243,6 +307,13 @@ const SpitiCircuitMap = () => {
       </div>
     </div>
   );
+}
+
+// Add TypeScript interface for the global window object to include initMap
+declare global {
+  interface Window {
+    initMap: () => void;
+  }
 }
 
 export default SpitiCircuitMap;
