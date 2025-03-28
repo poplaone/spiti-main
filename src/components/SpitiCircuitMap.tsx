@@ -309,10 +309,11 @@ const SpitiCircuitMap = () => {
   );
 }
 
-// Add TypeScript interface for the global window object to include initMap
+// Explicitly define the Google Maps window interface
 declare global {
   interface Window {
     initMap: () => void;
+    google: typeof google;
   }
 }
 
