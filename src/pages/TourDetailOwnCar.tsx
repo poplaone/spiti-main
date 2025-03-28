@@ -63,7 +63,7 @@ const TourDetailOwnCar = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=1200&q=80"
+        heroImage="public/lovable-uploads/b619b7ac-daf4-4da4-8ebc-f30d0c9d883f.png"
       />
 
       {/* Package Details Section */}

@@ -63,7 +63,7 @@ const TourDetailBike = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="https://images.unsplash.com/photo-1561731216-c3a4d99437d5?q=80&w=1200"
+        heroImage="public/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png"
       />
 
       {/* Package Details Section */}
