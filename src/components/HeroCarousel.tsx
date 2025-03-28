@@ -45,9 +45,11 @@ const HeroCarousel = () => {
         </div>)}
       
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-0 md:mt-16">
-        <img alt="Spiti Logo" className="w-28 h-28 mb-4 md:mb-8 mt-[-90px] md:mt-0" style={{
-        filter: 'brightness(0) invert(1)'
-      }} src="/lovable-uploads/2d33bd3b-463f-448a-ad98-e5722ad15898.png" />
+        <img 
+          alt="Spiti Logo" 
+          className="w-28 h-28 mb-4 md:mb-8 mt-[-90px] md:mt-0" 
+          src="/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" 
+        />
         <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
         <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Begin your Spiti adventure with us – your local guides to explore more...</p>
       </div>
