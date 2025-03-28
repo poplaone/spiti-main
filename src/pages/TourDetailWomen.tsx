@@ -63,7 +63,7 @@ const TourDetailWomen = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&q=80"
+        heroImage="public/lovable-uploads/bc21cc57-f972-4cd7-af1f-ca1542135c90.png"
       />
 
       {/* Package Details Section */}

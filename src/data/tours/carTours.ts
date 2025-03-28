@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/components/TourPackage';
 export const carTours: TourPackageProps[] = [
   {
     title: "UNEXPLORED SPITI",
-    image: "public/lovable-uploads/a122e2c4-bd62-41e0-ab07-d5e16dd5bb42.png",
+    image: "public/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png",
     originalPrice: 36125,
     discountedPrice: 28900,
     discount: 25,
@@ -102,7 +102,7 @@ export const carTours: TourPackageProps[] = [
   },
   {
     title: "HIDDEN HEAVEN - SPITI VALLEY",
-    image: "public/lovable-uploads/45fbb6b0-d8f5-4d0f-95b1-5ecfce12b08d.png",
+    image: "public/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png",
     originalPrice: 26875,
     discountedPrice: 21500,
     discount: 25,

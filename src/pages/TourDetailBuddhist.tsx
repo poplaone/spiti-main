@@ -62,7 +62,7 @@ const TourDetailBuddhist = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="https://images.unsplash.com/photo-1544071013-fb2176ad56d5?w=1200&q=80"
+        heroImage="public/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png"
       />
 
       {/* Package Details Section remains the same */}
