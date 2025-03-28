@@ -99,7 +99,8 @@ const TourHero: React.FC<TourHeroProps> = ({
             </Badge>
           </div>
           
-          <div className="flex items-center space-x-2 mt-1 sm:mt-4">
+          {/* Price section - Hidden on mobile, visible on desktop */}
+          <div className="hidden sm:flex items-center space-x-2 mt-1 sm:mt-4">
             <span className="text-2xl sm:text-3xl font-bold text-green-400">₹{formatPrice(tour.discountedPrice)}/-</span>
             <span className="text-sm sm:text-lg line-through opacity-75 text-white">₹{formatPrice(tour.originalPrice)}/-</span>
             <Badge className="bg-red-500 text-sm sm:text-base px-2 sm:px-3 py-0.5 sm:py-1">{tour.discount}% OFF</Badge>
