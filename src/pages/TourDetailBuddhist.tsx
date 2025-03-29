@@ -57,13 +57,13 @@ const TourDetailBuddhist = () => {
     }}>
       <Header />
       
-      {/* Updated Hero Section with improved mobile styling */}
+      {/* Updated Hero Section with Tour Title and Image */}
       <TourHero 
         tour={tour} 
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png"
+        heroImage="/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png" // Swapped with Hidden Heaven image
       />
 
       {/* Package Details Section remains the same */}

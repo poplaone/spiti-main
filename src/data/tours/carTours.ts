@@ -103,7 +103,7 @@ export const unexploredTours: TourPackageProps[] = [
   // Adding Hidden Heaven tour as part of car tours
   {
     title: "HIDDEN HEAVEN - SPITI VALLEY",
-    image: "/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png",
+    image: "/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png", // Swapped with Buddhist tour image
     originalPrice: 26875,
     discountedPrice: 21500,
     discount: 25,

@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/components/TourPackage';
 export const buddhistTours: TourPackageProps[] = [
   {
     title: "BUDDHIST AND TRIBAL CIRCUIT–SPITI",
-    image: "/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png",
+    image: "/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png", // Swapped with Hidden Heaven image
     originalPrice: 39375,
     discountedPrice: 31500,
     discount: 25,
