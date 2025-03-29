@@ -1,7 +1,7 @@
 
 import { TourPackageProps } from '@/components/TourPackage';
 import { bikeTours } from './tours/bikeTours';
-import { carTours } from './tours/carTours';
+import { unexploredTours } from './tours/carTours';
 import { ownCarTours } from './tours/ownCarTours';
 import { womenOnlyTours } from './tours/womenOnlyTours';
 import { buddhistTours } from './tours/buddhistTours';
@@ -9,16 +9,17 @@ import { buddhistTours } from './tours/buddhistTours';
 // Combine all tour types into a single array
 export const tourPackagesData: TourPackageProps[] = [
   ...bikeTours,
-  ...carTours,
-  ...ownCarTours,
+  ...unexploredTours,
+  ...buddhistTours,
   ...womenOnlyTours,
-  ...buddhistTours
+  ...ownCarTours,
+  ...unexploredTours.filter(tour => tour.title === "HIDDEN HEAVEN - SPITI VALLEY")
 ];
 
 // Export individual tour categories for more targeted usage
 export {
   bikeTours,
-  carTours,
+  unexploredTours as carTours,
   ownCarTours,
   womenOnlyTours,
   buddhistTours

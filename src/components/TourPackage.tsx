@@ -41,6 +41,7 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
 
+// Fix the route mapping to ensure each index matches the correct tour page
 const getRouteMap = {
   0: '/tour-bike',
   1: '/tour-unexplored',
