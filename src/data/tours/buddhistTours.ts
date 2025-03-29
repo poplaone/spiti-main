@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/components/TourPackage';
 export const buddhistTours: TourPackageProps[] = [
   {
     title: "BUDDHIST AND TRIBAL CIRCUIT–SPITI",
-    image: "public/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png",
+    image: "/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png",
     originalPrice: 39375,
     discountedPrice: 31500,
     discount: 25,

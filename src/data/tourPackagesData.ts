@@ -9,7 +9,7 @@ import { buddhistTours } from './tours/buddhistTours';
 // Combine all tour types into a single array
 export const tourPackagesData: TourPackageProps[] = [
   ...bikeTours,
-  ...unexploredTours,
+  ...unexploredTours.filter(tour => tour.title !== "HIDDEN HEAVEN - SPITI VALLEY"),
   ...buddhistTours,
   ...womenOnlyTours,
   ...ownCarTours,

@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/components/TourPackage';
 export const womenOnlyTours: TourPackageProps[] = [
   {
     title: "SPITI VALLEY WOMEN ONLY TOUR",
-    image: "public/lovable-uploads/bc21cc57-f972-4cd7-af1f-ca1542135c90.png",
+    image: "/lovable-uploads/bc21cc57-f972-4cd7-af1f-ca1542135c90.png",
     originalPrice: 32750,
     discountedPrice: 26200,
     discount: 25,

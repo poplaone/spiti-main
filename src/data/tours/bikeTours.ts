@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/components/TourPackage';
 export const bikeTours: TourPackageProps[] = [
   {
     title: "LAHAUL SPITI - BIKE TOUR",
-    image: "public/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png",
+    image: "/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png",
     originalPrice: 48125,
     discountedPrice: 38500,
     discount: 25,
@@ -17,7 +17,7 @@ export const bikeTours: TourPackageProps[] = [
       { location: "Sangla", nights: 1 },
       { location: "Nako", nights: 1 },
       { location: "Kaza", nights: 2 },
-      { location: "Chandertaal", nights: 1 },
+      { location: "Chandrataal", nights: 1 },
       { location: "Manali", nights: 1 }
     ],
     inclusions: [

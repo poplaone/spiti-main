@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/components/TourPackage';
 export const unexploredTours: TourPackageProps[] = [
   {
     title: "UNEXPLORED SPITI",
-    image: "public/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png",
+    image: "/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png",
     originalPrice: 36125,
     discountedPrice: 28900,
     discount: 25,
@@ -100,9 +100,10 @@ export const unexploredTours: TourPackageProps[] = [
     ],
     transportType: "car"
   },
+  // Adding Hidden Heaven tour as part of car tours
   {
     title: "HIDDEN HEAVEN - SPITI VALLEY",
-    image: "public/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png",
+    image: "/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png",
     originalPrice: 26875,
     discountedPrice: 21500,
     discount: 25,
@@ -113,9 +114,9 @@ export const unexploredTours: TourPackageProps[] = [
     nightStays: [
       { location: "Shimla", nights: 2 },
       { location: "Sangla", nights: 1 },
+      { location: "Kalpa", nights: 1 },
       { location: "Nako", nights: 1 },
-      { location: "Kaza", nights: 2 },
-      { location: "Kalpa", nights: 1 }
+      { location: "Kaza", nights: 2 }
     ],
     inclusions: [
       "All sightseeing as per itinerary by Innova Crysta/Ertiga/Tempo Traveler/Similar.",

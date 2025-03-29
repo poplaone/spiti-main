@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -62,7 +63,7 @@ const TourDetailBuddhist = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="public/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png"
+        heroImage="/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png"
       />
 
       {/* Package Details Section remains the same */}

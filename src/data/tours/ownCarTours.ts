@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/components/TourPackage';
 export const ownCarTours: TourPackageProps[] = [
   {
     title: "SPITI VALLEY TOUR IN YOUR OWN CAR",
-    image: "public/lovable-uploads/b619b7ac-daf4-4da4-8ebc-f30d0c9d883f.png",
+    image: "/lovable-uploads/b619b7ac-daf4-4da4-8ebc-f30d0c9d883f.png",
     originalPrice: 32000,
     discountedPrice: 25600,
     discount: 25,
