@@ -100,7 +100,7 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="w-full max-w-md bg-white/80 backdrop-blur-sm p-6 md:p-6 shadow-lg rounded-lg">
+    <form onSubmit={(e) => e.preventDefault()} className="w-full max-w-md bg-white/70 backdrop-blur-sm p-6 md:p-6 shadow-lg rounded-lg">
       <h3 className="text-lg md:text-xl mb-6 font-semibold text-center">Get Free Tour Plan</h3>
       
       <div className="space-y-4">
@@ -130,25 +130,35 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
           icon={Phone}
         />
 
-        <div className="grid grid-cols-2 gap-4">
-          <DurationSelect onValueChange={handleSelectChange} />
-          
-          <FormInput 
-            id="guests"
-            type="number"
-            min="1"
-            placeholder="Guests"
-            value={formData.guests}
-            onChange={handleInputChange}
-            icon={Users}
-          />
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm font-medium">Tour Duration</span>
+            <span className="text-sm font-medium">Number of Guests</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <DurationSelect onValueChange={handleSelectChange} />
+            
+            <FormInput 
+              id="guests"
+              type="number"
+              min="1"
+              placeholder="Guests"
+              value={formData.guests}
+              onChange={handleInputChange}
+              icon={Users}
+            />
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <DatePickerInput date={date} setDate={setDate} />
-          
-          <div className="pt-2">
-            <div className="grid grid-cols-2 gap-4">
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm font-medium">Travel Date</span>
+            <span className="text-sm font-medium">Tour Type</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <DatePickerInput date={date} setDate={setDate} />
+            
+            <div className="flex flex-col space-y-2">
               <CheckboxOption 
                 id="isCustomized"
                 label="Customized"
