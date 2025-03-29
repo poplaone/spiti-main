@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -77,9 +77,18 @@ const HeroCarousel = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-[-120px] md:mt-0">
         <img 
           alt="Spiti Logo" 
-          className="w-40 h-40 mb-4 md:mb-8 mt-[-90px] md:mt-0" 
+          className="w-40 h-40 mb-2 md:mb-4 mt-[-90px] md:mt-0" 
           src="/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" 
         />
+        
+        {/* Google Ratings Badge */}
+        <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full mb-3 md:mb-5">
+          <span className="text-white font-semibold">4.9</span>
+          <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+          <span className="text-white/90 text-sm">on Google ratings</span>
+          <span className="text-white/80 text-sm ml-1">1k+ reviews</span>
+        </div>
+        
         <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
         <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Begin your Spiti adventure with us – your local guides to explore more...</p>
         
