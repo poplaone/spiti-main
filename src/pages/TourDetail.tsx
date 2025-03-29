@@ -17,15 +17,15 @@ import TourInclusions from "@/components/tour/TourInclusions";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 
-// Array of hero images for different tour types - using the uploaded images
+// Array of hero images for different tour types - correct paths for deployment
 const heroImages = [
-  "public/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png", // Bike tour
-  "public/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png", // Unexplored
-  "public/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png", // Buddhist
-  "public/lovable-uploads/bc21cc57-f972-4cd7-af1f-ca1542135c90.png", // Women
-  "public/lovable-uploads/b619b7ac-daf4-4da4-8ebc-f30d0c9d883f.png", // Own Car
-  "public/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png", // Hidden Heaven
-  "public/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png", // Default
+  "/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png", // Bike tour
+  "/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png", // Unexplored
+  "/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png", // Buddhist
+  "/lovable-uploads/bc21cc57-f972-4cd7-af1f-ca1542135c90.png", // Women
+  "/lovable-uploads/b619b7ac-daf4-4da4-8ebc-f30d0c9d883f.png", // Own Car
+  "/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png", // Hidden Heaven
+  "/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png", // Default
 ];
 
 const TourDetail = () => {

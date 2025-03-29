@@ -63,7 +63,7 @@ const TourDetailHiddenHeaven = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="public/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png"
+        heroImage="/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png"
       />
 
       {/* Package Details Section */}

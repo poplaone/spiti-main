@@ -8,7 +8,7 @@ const TourPackages = () => {
   return (
     <section className="py-16 relative bg-cover bg-center bg-no-repeat" 
       style={{ 
-        backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('public/lovable-uploads/a811740d-73fd-4b4e-b9d5-a993a272be04.png')`,
+        backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/lovable-uploads/a811740d-73fd-4b4e-b9d5-a993a272be04.png')`,
         backgroundAttachment: 'fixed'
       }}>
       <div className="container mx-auto px-4">
