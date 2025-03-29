@@ -1,7 +1,7 @@
 
 import { TourPackageProps } from '@/components/TourPackage';
 
-export const carTours: TourPackageProps[] = [
+export const unexploredTours: TourPackageProps[] = [
   {
     title: "UNEXPLORED SPITI",
     image: "public/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png",
