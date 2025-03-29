@@ -1,14 +1,13 @@
-
 import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, User, Tag, Clock } from 'lucide-react';
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import LeadForm from "@/components/LeadForm";
+import { BlogPost } from '@/types/blog';
+import BlogHero from '@/components/blog/BlogHero';
+import FeaturedPost from '@/components/blog/FeaturedPost';
+import BlogPostGrid from '@/components/blog/BlogPostGrid';
+import FullBlogPost from '@/components/blog/FullBlogPost';
 
-const blogPosts = [
+const blogPosts: BlogPost[] = [
   {
     id: 1,
     title: "10 Hidden Gems in Spiti Valley You Must Explore",
@@ -115,131 +114,10 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
-      {/* Hero section with main blog post */}
-      <section className="pt-20 md:pt-24 pb-16 bg-spiti-forest text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Spiti Valley Travel Blog</h1>
-            <p className="text-lg text-white/80">Discover tips, stories, and insights from our adventures in the beautiful Spiti Valley</p>
-          </div>
-        </div>
-      </section>
-      
-      {/* Featured Blog Post */}
-      <section className="-mt-8 mb-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="md:flex">
-              <div className="md:w-1/2">
-                <img src={featuredPost.image} alt={featuredPost.title} className="h-full w-full object-cover" />
-              </div>
-              <div className="md:w-1/2 p-6 md:p-8">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">{featuredPost.category}</Badge>
-                  <span className="text-sm text-gray-500 flex items-center">
-                    <Clock className="w-3 h-3 mr-1" /> {featuredPost.readTime}
-                  </span>
-                </div>
-                
-                <h2 className="text-2xl font-bold mb-4">{featuredPost.title}</h2>
-                <p className="text-gray-600 mb-6">{featuredPost.excerpt}</p>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 rounded-full bg-spiti-slate flex items-center justify-center text-white font-semibold">
-                      {featuredPost.author.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="font-medium">{featuredPost.author}</div>
-                      <div className="text-sm text-gray-500 flex items-center">
-                        <Calendar className="w-3 h-3 mr-1" /> {featuredPost.date}
-                      </div>
-                    </div>
-                  </div>
-                  <Button variant="outline" className="border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white" asChild>
-                    <a href="#full-post">Read More</a>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Recent Blog Posts Grid */}
-      <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8 text-center">Recent Articles</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {recentPosts.map(post => (
-              <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                <div className="h-48 overflow-hidden">
-                  <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">{post.category}</Badge>
-                    <span className="text-sm text-gray-500 flex items-center">
-                      <Clock className="w-3 h-3 mr-1" /> {post.readTime}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-xl mb-2">{post.title}</h3>
-                  <p className="text-gray-600 mb-4 line-clamp-2">{post.excerpt}</p>
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-500 flex items-center">
-                      <Calendar className="w-3 h-3 mr-1" /> {post.date}
-                    </div>
-                    <Button variant="link" className="text-spiti-forest p-0 h-auto">Read More</Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
-      {/* Full Blog Post */}
-      <section id="full-post" className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold mb-6">{featuredPost.title}</h2>
-              <div className="flex items-center space-x-4 mb-6">
-                <div className="flex items-center">
-                  <User className="w-4 h-4 mr-2 text-gray-500" />
-                  <span className="text-gray-700">{featuredPost.author}</span>
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-2 text-gray-500" />
-                  <span className="text-gray-700">{featuredPost.date}</span>
-                </div>
-                <div className="flex items-center">
-                  <Tag className="w-4 h-4 mr-2 text-gray-500" />
-                  <span className="text-gray-700">{featuredPost.category}</span>
-                </div>
-              </div>
-              <img src={featuredPost.image} alt={featuredPost.title} className="w-full h-80 object-cover rounded-lg mb-8" />
-              <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: featuredPost.content }} />
-            </div>
-            
-            <div className="mt-12 p-6 bg-gray-50 rounded-lg">
-              <h3 className="text-xl font-bold mb-4">Ready to Experience Spiti Valley?</h3>
-              <p className="mb-6">Book your adventure with our expert local guides and discover all these hidden gems for yourself.</p>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="bg-spiti-forest hover:bg-spiti-forest/90">Plan Your Journey Now</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <LeadForm />
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-        </div>
-      </section>
-      
+      <BlogHero />
+      <FeaturedPost post={featuredPost} />
+      <BlogPostGrid posts={recentPosts} />
+      <FullBlogPost post={featuredPost} />
       <Footer />
     </div>
   );
