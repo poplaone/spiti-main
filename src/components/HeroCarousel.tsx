@@ -4,18 +4,30 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
+import { useIsMobile } from '@/hooks/use-mobile';
 
-const images = [
-  // Using properly formatted image URLs that should work on deployment
+// Different sets of images for mobile and desktop
+const desktopImages = [
   "https://images.unsplash.com/photo-1580289143186-03f54224aad6?auto=format&fit=crop&w=1200&q=80", // First slide - Spiti Valley
   "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80", // Mountain landscape
   "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80", // Spiti valley type landscape
-  "/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" // Added your logo as the fourth slide
+  "/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" // Logo as the fourth slide
+];
+
+const mobileImages = [
+  "/lovable-uploads/fa13766a-c062-495a-bbe3-ba96893628e0.png", // Snowy temple/monastery
+  "/lovable-uploads/fe95c61b-1c4d-48be-9e18-1d3b19b7c41e.png", // River valley
+  "/lovable-uploads/e1880eea-44e0-430e-8627-101560cff518.png", // Child at doorway
+  "/lovable-uploads/adad2c0d-065d-4ed9-a5f6-70262700ac90.png"  // Motorcycles on mountain road
 ];
 
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
   const timeoutRef = useRef<number | null>(null);
+  const isMobile = useIsMobile();
+  
+  // Use the appropriate image set based on device type
+  const images = isMobile ? mobileImages : desktopImages;
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -29,7 +41,7 @@ const HeroCarousel = () => {
     return () => {
       resetTimeout();
     };
-  }, [current]);
+  }, [current, images.length]);
 
   const goToPrevious = () => {
     setCurrent(current === 0 ? images.length - 1 : current - 1);
@@ -40,10 +52,20 @@ const HeroCarousel = () => {
   };
 
   return <div className="relative w-full h-screen overflow-hidden">
-      {images.map((src, index) => <div key={index} className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}>
-          <img src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" loading="eager" />
+      {images.map((src, index) => (
+        <div 
+          key={index} 
+          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}
+        >
+          <img 
+            src={src} 
+            alt={`Slide ${index + 1}`} 
+            className="w-full h-full object-cover" 
+            loading={index === 0 ? "eager" : "lazy"} 
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
-        </div>)}
+        </div>
+      ))}
       
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-0 md:mt-16">
         <img 
@@ -64,7 +86,13 @@ const HeroCarousel = () => {
       </Button>
       
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-        {images.map((_, index) => <button key={index} className={`w-3 h-3 rounded-full ${index === current ? 'bg-white' : 'bg-white/50'}`} onClick={() => setCurrent(index)} />)}
+        {images.map((_, index) => (
+          <button 
+            key={index} 
+            className={`w-3 h-3 rounded-full ${index === current ? 'bg-white' : 'bg-white/50'}`} 
+            onClick={() => setCurrent(index)} 
+          />
+        ))}
       </div>
     </div>;
 };
