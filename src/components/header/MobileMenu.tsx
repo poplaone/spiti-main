@@ -22,6 +22,16 @@ const MobileMenu = ({
 }: MobileMenuProps) => {
   if (!isOpen) return null;
 
+  const getTourRoute = (tour: TourPackageProps) => {
+    // Map tour types to route names
+    if (tour.transportType === 'bike') return '/tour-bike';
+    if (tour.title === 'HIDDEN HEAVEN - SPITI VALLEY') return '/tour-hiddenheaven';
+    if (tour.title.includes('BUDDHIST')) return '/tour-buddhist';
+    if (tour.title.includes('WOMEN')) return '/tour-women';
+    if (tour.title.includes('OWN CAR')) return '/tour-owncar';
+    return '/tour-unexplored';
+  };
+
   return (
     <div className="md:hidden absolute top-16 left-0 right-0 bg-spiti-forest/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
       <Popover>
@@ -35,7 +45,7 @@ const MobileMenu = ({
             {roadTripsTours.map((tour) => (
               <Link 
                 key={tour.title} 
-                to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
+                to={getTourRoute(tour)}
                 className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 onClick={onClose}
               >
@@ -67,7 +77,7 @@ const MobileMenu = ({
             {fixedDepartureTours.map((tour) => (
               <Link 
                 key={tour.title} 
-                to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
+                to={getTourRoute(tour)}
                 className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 onClick={onClose}
               >

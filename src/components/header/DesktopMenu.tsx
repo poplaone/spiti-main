@@ -19,6 +19,16 @@ interface DesktopMenuProps {
 }
 
 const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) => {
+  const getTourRoute = (tour: TourPackageProps) => {
+    // Map tour types to route names
+    if (tour.transportType === 'bike') return '/tour-bike';
+    if (tour.title === 'HIDDEN HEAVEN - SPITI VALLEY') return '/tour-hiddenheaven';
+    if (tour.title.includes('BUDDHIST')) return '/tour-buddhist';
+    if (tour.title.includes('WOMEN')) return '/tour-women';
+    if (tour.title.includes('OWN CAR')) return '/tour-owncar';
+    return '/tour-unexplored';
+  };
+
   return (
     <div className="hidden md:block">
       <NavigationMenu>
@@ -32,7 +42,7 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) 
                 {roadTripsTours.map((tour) => (
                   <Link 
                     key={tour.title} 
-                    to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`} 
+                    to={getTourRoute(tour)} 
                     className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                   >
                     <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
@@ -61,7 +71,7 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) 
                 {fixedDepartureTours.map((tour) => (
                   <Link 
                     key={tour.title} 
-                    to={`/tour-${tour.title.toLowerCase().replace(/\s+/g, '-')}`} 
+                    to={getTourRoute(tour)} 
                     className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                   >
                     <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
