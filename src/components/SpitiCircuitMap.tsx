@@ -1,209 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { InfoIcon } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { fallbackBackground } from '@/data/mapData';
+import GoogleMapsKeyInput from './map/GoogleMapsKeyInput';
+import CircuitRouteSvg from './map/CircuitRouteSvg';
+import GoogleMapBackground from './map/GoogleMapBackground';
+import { useGoogleMapsScript } from '@/hooks/useGoogleMapsScript';
 
-// Location data for the map
-const locations = [
-  { name: "Manali", x: 50, y: 480 },
-  { name: "Atal Tunnel", x: 80, y: 170 },
-  { name: "Solang Valley", x: 150, y: 300 },
-  { name: "Kullu", x: 110, y: 600 },
-  { name: "Narkanda", x: 350, y: 760 },
-  { name: "Shimla", x: 200, y: 800 },
-  { name: "Kufri", x: 260, y: 780 },
-  { name: "Rampur", x: 450, y: 730 },
-  { name: "Sangla", x: 530, y: 850 },
-  { name: "Chitkul", x: 630, y: 870 },
-  { name: "Rakcham", x: 600, y: 810 },
-  { name: "Pooh Village", x: 680, y: 700 },
-  { name: "Nako", x: 840, y: 480 },
-  { name: "Tabo", x: 750, y: 450 },
-  { name: "Dhankar", x: 720, y: 200 },
-  { name: "Hikkim", x: 670, y: 150 },
-  { name: "Komic", x: 720, y: 90 },
-  { name: "Langza", x: 650, y: 60 },
-  { name: "Kaza", x: 600, y: 250 },
-  { name: "Key Monastery", x: 500, y: 200 },
-  { name: "Kibber", x: 450, y: 180 },
-  { name: "Kunzum La", x: 350, y: 150 },
-  { name: "Chandra Taal", x: 200, y: 80 },
-  { name: "Chicham Bridge", x: 300, y: 50 },
-  { name: "Khab Sangam", x: 730, y: 580 },
-  { name: "Gue Village", x: 800, y: 280 }
-];
-
-// Route marker positions
-const markerPositions = [
-  0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 
-  0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95
-];
-
-// Default fallback background color
-const fallbackBackground = "bg-gradient-to-r from-blue-100 to-cyan-100";
-
-// Spiti Valley center coordinates
-const SPITI_CENTER = { lat: 32.2432, lng: 78.0999 };
+// Define the Google Maps window interface
+declare global {
+  interface Window {
+    initMap: () => void;
+    google: typeof google;
+  }
+}
 
 const SpitiCircuitMap = () => {
-  const pathRef = useRef<SVGPathElement>(null);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
   const googleMapRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
   const [googleMapsKey, setGoogleMapsKey] = useState<string>(localStorage.getItem('google_maps_key') || '');
   const [isMapLoaded, setIsMapLoaded] = useState<boolean>(false);
   const [mapError, setMapError] = useState<string>('');
-  const [scriptLoaded, setScriptLoaded] = useState<boolean>(false);
   
-  // Load Google Maps API script
-  useEffect(() => {
-    if (!googleMapsKey || scriptLoaded) return;
-
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMap`;
-    script.async = true;
-    script.defer = true;
-    
-    // Define the callback function globally
-    window.initMap = () => {
-      setScriptLoaded(true);
-    };
-    
-    script.onerror = () => {
-      setMapError('Failed to load Google Maps. Please check your API key.');
-      setIsMapLoaded(false);
-    };
-    
-    document.head.appendChild(script);
-    
-    return () => {
-      document.head.removeChild(script);
-      delete window.initMap;
-    };
-  }, [googleMapsKey, scriptLoaded]);
-
-  // Initialize Google Map when script is loaded
-  useEffect(() => {
-    if (!scriptLoaded || !googleMapRef.current) return;
-    
-    try {
-      mapRef.current = new google.maps.Map(googleMapRef.current, {
-        center: SPITI_CENTER,
-        zoom: 9,
-        mapTypeId: google.maps.MapTypeId.TERRAIN,
-        disableDefaultUI: true,
-        zoomControl: false,
-        mapTypeControl: false,
-        scaleControl: false,
-        streetViewControl: false,
-        rotateControl: false,
-        fullscreenControl: false
-      });
-      
-      setIsMapLoaded(true);
-      setMapError('');
-      
-      // Save token to localStorage for future visits
-      localStorage.setItem('google_maps_key', googleMapsKey);
-    } catch (error) {
-      console.error('Error initializing map:', error);
-      setMapError('Error initializing map. Please try again.');
-      setIsMapLoaded(false);
-    }
-  }, [scriptLoaded, googleMapsKey]);
-
-  useEffect(() => {
-    if (!pathRef.current || !mapContainerRef.current) return;
-
-    const path = pathRef.current;
-    const pathLength = path.getTotalLength();
-    const mapContainer = mapContainerRef.current;
-
-    // Create location markers
-    locations.forEach(location => {
-      // Create location element
-      const locationEl = document.createElement('div');
-      locationEl.className = 'location';
-      locationEl.style.left = `${location.x / 10}%`;
-      locationEl.style.top = `${location.y / 10}%`;
-      
-      // Create location name
-      const nameEl = document.createElement('div');
-      nameEl.className = 'location-name';
-      nameEl.textContent = location.name;
-      
-      // Create location image
-      const imgEl = document.createElement('div');
-      imgEl.className = 'location-img';
-      imgEl.setAttribute('data-location', location.name);
-      
-      // Append elements
-      locationEl.appendChild(nameEl);
-      locationEl.appendChild(imgEl);
-      mapContainer.appendChild(locationEl);
-    });
-
-    // Create route markers
-    markerPositions.forEach(position => {
-      const pointOnPath = path.getPointAtLength(position * pathLength);
-      
-      const marker = document.createElement('div');
-      marker.className = 'marker';
-      marker.style.left = `${pointOnPath.x / 10}%`;
-      marker.style.top = `${pointOnPath.y / 10}%`;
-      
-      mapContainer.appendChild(marker);
-    });
-
-    // Animation for the path
-    path.style.strokeDasharray = `${pathLength}`;
-    path.style.strokeDashoffset = `${pathLength}`;
-    
-    setTimeout(() => {
-      path.style.transition = 'stroke-dashoffset 3s ease-in-out';
-      path.style.strokeDashoffset = '0';
-    }, 500);
-
-    // Cleanup on component unmount
-    return () => {
-      const locationEls = mapContainer.querySelectorAll('.location');
-      const markerEls = mapContainer.querySelectorAll('.marker');
-      
-      locationEls.forEach(el => el.remove());
-      markerEls.forEach(el => el.remove());
-    };
-  }, []);
-
-  // Initialize Google Map when token is provided
-  const initializeMap = () => {
-    if (!googleMapRef.current || !googleMapsKey) return;
-    
-    setMapError('');
-    
-    // Load the Google Maps script if it hasn't been loaded already
-    if (!scriptLoaded) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&callback=initMap`;
-      script.async = true;
-      script.defer = true;
-      
-      // Define the callback function globally
-      window.initMap = () => {
-        setScriptLoaded(true);
-      };
-      
-      script.onerror = () => {
-        setMapError('Failed to load Google Maps. Please check your API key.');
-        setIsMapLoaded(false);
-      };
-      
-      document.head.appendChild(script);
-    } else {
-      // If script is already loaded, initialize the map directly
+  // Handle script loading and errors
+  const handleScriptLoad = () => {
+    if (googleMapRef.current && googleMapsKey) {
       try {
         mapRef.current = new google.maps.Map(googleMapRef.current, {
-          center: SPITI_CENTER,
+          center: { lat: 32.2432, lng: 78.0999 },
           zoom: 9,
           mapTypeId: google.maps.MapTypeId.TERRAIN,
           disableDefaultUI: true,
@@ -228,6 +50,31 @@ const SpitiCircuitMap = () => {
     }
   };
   
+  const handleScriptError = () => {
+    setMapError('Failed to load Google Maps. Please check your API key.');
+    setIsMapLoaded(false);
+  };
+
+  // Use our custom hook to load the Google Maps script
+  const { scriptLoaded } = useGoogleMapsScript({
+    apiKey: googleMapsKey,
+    onScriptLoad: handleScriptLoad,
+    onScriptError: handleScriptError
+  });
+
+  // Initialize Google Map when token is provided
+  const initializeMap = () => {
+    if (!googleMapRef.current || !googleMapsKey) return;
+    
+    setMapError('');
+    
+    // Check if script is already loaded
+    if (scriptLoaded && window.google) {
+      handleScriptLoad();
+    }
+    // Otherwise the useGoogleMapsScript hook will handle loading
+  };
+  
   // Try to initialize map on first load if token exists
   useEffect(() => {
     if (googleMapsKey) {
@@ -248,65 +95,32 @@ const SpitiCircuitMap = () => {
       
       {/* Google Maps API key input */}
       {!isMapLoaded && (
-        <div className="max-w-xl mx-auto px-4 mb-8">
-          <Alert className="mb-4 bg-amber-50 border-amber-200">
-            <InfoIcon className="h-5 w-5 text-amber-500" />
-            <AlertDescription className="ml-2 text-sm">
-              To see the interactive map background, please enter your Google Maps API key. You can get a free API key by visiting the <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank" rel="noopener noreferrer" className="underline text-blue-600">Google Maps Platform</a>.
-            </AlertDescription>
-          </Alert>
-          
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              placeholder="Enter your Google Maps API key"
-              value={googleMapsKey}
-              onChange={(e) => setGoogleMapsKey(e.target.value)}
-              className="flex-1"
-            />
-            <Button onClick={initializeMap} variant="default">
-              Load Map
-            </Button>
-          </div>
-          
-          {mapError && (
-            <p className="mt-2 text-sm text-red-500">{mapError}</p>
-          )}
-        </div>
+        <GoogleMapsKeyInput 
+          googleMapsKey={googleMapsKey}
+          setGoogleMapsKey={setGoogleMapsKey}
+          initializeMap={initializeMap}
+          mapError={mapError}
+        />
       )}
       
       <div className={`hero-container relative w-full h-[500px] md:h-[600px] flex justify-center items-center overflow-hidden ${!isMapLoaded ? fallbackBackground : ''}`}>
         {/* Base Google Map Layer */}
-        <div 
-          ref={googleMapRef} 
-          className="absolute inset-0 w-full h-full opacity-70"
-        ></div>
+        {googleMapsKey && (
+          <GoogleMapBackground 
+            googleMapRef={googleMapRef}
+            isMapLoaded={isMapLoaded}
+            setMapError={setMapError}
+            setIsMapLoaded={setIsMapLoaded}
+            mapRef={mapRef}
+            googleMapsKey={googleMapsKey}
+          />
+        )}
         
         {/* Semi-transparent overlay */}
         <div className="absolute inset-0 bg-white/20 z-[1]"></div>
         
         {/* Circuit Map Overlay */}
-        <div 
-          ref={mapContainerRef} 
-          className="map-container relative w-[90%] h-[90%] max-w-5xl z-[2]"
-        >
-          <svg className="route absolute w-full h-full" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-            <path 
-              ref={pathRef}
-              id="route-path" 
-              d="M50,480 L80,170 C90,150 100,160 150,300 C160,350 110,550 110,600 
-                 C110,650 180,700 220,750 C240,780 260,800 350,760 C400,740 450,730 
-                 500,770 C520,820 530,850 600,810 C610,830 630,870 600,810 
-                 C580,780 650,730 680,700 C700,650 750,550 840,480 
-                 C810,460 780,450 720,350 C700,250 720,200 670,150 
-                 C690,120 720,90 650,60 C620,100 600,180 600,250 
-                 C580,230 520,210 500,200 C470,190 450,180 400,180 
-                 C370,160 350,150 280,100 C240,90 200,80 250,120 
-                 C300,150 200,180 80,170 Z"
-              className="fill-none stroke-black stroke-[8px] sm:stroke-[12px] rounded-full"
-            /> 
-          </svg>
-        </div>
+        <CircuitRouteSvg />
       </div>
       
       <div className="mt-4 text-center text-sm text-gray-500">
@@ -314,14 +128,6 @@ const SpitiCircuitMap = () => {
       </div>
     </div>
   );
-}
-
-// Explicitly define the Google Maps window interface
-declare global {
-  interface Window {
-    initMap: () => void;
-    google: typeof google;
-  }
-}
+};
 
 export default SpitiCircuitMap;
