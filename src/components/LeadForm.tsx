@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { User, Mail, Phone, Users } from 'lucide-react';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 
 import FormInput from './form/FormInput';
@@ -81,7 +81,7 @@ const LeadForm = () => {
     
     console.log("Email would be sent to:", emailDetails);
     
-    // Show thank you dialog instead of toast
+    // Show thank you dialog - make sure this state is set to true
     setShowThankYou(true);
   };
 
@@ -197,8 +197,10 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
         </CardContent>
       </Card>
 
+      {/* Dialog for Thank You Page - Adding DialogTitle for accessibility */}
       <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
         <DialogContent className="p-0 border-0 overflow-hidden max-w-4xl bg-transparent">
+          <DialogTitle className="sr-only">Thank You for Your Inquiry</DialogTitle>
           <ThankYouPage onClose={() => setShowThankYou(false)} />
         </DialogContent>
       </Dialog>
