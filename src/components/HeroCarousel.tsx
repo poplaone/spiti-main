@@ -9,7 +9,8 @@ const images = [
   // Using stunning Spiti Valley related images from Unsplash
   "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80", // First slide - Spiti Valley
   "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80", // Mountain landscape
-  "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1200&q=80" // Spiti valley type landscape
+  "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1200&q=80", // Spiti valley type landscape
+  "/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" // Added your logo as the fourth slide
 ];
 
 const HeroCarousel = () => {
@@ -47,7 +48,7 @@ const HeroCarousel = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-0 md:mt-16">
         <img 
           alt="Spiti Logo" 
-          className="w-28 h-28 mb-4 md:mb-8 mt-[-90px] md:mt-0" 
+          className="w-40 h-40 mb-4 md:mb-8 mt-[-90px] md:mt-0" 
           src="/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" 
         />
         <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
