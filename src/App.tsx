@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
+import ThankYou from "./pages/ThankYou";
 
 // Import individual tour detail pages
 import TourDetailBike from "./pages/TourDetailBike";
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/thank-you" element={<ThankYou />} />
           
           {/* Tour detail pages with clean routes - all 6 tour types */}
           <Route path="/tour-bike" element={<TourDetailBike />} />

@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { format } from "date-fns";
+import { useNavigate } from 'react-router-dom';
 import { useFormValidation, FormData } from './useFormValidation';
 
 interface FormState extends FormData {
@@ -12,6 +13,7 @@ interface FormState extends FormData {
 }
 
 export const useLeadForm = () => {
+  const navigate = useNavigate();
   const [date, setDate] = useState<Date>();
   const [formData, setFormData] = useState<FormState>({
     name: '',
@@ -22,7 +24,6 @@ export const useLeadForm = () => {
     isCustomized: false,
     isFixedDeparture: false
   });
-  const [showThankYou, setShowThankYou] = useState(false);
   const { validateForm } = useFormValidation();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,8 +65,15 @@ export const useLeadForm = () => {
     
     console.log("Email would be sent to:", emailDetails);
     
-    // Show thank you dialog - guaranteed to open
-    setShowThankYou(true);
+    // Instead of showing dialog, navigate to thank you page with form data
+    navigate('/thank-you', { 
+      state: { 
+        formData: {
+          ...formData,
+          date: date ? format(date, "PPP") : "Not specified"
+        } 
+      }
+    });
   };
 
   const sendWhatsApp = () => {
@@ -91,8 +99,6 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
     date,
     setDate,
     formData,
-    showThankYou,
-    setShowThankYou,
     handleInputChange,
     handleSelectChange,
     handleCheckboxChange,
