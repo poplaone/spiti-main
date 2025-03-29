@@ -81,7 +81,7 @@ const LeadForm = () => {
     
     console.log("Email would be sent to:", emailDetails);
     
-    // Show thank you dialog - make sure this state is set to true
+    // Show thank you dialog - guaranteed to open
     setShowThankYou(true);
   };
 
@@ -197,9 +197,12 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
         </CardContent>
       </Card>
 
-      {/* Dialog for Thank You Page - Adding DialogTitle for accessibility */}
-      <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
-        <DialogContent className="p-0 border-0 overflow-hidden max-w-4xl bg-transparent">
+      {/* Dialog for Thank You Page with fullscreen mobile view */}
+      <Dialog 
+        open={showThankYou} 
+        onOpenChange={setShowThankYou}
+      >
+        <DialogContent className="p-0 border-0 overflow-hidden max-w-4xl bg-transparent sm:rounded-lg">
           <DialogTitle className="sr-only">Thank You for Your Inquiry</DialogTitle>
           <ThankYouPage onClose={() => setShowThankYou(false)} />
         </DialogContent>
