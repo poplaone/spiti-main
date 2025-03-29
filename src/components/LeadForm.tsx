@@ -134,19 +134,6 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
           <DurationSelect onValueChange={handleSelectChange} />
           
           <FormInput 
-            id="phone"
-            type="tel"
-            placeholder="Phone Number"
-            value={formData.phone}
-            onChange={handleInputChange}
-            icon={Phone}
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <DatePickerInput date={date} setDate={setDate} />
-          
-          <FormInput 
             id="guests"
             type="number"
             min="1"
@@ -157,20 +144,26 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4 pt-2">
-          <CheckboxOption 
-            id="isCustomized"
-            label="Customized"
-            checked={formData.isCustomized}
-            onCheckedChange={(checked) => handleCheckboxChange('isCustomized', checked)}
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <DatePickerInput date={date} setDate={setDate} />
           
-          <CheckboxOption 
-            id="isFixedDeparture"
-            label="Fixed Departure"
-            checked={formData.isFixedDeparture}
-            onCheckedChange={(checked) => handleCheckboxChange('isFixedDeparture', checked)}
-          />
+          <div className="pt-2">
+            <div className="grid grid-cols-2 gap-4">
+              <CheckboxOption 
+                id="isCustomized"
+                label="Customized"
+                checked={formData.isCustomized}
+                onCheckedChange={(checked) => handleCheckboxChange('isCustomized', checked)}
+              />
+              
+              <CheckboxOption 
+                id="isFixedDeparture"
+                label="Fixed Departure"
+                checked={formData.isFixedDeparture}
+                onCheckedChange={(checked) => handleCheckboxChange('isFixedDeparture', checked)}
+              />
+            </div>
+          </div>
         </div>
 
         <FormActions 
