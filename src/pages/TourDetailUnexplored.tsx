@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
 import { tourPackagesData } from "@/data/tourPackagesData";
 import { Car } from "lucide-react";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -102,6 +103,9 @@ const TourDetailUnexplored = () => {
         originalPrice={tour.originalPrice}
         formatPrice={formatPrice}
       />
+      
+      {/* Add Floating WhatsApp Button */}
+      <FloatingWhatsAppButton />
       
       <Footer />
     </div>
