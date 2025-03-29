@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -11,6 +10,8 @@ import LeadForm from "@/components/LeadForm";
 import Footer from "@/components/Footer";
 import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
 import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -65,8 +66,6 @@ const Index = () => {
                       <LeadForm />
                     </DialogContent>
                   </Dialog>
-                  
-                  
                 </div>
               </div>
             </div>
@@ -165,6 +164,9 @@ const Index = () => {
           </a>
         </div>
       </div>
+      
+      {/* Floating WhatsApp Button */}
+      <FloatingWhatsAppButton />
       
       <Footer />
     </div>;
