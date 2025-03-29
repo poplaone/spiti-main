@@ -6,10 +6,10 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 
 const images = [
-  // Using stunning Spiti Valley related images from Unsplash
-  "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80", // First slide - Spiti Valley
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80", // Mountain landscape
-  "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1200&q=80", // Spiti valley type landscape
+  // Using properly formatted image URLs that should work on deployment
+  "https://images.unsplash.com/photo-1580289143186-03f54224aad6?auto=format&fit=crop&w=1200&q=80", // First slide - Spiti Valley
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80", // Mountain landscape
+  "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80", // Spiti valley type landscape
   "/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" // Added your logo as the fourth slide
 ];
 
@@ -41,7 +41,7 @@ const HeroCarousel = () => {
 
   return <div className="relative w-full h-screen overflow-hidden">
       {images.map((src, index) => <div key={index} className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}>
-          <img src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
+          <img src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" loading="eager" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
         </div>)}
       
