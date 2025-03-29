@@ -1,7 +1,7 @@
 
-import React from 'react';
 import { Input } from "@/components/ui/input";
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FormInputProps {
   id: string;
@@ -22,19 +22,21 @@ const FormInput = ({
   onChange, 
   icon: Icon,
   min,
-  className 
+  className
 }: FormInputProps) => {
   return (
     <div className="relative">
-      <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-      <Input 
-        id={id} 
-        type={type} 
-        className={`pl-10 h-12 ${className}`} 
-        placeholder={placeholder} 
+      <div className="absolute inset-y-0 left-3 flex items-center text-gray-500">
+        <Icon size={18} />
+      </div>
+      <Input
+        id={id}
+        type={type}
+        min={min}
+        className={cn("pl-10", className)}
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
-        min={min}
       />
     </div>
   );

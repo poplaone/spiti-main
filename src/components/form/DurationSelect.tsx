@@ -1,23 +1,29 @@
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface DurationSelectProps {
   onValueChange: (value: string) => void;
+  className?: string;
 }
 
-const DurationSelect = ({ onValueChange }: DurationSelectProps) => {
+const DurationSelect = ({ onValueChange, className }: DurationSelectProps) => {
   return (
     <Select onValueChange={onValueChange}>
-      <SelectTrigger className="h-12">
-        <SelectValue placeholder="Select duration" />
+      <SelectTrigger className={cn("", className)}>
+        <SelectValue placeholder="Select Duration" />
       </SelectTrigger>
       <SelectContent>
-        {[...Array(15)].map((_, i) => (
-          <SelectItem key={i + 1} value={`${i + 1}`}>
-            {i + 1} {i + 1 === 1 ? 'Night' : 'Nights'} / {i + 2} {i + 2 === 1 ? 'Day' : 'Days'}
-          </SelectItem>
-        ))}
-        <SelectItem value="custom">Custom Duration</SelectItem>
+        <SelectItem value="3-5 days">3-5 days</SelectItem>
+        <SelectItem value="6-8 days">6-8 days</SelectItem>
+        <SelectItem value="9-12 days">9-12 days</SelectItem>
+        <SelectItem value="13+ days">13+ days</SelectItem>
       </SelectContent>
     </Select>
   );

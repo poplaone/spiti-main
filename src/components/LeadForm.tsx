@@ -3,12 +3,15 @@ import { useState } from 'react';
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { User, Mail, Phone, Users } from 'lucide-react';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 
 import FormInput from './form/FormInput';
 import DatePickerInput from './form/DatePickerInput';
 import DurationSelect from './form/DurationSelect';
 import CheckboxOption from './form/CheckboxOption';
 import FormActions from './form/FormActions';
+import ThankYouPage from './ThankYouPage';
 
 const LeadForm = () => {
   const [date, setDate] = useState<Date>();
@@ -21,6 +24,7 @@ const LeadForm = () => {
     isCustomized: false,
     isFixedDeparture: false
   });
+  const [showThankYou, setShowThankYou] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -77,7 +81,8 @@ const LeadForm = () => {
     
     console.log("Email would be sent to:", emailDetails);
     
-    toast.success("Thank you for your inquiry! We'll contact you soon.");
+    // Show thank you dialog instead of toast
+    setShowThankYou(true);
   };
 
   const sendWhatsApp = () => {
@@ -100,88 +105,104 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="w-full max-w-md bg-white/70 backdrop-blur-sm p-6 md:p-6 shadow-lg rounded-lg">
-      <h3 className="text-lg md:text-xl mb-6 font-semibold text-center">Get Free Tour Plan</h3>
-      
-      <div className="space-y-4">
-        <FormInput 
-          id="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleInputChange}
-          icon={User}
-        />
-
-        <FormInput 
-          id="email"
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleInputChange}
-          icon={Mail}
-        />
-
-        <FormInput 
-          id="phone"
-          type="tel"
-          placeholder="Phone Number"
-          value={formData.phone}
-          onChange={handleInputChange}
-          icon={Phone}
-        />
-
-        <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium">Tour Duration</span>
-            <span className="text-sm font-medium">Number of Guests</span>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <DurationSelect onValueChange={handleSelectChange} />
-            
-            <FormInput 
-              id="guests"
-              type="number"
-              min="1"
-              placeholder="Guests"
-              value={formData.guests}
-              onChange={handleInputChange}
-              icon={Users}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div className="flex justify-between mb-2">
-            <span className="text-sm font-medium">Travel Date</span>
-            <span className="text-sm font-medium">Tour Type</span>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <DatePickerInput date={date} setDate={setDate} />
-            
-            <div className="flex flex-col space-y-2">
-              <CheckboxOption 
-                id="isCustomized"
-                label="Customized"
-                checked={formData.isCustomized}
-                onCheckedChange={(checked) => handleCheckboxChange('isCustomized', checked)}
+    <>
+      <Card className="w-full max-w-md bg-white/40 backdrop-blur-md p-2 shadow-lg rounded-lg border-0">
+        <CardContent className="p-4">
+          <h3 className="text-lg md:text-xl mb-6 font-semibold text-center">Get Free Tour Plan</h3>
+          
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+            <div className="space-y-4">
+              <FormInput 
+                id="name"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleInputChange}
+                icon={User}
+                className="bg-white/70"
               />
-              
-              <CheckboxOption 
-                id="isFixedDeparture"
-                label="Fixed Departure"
-                checked={formData.isFixedDeparture}
-                onCheckedChange={(checked) => handleCheckboxChange('isFixedDeparture', checked)}
+
+              <FormInput 
+                id="email"
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+                icon={Mail}
+                className="bg-white/70"
+              />
+
+              <FormInput 
+                id="phone"
+                type="tel"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleInputChange}
+                icon={Phone}
+                className="bg-white/70"
+              />
+
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm font-medium text-spiti-slate">Tour Duration</span>
+                  <span className="text-sm font-medium text-spiti-slate">Number of Guests</span>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <DurationSelect onValueChange={handleSelectChange} className="bg-white/70" />
+                  
+                  <FormInput 
+                    id="guests"
+                    type="number"
+                    min="1"
+                    placeholder="Guests"
+                    value={formData.guests}
+                    onChange={handleInputChange}
+                    icon={Users}
+                    className="bg-white/70"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-sm font-medium text-spiti-slate">Travel Date</span>
+                  <span className="text-sm font-medium text-spiti-slate">Tour Type</span>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <DatePickerInput date={date} setDate={setDate} className="bg-white/70" />
+                  
+                  <div className="flex flex-col space-y-2 p-2 rounded bg-white/70">
+                    <CheckboxOption 
+                      id="isCustomized"
+                      label="Customized"
+                      checked={formData.isCustomized}
+                      onCheckedChange={(checked) => handleCheckboxChange('isCustomized', checked)}
+                    />
+                    
+                    <CheckboxOption 
+                      id="isFixedDeparture"
+                      label="Fixed Departure"
+                      checked={formData.isFixedDeparture}
+                      onCheckedChange={(checked) => handleCheckboxChange('isFixedDeparture', checked)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <FormActions 
+                onSubmit={handleSubmit}
+                onWhatsApp={sendWhatsApp}
               />
             </div>
-          </div>
-        </div>
+          </form>
+        </CardContent>
+      </Card>
 
-        <FormActions 
-          onSubmit={handleSubmit}
-          onWhatsApp={sendWhatsApp}
-        />
-      </div>
-    </form>
+      <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
+        <DialogContent className="p-0 border-0 overflow-hidden max-w-4xl bg-transparent">
+          <ThankYouPage onClose={() => setShowThankYou(false)} />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
