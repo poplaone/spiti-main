@@ -1,11 +1,11 @@
 
 import { toast } from "sonner";
 
-interface FormData {
+export interface FormData {
   name: string;
   email: string;
   phone: string;
-  [key: string]: string | boolean;
+  [key: string]: string | boolean | number;
 }
 
 export const useFormValidation = () => {

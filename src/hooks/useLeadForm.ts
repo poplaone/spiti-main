@@ -1,16 +1,14 @@
 
 import { useState } from 'react';
 import { format } from "date-fns";
-import { useFormValidation } from './useFormValidation';
+import { useFormValidation, FormData } from './useFormValidation';
 
-interface FormState {
-  name: string;
-  email: string;
-  phone: string;
+interface FormState extends FormData {
   duration: string;
   guests: string;
   isCustomized: boolean;
   isFixedDeparture: boolean;
+  [key: string]: string | boolean | number;
 }
 
 export const useLeadForm = () => {
