@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Sun, Cloud, CloudRain, Snowflake, Thermometer, Wind } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 
 interface WeatherData {
   temp: number;
@@ -16,46 +18,49 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   
-  // Updated coordinates for Lahaul and Spiti district
+  // Lahaul and Spiti district coordinates
   const lat = 32.6192;
   const lon = 77.3784;
   
-  useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        setLoading(true);
-        // Using OpenWeatherMap free API
-        const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04`
-        );
-        
-        if (!response.ok) {
-          throw new Error('Weather data not available');
-        }
-        
-        const data = await response.json();
-        console.log('Weather data:', data); // Log to verify correct location
-        
-        setWeather({
-          temp: Math.round(data.main.temp),
-          feelsLike: Math.round(data.main.feels_like),
-          description: data.weather[0].description,
-          icon: data.weather[0].icon,
-          windSpeed: data.wind.speed,
-          // Always display as Lahaul-Spiti regardless of what the API returns
-          location: 'Lahaul-Spiti'
-        });
-        
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching weather:', err);
-        setError('Could not load weather');
-        setLoading(false);
+  const fetchWeather = async () => {
+    try {
+      setLoading(true);
+      // Using OpenWeatherMap free API
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Weather data not available');
       }
-    };
-    
+      
+      const data = await response.json();
+      console.log('Weather data:', data); // Verify coordinates in log
+      
+      setWeather({
+        temp: Math.round(data.main.temp),
+        feelsLike: Math.round(data.main.feels_like),
+        description: data.weather[0].description,
+        icon: data.weather[0].icon,
+        windSpeed: data.wind.speed,
+        location: 'Lahaul-Spiti'
+      });
+      
+      setLastUpdated(new Date());
+      setLoading(false);
+    } catch (err) {
+      console.error('Error fetching weather:', err);
+      setError('Could not load weather');
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    // Initial fetch
     fetchWeather();
     
     // Refresh weather data every 30 minutes
@@ -86,44 +91,75 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
     return null; // Don't show anything if there's an error
   }
   
-  if (loading) {
+  if (loading && !weather) {
     return (
-      <div className={`flex items-center ${className}`}>
-        <div className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin mx-1"></div>
+      <div className={`flex items-center justify-center ${className}`}>
+        <div className="w-8 h-8 relative animate-spin">
+          <div className="absolute inset-0 rounded-full border-2 border-t-transparent border-white/30 border-b-white/70"></div>
+          <div className="absolute inset-2 rounded-full border-1 border-l-transparent border-white/50"></div>
+        </div>
       </div>
     );
   }
 
-  // For mobile, show a more compact but stylish display
+  const handleRefresh = () => {
+    fetchWeather();
+    toast({
+      title: "Weather Updated",
+      description: "Latest weather data for Lahaul-Spiti has been fetched",
+    });
+  };
+
+  // For mobile, show an elegant and compact display
   if (isMobile) {
     return (
-      <div className={`flex items-center justify-center gap-1 bg-spiti-forest/30 backdrop-blur-sm px-2 py-1 rounded-full animate-fade-in-up ${className}`}>
-        {getWeatherIcon()}
-        <span className="text-xs font-bold text-white">{weather?.temp}°C</span>
-        <span className="text-[10px] text-white/80 hidden xs:inline">Lahaul-Spiti</span>
+      <div 
+        onClick={handleRefresh}
+        className={`group flex items-center justify-center gap-1.5 backdrop-blur-0 px-2.5 py-1.5 rounded-full 
+        border border-white/20 shadow-sm hover:border-white/40 transition-all duration-300 
+        animate-fade-in-up hover:scale-105 cursor-pointer ${className}`}
+      >
+        <div className="transform transition-all duration-300 group-hover:rotate-12">
+          {getWeatherIcon()}
+        </div>
+        <span className="text-xs font-bold text-white/90 group-hover:text-white transition-colors">{weather?.temp}°C</span>
+        <span className="text-[10px] text-white/60 hidden xs:inline group-hover:text-white/90 transition-colors">Lahaul-Spiti</span>
       </div>
     );
   }
   
-  // For desktop, show a more detailed and visually appealing display
+  // For desktop, show a more interactive and detailed display
   return (
-    <Card className={`bg-spiti-forest/40 backdrop-blur-sm border-none shadow-lg overflow-hidden animate-fade-in-up ${className}`}>
-      <CardContent className="p-2 md:p-3">
+    <Card 
+      onClick={handleRefresh}
+      className={`bg-transparent hover:bg-white/10 border-white/20 hover:border-white/40
+      backdrop-blur-0 shadow-lg overflow-hidden cursor-pointer transition-all duration-300
+      hover:shadow-xl animate-fade-in-up transform hover:scale-[1.02] ${className}`}
+    >
+      <CardContent className="p-3 pt-3">
         <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-br from-spiti-blue/60 to-spiti-lightblue/40 p-2 rounded-full">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 p-2.5 rounded-full
+            transform transition-transform duration-500 hover:rotate-12">
             {getWeatherIcon()}
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-sm md:text-base font-bold text-white">{weather?.temp}°C</span>
-              <span className="text-xs text-white/80">Feels: {weather?.feelsLike}°C</span>
+              <span className="text-base font-bold text-white/90 transition-colors hover:text-white">{weather?.temp}°C</span>
+              <span className="text-xs text-white/70 transition-colors hover:text-white/90">Feels: {weather?.feelsLike}°C</span>
             </div>
-            <div className="flex items-center gap-1 text-xs text-white/70">
+            <div className="flex items-center gap-1 text-xs text-white/60 transition-colors hover:text-white/80">
               <span>Lahaul-Spiti</span>
               <span className="mx-1">•</span>
-              <Wind className="w-3 h-3" />
-              <span>{weather?.windSpeed} m/s</span>
+              <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100">
+                <Wind className="w-3 h-3" />
+                <span>{weather?.windSpeed} m/s</span>
+              </div>
             </div>
+            {lastUpdated && (
+              <div className="text-[10px] text-white/40 mt-0.5 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                Updated: {lastUpdated.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+              </div>
+            )}
           </div>
         </div>
       </CardContent>
