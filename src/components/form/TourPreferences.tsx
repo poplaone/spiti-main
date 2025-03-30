@@ -45,7 +45,7 @@ const TourPreferences = ({
 
           <DurationSelect 
             value={duration}
-            onChange={onSelectChange}
+            onValueChange={onSelectChange}
           />
 
           <FormInput 

@@ -1,6 +1,6 @@
 
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -15,9 +15,10 @@ interface DatePickerInputProps {
   date: Date | undefined;
   setDate: (date: Date | undefined) => void;
   className?: string;
+  icon?: LucideIcon;
 }
 
-const DatePickerInput = ({ date, setDate, className }: DatePickerInputProps) => {
+const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }: DatePickerInputProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -29,7 +30,7 @@ const DatePickerInput = ({ date, setDate, className }: DatePickerInputProps) => 
             className
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          <Icon className="mr-2 h-4 w-4" />
           {date ? format(date, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
@@ -39,6 +40,7 @@ const DatePickerInput = ({ date, setDate, className }: DatePickerInputProps) => 
           selected={date}
           onSelect={setDate}
           initialFocus
+          className={cn("p-3 pointer-events-auto")}
         />
       </PopoverContent>
     </Popover>

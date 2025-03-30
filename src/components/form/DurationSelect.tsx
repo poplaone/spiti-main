@@ -9,13 +9,14 @@ import {
 } from "@/components/ui/select";
 
 interface DurationSelectProps {
+  value?: string;
   onValueChange: (value: string) => void;
   className?: string;
 }
 
-const DurationSelect = ({ onValueChange, className }: DurationSelectProps) => {
+const DurationSelect = ({ value, onValueChange, className }: DurationSelectProps) => {
   return (
-    <Select onValueChange={onValueChange}>
+    <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className={cn("", className)}>
         <SelectValue placeholder="Select Duration" />
       </SelectTrigger>
