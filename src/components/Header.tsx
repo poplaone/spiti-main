@@ -7,6 +7,8 @@ import { useTourFilters } from '@/hooks/useTourFilters';
 import Logo from './header/Logo';
 import DesktopMenu from './header/DesktopMenu';
 import MobileMenu from './header/MobileMenu';
+import WeatherDisplay from './weather/WeatherDisplay';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface HeaderProps {
   scrollToPackages?: () => void;
@@ -20,6 +22,7 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const isTourPage = location.pathname.includes('tour-');
+  const isMobile = useIsMobile();
   
   // Using our custom hook to filter tours
   const { roadTripsTours, fixedDepartureTours } = useTourFilters(tourPackagesData);
@@ -53,6 +56,9 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
             isTourPage={isTourPage} 
             isHomePage={isHomePage}
           />
+
+          {/* Weather Display for Mobile */}
+          {isMobile && <WeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />}
 
           <DesktopMenu 
             roadTripsTours={roadTripsTours} 
