@@ -6,12 +6,13 @@ interface FormSectionProps {
   leftLabel?: string;
   rightLabel?: string;
   children: ReactNode;
+  hideTitle?: boolean;
 }
 
-const FormSection = ({ title, leftLabel, rightLabel, children }: FormSectionProps) => {
+const FormSection = ({ title, leftLabel, rightLabel, children, hideTitle = false }: FormSectionProps) => {
   return (
     <div className="space-y-2">
-      {title && <h4 className="text-sm font-medium text-spiti-slate mb-2">{title}</h4>}
+      {title && !hideTitle && <h4 className="text-sm font-medium text-spiti-slate mb-2">{title}</h4>}
       {(leftLabel || rightLabel) && (
         <div className="flex justify-between">
           {leftLabel && <span className="text-sm font-medium text-spiti-slate">{leftLabel}</span>}

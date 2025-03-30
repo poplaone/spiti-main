@@ -19,7 +19,7 @@ const LeadForm = () => {
   } = useLeadForm();
 
   return (
-    <Card className="w-full max-w-md bg-white/40 backdrop-blur-md p-2 shadow-lg rounded-lg border-0">
+    <Card className="w-full max-w-md bg-blue-100/60 backdrop-blur-md p-2 shadow-lg rounded-lg border-0">
       <CardContent className="p-4">
         <h3 className="text-lg md:text-xl mb-6 font-semibold text-center">Get Free Tour Plan</h3>
         
@@ -43,6 +43,7 @@ const LeadForm = () => {
               onInputChange={handleInputChange}
               onSelectChange={handleSelectChange}
               onCheckboxChange={handleCheckboxChange}
+              hideTourTypeHeading={true}
             />
 
             <FormActions 
