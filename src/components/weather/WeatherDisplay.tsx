@@ -10,6 +10,7 @@ interface WeatherData {
   icon: string;
   windSpeed: number;
   location?: string;
+  feelsLike?: number; // Added for "feels like" temperature
 }
 
 const WeatherDisplay = ({ className = "" }: { className?: string }) => {
@@ -18,9 +19,10 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
   
-  // Updated precise coordinates for Kaza, Spiti Valley, Himachal Pradesh
-  const lat = 32.2270;
-  const lon = 78.0722;
+  // Coordinates for central Spiti Valley
+  // Note: OpenWeatherMap free API might not have precise data for remote Himalayan regions
+  const lat = 32.2430;
+  const lon = 78.0341;
   
   useEffect(() => {
     const fetchWeather = async () => {
@@ -40,10 +42,12 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
         
         setWeather({
           temp: Math.round(data.main.temp),
+          feelsLike: Math.round(data.main.feels_like),
           description: data.weather[0].description,
           icon: data.weather[0].icon,
           windSpeed: data.wind.speed,
-          location: data.name || 'Kaza, Spiti'
+          // Override location name from API since it may be inaccurate
+          location: 'Spiti Valley'
         });
         
         setLoading(false);
@@ -114,10 +118,10 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <span className="text-sm md:text-base font-bold text-white">{weather?.temp}°C</span>
-              <span className="text-xs text-white/80 capitalize hidden sm:inline">{weather?.description}</span>
+              <span className="text-xs text-white/80">Feels: {weather?.feelsLike}°C</span>
             </div>
             <div className="flex items-center gap-1 text-xs text-white/70">
-              <span>Kaza, Spiti</span>
+              <span>Spiti Valley</span>
               <span className="mx-1">•</span>
               <Wind className="w-3 h-3" />
               <span>{weather?.windSpeed} m/s</span>
