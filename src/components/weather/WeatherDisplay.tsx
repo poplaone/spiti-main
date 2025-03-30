@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Sun, Cloud, CloudRain, Snowflake, Thermometer, Wind } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -10,7 +9,7 @@ interface WeatherData {
   icon: string;
   windSpeed: number;
   location?: string;
-  feelsLike?: number; // Added for "feels like" temperature
+  feelsLike?: number;
 }
 
 const WeatherDisplay = ({ className = "" }: { className?: string }) => {
@@ -19,10 +18,9 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
   
-  // Coordinates for central Spiti Valley
-  // Note: OpenWeatherMap free API might not have precise data for remote Himalayan regions
-  const lat = 32.2430;
-  const lon = 78.0341;
+  // Updated coordinates for Lahaul and Spiti district
+  const lat = 32.6192;
+  const lon = 77.3784;
   
   useEffect(() => {
     const fetchWeather = async () => {
@@ -46,8 +44,8 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
           description: data.weather[0].description,
           icon: data.weather[0].icon,
           windSpeed: data.wind.speed,
-          // Override location name from API since it may be inaccurate
-          location: 'Spiti Valley'
+          // Always display as Lahaul-Spiti regardless of what the API returns
+          location: 'Lahaul-Spiti'
         });
         
         setLoading(false);
@@ -102,7 +100,7 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
       <div className={`flex items-center justify-center gap-1 bg-spiti-forest/30 backdrop-blur-sm px-2 py-1 rounded-full animate-fade-in-up ${className}`}>
         {getWeatherIcon()}
         <span className="text-xs font-bold text-white">{weather?.temp}°C</span>
-        <span className="text-[10px] text-white/80 hidden xs:inline">Spiti</span>
+        <span className="text-[10px] text-white/80 hidden xs:inline">Lahaul-Spiti</span>
       </div>
     );
   }
@@ -121,7 +119,7 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
               <span className="text-xs text-white/80">Feels: {weather?.feelsLike}°C</span>
             </div>
             <div className="flex items-center gap-1 text-xs text-white/70">
-              <span>Spiti Valley</span>
+              <span>Lahaul-Spiti</span>
               <span className="mx-1">•</span>
               <Wind className="w-3 h-3" />
               <span>{weather?.windSpeed} m/s</span>
