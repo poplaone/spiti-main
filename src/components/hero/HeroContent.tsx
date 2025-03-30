@@ -23,7 +23,7 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
       <GoogleRatingBadge />
       
       {/* Weather Display for Desktop */}
-      {!isMobile && <WeatherDisplay className="mt-2 mb-2" />}
+      {!isMobile && <WeatherDisplay className="mt-3 mb-4 w-auto" />}
       
       <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
       <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Begin your Spiti adventure with us – your local guides to explore more...</p>
