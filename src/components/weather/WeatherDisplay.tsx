@@ -9,6 +9,7 @@ interface WeatherData {
   description: string;
   icon: string;
   windSpeed: number;
+  location?: string;
 }
 
 const WeatherDisplay = ({ className = "" }: { className?: string }) => {
@@ -17,9 +18,9 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
   
-  // Coordinates for Kaza, Spiti Valley
-  const lat = 32.226;
-  const lon = 78.072;
+  // Updated precise coordinates for Kaza, Spiti Valley, Himachal Pradesh
+  const lat = 32.2270;
+  const lon = 78.0722;
   
   useEffect(() => {
     const fetchWeather = async () => {
@@ -35,12 +36,14 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
         }
         
         const data = await response.json();
+        console.log('Weather data:', data); // Log to verify correct location
         
         setWeather({
           temp: Math.round(data.main.temp),
           description: data.weather[0].description,
           icon: data.weather[0].icon,
           windSpeed: data.wind.speed,
+          location: data.name || 'Kaza, Spiti'
         });
         
         setLoading(false);
@@ -95,6 +98,7 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
       <div className={`flex items-center justify-center gap-1 bg-spiti-forest/30 backdrop-blur-sm px-2 py-1 rounded-full animate-fade-in-up ${className}`}>
         {getWeatherIcon()}
         <span className="text-xs font-bold text-white">{weather?.temp}°C</span>
+        <span className="text-[10px] text-white/80 hidden xs:inline">Spiti</span>
       </div>
     );
   }
@@ -113,6 +117,8 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
               <span className="text-xs text-white/80 capitalize hidden sm:inline">{weather?.description}</span>
             </div>
             <div className="flex items-center gap-1 text-xs text-white/70">
+              <span>Kaza, Spiti</span>
+              <span className="mx-1">•</span>
               <Wind className="w-3 h-3" />
               <span>{weather?.windSpeed} m/s</span>
             </div>
