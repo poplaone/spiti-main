@@ -1,4 +1,6 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useEffect, useState } from 'react';
 
 // Different sets of images for mobile and desktop
 const desktopImages = [
@@ -21,13 +23,26 @@ interface CarouselImagesProps {
 
 const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
+  const [imagesToShow, setImagesToShow] = useState<string[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   
-  // Use the appropriate image set based on device type
-  const images = isMobile ? mobileImages : desktopImages;
+  // Wait for the isMobile value to be determined before showing any images
+  useEffect(() => {
+    if (isMobile !== undefined) {
+      const appropriateImages = isMobile ? mobileImages : desktopImages;
+      setImagesToShow(appropriateImages);
+      setIsLoaded(true);
+    }
+  }, [isMobile]);
+
+  // Don't render anything until we know which device type we're on
+  if (!isLoaded) {
+    return <div className="absolute inset-0 bg-gray-900"></div>; // Placeholder while loading
+  }
 
   return (
     <>
-      {images.map((src, index) => (
+      {imagesToShow.map((src, index) => (
         <div 
           key={index} 
           className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}
