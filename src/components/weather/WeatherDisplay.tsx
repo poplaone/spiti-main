@@ -128,18 +128,17 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
     );
   }
   
-  // For desktop, show a more interactive and detailed display
+  // For desktop, show a more interactive and detailed display with more transparency
   return (
-    <Card 
+    <div 
       onClick={handleRefresh}
-      className={`bg-transparent hover:bg-white/10 border-white/20 hover:border-white/40
-      backdrop-blur-0 shadow-lg overflow-hidden cursor-pointer transition-all duration-300
+      className={`bg-transparent border border-white/20 hover:border-white/40 rounded-lg 
+      overflow-hidden cursor-pointer transition-all duration-300 shadow-lg backdrop-blur-0
       hover:shadow-xl animate-fade-in-up transform hover:scale-[1.02] ${className}`}
     >
-      <CardContent className="p-3 pt-3">
+      <div className="p-2.5 pt-2.5">
         <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-br from-white/10 to-white/5 p-2.5 rounded-full
-            transform transition-transform duration-500 hover:rotate-12">
+          <div className="p-2 rounded-full transform transition-transform duration-500 hover:rotate-12">
             {getWeatherIcon()}
           </div>
           <div className="flex flex-col">
@@ -150,7 +149,7 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
             <div className="flex items-center gap-1 text-xs text-white/60 transition-colors hover:text-white/80">
               <span>Lahaul-Spiti</span>
               <span className="mx-1">•</span>
-              <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100">
+              <div className="flex items-center gap-1 opacity-70">
                 <Wind className="w-3 h-3" />
                 <span>{weather?.windSpeed} m/s</span>
               </div>
@@ -162,8 +161,8 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
             )}
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

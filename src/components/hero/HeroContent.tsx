@@ -22,19 +22,27 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
       {/* Google Ratings Badge */}
       <GoogleRatingBadge />
       
-      {/* Weather Display for Desktop */}
-      {!isMobile && <WeatherDisplay className="mt-3 mb-4 w-auto" />}
-      
       <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
       <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl">Begin your Spiti adventure with us – your local guides to explore more...</p>
       
-      <Button 
-        variant="outline" 
-        className="bg-transparent border border-white text-white hover:bg-white/20 mt-2"
-        onClick={scrollToDiscoverSection}
-      >
-        Explore Tours
-      </Button>
+      {/* Weather Display for Mobile is handled in Header.tsx */}
+      
+      <div className="relative w-full flex justify-center">
+        <Button 
+          variant="outline" 
+          className="bg-transparent border border-white text-white hover:bg-white/20 mt-2"
+          onClick={scrollToDiscoverSection}
+        >
+          Explore Tours
+        </Button>
+        
+        {/* Weather Display for Desktop - positioned at bottom right */}
+        {!isMobile && (
+          <div className="absolute bottom-0 right-0 md:right-4 lg:right-8">
+            <WeatherDisplay className="animate-fade-in-up" />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
