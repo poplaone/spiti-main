@@ -15,10 +15,10 @@ export function useTourFilters(tours: TourPackageProps[]) {
     [tours]
   );
 
-  // Filter fixed departure tours - women only or with "FIXED" in the title
+  // Filter fixed departure tours - include all except "OWN CAR" tours
   const fixedDepartureTours = useMemo(() => 
     tours.filter(tour => 
-      tour.isWomenOnly === true || tour.title.includes('FIXED')
+      !tour.title.includes('OWN CAR')
     ),
     [tours]
   );
