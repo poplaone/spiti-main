@@ -87,16 +87,13 @@ const About = () => {
         </div>
       </section>
       
-      {/* Team Section */}
+      {/* Team Section - Updated without photos */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-white mb-12 text-center">Our Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80" alt="Vaibhav Reekhan - Founder" className="w-full h-full object-cover" />
-                </div>
                 <h3 className="text-xl font-bold text-white mb-1">Vaibhav Reekhan</h3>
                 <p className="text-spiti-green mb-3">Founder</p>
                 <p className="text-white/80 text-sm">
@@ -110,9 +107,6 @@ const About = () => {
             
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Sheetla" className="w-full h-full object-cover" />
-                </div>
                 <h3 className="text-xl font-bold text-white mb-1">Sheetla</h3>
                 <p className="text-spiti-green mb-3">Business Development</p>
                 <p className="text-white/80 text-sm">
@@ -126,9 +120,6 @@ const About = () => {
             
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Monika" className="w-full h-full object-cover" />
-                </div>
                 <h3 className="text-xl font-bold text-white mb-1">Monika</h3>
                 <p className="text-spiti-green mb-3">Sales Executive</p>
                 <p className="text-white/80 text-sm">
@@ -142,9 +133,6 @@ const About = () => {
 
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&q=80" alt="Jayesh Chauhan" className="w-full h-full object-cover" />
-                </div>
                 <h3 className="text-xl font-bold text-white mb-1">Jayesh Chauhan</h3>
                 <p className="text-spiti-green mb-3">Sales & Travel Director</p>
                 <p className="text-white/80 text-sm">
@@ -158,9 +146,6 @@ const About = () => {
 
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" alt="Shabnam Kultwan" className="w-full h-full object-cover" />
-                </div>
                 <h3 className="text-xl font-bold text-white mb-1">Shabnam Kultwan</h3>
                 <p className="text-spiti-green mb-3">Sales Executive</p>
                 <p className="text-white/80 text-sm">
