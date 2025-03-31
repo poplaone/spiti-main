@@ -11,7 +11,6 @@ import Footer from "@/components/Footer";
 import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
 import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
-
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -88,11 +87,8 @@ const Index = () => {
           {/* Then show the Spiti Circuit Map section - moved as requested */}
           <div className="mt-16">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Circuit Tour Map</h2>
-              <p className="text-gray-700 max-w-3xl mx-auto">
-                Explore the scenic route through Spiti Valley, from ancient monasteries to high-altitude lakes. 
-                Our expert guides will take you on an unforgettable journey across this Himalayan wonderland.
-              </p>
+              
+              
             </div>
             <SpitiCircuitMap />
           </div>
