@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -24,10 +23,10 @@ const RoadTrips = () => {
       {/* Hero Section */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-4">
         <div className="container mx-auto text-center">
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold mb-6 drop-shadow-lg">
+          <h1 className="font-heading md:text-5xl lg:text-6xl text-white mb-6 drop-shadow-lg text-4xl font-light">
             Road Trip Adventures
           </h1>
-          <p className="max-w-3xl mx-auto text-zinc-100 text-lg md:text-xl mb-8">
+          <p className="max-w-3xl mx-auto text-zinc-100 md:text-xl mb-8 text-lg font-light">
             Explore the majestic Spiti Valley on wheels with our curated road trip experiences
           </p>
         </div>
@@ -37,12 +36,8 @@ const RoadTrips = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12">
-            <h2 className="font-heading mb-4 text-zinc-50 text-center font-light text-2xl">
-              Our Road Trip Packages
-            </h2>
-            <p className="text-center text-zinc-50 font-light text-base">
-              Choose from our selection of carefully crafted road trip itineraries designed to give you the best Spiti Valley experience.
-            </p>
+            
+            
           </div>
           
           <TourPackageGrid packages={roadTripsTours} />
