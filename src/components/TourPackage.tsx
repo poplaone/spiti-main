@@ -101,13 +101,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
       </div>
       
       <div className="p-4">
-        {/* New typography format for the top section */}
-        <div className="mb-3">
-          <div className="text-sm font-medium text-rose-500 uppercase mb-1">
-            {duration.days} DAYS TREK | EASY
-          </div>
-          <h3 className="font-heading text-xl text-spiti-forest font-bold">{title}</h3>
-        </div>
+        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-3">{title}</h3>
         
         <div className="flex flex-col space-y-2 mb-4">
           {/* Fixed Departures and Customizable */}
@@ -130,9 +124,14 @@ const TourPackage: React.FC<TourPackageProps> = ({
         </div>
         
         <div className="flex items-end justify-between mb-4 border-b pb-3">
-          <div>
-            <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
-            <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
+          <div className="flex items-center">
+            <div className="text-sm font-medium text-rose-500 uppercase mr-3">
+              {duration.days} DAYS
+            </div>
+            <div>
+              <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
+              <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
+            </div>
           </div>
         </div>
         
