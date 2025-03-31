@@ -9,4 +9,5 @@ export interface BlogPost {
   readTime: string;
   category: string;
   content?: string;
+  tags?: string[];
 }
