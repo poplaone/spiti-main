@@ -16,7 +16,6 @@ import TourAccommodation from "@/components/tour/TourAccommodation";
 import TourInclusions from "@/components/tour/TourInclusions";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
-import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
 
 const TourDetailUnexplored = () => {
   // Using second tour (Unexplored Spiti)
@@ -74,9 +73,6 @@ const TourDetailUnexplored = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Package details */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Add Departure Dates card */}
-              <DepartureDatesCard />
-              
               <TourOverview tour={tour} getTransportIcon={getTransportIcon} />
               <TourItinerary tour={tour} />
               <TourAccommodation tour={tour} />

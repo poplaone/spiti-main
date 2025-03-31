@@ -15,7 +15,6 @@ import TourItinerary from "@/components/tour/TourItinerary";
 import TourPackageDetails from "@/components/tour/TourPackageDetails";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
-import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
 
 const TourDetailHiddenHeaven = () => {
   // Using Hidden Heaven tour
@@ -73,9 +72,6 @@ const TourDetailHiddenHeaven = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Package details */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Add Departure Dates card */}
-              <DepartureDatesCard />
-              
               <TourOverview tour={tour} getTransportIcon={getTransportIcon} />
               <TourItinerary tour={tour} />
               <TourPackageDetails tour={tour} />
