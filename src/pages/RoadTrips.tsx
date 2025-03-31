@@ -23,7 +23,7 @@ const RoadTrips = () => {
       {/* Hero Section */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-4">
         <div className="container mx-auto text-center">
-          <h1 className="font-heading md:text-5xl lg:text-6xl text-white mb-6 drop-shadow-lg text-4xl font-light">
+          <h1 className="font-heading md:text-5xl lg:text-6xl text-white mb-6 drop-shadow-lg font-light text-2xl">
             Road Trip Adventures
           </h1>
           <p className="max-w-3xl mx-auto text-zinc-100 md:text-xl mb-8 text-lg font-light">
