@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -24,10 +23,10 @@ const FixedDepartures = () => {
       {/* Hero Section */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-4">
         <div className="container mx-auto text-center">
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold mb-6 drop-shadow-lg">
+          <h1 className="font-heading md:text-5xl lg:text-6xl text-white mb-6 drop-shadow-lg text-2xl font-normal">
             Fixed Departure Tours
           </h1>
-          <p className="max-w-3xl mx-auto text-zinc-100 text-lg md:text-xl mb-8">
+          <p className="max-w-3xl mx-auto text-zinc-100 text-lg md:text-xl mb-8 font-normal">
             Join our scheduled group adventures with guaranteed departures throughout the Spiti Valley season
           </p>
         </div>
@@ -37,12 +36,8 @@ const FixedDepartures = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12">
-            <h2 className="text-3xl font-heading mb-4 text-zinc-100 text-center font-medium">
-              Our Fixed Departure Packages
-            </h2>
-            <p className="text-zinc-50 text-center text-lg">
-              Choose from our selection of scheduled group tours with guaranteed departures throughout the season.
-            </p>
+            
+            
           </div>
           
           <TourPackageGrid packages={fixedDepartureTours} />
