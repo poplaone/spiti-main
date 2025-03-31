@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -103,13 +104,13 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         <div className="flex flex-col space-y-1 mb-3">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center text-spiti-blue">
-              <CalendarCheck className="w-4 h-4 mr-1 text-spiti-blue" />
+            <div className="flex items-center text-accent-foreground">
+              <CalendarCheck className="w-4 h-4 mr-1 text-accent-foreground" />
               <span className="text-xs font-medium uppercase">Fixed Departures</span>
             </div>
             
-            <div className="flex items-center text-spiti-blue">
-              <Settings2 className="w-4 h-4 mr-1 text-spiti-blue" />
+            <div className="flex items-center text-accent-foreground">
+              <Settings2 className="w-4 h-4 mr-1 text-accent-foreground" />
               <span className="text-xs font-medium uppercase">Customizable</span>
             </div>
           </div>
@@ -125,7 +126,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
             <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
           </div>
           <div className="text-sm font-medium text-rose-500 uppercase">
-            {duration.days} DAYS
+            {duration.nights} NIGHTS / {duration.days} DAYS
           </div>
         </div>
         
