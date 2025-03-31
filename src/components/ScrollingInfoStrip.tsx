@@ -8,9 +8,8 @@ import Autoplay from 'embla-carousel-autoplay';
 const ScrollingInfoStrip = () => {
   const infoItems = [
     "Customize your Spiti Valley Holiday in 2025",
-    "Spiti Valley Treks from INR 14,750",
+    "Spiti Valley Tours from INR 18,900",
     "Full Circuit Spiti Valley Group Departures 2025",
-    "Winter Road Trips for 2025",
     "Road Trips to Zanskar & Ladakh"
   ];
 
