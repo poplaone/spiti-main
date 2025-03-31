@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,6 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
 
-// Fix the route mapping to ensure each index matches the correct tour page
 const getRouteMap = {
   0: '/tour-bike',
   1: '/tour-unexplored',
@@ -104,7 +102,6 @@ const TourPackage: React.FC<TourPackageProps> = ({
         <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2">{title}</h3>
         
         <div className="flex flex-col space-y-1 mb-3">
-          {/* Fixed Departures and Customizable - Made spacing smaller */}
           <div className="flex items-center space-x-4">
             <div className="flex items-center text-spiti-blue">
               <CalendarCheck className="w-4 h-4 mr-1 text-spiti-blue" />
@@ -117,21 +114,18 @@ const TourPackage: React.FC<TourPackageProps> = ({
             </div>
           </div>
           
-          {/* Available from... */}
           <div className="text-xs text-gray-600">
             Available from June to October
           </div>
         </div>
         
-        {/* Put "X DAYS" above the price but on the left side */}
-        <div className="text-sm font-medium text-rose-500 uppercase mb-1">
-          {duration.days} DAYS
-        </div>
-        
-        <div className="flex items-end justify-between mb-4 border-b pb-3">
+        <div className="flex items-center justify-between mb-4 border-b pb-3">
           <div>
             <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
             <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
+          </div>
+          <div className="text-sm font-medium text-rose-500 uppercase">
+            {duration.days} DAYS
           </div>
         </div>
         
