@@ -1,8 +1,10 @@
+
 import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { StarIcon } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
+
 const About = () => {
   return <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
       <Header />
@@ -26,15 +28,15 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-white mb-6">Our Story</h2>
+              <h2 className="text-3xl font-bold text-white mb-6">About Our Company</h2>
               <p className="text-white/90 mb-4">
-                Founded in 2015 by a group of local Spiti residents and passionate travelers, Spiti Valley Tours was born out of a deep love for this extraordinary Himalayan region and a desire to share its wonders with the world.
+                Established in 2016, Spiti Valley Travels is a trusted travel agency dedicated to providing unforgettable journeys through the mesmerizing landscapes of Spiti Valley and the Himalayas. With years of experience and a passion for exploration, we specialize in crafting personalized itineraries that offer a perfect blend of adventure, culture, and comfort.
               </p>
               <p className="text-white/90 mb-4">
-                What started as a small operation with just two guides and a single jeep has now grown into the region's premier tour operator, while still maintaining our commitment to sustainable tourism, authentic experiences, and supporting local communities.
+                Our mission is to ensure every traveler experiences the untouched beauty of Spiti while enjoying a seamless and well-organized trip. From thrilling bike expeditions and cultural Buddhist circuits to women-only tours and self-drive adventures, we cater to every kind of explorer.
               </p>
               <p className="text-white/90">
-                Our team consists of local guides who were born and raised in Spiti Valley, giving them unparalleled knowledge of the region's geography, culture, and hidden gems that most tourists never discover.
+                At Spiti Valley Travels, our priority is to guide travelers and make their trips smooth and memorable. With expert local knowledge, handpicked accommodations, and 24/7 customer support, we ensure a journey filled with breathtaking sights and enriching experiences.
               </p>
             </div>
             <div className="rounded-lg overflow-hidden shadow-xl">
@@ -93,12 +95,15 @@ const About = () => {
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
                 <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80" alt="Team Member" className="w-full h-full object-cover" />
+                  <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80" alt="Vaibhav Reekhan - Founder" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-1">Tenzin Norgay</h3>
-                <p className="text-spiti-green mb-3">Founder & Lead Guide</p>
-                <p className="text-white/80">
-                  Born in Kaza, Tenzin has been exploring Spiti's hidden corners since childhood. His knowledge of local culture and terrain is unmatched.
+                <h3 className="text-xl font-bold text-white mb-1">Vaibhav Reekhan</h3>
+                <p className="text-spiti-green mb-3">Founder</p>
+                <p className="text-white/80 text-sm">
+                  Vaibhav is the founder of SpitiValleyTravels and HimalayanFootslog. With over nine years of experience in the travel industry, he is a passionate traveler at heart. A true nature lover, Vaibhav has always been drawn to the mountains and trekking. After undergoing two surgeries for varicose veins and hernia, his focus shifted towards road trips, which he now leads with great enthusiasm.
+                </p>
+                <p className="text-white/80 text-sm mt-2">
+                  His expertise lies in organizing and leading large road trips, as well as managing low-budget group tours for students while maintaining high-quality services. He also runs a small homestay at Chirgaon (Shimla).
                 </p>
               </CardContent>
             </Card>
@@ -106,12 +111,15 @@ const About = () => {
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
                 <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Team Member" className="w-full h-full object-cover" />
+                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Sheetla" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-1">Padma Yangzom</h3>
-                <p className="text-spiti-green mb-3">Operations Manager</p>
-                <p className="text-white/80">
-                  Padma ensures every tour runs smoothly, from planning logistics to coordinating with local homestays and monasteries.
+                <h3 className="text-xl font-bold text-white mb-1">Sheetla</h3>
+                <p className="text-spiti-green mb-3">Business Development</p>
+                <p className="text-white/80 text-sm">
+                  A hardworking and spiritual person who believes in simplicity yet dreams big. Sales and marketing are her passion, and she takes pride in supporting teammates, which is why they call her Sheetla Didi. She embraces challenges with dedication and never backs down.
+                </p>
+                <p className="text-white/80 text-sm mt-2">
+                  Beyond work, she finds joy in shopping, makeup, cooking, and driving. As a business development professional, she is committed to driving growth and creating new opportunities.
                 </p>
               </CardContent>
             </Card>
@@ -119,12 +127,47 @@ const About = () => {
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
                 <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Team Member" className="w-full h-full object-cover" />
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Monika" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-1">Dorje Tsering</h3>
-                <p className="text-spiti-green mb-3">Senior Guide & Photographer</p>
-                <p className="text-white/80">
-                  A professionally trained photographer, Dorje helps travelers capture the breathtaking landscapes and moments during their journey.
+                <h3 className="text-xl font-bold text-white mb-1">Monika</h3>
+                <p className="text-spiti-green mb-3">Sales Executive</p>
+                <p className="text-white/80 text-sm">
+                  Colleagues call her Monu, a nickname she loves. Life has been full of ups and downs, but even in her lowest moments, her mind pushes her to focus on the positive, helping her grow and handle challenges.
+                </p>
+                <p className="text-white/80 text-sm mt-2">
+                  With 5 years of experience as a Sales Executive, she is passionate about her work and always strives to give her best. Outside of work, her favorite hobby is simple yet priceless—she loves sleeping!
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/10 backdrop-blur-sm border-0">
+              <CardContent className="p-6">
+                <div className="mb-4 h-48 rounded-lg overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&q=80" alt="Jayesh Chauhan" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1">Jayesh Chauhan</h3>
+                <p className="text-spiti-green mb-3">Sales & Travel Director</p>
+                <p className="text-white/80 text-sm">
+                  Son to an apple grower and a true movies and sports enthusiast working as a salesperson. Leaving his comfort zone and taking on challenges is his thing. He loves to guide people on their journey and considers himself an actor with the world as his stage.
+                </p>
+                <p className="text-white/80 text-sm mt-2">
+                  As a travel director, he's dedicated to turning vacation dreams into blockbuster experiences, delivering "paisa wasool" experiences with full entertainment, drama, and adventure!
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/10 backdrop-blur-sm border-0">
+              <CardContent className="p-6">
+                <div className="mb-4 h-48 rounded-lg overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80" alt="Shabnam Kultwan" className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1">Shabnam Kultwan</h3>
+                <p className="text-spiti-green mb-3">Sales Executive</p>
+                <p className="text-white/80 text-sm">
+                  A quiet and calm person who loves to observe and learn, which helps her grow every day. Being the youngest on the team, she feels blessed to have supportive seniors who guide her and help her improve both personally and professionally.
+                </p>
+                <p className="text-white/80 text-sm mt-2">
+                  She believes that success comes from trust and strong relationships. Beyond work, she loves reading fiction. No matter what she does, she always tries to give her best and constantly pushes herself to improve and excel in her field.
                 </p>
               </CardContent>
             </Card>
@@ -132,10 +175,8 @@ const About = () => {
         </div>
       </section>
       
-      {/* Testimonials Section */}
-      
-      
       <Footer />
     </div>;
 };
+
 export default About;
