@@ -2,7 +2,7 @@
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, MessageSquareMore, Send, CalendarCheck, Settings2 } from 'lucide-react';
+import { MessageSquareMore, Send, CalendarCheck, Settings2 } from 'lucide-react';
 import { Link, useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
@@ -101,32 +101,38 @@ const TourPackage: React.FC<TourPackageProps> = ({
       </div>
       
       <div className="p-4">
-        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2">{title}</h3>
-        
-        <div className="text-sm text-gray-600 mb-2">
-          Available from June to October
+        {/* New typography format for the top section */}
+        <div className="mb-3">
+          <div className="text-sm font-medium text-rose-500 uppercase mb-1">
+            {duration.days} DAYS TREK | EASY
+          </div>
+          <h3 className="font-heading text-xl text-spiti-forest font-bold">{title}</h3>
         </div>
         
-        <div className="flex items-center text-gray-700 text-sm mb-3">
-          <Clock className="w-4 h-4 mr-1" />
-          <span>{duration.nights} {duration.nights === 1 ? 'Night' : 'Nights'} / {duration.days} {duration.days === 1 ? 'Day' : 'Days'}</span>
+        <div className="flex flex-col space-y-2 mb-4">
+          {/* Fixed Departures and Customizable */}
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center text-spiti-blue">
+              <CalendarCheck className="w-5 h-5 mr-1.5 text-spiti-blue" />
+              <span className="text-sm font-medium uppercase">Fixed Departures</span>
+            </div>
+            
+            <div className="flex items-center text-spiti-blue">
+              <Settings2 className="w-5 h-5 mr-1.5 text-spiti-blue" />
+              <span className="text-sm font-medium uppercase">Customizable</span>
+            </div>
+          </div>
+          
+          {/* Available from... */}
+          <div className="text-sm text-gray-600">
+            Available from June to October
+          </div>
         </div>
         
         <div className="flex items-end justify-between mb-4 border-b pb-3">
           <div>
             <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
             <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
-          </div>
-          
-          <div className="text-xs space-y-1 text-right">
-            <div className="flex items-center justify-end text-spiti-forest font-medium">
-              <CalendarCheck className="w-3.5 h-3.5 mr-1" />
-              <span>Fixed Departures</span>
-            </div>
-            <div className="flex items-center justify-end text-spiti-forest font-medium">
-              <Settings2 className="w-3.5 h-3.5 mr-1" />
-              <span>Customizable</span>
-            </div>
           </div>
         </div>
         
