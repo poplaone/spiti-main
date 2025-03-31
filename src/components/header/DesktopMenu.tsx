@@ -12,6 +12,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { TourPackageProps } from "@/components/TourPackage";
+import { ChevronRight } from 'lucide-react';
 
 interface DesktopMenuProps {
   roadTripsTours: TourPackageProps[];
@@ -38,26 +39,37 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) 
               Road Trips
             </NavigationMenuTrigger>
             <NavigationMenuContent className="bg-spiti-forest/95 backdrop-blur-lg border-spiti-green">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg max-h-[80vh] overflow-y-auto">
-                {roadTripsTours.map((tour) => (
+              <div className="w-[90vw] max-w-screen-lg">
+                <div className="p-4 border-b border-gray-700">
                   <Link 
-                    key={tour.title} 
-                    to={getTourRoute(tour)} 
-                    className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    to="/road-trips" 
+                    className="flex items-center justify-between text-white hover:text-spiti-green font-medium transition-colors"
                   >
-                    <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
-                      <div className="relative h-40 overflow-hidden rounded-t-lg">
-                        <img 
-                          src={tour.image} 
-                          alt={tour.title} 
-                          className="w-full h-full object-cover" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                        <h3 className="absolute bottom-2 left-2 text-white font-bold">{tour.title}</h3>
-                      </div>
-                    </Card>
+                    View All Road Trips
+                    <ChevronRight size={16} />
                   </Link>
-                ))}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
+                  {roadTripsTours.map((tour) => (
+                    <Link 
+                      key={tour.title} 
+                      to={getTourRoute(tour)} 
+                      className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    >
+                      <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
+                        <div className="relative h-40 overflow-hidden rounded-t-lg">
+                          <img 
+                            src={tour.image} 
+                            alt={tour.title} 
+                            className="w-full h-full object-cover" 
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                          <h3 className="absolute bottom-2 left-2 text-white font-bold">{tour.title}</h3>
+                        </div>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -67,26 +79,37 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours }: DesktopMenuProps) 
               Fixed Departures
             </NavigationMenuTrigger>
             <NavigationMenuContent className="bg-spiti-forest/95 backdrop-blur-lg border-spiti-green">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-[90vw] max-w-screen-lg max-h-[80vh] overflow-y-auto">
-                {fixedDepartureTours.map((tour) => (
+              <div className="w-[90vw] max-w-screen-lg">
+                <div className="p-4 border-b border-gray-700">
                   <Link 
-                    key={tour.title} 
-                    to={getTourRoute(tour)} 
-                    className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    to="/fixed-departures" 
+                    className="flex items-center justify-between text-white hover:text-spiti-green font-medium transition-colors"
                   >
-                    <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
-                      <div className="relative h-40 overflow-hidden rounded-t-lg">
-                        <img 
-                          src={tour.image} 
-                          alt={tour.title} 
-                          className="w-full h-full object-cover" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                        <h3 className="absolute bottom-2 left-2 text-white font-bold">{tour.title}</h3>
-                      </div>
-                    </Card>
+                    View All Fixed Departures
+                    <ChevronRight size={16} />
                   </Link>
-                ))}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
+                  {fixedDepartureTours.map((tour) => (
+                    <Link 
+                      key={tour.title} 
+                      to={getTourRoute(tour)} 
+                      className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    >
+                      <Card className="border-0 overflow-hidden bg-transparent cursor-pointer">
+                        <div className="relative h-40 overflow-hidden rounded-t-lg">
+                          <img 
+                            src={tour.image} 
+                            alt={tour.title} 
+                            className="w-full h-full object-cover" 
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                          <h3 className="absolute bottom-2 left-2 text-white font-bold">{tour.title}</h3>
+                        </div>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </NavigationMenuContent>
           </NavigationMenuItem>

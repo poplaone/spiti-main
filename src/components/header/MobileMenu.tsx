@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -41,6 +41,16 @@ const MobileMenu = ({
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
+          <div className="border-b border-gray-700 pb-3 mb-3">
+            <Link 
+              to="/road-trips" 
+              className="flex items-center justify-between text-white hover:text-spiti-green font-medium py-2"
+              onClick={onClose}
+            >
+              View All Road Trips
+              <ChevronRight size={16} />
+            </Link>
+          </div>
           <div className="grid grid-cols-1 gap-4">
             {roadTripsTours.map((tour) => (
               <Link 
@@ -73,6 +83,16 @@ const MobileMenu = ({
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
+          <div className="border-b border-gray-700 pb-3 mb-3">
+            <Link 
+              to="/fixed-departures" 
+              className="flex items-center justify-between text-white hover:text-spiti-green font-medium py-2"
+              onClick={onClose}
+            >
+              View All Fixed Departures
+              <ChevronRight size={16} />
+            </Link>
+          </div>
           <div className="grid grid-cols-1 gap-4">
             {fixedDepartureTours.map((tour) => (
               <Link 

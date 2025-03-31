@@ -20,6 +20,10 @@ import TourDetailWomen from "./pages/TourDetailWomen";
 import TourDetailOwnCar from "./pages/TourDetailOwnCar";
 import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
 
+// Import new pages for road trips and fixed departures
+import RoadTrips from "./pages/RoadTrips";
+import FixedDepartures from "./pages/FixedDepartures";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -38,6 +42,10 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/thank-you" element={<ThankYou />} />
+          
+          {/* New view all pages */}
+          <Route path="/road-trips" element={<RoadTrips />} />
+          <Route path="/fixed-departures" element={<FixedDepartures />} />
           
           {/* Tour detail pages with clean routes - all 6 tour types */}
           <Route path="/tour-bike" element={<TourDetailBike />} />
