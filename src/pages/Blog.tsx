@@ -18,6 +18,7 @@ const blogPosts: BlogPost[] = [
     author: "Vaibhav Reekhan",
     readTime: "7 min read",
     category: "Winter Experiences",
+    type: "full",
     tags: ["Snow Cave", "Winter Tourism", "Spiti Valley", "Himalayan Cafes", "Travel Experience"],
     content: `
       <p class="mb-4">Nestled in the captivating landscapes of Spiti Valley at an elevation of over 12,500 feet, the Snow Cave Cafe represents the innovative spirit of local entrepreneurs who have transformed winter challenges into extraordinary opportunities. As temperatures plummet below -20°C in this high-altitude cold desert, this remarkable ice structure has become not just a place to enjoy warm beverages, but a celebration of human creativity amid nature's extremes.</p>
@@ -62,6 +63,7 @@ const blogPosts: BlogPost[] = [
     author: "Vaibhav Reekhan",
     readTime: "8 min read",
     category: "Astronomy",
+    type: "full",
     tags: ["Stargazing", "Astronomy", "Night Sky", "Milky Way", "Himalayan Tourism"],
     content: `
       <p class="mb-4">Spiti Valley, nestled in the trans-Himalayan region at elevations ranging from 12,000 to 15,000 feet above sea level, offers one of the most pristine night skies on our planet. With minimal light pollution, low humidity, clear atmospheric conditions, and thin air at high altitudes, this remote valley provides astronomical viewing experiences that rival professional observatories. For travelers seeking to reconnect with the cosmos and witness celestial phenomena in their full glory, Spiti offers an unparalleled natural planetarium.</p>
@@ -132,6 +134,7 @@ const blogPosts: BlogPost[] = [
     author: "Vaibhav Reekhan",
     readTime: "9 min read",
     category: "Travel Advice",
+    type: "full",
     tags: ["Winter Travel", "Road Safety", "Himalayan Tourism", "Travel Planning", "Snow Adventure"],
     content: `
       <p class="mb-4">Spiti Valley transforms dramatically when winter descends upon the Himalayas. As temperatures plummet and snow blankets the rugged landscape, this high-altitude cold desert metamorphoses into a realm of pristine white wilderness. For adventurous travelers willing to brave the extreme conditions, winter offers a rare glimpse into authentic Himalayan life and landscapes unmarred by tourism crowds. However, this magical experience comes with significant challenges that require careful preparation, respect for mountain conditions, and flexible itineraries.</p>
@@ -242,6 +245,7 @@ const blogPosts: BlogPost[] = [
     author: "Vaibhav Reekhan",
     readTime: "10 min read",
     category: "Adventure",
+    type: "full",
     tags: ["Winter Sports", "Adventure Tourism", "Snow Trek", "Wildlife Spotting", "Spiti Valley"],
     content: `
       <p class="mb-4">When winter's icy grip tightens around Spiti Valley transforming it into a frozen wonderland, most conventional tourism retreats – but for adventure seekers, the real Spiti experience is just beginning. The valley's winter persona offers a rugged playground for those seeking experiences beyond ordinary tourism. From traversing pristine snow fields to tracking elusive wildlife through frozen landscapes, winter Spiti presents adventures that challenge, exhilarate, and forge deep connections with the Himalayan wilderness.</p>
@@ -344,6 +348,7 @@ const blogPosts: BlogPost[] = [
     author: "Vaibhav Reekhan",
     readTime: "8 min read",
     category: "Culture",
+    type: "full",
     tags: ["Cultural Tourism", "Buddhist Festivals", "Himalayan Traditions", "Losar Festival", "Local Customs"],
     content: `
       <p class="mb-4">Winter in Spiti Valley marks a profound shift in the rhythm of life. As agricultural activities cease and mobility becomes restricted under blankets of snow, communities turn inward. This season of introspection and community bonding reveals the true cultural heart of Spiti – a living treasure of traditions that have evolved over centuries of adaptation to one of Earth's most challenging environments. For cultural travelers willing to brave the cold, winter offers unparalleled insights into the spiritual practices, communal celebrations, and daily rituals that define Spitian identity.</p>
@@ -428,13 +433,162 @@ const blogPosts: BlogPost[] = [
       
       <p class="mt-6">Winter in Spiti Valley offers cultural travelers a rare privilege – witnessing and respectfully engaging with living traditions that have sustained communities through centuries of extreme conditions. Beyond the spectacular landscapes and adventure opportunities, it is this cultural wealth that provides the deepest and most lasting impressions. Through thoughtful participation in winter festivals, domestic traditions, and spiritual practices, visitors gain insights not just into Spitian culture but into the remarkable adaptability and creativity of human communities in challenging environments.</p>
     `
+  },
+  // Mini blogs about unique places in Spiti Valley
+  {
+    id: 6,
+    title: "Key Monastery: The Ancient Fortress of Knowledge",
+    excerpt: "Discover the spectacular Key Monastery, Spiti's oldest and largest Buddhist monastery perched dramatically on a hilltop at 13,668 feet above sea level.",
+    image: "/lovable-uploads/a122e2c4-bd62-41e0-ab07-d5e16dd5bb42.png",
+    date: "September 20, 2023",
+    author: "Vaibhav Reekhan",
+    readTime: "3 min read",
+    category: "Places",
+    type: "mini",
+    tags: ["Monasteries", "Buddhist Culture", "Architecture", "Historical Sites"],
+    content: `
+      <p class="mb-4">Perched dramatically at 13,668 feet above sea level, Key Monastery (also spelled Ki, Kee, or Kye) stands as the iconic symbol of Spiti Valley's ancient Buddhist heritage. This remarkable structure, resembling a fortress more than a traditional monastery, has withstood the test of time since its founding in the 11th century by Dromtön, a famous disciple of the renowned translator Rinchen Zangpo.</p>
+      
+      <p class="mb-4">The monastery's unique architectural style reflects both its defensive needs and spiritual purpose. Built as a collection of whitewashed buildings stacked irregularly upon one another, its design helped protect against marauders and harsh weather alike. The irregular, multi-level construction creates a mesmerizing visual effect against the stark mountain backdrop that has made it one of Spiti's most photographed landmarks.</p>
+      
+      <p class="mb-4">As the oldest and largest Buddhist monastery in Spiti Valley, Key houses approximately 300 lamas who study within its ancient walls. Visitors can explore its atmospheric prayer halls containing beautiful murals, rare thangkas (Buddhist paintings on cotton or silk), and ancient manuscripts written in Tibetan script. The monastery's collection of weapons, including old guns and swords, tells the story of its turbulent history defending against numerous invasions.</p>
+      
+      <p class="mb-4">For travelers seeking to experience the living Buddhist culture of Spiti, Key Monastery offers an immersive glimpse into daily monastic life. Morning prayers accompanied by resonant chanting, the blowing of ceremonial horns, and the rhythmic beat of drums create an unforgettable sensory experience. During important festivals, the monastery comes alive with elaborate masked dances (Chaam) that depict stories from Buddhist mythology.</p>
+      
+      <p class="mb-4">Beyond its cultural significance, the monastery's location offers breathtaking panoramic views of the Spiti Valley and surrounding snow-capped peaks. The play of light and shadow across this landscape throughout the day creates ever-changing vistas that captivate photographers and spiritual seekers alike.</p>
+      
+      <p class="mb-4">For an authentic experience, some travelers arrange overnight stays at the monastery guesthouse, where they can join the monks for meals and prayers. This deeper engagement provides unique insights into a contemplative way of life that has remained largely unchanged for centuries despite the encroachment of modern influences.</p>
+      
+      <p class="mb-4">Whether visited as a cultural pilgrimage, photographic opportunity, or spiritual exploration, Key Monastery stands as an essential destination in any Spiti Valley itinerary—a place where ancient wisdom meets breathtaking natural beauty in perfect harmony.</p>
+    `
+  },
+  {
+    id: 7,
+    title: "Chandratal Lake: The Moon Lake of Spiti",
+    excerpt: "Explore the mesmerizing Chandratal Lake, a crescent-shaped high-altitude lake surrounded by pristine wilderness and steeped in local legends.",
+    image: "/lovable-uploads/c8d818d4-0cbc-4134-a656-4c78ea481271.png",
+    date: "September 10, 2023",
+    author: "Vaibhav Reekhan",
+    readTime: "3 min read",
+    category: "Places",
+    type: "mini",
+    tags: ["Lakes", "Trekking", "Natural Wonders", "Camping", "Photography"],
+    content: `
+      <p class="mb-4">Nestled at an elevation of 14,100 feet in the Himalayan landscapes between Spiti and Lahaul valleys, Chandratal Lake captures the imagination with its pristine beauty and mythical significance. Its name, translating to "Lake of the Moon," perfectly describes its crescent shape and the otherworldly quality of this alpine gem surrounded by barren mountains and verdant meadows.</p>
+      
+      <p class="mb-4">The lake's color shifts magically throughout the day, from turquoise blue under morning sunlight to deep indigo as evening approaches. This natural phenomenon creates a photographer's paradise, with the surrounding snow-capped peaks perfectly reflected in the crystal-clear waters on still days. The contrast between the vibrant blue lake and the stark brown landscape creates compositions that seem almost surreal.</p>
+      
+      <p class="mb-4">Local mythology holds that Chandratal serves as the gateway through which fairy enchantresses carry selected heroes to their magical realm. This folklore adds an enchanting dimension to the already mystical atmosphere that surrounds the lake. Buddhist legends also revere the site, claiming that the lake appeared when Padmasambhava (Guru Rinpoche) passed through this area while traveling to Tibet.</p>
+      
+      <p class="mb-4">Unlike many high-altitude lakes in the Indian Himalayas, Chandratal is relatively accessible during summer months (late May to early October). A motorable road reaches within a 1.5-kilometer walking distance, making this natural wonder available to travelers of varying fitness levels. This accessibility has made it increasingly popular with both domestic and international visitors seeking to experience Spiti's pristine wilderness.</p>
+      
+      <p class="mb-4">The lake's shoreline offers a perfect 3-kilometer circumambulatory path that invites contemplative walks with ever-changing perspectives of the surrounding landscape. Each step reveals new angles of beauty as the mountains and skies are mirrored in the lake's surface. During clear nights, the star-filled sky reflected in the still waters creates a double cosmos that leaves visitors awestruck.</p>
+      
+      <p class="mb-4">For adventure enthusiasts, camping near Chandratal (maintaining the regulated distance to protect the fragile ecosystem) provides one of the most memorable overnight experiences in the Himalayas. Several designated camping areas offer basic facilities while maintaining the wilderness experience. Waking up to the golden morning light illuminating the lake is a moment that imprints itself permanently in travelers' memories.</p>
+      
+      <p class="mb-4">Wildlife enthusiasts should keep their cameras ready, as the meadows surrounding Chandratal host rare Himalayan wildlife including blue sheep, snow leopards (extremely rare sightings), and numerous alpine bird species. The delicate alpine flowers that bloom briefly during the short summer season transform the otherwise austere landscape into a subtle garden of resilient beauty.</p>
+      
+      <p class="mb-4">When planning a visit to this high-altitude wonder, travelers should be prepared for rapidly changing weather conditions and the physical effects of altitude. Taking time to acclimatize properly before reaching Chandratal ensures a more comfortable and enjoyable experience of this magnificent natural treasure that represents Spiti Valley at its pristine best.</p>
+    `
+  },
+  {
+    id: 8,
+    title: "Langza Village: Home of Fossils and the Buddha",
+    excerpt: "Visit Langza, a picturesque high-altitude village known for its giant Buddha statue, marine fossils millions of years old, and traditional pottery craftsmanship.",
+    image: "/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png",
+    date: "August 25, 2023",
+    author: "Vaibhav Reekhan",
+    readTime: "3 min read",
+    category: "Places",
+    type: "mini",
+    tags: ["Villages", "Buddhism", "Fossils", "Cultural Experience", "Himalayas"],
+    content: `
+      <p class="mb-4">Perched at a breathtaking altitude of 14,500 feet above sea level, Langza village stands as a living testimony to both geological wonders and cultural resilience. This small settlement of approximately 150 inhabitants occupies what was once an ancient seabed, creating the remarkable phenomenon that has made Langza famous among travelers and scientists alike – abundant marine fossils embedded in the surrounding mountains.</p>
+      
+      <p class="mb-4">The village landscape is dominated by a majestic 1,000-year-old Buddha statue overlooking the homes and fields below. Standing serenely at the highest point, this golden statue has become an iconic symbol of Spiti Valley, particularly when photographed against the backdrop of the towering Chau Chau Kang Nilda peak (locally known as the "King of Black Mountains") that rises dramatically behind the village to an elevation of 20,000 feet.</p>
+      
+      <p class="mb-4">What makes Langza truly remarkable is the presence of marine fossils scattered throughout its surrounding terrain – evidence that this high-altitude desert was once submerged under the Tethys Sea millions of years ago. The geological uplift that created the Himalayas brought these ancient seabeds to their current elevation, preserving ammonites and other marine creatures as fossils that can be found by observant visitors. Local children often guide travelers to fossil-hunting sites, though visitors should note that removing fossils is prohibited to preserve this natural heritage.</p>
+      
+      <p class="mb-4">Beyond its geological wonders, Langza is renowned for its traditional pottery made from the local black clay. This ancestral craft produces distinctive utilitarian and decorative items that have been integral to Spitian culture for centuries. Visitors can observe the pottery-making process and purchase authentic pieces directly from the artisans who maintain this traditional skill despite the challenges of their remote location.</p>
+      
+      <p class="mb-4">The village's agricultural practices represent remarkable human adaptation to extreme conditions. Residents cultivate green peas, barley, and potatoes during the brief summer growing season when the otherwise barren landscape transforms into productive fields. Their farming methods, honed over generations to maximize productivity in the short frost-free period, demonstrate profound ecological knowledge specialized for high-altitude agriculture.</p>
+      
+      <p class="mb-4">Traditional Spitian homes in Langza feature thick mud-brick walls and flat roofs designed to conserve heat during bitter winters and remain cool in summer. These sustainable architectural practices have evolved specifically for the extreme climate conditions, utilizing locally available materials and passive solar design principles long before such concepts became fashionable in modern architecture.</p>
+      
+      <p class="mb-4">The village's location offers spectacular sunrise and sunset views, making it a favorite spot for photographers seeking to capture the magical quality of Himalayan light as it plays across the stark landscape. The elevation and clear air create remarkable visibility, with panoramic views extending across the valley to distant snow-capped peaks on clear days.</p>
+      
+      <p class="mb-4">For travelers seeking authentic cultural experiences, several families in Langza offer homestay accommodations where guests can participate in daily village activities, share traditional meals, and experience the warmth of Spitian hospitality against the backdrop of one of the world's most dramatic landscapes. These immersive stays provide insight into how communities maintain their cultural identity and spiritual practices while adapting to environmental challenges and increasing connectivity with the outside world.</p>
+    `
+  },
+  {
+    id: 9,
+    title: "Dhankar Monastery: The Fortress Between Two Valleys",
+    excerpt: "Marvel at Dhankar Monastery, a 1200-year-old architectural wonder perched precariously between two valleys, offering stunning panoramic views and ancient Buddhist treasures.",
+    image: "/lovable-uploads/e1880eea-44e0-430e-8627-101560cff518.png",
+    date: "August 15, 2023",
+    author: "Vaibhav Reekhan",
+    readTime: "3 min read",
+    category: "Places",
+    type: "mini",
+    tags: ["Monasteries", "Architecture", "Heritage Sites", "Buddhist Art", "History"],
+    content: `
+      <p class="mb-4">Dramatically positioned at 12,774 feet above sea level, Dhankar Monastery appears to grow directly from the craggy cliff face it occupies, blending so seamlessly with the precipitous rock formations that it's often difficult to distinguish where natural mountain ends and human construction begins. This architectural marvel, whose name means "fort on a cliff," has clung to its precarious perch for over 1,200 years, serving as both a spiritual center and defensive fortress overlooking the confluence of the Spiti and Pin Rivers.</p>
+      
+      <p class="mb-4">What makes Dhankar truly spectacular is its strategic position between two valleys, offering panoramic views that once allowed monks to spot approaching invaders miles away. Today, these same vistas provide visitors with breathtaking photographic opportunities, especially during early morning and evening hours when the changing light paints the surrounding mountains in hues of gold, amber, and purple. The monastery's location creates a natural viewpoint to appreciate the geological wonder of Spiti's layered mountains and deep river gorges.</p>
+      
+      <p class="mb-4">Architecturally, Dhankar represents a masterpiece of adaptive design, utilizing the existing rock formations as foundational elements and building upon them with locally sourced materials. The multi-storied complex features meditation caves carved directly into the mountain, along with traditional structures constructed using mud, wood, and stone. This integration with the natural environment demonstrates the ingenuity of ancient builders working in extreme conditions without modern equipment.</p>
+      
+      <p class="mb-4">Inside the monastery complex, visitors discover treasures that have survived centuries of harsh weather and historical turmoil. The main temple houses a statue of Vairochana (Dhyani Buddha) surrounded by four other Buddha statues – a distinctive arrangement rarely seen in Himalayan Buddhist monasteries. Ancient thankas (Buddhist scroll paintings), some dating back several hundred years, depict complex mandalas and deities with remarkable preservation of their vibrant natural pigments.</p>
+      
+      <p class="mb-4">The monastery's library contains rare Buddhist texts and manuscripts, including some of the oldest surviving examples of the sacred Kangyur texts (the translated words of Buddha). These irreplaceable documents represent an important repository of Buddhist scholarship and cultural heritage that monks are working to preserve through careful documentation and digitization efforts.</p>
+      
+      <p class="mb-4">In response to the deteriorating condition of the ancient structure, which has been placed on the World Monuments Fund's list of 100 most endangered sites, the monastic community has constructed a new monastery nearby. This modern building, while lacking the dramatic setting of its predecessor, ensures the continuation of spiritual practices while reducing pressure on the fragile historical structure that has begun showing serious signs of structural instability due to erosion of its foundation.</p>
+      
+      <p class="mb-4">For the moderately fit visitor, a 45-minute hike from Dhankar leads to Dhankar Lake, a small, high-altitude body of turquoise water surrounded by barren mountains. This sacred lake offers both spiritual significance for pilgrims and spectacular reflective photography opportunities for travelers, especially during the calm morning hours when the water often mirrors the sky and surrounding peaks with perfect clarity.</p>
+      
+      <p class="mb-4">Beyond its architectural and artistic significance, Dhankar provides visitors with a tangible connection to the living history of Spiti Valley. The monastery once served as the capital of the Spiti Kingdom, and its positioning between valleys made it central to both governance and trade. Today, as monks continue their daily rituals and prayers within its ancient walls, Dhankar offers a glimpse into a continuous spiritual tradition that has endured through centuries of isolation, extreme weather, and geopolitical changes – a resilient cultural heritage that continues to adapt while maintaining its essential character.</p>
+    `
+  },
+  {
+    id: 10,
+    title: "Hikkim Village: Home to the World's Highest Post Office",
+    excerpt: "Discover Hikkim, where the world's highest post office operates at 14,567 feet, allowing visitors to send postcards from the roof of the world while experiencing traditional Spitian village life.",
+    image: "/lovable-uploads/fe95c61b-1c4d-48be-9e18-1d3b19b7c41e.png",
+    date: "August 5, 2023",
+    author: "Vaibhav Reekhan",
+    readTime: "3 min read",
+    category: "Places",
+    type: "mini",
+    tags: ["Villages", "Unique Attractions", "Cultural Experience", "High Altitude", "Postal Service"],
+    content: `
+      <p class="mb-4">Nestled in the Trans-Himalayan region at a breathtaking altitude of 14,567 feet above sea level, Hikkim village has achieved global recognition for a modest one-room building that serves as the world's highest operational post office. This unique postal facility, established in 1983, has become an unexpected tourist attraction where visitors from around the globe gather to send postcards and letters with the coveted "Highest Post Office" postmark – a simple yet meaningful souvenir from the roof of the world.</p>
+      
+      <p class="mb-4">While this postal distinction draws travelers initially, Hikkim offers much more than just a special postmark. The village provides an authentic glimpse into traditional high-altitude living largely unchanged for centuries. Approximately 50 whitewashed mud-brick houses cluster together in traditional Spitian architectural style, their flat roofs often lined with neatly stacked firewood collected from lower elevations to fuel the winter months when temperatures plummet below -20°C and snow isolates the community.</p>
+      
+      <p class="mb-4">The post office itself operates under remarkably challenging conditions. Mail collected from this remote outpost begins an extraordinary journey – first carried down precarious mountain roads to Kaza (the administrative center of Spiti), then onward to Reckong Peo before reaching Shimla and finally entering the broader postal network. During winter months when roads close due to heavy snowfall, postal workers sometimes transport mail on foot through snow-covered paths, demonstrating remarkable dedication to maintaining this vital communication link.</p>
+      
+      <p class="mb-4">The village postmaster, Rinchen Chhering, has become something of a local celebrity, featured in numerous travel documentaries and publications. His daily work represents a crucial connection between this remote community and the outside world. Beyond handling tourist postcards, the post office provides essential services to local residents, including processing pensions, savings accounts, and money orders – financial services otherwise inaccessible to many villagers without lengthy travel to larger towns.</p>
+      
+      <p class="mb-4">Beyond its postal fame, Hikkim offers visitors a deeper connection with traditional Spitian culture. The village maintains ancient agricultural practices adapted to extreme high-altitude conditions, cultivating barley, black peas, and potatoes during the brief summer growing season. These farming methods represent sophisticated ecological knowledge developed over generations, utilizing specialized irrigation systems and careful timing to maximize productivity in the short frost-free period.</p>
+      
+      <p class="mb-4">The village's elevation provides spectacular panoramic views of surrounding Himalayan peaks, including the majestic Chau Chau Kang Nilda mountain that dominates the horizon. This visual backdrop, combined with the extraordinary quality of light found at high altitudes, creates photographic opportunities that capture the stark beauty of this mountain desert landscape. During clear nights, the minimal light pollution allows for spectacular stargazing, with the Milky Way often visible with naked-eye clarity.</p>
+      
+      <p class="mb-4">Several families in Hikkim now offer homestay accommodations, allowing visitors to experience traditional hospitality while supporting the local economy. These homestays provide authentic cultural immersion experiences – from participating in daily activities to sharing meals featuring traditional cuisine like thukpa (noodle soup) and skyu (thumb-pressed pasta) prepared on traditional mud stoves. Evening conversations around the kitchen fire often include local folklore and Buddhist teachings that have shaped the community's worldview for centuries.</p>
+      
+      <p class="mb-4">For travelers seeking to experience Hikkim authentically, visiting during the harvest festival in September offers a glimpse into community celebrations that feature traditional music, dance, and customs expressing gratitude for the year's bounty. This seasonal gathering represents the joyful culmination of the agricultural cycle before winter's arrival transforms daily life in this remarkable high-altitude community that maintains both its traditional identity and its unique connection to the wider world through the humble yet extraordinary post office that put it on the global map.</p>
+    `
   }
 ];
 
 const Blog = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost>(blogPosts[0]);
-  const featuredPosts = blogPosts.slice(0, 1);
-  const recentPosts = blogPosts.slice(1);
+  const [activeTab, setActiveTab] = useState<"full" | "mini">("full");
+  
+  const fullBlogPosts = blogPosts.filter(post => post.type === "full" || !post.type);
+  const miniBlogPosts = blogPosts.filter(post => post.type === "mini");
+  
+  const featuredPosts = fullBlogPosts.slice(0, 1);
+  const recentFullPosts = fullBlogPosts.slice(1);
 
   const handlePostClick = (post: BlogPost) => {
     setSelectedPost(post);
@@ -446,9 +600,83 @@ const Blog = () => {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <BlogHero />
-      <FeaturedPost post={featuredPosts[0]} />
-      <BlogPostGrid posts={recentPosts} />
-      <FullBlogPost post={selectedPost} />
+      
+      <section className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex rounded-md shadow-sm" role="group">
+              <button
+                type="button"
+                onClick={() => setActiveTab("full")}
+                className={`px-6 py-2 text-sm font-medium border border-gray-200 rounded-l-lg ${
+                  activeTab === "full"
+                    ? "bg-spiti-forest text-white"
+                    : "bg-white text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                Full Articles
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("mini")}
+                className={`px-6 py-2 text-sm font-medium border border-gray-200 rounded-r-lg ${
+                  activeTab === "mini"
+                    ? "bg-spiti-forest text-white"
+                    : "bg-white text-gray-900 hover:bg-gray-100"
+                }`}
+              >
+                Mini Guides
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {activeTab === "full" && (
+        <>
+          <FeaturedPost post={featuredPosts[0]} />
+          <BlogPostGrid posts={recentFullPosts} />
+          <FullBlogPost post={selectedPost} />
+        </>
+      )}
+      
+      {activeTab === "mini" && (
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold mb-8 text-center">Spiti Valley Mini Guides</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {miniBlogPosts.map(post => (
+                <div 
+                  key={post.id}
+                  className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                  onClick={() => handlePostClick(post)}
+                >
+                  <div className="relative h-56">
+                    <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                    <div className="absolute top-4 right-4 bg-spiti-forest text-white text-xs font-semibold px-2 py-1 rounded">
+                      {post.category}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-2 hover:text-spiti-forest transition-colors">{post.title}</h3>
+                    <p className="text-gray-500 text-sm mb-3">
+                      {post.date} · {post.readTime}
+                    </p>
+                    <p className="text-gray-700 mb-4 line-clamp-3">{post.excerpt}</p>
+                    <div className="flex items-center">
+                      <div className="text-sm">
+                        <p className="font-medium text-spiti-forest">{post.author}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <FullBlogPost post={selectedPost} />
+        </section>
+      )}
+      
       <Footer />
     </div>
   );

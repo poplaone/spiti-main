@@ -10,4 +10,5 @@ export interface BlogPost {
   category: string;
   content?: string;
   tags?: string[];
+  type?: "full" | "mini"; // Adding a type to differentiate between full and mini blogs
 }
