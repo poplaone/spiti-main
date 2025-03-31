@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
 import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -85,8 +86,8 @@ const Index = () => {
           <TourPackages />
           
           {/* Then show the Spiti Circuit Map section - moved as requested */}
-          <div className="mt-16">
-            <div className="text-center mb-10">
+          <div className="mt-8">
+            <div className="text-center mb-6">
               
               
             </div>
@@ -95,10 +96,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Gallery Section - Updated to maintain bluish background */}
-      <section className="py-16 bg-transparent">
+      {/* Gallery Section - Updated to maintain bluish background but reduced top margin */}
+      <section className="pt-8 pb-16 bg-transparent">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center mb-8">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Photo Gallery</h2>
             <p className="text-gray-700 mb-4">
               Immerse yourself in the breathtaking vistas and cultural wonders of Spiti Valley through our curated collection of photographs.

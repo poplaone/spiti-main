@@ -1,6 +1,8 @@
+
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+
 const photos = [{
   url: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=600&q=80",
   alt: "Spiti Valley Landscape"
@@ -17,8 +19,10 @@ const photos = [{
   url: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=600&q=80",
   alt: "Rocky Mountains"
 }];
+
 const PhotoGallery = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  
   const scroll = (direction: 'left' | 'right') => {
     const gallery = document.getElementById('gallery');
     if (gallery) {
@@ -31,9 +35,8 @@ const PhotoGallery = () => {
       setScrollPosition(newPosition);
     }
   };
-  return <div className="relative py-12">
-      
-      
+  
+  return <div className="relative py-8">
       <div className="relative overflow-hidden">
         <div id="gallery" className="flex gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory" style={{
         scrollBehavior: 'smooth'
@@ -53,4 +56,5 @@ const PhotoGallery = () => {
       </div>
     </div>;
 };
+
 export default PhotoGallery;
