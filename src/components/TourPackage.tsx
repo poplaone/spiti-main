@@ -101,37 +101,37 @@ const TourPackage: React.FC<TourPackageProps> = ({
       </div>
       
       <div className="p-4">
-        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-3">{title}</h3>
+        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2">{title}</h3>
         
-        <div className="flex flex-col space-y-2 mb-4">
-          {/* Fixed Departures and Customizable */}
-          <div className="flex items-center space-x-6">
+        <div className="flex flex-col space-y-1 mb-3">
+          {/* Fixed Departures and Customizable - Made spacing smaller */}
+          <div className="flex items-center space-x-4">
             <div className="flex items-center text-spiti-blue">
-              <CalendarCheck className="w-5 h-5 mr-1.5 text-spiti-blue" />
-              <span className="text-sm font-medium uppercase">Fixed Departures</span>
+              <CalendarCheck className="w-4 h-4 mr-1 text-spiti-blue" />
+              <span className="text-xs font-medium uppercase">Fixed Departures</span>
             </div>
             
             <div className="flex items-center text-spiti-blue">
-              <Settings2 className="w-5 h-5 mr-1.5 text-spiti-blue" />
-              <span className="text-sm font-medium uppercase">Customizable</span>
+              <Settings2 className="w-4 h-4 mr-1 text-spiti-blue" />
+              <span className="text-xs font-medium uppercase">Customizable</span>
             </div>
           </div>
           
           {/* Available from... */}
-          <div className="text-sm text-gray-600">
+          <div className="text-xs text-gray-600">
             Available from June to October
           </div>
         </div>
         
+        {/* Put "X DAYS" above the price but on the left side */}
+        <div className="text-sm font-medium text-rose-500 uppercase mb-1">
+          {duration.days} DAYS
+        </div>
+        
         <div className="flex items-end justify-between mb-4 border-b pb-3">
-          <div className="flex items-center">
-            <div className="text-sm font-medium text-rose-500 uppercase mr-3">
-              {duration.days} DAYS
-            </div>
-            <div>
-              <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
-              <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
-            </div>
+          <div>
+            <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
+            <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
           </div>
         </div>
         
