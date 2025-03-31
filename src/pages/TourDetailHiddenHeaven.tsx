@@ -73,10 +73,18 @@ const TourDetailHiddenHeaven = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left column - Package details */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Add Departure Dates card */}
-              <DepartureDatesCard />
+              {/* Desktop view: Display Tour Overview and Departure Dates side by side */}
+              <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8">
+                <TourOverview tour={tour} getTransportIcon={getTransportIcon} />
+                <DepartureDatesCard />
+              </div>
               
-              <TourOverview tour={tour} getTransportIcon={getTransportIcon} />
+              {/* Mobile view: Stack them */}
+              <div className="lg:hidden space-y-8">
+                <DepartureDatesCard />
+                <TourOverview tour={tour} getTransportIcon={getTransportIcon} />
+              </div>
+              
               <TourItinerary tour={tour} />
               <TourPackageDetails tour={tour} />
             </div>
