@@ -1,23 +1,16 @@
-
 import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { StarIcon } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
-
 const About = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
+  return <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
       <Header />
       
       {/* Hero Section */}
       <section className="relative pt-20 lg:pt-28">
         <div className="h-[50vh] md:h-[60vh] relative overflow-hidden">
-          <img 
-            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80" 
-            alt="Spiti Valley Mountains" 
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80" alt="Spiti Valley Mountains" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-spiti-forest/80 to-transparent"></div>
           <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">About Us</h1>
@@ -45,11 +38,7 @@ const About = () => {
               </p>
             </div>
             <div className="rounded-lg overflow-hidden shadow-xl">
-              <img 
-                src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80" 
-                alt="Spiti Valley Landscape" 
-                className="w-full h-full object-cover"
-              />
+              <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80" alt="Spiti Valley Landscape" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -104,11 +93,7 @@ const About = () => {
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
                 <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80" 
-                    alt="Team Member" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80" alt="Team Member" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-1">Tenzin Norgay</h3>
                 <p className="text-spiti-green mb-3">Founder & Lead Guide</p>
@@ -121,11 +106,7 @@ const About = () => {
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
                 <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" 
-                    alt="Team Member" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Team Member" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-1">Padma Yangzom</h3>
                 <p className="text-spiti-green mb-3">Operations Manager</p>
@@ -138,11 +119,7 @@ const About = () => {
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
                 <div className="mb-4 h-48 rounded-lg overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" 
-                    alt="Team Member" 
-                    className="w-full h-full object-cover"
-                  />
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Team Member" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-1">Dorje Tsering</h3>
                 <p className="text-spiti-green mb-3">Senior Guide & Photographer</p>
@@ -156,42 +133,9 @@ const About = () => {
       </section>
       
       {/* Testimonials Section */}
-      <section className="py-16 bg-gradient-to-b from-spiti-blue/20 to-transparent">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-12 text-center">What Our Travelers Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-white/10 backdrop-blur-sm p-6 rounded-lg">
-                <div className="flex mb-4">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <StarIcon key={star} className="text-yellow-400 h-5 w-5" fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-white/90 mb-4">
-                  "An absolutely life-changing experience! The team went above and beyond to show us the true beauty of Spiti Valley. The local insights and personal touches made this trip unforgettable."
-                </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-                    <img 
-                      src={`https://randomuser.me/api/portraits/${i % 2 ? 'women' : 'men'}/${i + 20}.jpg`} 
-                      alt="Customer" 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <p className="font-medium text-white">Sarah Johnson</p>
-                    <p className="text-white/70 text-sm">United Kingdom</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default About;
