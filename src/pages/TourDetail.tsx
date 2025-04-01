@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage.d";
-import { tourPackagesData } from "@/data/tourPackagesData";
-import { Bike, Car } from "lucide-react";
+import { Bike, Car, Loader2 } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { fetchTourPackageById, fetchTourPackages } from '@/lib/db';
+import { useToast } from '@/hooks/use-toast';
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -35,24 +36,72 @@ const TourDetail = () => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (id) {
-      const numId = parseInt(id, 10);
-      const selectedTour = tourPackagesData.find((_, index) => index === numId);
-      if (selectedTour) {
-        setTour(selectedTour);
-
-        // Get other tours for the "More Popular Tours" section
-        const others = tourPackagesData.filter((_, index) => index !== numId).slice(0, 4);
-        setOtherTours(others);
+    
+    const loadTourData = async () => {
+      if (!id) return;
+      
+      try {
+        setIsLoading(true);
+        
+        // Try to fetch the tour by ID first
+        const tourData = await fetchTourPackageById(id);
+        
+        if (tourData) {
+          setTour(tourData);
+          
+          // Fetch other tours for the "More Popular Tours" section
+          const allTours = await fetchTourPackages();
+          const others = allTours
+            .filter(t => t.id !== id)
+            .slice(0, 4);
+            
+          setOtherTours(others);
+        } else {
+          // If not found, show error toast
+          toast({
+            title: "Tour not found",
+            description: "The requested tour package could not be found.",
+            variant: "destructive"
+          });
+        }
+      } catch (error) {
+        console.error("Error loading tour data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load tour details.",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
       }
-    }
-  }, [id]);
+    };
+    
+    loadTourData();
+  }, [id, toast]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-spiti-forest" />
+      </div>
+    );
+  }
 
   if (!tour) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <h1 className="text-3xl font-bold text-red-600">Tour Not Found</h1>
+        <p className="mt-4 text-lg">The tour package you are looking for does not exist or has been removed.</p>
+        <a href="/" className="mt-6 bg-spiti-forest text-white px-6 py-2 rounded-lg">
+          Return to Home
+        </a>
+      </div>
+    );
   }
 
   const formatPrice = (price: number) => {
@@ -66,10 +115,10 @@ const TourDetail = () => {
     return <Car className="text-spiti-blue w-6 h-6" />;
   };
 
-  // Select hero image based on tour id
-  const heroImage = id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) < heroImages.length 
-    ? heroImages[parseInt(id, 10)] 
-    : heroImages[heroImages.length - 1];
+  // Select hero image based on transport type or use the default
+  const transportTypeIndex = tour.transportType === 'bike' ? 0 : 
+                             tour.transportType === 'car' ? 1 : 6;
+  const heroImage = heroImages[transportTypeIndex];
 
   return (
     <div className="min-h-screen" style={{
@@ -128,7 +177,7 @@ const TourDetail = () => {
       </section>
 
       {/* More Popular Tours Section */}
-      <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
+      <RelatedTours tours={otherTours} tourPackagesData={[]} />
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 

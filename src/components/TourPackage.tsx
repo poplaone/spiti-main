@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
 
+// Mapping for static routes (keeping backward compatibility)
 const getRouteMap = {
   0: '/tour-bike',
   1: '/tour-unexplored',
@@ -25,6 +25,7 @@ const getRouteMap = {
 };
 
 const TourPackage: React.FC<TourPackageProps> = ({
+  id,
   title,
   image,
   originalPrice,
@@ -43,8 +44,17 @@ const TourPackage: React.FC<TourPackageProps> = ({
   const navigate = useNavigate();
   
   const getDetailRoute = () => {
-    if (typeof index !== 'number') return '/';
-    return getRouteMap[index as keyof typeof getRouteMap] || '/';
+    // If we have an ID, use the dynamic route
+    if (id) {
+      return `/tour-detail/${id}`;
+    }
+    
+    // Fall back to static routes for backward compatibility
+    if (typeof index !== 'undefined') {
+      return getRouteMap[index as keyof typeof getRouteMap] || '/';
+    }
+    
+    return '/';
   };
   
   const handleCardClick = (e: React.MouseEvent) => {

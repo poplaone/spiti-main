@@ -2,6 +2,7 @@
 import { TourDuration, TourItineraryDay, TourNightStay, TourTransportType } from '@/data/types/tourTypes';
 
 export interface TourPackageProps {
+  id?: string;
   title: string;
   image: string;
   originalPrice: number;
@@ -20,6 +21,8 @@ export interface TourPackageProps {
   departureDates?: DepartureDateField[];
   index?: number;
   className?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface DepartureDateField {

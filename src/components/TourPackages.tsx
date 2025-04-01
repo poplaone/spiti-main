@@ -1,10 +1,36 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TourPackageHeader from './tour/TourPackageHeader';
 import TourPackageGrid from './tour/TourPackageGrid';
-import { tourPackagesData } from '../data/tourPackagesData';
+import { fetchTourPackages } from '../lib/db';
+import { TourPackageProps } from './TourPackage.d';
+import { tourPackagesData as fallbackData } from '../data/tourPackagesData';
 
 const TourPackages = () => {
+  const [packages, setPackages] = useState<TourPackageProps[]>(fallbackData);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadPackages = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchTourPackages();
+        // If we successfully got data from the database, use it
+        if (data && data.length > 0) {
+          setPackages(data);
+        }
+      } catch (error) {
+        console.error('Error loading tour packages:', error);
+        // Fallback to static data if the API call fails
+        setPackages(fallbackData);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPackages();
+  }, []);
+
   return (
     <section id="discover-spiti-valley" className="py-16 relative bg-cover bg-center bg-no-repeat" 
       style={{ 
@@ -17,7 +43,13 @@ const TourPackages = () => {
           description="Explore our carefully crafted tour packages designed to provide you with an unforgettable Spiti Valley experience. Choose from a variety of options to match your preferences and budget."
         />
         
-        <TourPackageGrid packages={tourPackagesData} />
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-spiti-forest"></div>
+          </div>
+        ) : (
+          <TourPackageGrid packages={packages} />
+        )}
       </div>
     </section>
   );
