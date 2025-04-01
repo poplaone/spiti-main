@@ -6,36 +6,7 @@ import { MessageSquareMore, Send, CalendarCheck, Settings2 } from 'lucide-react'
 import { Link, useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
-
-interface NightStay {
-  location: string;
-  nights: number;
-}
-interface ItineraryDay {
-  day: number;
-  title: string;
-  description: string;
-}
-export interface TourPackageProps {
-  title: string;
-  image: string;
-  originalPrice: number;
-  discountedPrice: number;
-  discount: number;
-  duration: {
-    nights: number;
-    days: number;
-  };
-  nightStays: NightStay[];
-  inclusions: string[];
-  exclusions?: string[];
-  itinerary?: ItineraryDay[];
-  overview?: string;
-  transportType?: 'bike' | 'car' | 'innova';
-  isWomenOnly?: boolean;
-  index?: number;
-  className?: string;
-}
+import { TourPackageProps } from './TourPackage.d';
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
@@ -61,6 +32,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
   inclusions,
   transportType,
   isWomenOnly,
+  isFixedDeparture,
+  isCustomizable,
   index,
   className = ""
 }) => {
@@ -104,15 +77,19 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         <div className="flex flex-col space-y-1 mb-3">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center text-rose-500">
-              <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase">Fixed Departures</span>
-            </div>
+            {isFixedDeparture && (
+              <div className="flex items-center text-rose-500">
+                <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
+                <span className="text-xs font-medium uppercase">Fixed Departures</span>
+              </div>
+            )}
             
-            <div className="flex items-center text-rose-500">
-              <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase">Customizable</span>
-            </div>
+            {isCustomizable && (
+              <div className="flex items-center text-rose-500">
+                <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
+                <span className="text-xs font-medium uppercase">Customizable</span>
+              </div>
+            )}
           </div>
           
           <div className="text-xs text-gray-600">

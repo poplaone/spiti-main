@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Home, Check, X, MapPin } from 'lucide-react';
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/components/TourPackage.d";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface TourPackageDetailsProps {

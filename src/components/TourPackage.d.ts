@@ -10,7 +10,7 @@ export interface TourPackageProps {
   duration: TourDuration;
   nightStays: TourNightStay[];
   inclusions: string[];
-  exclusions: string[];
+  exclusions: string[]; // Changed from optional to required to match usage
   overview: string;
   itinerary: TourItineraryDay[];
   transportType: TourTransportType | 'innova';

@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { tourPackagesData } from '@/data/tourPackagesData';
 import TourPackageForm from '@/components/admin/tour-package/TourPackageForm';
+import { TourPackageProps } from '@/components/TourPackage.d';
 
 const EditTourPackage = () => {
   useAdminAuth();
@@ -15,7 +16,7 @@ const EditTourPackage = () => {
   const isNew = id === 'new';
   const packageIndex = isNew ? -1 : parseInt(id || '-1');
   const existingPackage = !isNew && packageIndex >= 0 && packageIndex < tourPackagesData.length ? 
-    tourPackagesData[packageIndex] : null;
+    tourPackagesData[packageIndex] as TourPackageProps : null;
 
   return (
     <div className="pb-16">

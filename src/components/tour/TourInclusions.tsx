@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Check, X } from 'lucide-react';
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/components/TourPackage.d";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface TourInclusionsProps {
