@@ -1,17 +1,10 @@
-
 import React from 'react';
 import { format } from 'date-fns';
-
-interface DepartureDateProps {
-  id: string;
-  startDate?: Date;
-  endDate?: Date;
-  status: 'Available' | 'Full' | 'Limited';
-}
+import { DepartureDate } from '@/components/TourPackage';
 
 interface DepartureDatesCardProps {
   className?: string;
-  departureDates?: DepartureDateProps[];
+  departureDates?: DepartureDate[];
 }
 
 const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
@@ -19,8 +12,8 @@ const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
   departureDates = []
 }) => {
   // Group dates by month
-  const groupDeparturesByMonth = (dates: DepartureDateProps[]) => {
-    const datesByMonth: Record<string, DepartureDateProps[]> = {};
+  const groupDeparturesByMonth = (dates: DepartureDate[]) => {
+    const datesByMonth: Record<string, DepartureDate[]> = {};
     
     // Initialize all months
     const allMonths = ["January", "February", "March", "April", "May", "June", 
@@ -107,7 +100,7 @@ const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
     }
   };
 
-  const formatDateRange = (date: DepartureDateProps) => {
+  const formatDateRange = (date: DepartureDate) => {
     if (!date.startDate) return "";
     
     const startDateFormatted = format(new Date(date.startDate), "dd MMM");

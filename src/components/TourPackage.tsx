@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ interface ItineraryDay {
   description: string;
 }
 
-interface DepartureDate {
+export interface DepartureDate {
   id: string;
   startDate?: Date;
   endDate?: Date;
@@ -46,6 +47,9 @@ export interface TourPackageProps {
   availableDates?: string;
   customUrl?: string;
   departureDates?: DepartureDate[];
+  // Add the missing props
+  index?: number;
+  className?: string;
 }
 
 const formatPrice = (price: number) => {

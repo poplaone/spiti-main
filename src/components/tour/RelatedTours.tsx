@@ -18,11 +18,18 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, tourPackagesData }) 
           journeys, find the perfect package for your next mountain getaway.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tours.map((tour, index) => (
-            <div key={index} className="h-full">
-              <TourPackage {...tour} index={tourPackagesData.findIndex(t => t.title === tour.title)} />
-            </div>
-          ))}
+          {tours.map((tour, index) => {
+            // Find the index in the original tour package data array
+            const originalIndex = tourPackagesData.findIndex(t => t.title === tour.title);
+            return (
+              <div key={index} className="h-full">
+                <TourPackage 
+                  {...tour} 
+                  index={originalIndex >= 0 ? originalIndex : undefined} 
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

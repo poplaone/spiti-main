@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,18 +6,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2 } from "lucide-react";
 import DatePickerInput from "@/components/form/DatePickerInput";
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps, DepartureDate } from "@/components/TourPackage";
 
 interface DepartureDatesTabProps {
   formData: TourPackageProps;
   setFormData: React.Dispatch<React.SetStateAction<TourPackageProps>>;
-}
-
-interface DepartureDate {
-  id: string;
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  status: 'Available' | 'Limited' | 'Full';
 }
 
 const DepartureDatesTab = ({ formData, setFormData }: DepartureDatesTabProps) => {

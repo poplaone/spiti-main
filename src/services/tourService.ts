@@ -1,5 +1,5 @@
 
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps, DepartureDate } from "@/components/TourPackage";
 import { tourPackagesData } from '@/data/tourPackagesData';
 
 // In a real application, these would communicate with a backend API
