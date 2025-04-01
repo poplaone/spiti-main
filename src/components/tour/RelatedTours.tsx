@@ -5,7 +5,7 @@ import { getAllTours } from "@/services/tourService";
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
-  tourPackagesData?: TourPackageProps[]; // Make this optional
+  tourPackagesData?: TourPackageProps[]; // Making this optional
 }
 
 const RelatedTours: React.FC<RelatedToursProps> = ({ tours }) => {
