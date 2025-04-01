@@ -3,11 +3,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { TourPackageProps } from "@/components/TourPackage";
 
+// Define table name as a constant to avoid repetition
+const TOUR_PACKAGES_TABLE = 'tour_packages';
+
 // Function to fetch all tour packages from Supabase
 export const fetchTourPackages = async (): Promise<TourPackageProps[]> => {
   try {
     const { data, error } = await supabase
-      .from('tour_packages')
+      .from(TOUR_PACKAGES_TABLE)
       .select('*')
       .order('index', { ascending: true });
       
@@ -27,7 +30,7 @@ export const fetchTourPackages = async (): Promise<TourPackageProps[]> => {
 export const fetchTourPackageById = async (id: string): Promise<TourPackageProps | null> => {
   try {
     const { data, error } = await supabase
-      .from('tour_packages')
+      .from(TOUR_PACKAGES_TABLE)
       .select('*')
       .eq('id', id)
       .single();
@@ -50,8 +53,8 @@ export const createTourPackage = async (packageData: Partial<TourPackageProps>):
     const dbPackage = mapTourPackageToDatabase(packageData);
     
     const { error } = await supabase
-      .from('tour_packages')
-      .insert(dbPackage);
+      .from(TOUR_PACKAGES_TABLE)
+      .insert(dbPackage as any);
       
     if (error) {
       console.error('Error creating tour package:', error);
@@ -73,8 +76,8 @@ export const updateTourPackage = async (id: string | undefined, packageData: Par
     const dbPackage = mapTourPackageToDatabase(packageData);
     
     const { error } = await supabase
-      .from('tour_packages')
-      .update(dbPackage)
+      .from(TOUR_PACKAGES_TABLE)
+      .update(dbPackage as any)
       .eq('id', id);
       
     if (error) {
@@ -93,7 +96,7 @@ export const updateTourPackage = async (id: string | undefined, packageData: Par
 export const deleteTourPackage = async (id: string): Promise<boolean> => {
   try {
     const { error } = await supabase
-      .from('tour_packages')
+      .from(TOUR_PACKAGES_TABLE)
       .delete()
       .eq('id', id);
       
