@@ -32,7 +32,7 @@ const BlogCategoryTabs = ({ activeTab, setActiveTab }: BlogCategoryTabsProps) =>
                   : "bg-white text-gray-900 hover:bg-gray-100"
               }`}
             >
-              Mini Guides
+              Mini Guides (English & Hindi)
             </button>
           </div>
         </div>
