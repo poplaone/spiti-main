@@ -41,7 +41,7 @@ const ToursTable = ({ tours, onDeleteClick }: ToursTableProps) => {
                       <div className="text-sm text-gray-500">
                         {tour.transportType === 'bike' ? 'Bike Tour' : 
                          tour.transportType === 'car' ? 'Car Tour' : 
-                         tour.transportType === 'innova' ? 'Innova Tour' : 'Tour'}
+                         tour.transportType === 'premium' ? 'Premium Tour' : 'Tour'}
                       </div>
                     </div>
                   </div>

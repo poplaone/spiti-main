@@ -19,7 +19,7 @@ const Dashboard = () => {
     
     // Count different tour types
     const bikeToursCount = tours.filter(tour => tour.transportType === 'bike').length;
-    const carToursCount = tours.filter(tour => tour.transportType === 'car' || tour.transportType === 'innova').length;
+    const carToursCount = tours.filter(tour => tour.transportType === 'car' || tour.transportType === 'premium').length;
     const womenOnlyToursCount = tours.filter((tour: TourPackageProps) => tour.isWomenOnly === true).length;
     
     setBikeTours(bikeToursCount);

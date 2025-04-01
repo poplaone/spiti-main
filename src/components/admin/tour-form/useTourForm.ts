@@ -115,7 +115,7 @@ export function useTourForm() {
     });
   };
   
-  const handleTransportTypeChange = (type: 'bike' | 'car' | 'innova') => {
+  const handleTransportTypeChange = (type: 'bike' | 'car' | 'premium') => {
     setFormData({
       ...formData,
       transportType: type
