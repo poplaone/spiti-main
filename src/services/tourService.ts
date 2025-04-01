@@ -22,7 +22,7 @@ const initializeStorage = () => {
       customUrl: tour.customUrl || "",
       departureDates: tour.departureDates || [],
       // Convert any "innova" transport type to "premium"
-      transportType: tour.transportType === "innova" ? "premium" : tour.transportType
+      transportType: tour.transportType === "premium" ? "premium" : tour.transportType
     }));
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
@@ -33,7 +33,7 @@ const initializeStorage = () => {
       let needsUpdate = false;
       
       const updatedTours = tours.map((tour: TourPackageProps) => {
-        if (tour.transportType === "innova") {
+        if (tour.transportType === "premium") {
           needsUpdate = true;
           return {
             ...tour,
@@ -112,7 +112,7 @@ export const resetToDefaultTours = (): void => {
     itinerary: tour.itinerary || [],
     customUrl: tour.customUrl || "",
     departureDates: tour.departureDates || [],
-    transportType: tour.transportType === "innova" ? "premium" : tour.transportType
+    transportType: tour.transportType === "premium" ? "premium" : tour.transportType
   }));
   
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
