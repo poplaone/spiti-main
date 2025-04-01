@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Edit } from 'lucide-react';
+import { ArrowLeft, Edit, Bike, Car } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { tourPackagesData } from '@/data/tourPackagesData';
 
@@ -18,10 +18,27 @@ const TourPackagePreview = () => {
   useAdminAuth();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [selectedMonth, setSelectedMonth] = useState("June");
   
   const packageIndex = id ? parseInt(id) : -1;
   const tourPackage = packageIndex >= 0 && packageIndex < tourPackagesData.length ? 
     tourPackagesData[packageIndex] : null;
+  
+  // Get related tours
+  const relatedTours = tourPackage ? 
+    tourPackagesData.filter((_, index) => index !== packageIndex).slice(0, 4) : 
+    [];
+    
+  // Format price for display
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-IN').format(price);
+  };
+
+  // Get the transport icon based on the tour's transport type
+  const getTransportIcon = () => {
+    if (tourPackage?.transportType === 'bike') return <Bike className="text-spiti-blue w-6 h-6" />;
+    return <Car className="text-spiti-blue w-6 h-6" />;
+  };
     
   if (!tourPackage) {
     return (
@@ -62,21 +79,18 @@ const TourPackagePreview = () => {
 
       {/* Regular Tour Detail Content */}
       <TourHero
-        title={tourPackage.title}
-        image={tourPackage.image}
-        duration={tourPackage.duration}
-        transportType={tourPackage.transportType}
+        tour={tourPackage}
+        selectedMonth={selectedMonth}
+        setSelectedMonth={setSelectedMonth}
+        formatPrice={formatPrice}
       />
       
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-12 gap-8">
           <div className="md:col-span-8">
-            <TourOverview overview={tourPackage.overview || ''} />
-            <TourItinerary itinerary={tourPackage.itinerary || []} />
-            <TourInclusions 
-              inclusions={tourPackage.inclusions} 
-              exclusions={tourPackage.exclusions || []} 
-            />
+            <TourOverview tour={tourPackage} getTransportIcon={getTransportIcon} />
+            <TourItinerary tour={tourPackage} />
+            <TourInclusions tour={tourPackage} />
           </div>
           
           <div className="md:col-span-4">
@@ -99,13 +113,13 @@ const TourPackagePreview = () => {
                 </div>
               </div>
               
-              <TourAccommodation nightStays={tourPackage.nightStays} />
+              <TourAccommodation tour={tourPackage} />
             </div>
           </div>
         </div>
       </div>
       
-      <RelatedTours currentTour={tourPackage} />
+      <RelatedTours tours={relatedTours} tourPackagesData={tourPackagesData} />
     </div>
   );
 };
