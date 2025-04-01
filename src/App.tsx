@@ -24,6 +24,15 @@ import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
 import RoadTrips from "./pages/RoadTrips";
 import FixedDepartures from "./pages/FixedDepartures";
 
+// Import admin pages
+import AdminLogin from "./pages/Admin/Login";
+import AdminLayout from "./components/admin/AdminLayout";
+import Dashboard from "./pages/Admin/Dashboard";
+import TourPackages from "./pages/Admin/TourPackages";
+import TourTypes from "./pages/Admin/TourTypes";
+import EditTourPackage from "./pages/Admin/EditTourPackage";
+import TourPackagePreview from "./pages/Admin/TourPackagePreview";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -54,6 +63,17 @@ const App = () => (
           <Route path="/tour-women" element={<TourDetailWomen />} />
           <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
           <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="tour-packages" element={<TourPackages />} />
+            <Route path="tour-types" element={<TourTypes />} />
+            <Route path="tour-packages/:id/edit" element={<EditTourPackage />} />
+            <Route path="tour-packages/new" element={<EditTourPackage />} />
+            <Route path="tour-packages/:id/preview" element={<TourPackagePreview />} />
+          </Route>
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
