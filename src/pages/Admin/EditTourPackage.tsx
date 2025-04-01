@@ -25,7 +25,9 @@ import {
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { tourPackagesData } from '@/data/tourPackagesData';
 import { TourPackageProps } from '@/components/TourPackage';
-import { ArrowLeft, Save, Trash2, Plus } from 'lucide-react';
+import { ArrowLeft, Save, Trash2, Plus, Image, Calendar, Check } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 interface NightStayField {
   location: string;
@@ -36,6 +38,12 @@ interface ItineraryField {
   day: number;
   title: string;
   description: string;
+}
+
+interface DepartureDateField {
+  date: string;
+  available: boolean;
+  price?: number;
 }
 
 const EditTourPackage = () => {
@@ -50,7 +58,11 @@ const EditTourPackage = () => {
     tourPackagesData[packageIndex] : null;
 
   // Initialize form state
-  const [formData, setFormData] = useState<Partial<TourPackageProps>>({
+  const [formData, setFormData] = useState<Partial<TourPackageProps & {
+    isFixedDeparture: boolean;
+    isCustomizable: boolean;
+    departureDates: DepartureDateField[];
+  }>>({
     title: '',
     image: '',
     originalPrice: 0,
@@ -66,15 +78,30 @@ const EditTourPackage = () => {
     overview: '',
     itinerary: [],
     transportType: 'car',
-    isWomenOnly: false
+    isWomenOnly: false,
+    isFixedDeparture: false,
+    isCustomizable: true,
+    departureDates: []
   });
+
+  // Handle image upload or URL input
+  const [imageMethod, setImageMethod] = useState<'url' | 'upload'>('url');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
 
   // Load existing data if editing
   useEffect(() => {
     if (existingPackage) {
       setFormData({
-        ...existingPackage
+        ...existingPackage,
+        isFixedDeparture: existingPackage.isFixedDeparture || false,
+        isCustomizable: existingPackage.isCustomizable !== false, // Default to true if undefined
+        departureDates: existingPackage.departureDates || []
       });
+      
+      if (existingPackage.image) {
+        setImagePreview(existingPackage.image);
+      }
     }
   }, [existingPackage]);
 
@@ -117,12 +144,44 @@ const EditTourPackage = () => {
     }));
   };
 
+  // Handle switch toggle
+  const handleSwitchChange = (name: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: checked
+    }));
+  };
+
   // Handle select change
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
+  };
+
+  // Handle image file selection
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const fileUrl = URL.createObjectURL(file);
+      setImagePreview(fileUrl);
+      setFormData(prev => ({
+        ...prev,
+        image: fileUrl // Temporary URL for preview
+      }));
+    }
+  };
+
+  // Handle image URL input
+  const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setFormData(prev => ({
+      ...prev,
+      image: url
+    }));
+    setImagePreview(url);
   };
 
   // Handle night stays management
@@ -233,6 +292,44 @@ const EditTourPackage = () => {
     }));
   };
 
+  // Handle departure dates management
+  const [departureDatesFields, setDepartureDatesFields] = useState<DepartureDateField[]>([
+    { date: '', available: true, price: undefined }
+  ]);
+
+  useEffect(() => {
+    if (formData.departureDates?.length) {
+      setDepartureDatesFields(formData.departureDates);
+    }
+  }, [formData.departureDates]);
+
+  const handleDepartureDateChange = (index: number, field: keyof DepartureDateField, value: string | number | boolean) => {
+    const updatedFields = [...departureDatesFields];
+    updatedFields[index] = { 
+      ...updatedFields[index], 
+      [field]: field === 'price' ? (value === '' ? undefined : Number(value)) : value
+    };
+    
+    setDepartureDatesFields(updatedFields);
+    setFormData(prev => ({
+      ...prev,
+      departureDates: updatedFields
+    }));
+  };
+
+  const addDepartureDate = () => {
+    setDepartureDatesFields([...departureDatesFields, { date: '', available: true }]);
+  };
+
+  const removeDepartureDate = (index: number) => {
+    const updatedFields = departureDatesFields.filter((_, i) => i !== index);
+    setDepartureDatesFields(updatedFields);
+    setFormData(prev => ({
+      ...prev,
+      departureDates: updatedFields
+    }));
+  };
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -271,6 +368,9 @@ const EditTourPackage = () => {
                   <CardDescription>Manage all aspects of this tour package</CardDescription>
                 </div>
                 <div className="flex gap-3">
+                  <Button type="button" variant="outline" onClick={() => navigate(`/admin/tour-packages/${id}/preview`)}>
+                    Preview
+                  </Button>
                   <Button variant="outline" type="button" onClick={() => navigate('/admin/tour-packages')}>
                     Cancel
                   </Button>
@@ -280,39 +380,26 @@ const EditTourPackage = () => {
                   </Button>
                 </div>
               </div>
-              <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:w-[600px]">
+              <TabsList className="grid grid-cols-2 md:grid-cols-5 lg:w-[800px]">
                 <TabsTrigger value="basic">Basic Info</TabsTrigger>
-                <TabsTrigger value="stays">Night Stays</TabsTrigger>
+                <TabsTrigger value="image">Image</TabsTrigger>
                 <TabsTrigger value="details">Details</TabsTrigger>
                 <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
+                <TabsTrigger value="departures">Departures</TabsTrigger>
               </TabsList>
             </CardHeader>
             <CardContent>
               <TabsContent value="basic" className="space-y-6 pt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Package Title</Label>
-                    <Input 
-                      id="title" 
-                      name="title" 
-                      value={formData.title} 
-                      onChange={handleInputChange}
-                      placeholder="Enter tour package title"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="image">Image URL</Label>
-                    <Input 
-                      id="image" 
-                      name="image" 
-                      value={formData.image} 
-                      onChange={handleInputChange}
-                      placeholder="Enter image URL"
-                      required
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="title">Package Title</Label>
+                  <Input 
+                    id="title" 
+                    name="title" 
+                    value={formData.title} 
+                    onChange={handleInputChange}
+                    placeholder="Enter tour package title"
+                    required
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -401,24 +488,138 @@ const EditTourPackage = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
 
-                  <div className="flex items-end space-x-2">
-                    <div className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id="isWomenOnly"
-                        name="isWomenOnly"
-                        checked={formData.isWomenOnly || false}
-                        onChange={handleCheckboxChange}
-                        className="h-4 w-4 rounded border-gray-300 text-spiti-forest focus:ring-spiti-forest"
-                      />
-                      <Label htmlFor="isWomenOnly">Women Only Tour</Label>
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isWomenOnly"
+                      checked={formData.isWomenOnly || false}
+                      onCheckedChange={(checked) => handleSwitchChange('isWomenOnly', checked)}
+                    />
+                    <Label htmlFor="isWomenOnly">Women Only Tour</Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isFixedDeparture"
+                      checked={formData.isFixedDeparture || false}
+                      onCheckedChange={(checked) => handleSwitchChange('isFixedDeparture', checked)}
+                    />
+                    <Label htmlFor="isFixedDeparture">Fixed Departure Tour</Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="isCustomizable"
+                      checked={formData.isCustomizable !== false}
+                      onCheckedChange={(checked) => handleSwitchChange('isCustomizable', checked)}
+                    />
+                    <Label htmlFor="isCustomizable">Customizable Tour</Label>
                   </div>
                 </div>
               </TabsContent>
 
-              <TabsContent value="stays" className="pt-4">
+              <TabsContent value="image" className="pt-4 space-y-6">
+                <div className="space-y-4">
+                  <Label>Image Source</Label>
+                  <RadioGroup 
+                    defaultValue="url" 
+                    value={imageMethod}
+                    onValueChange={(value) => setImageMethod(value as 'url' | 'upload')}
+                    className="flex space-x-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="url" id="url" />
+                      <Label htmlFor="url">Image URL</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="upload" id="upload" />
+                      <Label htmlFor="upload">Upload Image</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {imageMethod === 'url' ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="imageUrl">Image URL</Label>
+                    <Input
+                      id="imageUrl"
+                      name="image"
+                      value={formData.image || ''}
+                      onChange={handleImageUrlChange}
+                      placeholder="Enter image URL"
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Label htmlFor="imageUpload">Upload Image</Label>
+                    <Input
+                      id="imageUpload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="cursor-pointer"
+                    />
+                    <p className="text-sm text-gray-500">
+                      Max file size: 5MB. Supported formats: JPG, PNG, WEBP.
+                    </p>
+                  </div>
+                )}
+
+                {imagePreview && (
+                  <div className="mt-6">
+                    <Label>Image Preview</Label>
+                    <div className="mt-2 border rounded-md overflow-hidden">
+                      <img 
+                        src={imagePreview} 
+                        alt="Tour preview" 
+                        className="w-full h-60 object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="details" className="space-y-6 pt-4">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="overview">Overview</Label>
+                    <Textarea
+                      id="overview"
+                      name="overview"
+                      value={formData.overview || ''}
+                      onChange={handleInputChange}
+                      placeholder="Enter tour package overview"
+                      rows={6}
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="inclusions">Inclusions (one per line)</Label>
+                    <Textarea
+                      id="inclusions"
+                      value={inclusionsText}
+                      onChange={handleInclusionsChange}
+                      placeholder="Enter inclusions, one per line"
+                      rows={5}
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="exclusions">Exclusions (one per line)</Label>
+                    <Textarea
+                      id="exclusions"
+                      value={exclusionsText}
+                      onChange={handleExclusionsChange}
+                      placeholder="Enter exclusions, one per line"
+                      rows={5}
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-6">
                   <div className="flex justify-between items-center">
                     <h3 className="text-lg font-medium">Night Stays</h3>
@@ -465,46 +666,6 @@ const EditTourPackage = () => {
                       </div>
                     </div>
                   ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="details" className="space-y-6 pt-4">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="overview">Overview</Label>
-                    <Textarea
-                      id="overview"
-                      name="overview"
-                      value={formData.overview || ''}
-                      onChange={handleInputChange}
-                      placeholder="Enter tour package overview"
-                      rows={4}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="inclusions">Inclusions (one per line)</Label>
-                    <Textarea
-                      id="inclusions"
-                      value={inclusionsText}
-                      onChange={handleInclusionsChange}
-                      placeholder="Enter inclusions, one per line"
-                      rows={5}
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="exclusions">Exclusions (one per line)</Label>
-                    <Textarea
-                      id="exclusions"
-                      value={exclusionsText}
-                      onChange={handleExclusionsChange}
-                      placeholder="Enter exclusions, one per line"
-                      rows={5}
-                    />
-                  </div>
                 </div>
               </TabsContent>
 
@@ -570,6 +731,111 @@ const EditTourPackage = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="departures" className="pt-4">
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="bg-amber-50 border border-amber-200 rounded-md p-4">
+                      <h3 className="font-medium flex items-center text-amber-800">
+                        <Calendar className="h-5 w-5 mr-2" />
+                        Tour Availability Settings
+                      </h3>
+                      <p className="text-amber-700 text-sm mt-1">
+                        Configure whether this tour has fixed departure dates, is customizable, or both.
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="isFixedDepartureDates"
+                            checked={formData.isFixedDeparture || false}
+                            onCheckedChange={(checked) => handleSwitchChange('isFixedDeparture', checked)}
+                          />
+                          <div>
+                            <Label htmlFor="isFixedDepartureDates">Fixed Departure Dates</Label>
+                            <p className="text-xs text-amber-700">Tour departs on specific dates only</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="isCustomizableDates"
+                            checked={formData.isCustomizable !== false}
+                            onCheckedChange={(checked) => handleSwitchChange('isCustomizable', checked)}
+                          />
+                          <div>
+                            <Label htmlFor="isCustomizableDates">Customizable Dates</Label>
+                            <p className="text-xs text-amber-700">Customers can choose their own dates</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {formData.isFixedDeparture && (
+                    <div className="space-y-6">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-medium flex items-center">
+                          <Calendar className="h-5 w-5 mr-2" />
+                          Fixed Departure Dates
+                        </h3>
+                        <Button type="button" variant="outline" onClick={addDepartureDate}>
+                          <Plus className="mr-2 h-4 w-4" />
+                          Add Date
+                        </Button>
+                      </div>
+
+                      {departureDatesFields.map((date, index) => (
+                        <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end border-b pb-4">
+                          <div className="md:col-span-4 space-y-2">
+                            <Label htmlFor={`date-${index}`}>Departure Date</Label>
+                            <Input
+                              id={`date-${index}`}
+                              type="date"
+                              value={date.date}
+                              onChange={(e) => handleDepartureDateChange(index, 'date', e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div className="md:col-span-3 space-y-2">
+                            <Label htmlFor={`price-${index}`}>Special Price (optional)</Label>
+                            <Input
+                              id={`price-${index}`}
+                              type="number"
+                              min="0"
+                              value={date.price || ''}
+                              onChange={(e) => handleDepartureDateChange(index, 'price', e.target.value)}
+                              placeholder="Regular price if empty"
+                            />
+                          </div>
+                          <div className="md:col-span-4 space-y-2">
+                            <div className="flex items-center h-10">
+                              <Switch
+                                id={`available-${index}`}
+                                checked={date.available}
+                                onCheckedChange={(checked) => handleDepartureDateChange(index, 'available', checked)}
+                              />
+                              <Label htmlFor={`available-${index}`} className="ml-2">
+                                {date.available ? 'Available' : 'Sold Out'}
+                              </Label>
+                            </div>
+                          </div>
+                          <div className="md:col-span-1 flex justify-end">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => removeDepartureDate(index)}
+                              disabled={departureDatesFields.length <= 1}
+                              className="text-red-500"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </TabsContent>
             </CardContent>

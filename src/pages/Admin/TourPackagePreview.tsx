@@ -99,16 +99,16 @@ const TourPackagePreview = () => {
                 <h2 className="text-xl font-semibold mb-4 text-spiti-forest">Package Pricing</h2>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-600">Original Price:</span>
-                  <span className="text-gray-500 line-through">₹{tourPackage.originalPrice}</span>
+                  <span className="text-gray-500 line-through">₹{formatPrice(tourPackage.originalPrice)}</span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-600">Discounted Price:</span>
-                  <span className="text-2xl font-bold text-spiti-forest">₹{tourPackage.discountedPrice}</span>
+                  <span className="text-2xl font-bold text-spiti-forest">₹{formatPrice(tourPackage.discountedPrice)}</span>
                 </div>
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-gray-600">You Save:</span>
                   <span className="text-green-600 font-medium">
-                    ₹{tourPackage.originalPrice - tourPackage.discountedPrice} ({tourPackage.discount}%)
+                    ₹{formatPrice(tourPackage.originalPrice - tourPackage.discountedPrice)} ({tourPackage.discount}%)
                   </span>
                 </div>
               </div>

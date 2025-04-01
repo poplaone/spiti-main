@@ -2,11 +2,7 @@
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { 
-  Home,
-  Package, 
-  Calendar, 
-  Map, 
-  Users, 
+  Package,
   LogOut,
   Menu,
   X
@@ -21,9 +17,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { icon: <Home size={20} />, text: 'Dashboard', path: '/admin/dashboard' },
     { icon: <Package size={20} />, text: 'Tour Packages', path: '/admin/tour-packages' },
-    { icon: <Map size={20} />, text: 'Tour Types', path: '/admin/tour-types' },
   ];
 
   return (
@@ -54,7 +48,7 @@ const AdminLayout = () => {
                   ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         <div className="p-6 border-b">
-          <h1 className="text-xl font-bold text-spiti-forest">Admin Panel</h1>
+          <h1 className="text-xl font-bold text-spiti-forest">Spiti Valley Admin</h1>
         </div>
         
         <nav className="p-4 space-y-1">
