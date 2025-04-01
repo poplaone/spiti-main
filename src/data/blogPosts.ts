@@ -1,3 +1,4 @@
+
 import { BlogPost } from '@/types/blog';
 
 export const blogPosts: BlogPost[] = [
@@ -6,7 +7,7 @@ export const blogPosts: BlogPost[] = [
     title: "Discover the Snow Cave Cafe: A Unique Winter Experience in Spiti Valley",
     excerpt: "Explore the magical Snow Cave Cafe in Spiti Valley, a spectacular ice structure that offers visitors a one-of-a-kind culinary adventure in the heart of the Himalayas.",
     image: "/lovable-uploads/ede37e0a-4763-4863-9b68-6a32c1ee3a2a.png",
-    date: "January 15, 2024",
+    date: "January 15, 2025",
     author: "Vaibhav Reekhan",
     readTime: "7 min read",
     category: "Winter Experiences",
@@ -51,7 +52,7 @@ export const blogPosts: BlogPost[] = [
     title: "Celestial Wonders: Ultimate Guide to Stargazing in Spiti Valley",
     excerpt: "Discover why Spiti Valley is considered one of the world's premier astronomical tourism destinations with this comprehensive guide to stargazing in the Himalayan night sky.",
     image: "/lovable-uploads/b4342b0b-5315-4212-ab74-347b087765de.png",
-    date: "December 10, 2023",
+    date: "February 23, 2025",
     author: "Vaibhav Reekhan",
     readTime: "8 min read",
     category: "Astronomy",
@@ -122,7 +123,7 @@ export const blogPosts: BlogPost[] = [
     title: "Navigating Snowfall in Spiti Valley: Essential Winter Travel Guide",
     excerpt: "Planning a winter trip to Spiti Valley? Learn how to safely navigate heavy snowfall, road closures, and extreme conditions while experiencing the magical winter landscape of this Himalayan region.",
     image: "/lovable-uploads/ee4b158c-7d86-4cb3-bbdb-3a8af09a1881.png",
-    date: "November 25, 2023",
+    date: "March 10, 2025",
     author: "Vaibhav Reekhan",
     readTime: "9 min read",
     category: "Travel Advice",
@@ -233,7 +234,7 @@ export const blogPosts: BlogPost[] = [
     title: "Winter Adventures in Spiti Valley: Beyond the Usual Tourist Trail",
     excerpt: "Explore the thrilling winter activities that make Spiti Valley a premier adventure destination during the snowy months, from ice climbing and snow trekking to wildlife spotting and cultural immersion.",
     image: "/lovable-uploads/2f269e91-b4ad-4367-8709-ca76b073115a.png",
-    date: "October 30, 2023",
+    date: "April 5, 2025",
     author: "Vaibhav Reekhan",
     readTime: "10 min read",
     category: "Adventure",

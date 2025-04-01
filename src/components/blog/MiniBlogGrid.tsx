@@ -24,15 +24,9 @@ const MiniBlogGrid = ({ posts, onPostClick }: MiniBlogGridProps) => {
             {englishBlogs.map(post => (
               <div 
                 key={post.id}
-                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer border border-gray-100"
                 onClick={() => onPostClick(post)}
               >
-                <div className="relative h-56">
-                  <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
-                  <div className="absolute top-4 right-4 bg-spiti-forest text-white text-xs font-semibold px-2 py-1 rounded">
-                    {post.category}
-                  </div>
-                </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2 hover:text-spiti-forest transition-colors">{post.title}</h3>
                   <p className="text-gray-500 text-sm mb-3">
