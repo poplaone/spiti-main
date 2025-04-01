@@ -39,14 +39,27 @@ const TourDetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (id) {
-      const numId = parseInt(id, 10);
-      const selectedTour = tourPackagesData.find((_, index) => index === numId);
-      if (selectedTour) {
-        setTour(selectedTour);
-
-        // Get other tours for the "More Popular Tours" section
-        const others = tourPackagesData.filter((_, index) => index !== numId).slice(0, 4);
-        setOtherTours(others);
+      // First check if it's a numeric ID
+      if (!isNaN(parseInt(id))) {
+        const numId = parseInt(id, 10);
+        const selectedTour = tourPackagesData.find((_, index) => index === numId);
+        if (selectedTour) {
+          setTour(selectedTour);
+          const others = tourPackagesData.filter((_, index) => index !== numId).slice(0, 4);
+          setOtherTours(others);
+        }
+      } 
+      // Then check if it's a custom URL
+      else {
+        const selectedTour = tourPackagesData.find((tour) => tour.customUrl === id);
+        if (selectedTour) {
+          setTour(selectedTour);
+          
+          // Find the index for the other tours logic
+          const tourIndex = tourPackagesData.findIndex((t) => t.customUrl === id);
+          const others = tourPackagesData.filter((_, index) => index !== tourIndex).slice(0, 4);
+          setOtherTours(others);
+        }
       }
     }
   }, [id]);
@@ -98,12 +111,12 @@ const TourDetail = () => {
               {/* Desktop view: Display Tour Overview and Departure Dates side by side */}
               <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8">
                 <TourOverview tour={tour} getTransportIcon={getTransportIcon} />
-                <DepartureDatesCard />
+                <DepartureDatesCard departureDates={tour.departureDates} />
               </div>
               
               {/* Mobile view: Stack them */}
               <div className="lg:hidden space-y-8">
-                <DepartureDatesCard />
+                <DepartureDatesCard departureDates={tour.departureDates} />
                 <TourOverview tour={tour} getTransportIcon={getTransportIcon} />
               </div>
               

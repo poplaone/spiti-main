@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,11 +10,20 @@ interface NightStay {
   location: string;
   nights: number;
 }
+
 interface ItineraryDay {
   day: number;
   title: string;
   description: string;
 }
+
+interface DepartureDate {
+  id: string;
+  startDate?: Date;
+  endDate?: Date;
+  status: 'Available' | 'Limited' | 'Full';
+}
+
 export interface TourPackageProps {
   title: string;
   image: string;
@@ -29,15 +37,15 @@ export interface TourPackageProps {
   nightStays: NightStay[];
   inclusions: string[];
   exclusions?: string[];
+  overview: string;
   itinerary?: ItineraryDay[];
-  overview?: string;
-  transportType?: 'bike' | 'car' | 'innova';
-  isWomenOnly?: boolean;
-  index?: number;
-  className?: string;
   hasFixedDepartures?: boolean;
   isCustomizable?: boolean;
+  transportType: 'bike' | 'car' | 'innova';
+  isWomenOnly?: boolean;
   availableDates?: string;
+  customUrl?: string;
+  departureDates?: DepartureDate[];
 }
 
 const formatPrice = (price: number) => {
@@ -68,7 +76,9 @@ const TourPackage: React.FC<TourPackageProps> = ({
   className = "",
   hasFixedDepartures = true,
   isCustomizable = true,
-  availableDates = "June to October"
+  availableDates = "June to October",
+  customUrl,
+  departureDates
 }) => {
   const navigate = useNavigate();
   

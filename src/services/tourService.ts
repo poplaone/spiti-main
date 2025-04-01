@@ -18,7 +18,9 @@ const initializeStorage = () => {
       isCustomizable: true,
       availableDates: tour.availableDates || "June to October",
       exclusions: tour.exclusions || [],
-      itinerary: tour.itinerary || []
+      itinerary: tour.itinerary || [],
+      customUrl: tour.customUrl || "",
+      departureDates: tour.departureDates || []
     }));
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
@@ -36,6 +38,12 @@ export const getAllTours = (): TourPackageProps[] => {
 export const getTourByIndex = (index: number): TourPackageProps | null => {
   const tours = getAllTours();
   return tours[index] || null;
+};
+
+// Get a single tour by custom URL
+export const getTourByCustomUrl = (url: string): TourPackageProps | null => {
+  const tours = getAllTours();
+  return tours.find(tour => tour.customUrl === url) || null;
 };
 
 // Add a new tour
@@ -71,7 +79,9 @@ export const resetToDefaultTours = (): void => {
     isCustomizable: true,
     availableDates: tour.availableDates || "June to October",
     exclusions: tour.exclusions || [],
-    itinerary: tour.itinerary || []
+    itinerary: tour.itinerary || [],
+    customUrl: tour.customUrl || "",
+    departureDates: tour.departureDates || []
   }));
   
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
