@@ -13,8 +13,7 @@ import TourHero from "@/components/tour/TourHero";
 import BookingCard from "@/components/tour/BookingCard";
 import TourOverview from "@/components/tour/TourOverview";
 import TourItinerary from "@/components/tour/TourItinerary";
-import TourAccommodation from "@/components/tour/TourAccommodation";
-import TourInclusions from "@/components/tour/TourInclusions";
+import TourPackageDetails from "@/components/tour/TourPackageDetails";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
@@ -123,8 +122,7 @@ const TourDetail = () => {
               </div>
               
               <TourItinerary tour={tour} />
-              <TourAccommodation tour={tour} />
-              <TourInclusions tour={tour} />
+              <TourPackageDetails tour={tour} />
             </div>
             
             {/* Right column - Booking info */}

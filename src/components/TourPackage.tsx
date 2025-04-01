@@ -87,8 +87,21 @@ const TourPackage: React.FC<TourPackageProps> = ({
   const navigate = useNavigate();
   
   const getDetailRoute = () => {
+    // If we have a customUrl, use it first for SEO-friendly URLs
+    if (customUrl) {
+      return `/tour/${customUrl}`;
+    }
+    
+    // For predefined routes
     if (typeof index !== 'number') return '/';
-    return getRouteMap[index as keyof typeof getRouteMap] || '/';
+    
+    // Use predefined routes for original tours
+    if (index < 6) {
+      return getRouteMap[index as keyof typeof getRouteMap] || '/';
+    }
+    
+    // For new tours added through admin panel, use numeric index
+    return `/tour/${index}`;
   };
   
   const handleCardClick = (e: React.MouseEvent) => {

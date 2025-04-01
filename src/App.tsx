@@ -19,6 +19,7 @@ import TourDetailBuddhist from "./pages/TourDetailBuddhist";
 import TourDetailWomen from "./pages/TourDetailWomen";
 import TourDetailOwnCar from "./pages/TourDetailOwnCar";
 import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
+import TourDetail from "./pages/TourDetail";
 
 // Import new pages for road trips and fixed departures
 import RoadTrips from "./pages/RoadTrips";
@@ -61,6 +62,9 @@ const App = () => (
           <Route path="/tour-women" element={<TourDetailWomen />} />
           <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
           <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
+          
+          {/* Dynamic routes for tour details - both numeric IDs and custom URLs */}
+          <Route path="/tour/:id" element={<TourDetail />} />
           
           {/* Admin routes */}
           <Route path="/admin/login" element={<AdminLogin />} />

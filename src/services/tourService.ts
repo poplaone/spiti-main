@@ -68,12 +68,17 @@ export const getTourByIndex = (index: number): TourPackageProps | null => {
 // Get a single tour by custom URL
 export const getTourByCustomUrl = (url: string): TourPackageProps | null => {
   const tours = getAllTours();
-  return tours.find((tour, index) => {
-    if (tour.customUrl === url) {
-      return { ...tour, index };
-    }
-    return false;
-  }) || null;
+  const tour = tours.find(tour => tour.customUrl === url);
+  
+  if (tour) {
+    // Add index property to help with related tours
+    return {
+      ...tour,
+      index: tours.findIndex(t => t.customUrl === url)
+    };
+  }
+  
+  return null;
 };
 
 // Add a new tour
