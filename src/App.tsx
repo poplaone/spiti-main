@@ -24,6 +24,13 @@ import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
 import RoadTrips from "./pages/RoadTrips";
 import FixedDepartures from "./pages/FixedDepartures";
 
+// Import Admin pages
+import AdminLogin from "./pages/Admin/Login";
+import AdminLayout from "./pages/Admin/AdminLayout";
+import Dashboard from "./pages/Admin/Dashboard";
+import TourPackages from "./pages/Admin/TourPackages";
+import TourPackageForm from "./pages/Admin/TourPackageForm";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -54,6 +61,15 @@ const App = () => (
           <Route path="/tour-women" element={<TourDetailWomen />} />
           <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
           <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
+          
+          {/* Admin routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="tours" element={<TourPackages />} />
+            <Route path="tours/new" element={<TourPackageForm />} />
+            <Route path="tours/edit/:id" element={<TourPackageForm />} />
+          </Route>
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
