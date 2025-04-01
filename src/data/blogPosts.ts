@@ -1,6 +1,7 @@
 
 import { BlogPost } from '@/types/blog';
 
+// Export the blog posts array
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
@@ -323,3 +324,22 @@ export const blogPosts: BlogPost[] = [
   },
   // Mini blog posts would start here
 ];
+
+// Function to get featured posts
+export const getFeaturedPosts = (): BlogPost[] => {
+  // Return posts that should be featured (for now, just returning the first one)
+  return blogPosts.filter(post => post.type === "full").slice(0, 1);
+};
+
+// Function to get recent posts
+export const getRecentPosts = (): BlogPost[] => {
+  // Return recent full posts (excluding the featured one)
+  return blogPosts
+    .filter(post => post.type === "full")
+    .slice(1);
+};
+
+// Function to get posts by type
+export const getPostsByType = (type: "full" | "mini"): BlogPost[] => {
+  return blogPosts.filter(post => post.type === type);
+};
