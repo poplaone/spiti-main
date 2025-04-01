@@ -35,6 +35,9 @@ export interface TourPackageProps {
   isWomenOnly?: boolean;
   index?: number;
   className?: string;
+  hasFixedDepartures?: boolean;
+  isCustomizable?: boolean;
+  availableDates?: string;
 }
 
 const formatPrice = (price: number) => {
@@ -62,7 +65,10 @@ const TourPackage: React.FC<TourPackageProps> = ({
   transportType,
   isWomenOnly,
   index,
-  className = ""
+  className = "",
+  hasFixedDepartures = true,
+  isCustomizable = true,
+  availableDates = "June to October"
 }) => {
   const navigate = useNavigate();
   
@@ -104,19 +110,23 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         <div className="flex flex-col space-y-1 mb-3">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center text-rose-500">
-              <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase">Fixed Departures</span>
-            </div>
+            {hasFixedDepartures && (
+              <div className="flex items-center text-rose-500">
+                <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
+                <span className="text-xs font-medium uppercase">Fixed Departures</span>
+              </div>
+            )}
             
-            <div className="flex items-center text-rose-500">
-              <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase">Customizable</span>
-            </div>
+            {isCustomizable && (
+              <div className="flex items-center text-rose-500">
+                <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
+                <span className="text-xs font-medium uppercase">Customizable</span>
+              </div>
+            )}
           </div>
           
           <div className="text-xs text-gray-600">
-            Available from June to October
+            Available from {availableDates}
           </div>
         </div>
         

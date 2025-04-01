@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Pencil, Trash, Plus, Search } from "lucide-react";
+import { Pencil, Trash, Plus, Search, Calendar, Settings, Users } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { TourPackageProps } from "@/components/TourPackage";
 import { getAllTours, deleteTour } from '@/services/tourService';
+import { Badge } from "@/components/ui/badge";
 
 const TourPackages = () => {
   const [tours, setTours] = useState<TourPackageProps[]>([]);
@@ -85,9 +86,10 @@ const TourPackages = () => {
           <table className="w-full">
             <thead>
               <tr className="border-b">
-                <th className="text-left p-4">Title</th>
+                <th className="text-left p-4">Tour Package</th>
                 <th className="text-left p-4">Duration</th>
                 <th className="text-left p-4">Price</th>
+                <th className="text-left p-4">Features</th>
                 <th className="text-center p-4">Actions</th>
               </tr>
             </thead>
@@ -95,7 +97,23 @@ const TourPackages = () => {
               {filteredTours.map((tour, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50">
                   <td className="p-4">
-                    <div className="font-medium">{tour.title}</div>
+                    <div className="flex items-center space-x-3">
+                      <div className="h-12 w-16 rounded overflow-hidden">
+                        <img 
+                          src={tour.image} 
+                          alt={tour.title}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <div className="font-medium">{tour.title}</div>
+                        <div className="text-sm text-gray-500">
+                          {tour.transportType === 'bike' ? 'Bike Tour' : 
+                           tour.transportType === 'car' ? 'Car Tour' : 
+                           tour.transportType === 'innova' ? 'Innova Tour' : 'Tour'}
+                        </div>
+                      </div>
+                    </div>
                   </td>
                   <td className="p-4">
                     {tour.duration.nights} Nights / {tour.duration.days} Days
@@ -103,6 +121,28 @@ const TourPackages = () => {
                   <td className="p-4">
                     <div className="font-medium">₹{tour.discountedPrice.toLocaleString()}</div>
                     <div className="text-sm text-gray-500 line-through">₹{tour.originalPrice.toLocaleString()}</div>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex flex-wrap gap-2">
+                      {tour.hasFixedDepartures !== false && (
+                        <Badge variant="outline" className="flex items-center bg-green-50">
+                          <Calendar className="h-3 w-3 mr-1" />
+                          <span className="text-xs">Fixed Departures</span>
+                        </Badge>
+                      )}
+                      {tour.isCustomizable !== false && (
+                        <Badge variant="outline" className="flex items-center bg-blue-50">
+                          <Settings className="h-3 w-3 mr-1" />
+                          <span className="text-xs">Customizable</span>
+                        </Badge>
+                      )}
+                      {tour.isWomenOnly && (
+                        <Badge variant="outline" className="flex items-center bg-pink-50">
+                          <Users className="h-3 w-3 mr-1" />
+                          <span className="text-xs">Women Only</span>
+                        </Badge>
+                      )}
+                    </div>
                   </td>
                   <td className="p-4">
                     <div className="flex justify-center gap-2">
@@ -125,7 +165,7 @@ const TourPackages = () => {
               ))}
               {filteredTours.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="p-4 text-center text-gray-500">
+                  <td colSpan={5} className="p-4 text-center text-gray-500">
                     No tour packages found
                   </td>
                 </tr>

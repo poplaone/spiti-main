@@ -11,7 +11,17 @@ const TOURS_STORAGE_KEY = 'spiti-admin-tours';
 const initializeStorage = () => {
   const storedTours = localStorage.getItem(TOURS_STORAGE_KEY);
   if (!storedTours) {
-    localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tourPackagesData));
+    // Add default values for new fields
+    const enhancedTours = tourPackagesData.map(tour => ({
+      ...tour,
+      hasFixedDepartures: true,
+      isCustomizable: true,
+      availableDates: tour.availableDates || "June to October",
+      exclusions: tour.exclusions || [],
+      itinerary: tour.itinerary || []
+    }));
+    
+    localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
   }
 };
 
@@ -55,5 +65,14 @@ export const deleteTour = (index: number): void => {
 
 // Reset to default data (useful for testing or reset functionality)
 export const resetToDefaultTours = (): void => {
-  localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tourPackagesData));
+  const enhancedTours = tourPackagesData.map(tour => ({
+    ...tour,
+    hasFixedDepartures: true,
+    isCustomizable: true,
+    availableDates: tour.availableDates || "June to October",
+    exclusions: tour.exclusions || [],
+    itinerary: tour.itinerary || []
+  }));
+  
+  localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
 };
