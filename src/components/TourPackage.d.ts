@@ -18,6 +18,8 @@ export interface TourPackageProps {
   isFixedDeparture?: boolean;
   isCustomizable?: boolean;
   departureDates?: DepartureDateField[];
+  index?: number;
+  className?: string;
 }
 
 export interface DepartureDateField {

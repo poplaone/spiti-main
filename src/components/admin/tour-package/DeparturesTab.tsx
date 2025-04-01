@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, Plus, Trash2 } from "lucide-react";
-import { DepartureDateField } from '@/components/TourPackage';
+import { DepartureDateField } from '@/components/TourPackage.d';
 
 interface DeparturesTabProps {
   formData: any;

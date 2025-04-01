@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +11,7 @@ import {
 import { ArrowLeft, Edit, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { TourPackageProps, DepartureDateField } from '@/components/TourPackage';
+import { TourPackageProps, DepartureDateField } from '@/components/TourPackage.d';
 import { TourItineraryDay, TourNightStay } from '@/data/types/tourTypes';
 import BasicInfoTab from './BasicInfoTab';
 import ImageTab from './ImageTab';
@@ -30,7 +29,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Initialize form state
   const [formData, setFormData] = useState<Partial<TourPackageProps>>({
     title: '',
     image: '',
@@ -53,18 +51,16 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     departureDates: []
   });
 
-  // Handle image upload or URL input
   const [imageMethod, setImageMethod] = useState<'url' | 'upload'>('url');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
-  // Load existing data if editing
   useEffect(() => {
     if (existingPackage) {
       setFormData({
         ...existingPackage,
         isFixedDeparture: existingPackage.isFixedDeparture || false,
-        isCustomizable: existingPackage.isCustomizable !== false, // Default to true if undefined
+        isCustomizable: existingPackage.isCustomizable !== false,
         departureDates: existingPackage.departureDates || []
       });
       
@@ -74,7 +70,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }
   }, [existingPackage]);
 
-  // Handle input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -83,7 +78,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle number input changes
   const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -92,7 +86,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle duration changes
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -104,7 +97,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle checkbox change
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setFormData(prev => ({
@@ -113,7 +105,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle switch toggle
   const handleSwitchChange = (name: string, checked: boolean) => {
     setFormData(prev => ({
       ...prev,
@@ -121,7 +112,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle select change
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -129,7 +119,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle image file selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -138,12 +127,11 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
       setImagePreview(fileUrl);
       setFormData(prev => ({
         ...prev,
-        image: fileUrl // Temporary URL for preview
+        image: fileUrl
       }));
     }
   };
 
-  // Handle image URL input
   const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value;
     setFormData(prev => ({
@@ -153,7 +141,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     setImagePreview(url);
   };
 
-  // Handle night stays management
   const [nightStaysFields, setNightStaysFields] = useState<TourNightStay[]>([
     { location: '', nights: 1 }
   ]);
@@ -191,7 +178,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle list items (inclusions, exclusions)
   const [inclusionsText, setInclusionsText] = useState('');
   const [exclusionsText, setExclusionsText] = useState('');
 
@@ -222,7 +208,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle itinerary management
   const [itineraryFields, setItineraryFields] = useState<TourItineraryDay[]>([
     { day: 1, title: '', description: '' }
   ]);
@@ -261,7 +246,6 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle departure dates management
   const [departureDatesFields, setDepartureDatesFields] = useState<DepartureDateField[]>([
     { date: '', available: true, price: undefined }
   ]);
@@ -299,19 +283,14 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // In a real application, this would save the data to a database
-    // For this demo, we'll just show a success message
     
     toast({
       title: isNew ? "Tour package created" : "Tour package updated",
       description: `${formData.title} has been ${isNew ? 'created' : 'updated'} successfully.`
     });
     
-    // Navigate back to tour packages list
     navigate('/admin/tour-packages');
   };
 
