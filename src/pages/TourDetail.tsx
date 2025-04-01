@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
-import { tourPackagesData } from "@/data/tourPackagesData";
+import { getAllTours, getTourByCustomUrl, getTourByIndex } from "@/services/tourService";
 import { Bike, Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
@@ -39,25 +39,27 @@ const TourDetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     if (id) {
+      const allTours = getAllTours();
+      
       // First check if it's a numeric ID
       if (!isNaN(parseInt(id))) {
         const numId = parseInt(id, 10);
-        const selectedTour = tourPackagesData.find((_, index) => index === numId);
+        const selectedTour = getTourByIndex(numId);
         if (selectedTour) {
           setTour(selectedTour);
-          const others = tourPackagesData.filter((_, index) => index !== numId).slice(0, 4);
+          const others = allTours.filter((_, index) => index !== numId).slice(0, 4);
           setOtherTours(others);
         }
       } 
       // Then check if it's a custom URL
       else {
-        const selectedTour = tourPackagesData.find((tour) => tour.customUrl === id);
+        const selectedTour = getTourByCustomUrl(id);
         if (selectedTour) {
           setTour(selectedTour);
           
           // Find the index for the other tours logic
-          const tourIndex = tourPackagesData.findIndex((t) => t.customUrl === id);
-          const others = tourPackagesData.filter((_, index) => index !== tourIndex).slice(0, 4);
+          const tourIndex = allTours.findIndex((t) => t.customUrl === id);
+          const others = allTours.filter((_, index) => index !== tourIndex).slice(0, 4);
           setOtherTours(others);
         }
       }

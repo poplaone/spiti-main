@@ -2,9 +2,11 @@
 import React from 'react';
 import TourPackageHeader from './tour/TourPackageHeader';
 import TourPackageGrid from './tour/TourPackageGrid';
-import { tourPackagesData } from '../data/tourPackagesData';
+import { getAllTours } from '@/services/tourService';
 
 const TourPackages = () => {
+  const tours = getAllTours();
+
   return (
     <section id="discover-spiti-valley" className="py-16 relative bg-cover bg-center bg-no-repeat" 
       style={{ 
@@ -17,7 +19,7 @@ const TourPackages = () => {
           description="Explore our carefully crafted tour packages designed to provide you with an unforgettable Spiti Valley experience. Choose from a variety of options to match your preferences and budget."
         />
         
-        <TourPackageGrid packages={tourPackagesData} />
+        <TourPackageGrid packages={tours} />
       </div>
     </section>
   );

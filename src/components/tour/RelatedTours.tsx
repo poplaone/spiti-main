@@ -1,13 +1,16 @@
 
 import React from 'react';
 import TourPackage, { TourPackageProps } from "@/components/TourPackage";
+import { getAllTours } from "@/services/tourService";
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
-  tourPackagesData: TourPackageProps[]; // Add this prop
+  tourPackagesData?: TourPackageProps[]; // Make this optional
 }
 
-const RelatedTours: React.FC<RelatedToursProps> = ({ tours, tourPackagesData }) => {
+const RelatedTours: React.FC<RelatedToursProps> = ({ tours }) => {
+  const allTours = getAllTours();
+  
   return (
     <section className="py-16 bg-spiti-stone">
       <div className="container mx-auto px-4">
@@ -19,8 +22,8 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, tourPackagesData }) 
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {tours.map((tour, index) => {
-            // Find the index in the original tour package data array
-            const originalIndex = tourPackagesData.findIndex(t => t.title === tour.title);
+            // Find the index in the allTours array
+            const originalIndex = allTours.findIndex(t => t.title === tour.title);
             return (
               <div key={index} className="h-full">
                 <TourPackage 
