@@ -1,12 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Edit, Bike, Car, Loader2 } from 'lucide-react';
+import { ArrowLeft, Edit, Bike, Car } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { tourPackagesData } from '@/data/tourPackagesData';
-import { getTourPackageById, getTourPackages } from '@/lib/db';
-import { TourPackageProps } from '@/components/TourPackage';
 
 // Import components from tour detail page
 import TourHero from '@/components/tour/TourHero';
@@ -21,47 +19,15 @@ const TourPackagePreview = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [selectedMonth, setSelectedMonth] = useState("June");
-  const [isLoading, setIsLoading] = useState(true);
-  const [tourPackage, setTourPackage] = useState<TourPackageProps | null>(null);
-  const [relatedTours, setRelatedTours] = useState<TourPackageProps[]>([]);
   
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      
-      // Fetch the requested tour package
-      const data = await getTourPackageById(id!);
-      if (data) {
-        setTourPackage(data);
-        
-        // Fetch related tours
-        const allPackages = await getTourPackages();
-        if (allPackages) {
-          const related = allPackages
-            .filter(p => p.id !== data.id)
-            .slice(0, 4);
-          setRelatedTours(related);
-        }
-      } else {
-        // Fall back to static data
-        console.log('Failed to fetch from database, using static data');
-        const packageIndex = parseInt(id || '-1');
-        const staticPackage = packageIndex >= 0 && packageIndex < tourPackagesData.length ? 
-          tourPackagesData[packageIndex] as TourPackageProps : null;
-        setTourPackage(staticPackage);
-        
-        // Get related tours from static data
-        const staticRelated = staticPackage ? 
-          tourPackagesData.filter((_, index) => index !== packageIndex).slice(0, 4) : 
-          [];
-        setRelatedTours(staticRelated);
-      }
-      
-      setIsLoading(false);
-    }
-    
-    fetchData();
-  }, [id]);
+  const packageIndex = id ? parseInt(id) : -1;
+  const tourPackage = packageIndex >= 0 && packageIndex < tourPackagesData.length ? 
+    tourPackagesData[packageIndex] : null;
+  
+  // Get related tours
+  const relatedTours = tourPackage ? 
+    tourPackagesData.filter((_, index) => index !== packageIndex).slice(0, 4) : 
+    [];
     
   // Format price for display
   const formatPrice = (price: number) => {
@@ -74,25 +40,6 @@ const TourPackagePreview = () => {
     return <Car className="text-spiti-blue w-6 h-6" />;
   };
     
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-white">
-        <div className="sticky top-0 z-50 bg-white border-b shadow-sm p-4">
-          <div className="container mx-auto flex justify-between items-center">
-            <Button variant="outline" onClick={() => navigate('/admin/tour-packages')}>
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Admin
-            </Button>
-          </div>
-        </div>
-        <div className="container mx-auto py-20 flex justify-center items-center">
-          <Loader2 className="h-10 w-10 animate-spin text-spiti-forest mr-3" />
-          <span className="text-xl">Loading tour package...</span>
-        </div>
-      </div>
-    );
-  }
-
   if (!tourPackage) {
     return (
       <div className="container mx-auto py-12 px-4 text-center">

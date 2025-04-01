@@ -8,18 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowLeft, Edit, Save, Loader2 } from 'lucide-react';
+import { ArrowLeft, Edit, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { TourPackageProps, DepartureDateField } from '@/components/TourPackage';
+import { TourPackageProps, DepartureDateField } from '@/components/TourPackage.d';
 import { TourItineraryDay, TourNightStay } from '@/data/types/tourTypes';
 import BasicInfoTab from './BasicInfoTab';
 import ImageTab from './ImageTab';
 import DetailsTab from './DetailsTab';
 import ItineraryTab from './ItineraryTab';
 import DeparturesTab from './DeparturesTab';
-import { createTourPackage, updateTourPackage } from '@/lib/db';
-import { v4 as uuidv4 } from 'uuid';
 
 interface TourPackageFormProps {
   id: string | undefined;
@@ -30,7 +28,6 @@ interface TourPackageFormProps {
 const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [isSaving, setIsSaving] = useState(false);
 
   const [formData, setFormData] = useState<Partial<TourPackageProps>>({
     title: '',
@@ -286,57 +283,15 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
     
-    try {
-      if (!formData.title) {
-        toast({
-          title: "Missing information",
-          description: "Please provide a title for the tour package.",
-          variant: "destructive"
-        });
-        setIsSaving(false);
-        return;
-      }
-
-      const packageData: TourPackageProps = {
-        ...formData as TourPackageProps,
-        id: isNew ? uuidv4() : id || uuidv4(),
-        exclusions: formData.exclusions || [],
-        inclusions: formData.inclusions || [],
-        created_at: isNew ? new Date().toISOString() : formData.created_at || new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-      
-      let result;
-      if (isNew) {
-        result = await createTourPackage(packageData);
-      } else {
-        result = await updateTourPackage(id!, packageData);
-      }
-      
-      if (result) {
-        toast({
-          title: isNew ? "Tour package created" : "Tour package updated",
-          description: `${formData.title} has been ${isNew ? 'created' : 'updated'} successfully.`
-        });
-        
-        navigate('/admin/tour-packages');
-      } else {
-        throw new Error("Failed to save tour package");
-      }
-    } catch (error) {
-      console.error("Error saving tour package:", error);
-      toast({
-        title: "Error",
-        description: `Failed to ${isNew ? 'create' : 'update'} tour package. Please try again.`,
-        variant: "destructive"
-      });
-    } finally {
-      setIsSaving(false);
-    }
+    toast({
+      title: isNew ? "Tour package created" : "Tour package updated",
+      description: `${formData.title} has been ${isNew ? 'created' : 'updated'} successfully.`
+    });
+    
+    navigate('/admin/tour-packages');
   };
 
   return (
@@ -350,38 +305,15 @@ const TourPackageForm = ({ id, existingPackage, isNew }: TourPackageFormProps) =
                 <CardDescription>Manage all aspects of this tour package</CardDescription>
               </div>
               <div className="flex gap-3">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={() => navigate(`/admin/tour-packages/${id}/preview`)}
-                  disabled={isSaving}
-                >
+                <Button type="button" variant="outline" onClick={() => navigate(`/admin/tour-packages/${id}/preview`)}>
                   Preview
                 </Button>
-                <Button 
-                  variant="outline" 
-                  type="button" 
-                  onClick={() => navigate('/admin/tour-packages')}
-                  disabled={isSaving}
-                >
+                <Button variant="outline" type="button" onClick={() => navigate('/admin/tour-packages')}>
                   Cancel
                 </Button>
-                <Button 
-                  className="bg-spiti-forest hover:bg-spiti-forest/90" 
-                  type="submit"
-                  disabled={isSaving}
-                >
-                  {isSaving ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="mr-2 h-4 w-4" />
-                      Save Package
-                    </>
-                  )}
+                <Button className="bg-spiti-forest hover:bg-spiti-forest/90" type="submit">
+                  <Save className="mr-2 h-4 w-4" />
+                  Save Package
                 </Button>
               </div>
             </div>
