@@ -42,7 +42,7 @@ export interface TourPackageProps {
   itinerary?: ItineraryDay[];
   hasFixedDepartures?: boolean;
   isCustomizable?: boolean;
-  transportType: 'bike' | 'car' | 'innova';
+  transportType: 'bike' | 'car' | 'premium';
   isWomenOnly?: boolean;
   availableDates?: string;
   customUrl?: string;

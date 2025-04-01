@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,7 +13,7 @@ interface BasicInfoTabProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleNumberChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleCheckboxChange: (checked: boolean, name: string) => void;
-  handleTransportTypeChange: (type: 'bike' | 'car' | 'innova') => void;
+  handleTransportTypeChange: (type: 'bike' | 'car' | 'premium') => void;
   handleImageChange: (imageUrl: string) => void;
 }
 
@@ -192,11 +191,11 @@ const BasicInfoTab = ({
             </Button>
             <Button
               type="button"
-              variant={formData.transportType === 'innova' ? 'default' : 'outline'}
-              className={formData.transportType === 'innova' ? 'bg-spiti-forest' : ''}
-              onClick={() => handleTransportTypeChange('innova')}
+              variant={formData.transportType === 'premium' ? 'default' : 'outline'}
+              className={formData.transportType === 'premium' ? 'bg-spiti-forest' : ''}
+              onClick={() => handleTransportTypeChange('premium')}
             >
-              Innova
+              Premium
             </Button>
           </div>
         </div>

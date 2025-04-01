@@ -12,7 +12,7 @@ const initializeStorage = () => {
   const storedTours = localStorage.getItem(TOURS_STORAGE_KEY);
   if (!storedTours) {
     // Add default values for new fields
-    const enhancedTours = tourPackagesData.map(tour => ({
+    const enhancedTours = tourPackagesData.map((tour, index) => ({
       ...tour,
       hasFixedDepartures: true,
       isCustomizable: true,
@@ -20,10 +20,35 @@ const initializeStorage = () => {
       exclusions: tour.exclusions || [],
       itinerary: tour.itinerary || [],
       customUrl: tour.customUrl || "",
-      departureDates: tour.departureDates || []
+      departureDates: tour.departureDates || [],
+      // Convert any "innova" transport type to "premium"
+      transportType: tour.transportType === "innova" ? "premium" : tour.transportType
     }));
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
+  } else {
+    // Check if we need to update "innova" to "premium" in existing tours
+    try {
+      const tours = JSON.parse(storedTours);
+      let needsUpdate = false;
+      
+      const updatedTours = tours.map((tour: TourPackageProps) => {
+        if (tour.transportType === "innova") {
+          needsUpdate = true;
+          return {
+            ...tour,
+            transportType: "premium"
+          };
+        }
+        return tour;
+      });
+      
+      if (needsUpdate) {
+        localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(updatedTours));
+      }
+    } catch (error) {
+      console.error("Error updating transport type:", error);
+    }
   }
 };
 
@@ -43,7 +68,12 @@ export const getTourByIndex = (index: number): TourPackageProps | null => {
 // Get a single tour by custom URL
 export const getTourByCustomUrl = (url: string): TourPackageProps | null => {
   const tours = getAllTours();
-  return tours.find(tour => tour.customUrl === url) || null;
+  return tours.find((tour, index) => {
+    if (tour.customUrl === url) {
+      return { ...tour, index };
+    }
+    return false;
+  }) || null;
 };
 
 // Add a new tour
@@ -81,7 +111,8 @@ export const resetToDefaultTours = (): void => {
     exclusions: tour.exclusions || [],
     itinerary: tour.itinerary || [],
     customUrl: tour.customUrl || "",
-    departureDates: tour.departureDates || []
+    departureDates: tour.departureDates || [],
+    transportType: tour.transportType === "innova" ? "premium" : tour.transportType
   }));
   
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));

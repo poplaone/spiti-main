@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from "@/components/ui/use-toast";
 import { TourPackageProps } from "@/components/TourPackage";
-import { addTour, getTourByIndex, updateTour } from '@/services/tourService';
+import { addTour, getTourByIndex, updateTour, getTourByCustomUrl } from '@/services/tourService';
 
 // Initialize empty tour form data
 const getEmptyTourData = (): TourPackageProps => ({
@@ -121,7 +120,7 @@ export function useTourForm() {
     });
   };
   
-  const handleTransportTypeChange = (type: 'bike' | 'car' | 'innova') => {
+  const handleTransportTypeChange = (type: 'bike' | 'car' | 'premium') => {
     setFormData({
       ...formData,
       transportType: type
@@ -165,6 +164,16 @@ export function useTourForm() {
       if (!urlPattern.test(formData.customUrl)) {
         toast({
           description: "Custom URL can only contain lowercase letters, numbers, and hyphens",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // Check if the URL already exists (but ignore the current tour)
+      const existingTour = getTourByCustomUrl(formData.customUrl);
+      if (existingTour && (!isEditing || (isEditing && id && parseInt(id) !== existingTour.index))) {
+        toast({
+          description: "This URL is already in use by another tour package",
           variant: "destructive"
         });
         return;
