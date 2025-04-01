@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
-import { tourPackagesData } from "@/data/tourPackagesData";
+import { getAllTours } from "@/services/tourService";
 import { Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
@@ -25,13 +24,16 @@ const TourDetailOwnCar = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Get all tours
+    const allTours = getAllTours();
+    
     // Get the Own Car tour (index 4)
-    const selectedTour = tourPackagesData[4];
+    const selectedTour = allTours[4];
     if (selectedTour) {
       setTour(selectedTour);
 
       // Get other tours for the "More Popular Tours" section
-      const others = tourPackagesData.filter((_, index) => index !== 4).slice(0, 4);
+      const others = allTours.filter((_, index) => index !== 4).slice(0, 4);
       setOtherTours(others);
     }
   }, []);
@@ -105,7 +107,7 @@ const TourDetailOwnCar = () => {
       </section>
 
       {/* More Popular Tours Section */}
-      <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
+      <RelatedTours tours={otherTours} />
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 

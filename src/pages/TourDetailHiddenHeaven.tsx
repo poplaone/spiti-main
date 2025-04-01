@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
-import { tourPackagesData } from "@/data/tourPackagesData";
+import { getAllTours } from "@/services/tourService";
 import { Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
@@ -25,13 +24,16 @@ const TourDetailHiddenHeaven = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Get all tours
+    const allTours = getAllTours();
+    
     // Get the Hidden Heaven tour (index 5)
-    const selectedTour = tourPackagesData[5];
+    const selectedTour = allTours[5];
     if (selectedTour) {
       setTour(selectedTour);
 
       // Get other tours for the "More Popular Tours" section
-      const others = tourPackagesData.filter((_, index) => index !== 5).slice(0, 4);
+      const others = allTours.filter((_, index) => index !== 5).slice(0, 4);
       setOtherTours(others);
     }
   }, []);
@@ -105,7 +107,7 @@ const TourDetailHiddenHeaven = () => {
       </section>
 
       {/* More Popular Tours Section */}
-      <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
+      <RelatedTours tours={otherTours} />
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 
