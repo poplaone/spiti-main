@@ -1,88 +1,102 @@
 
+import { v4 as uuidv4 } from 'uuid';
 import { TourPackageProps } from '@/components/TourPackage';
 
 export const bikeTours: TourPackageProps[] = [
   {
-    title: "LAHAUL SPITI - BIKE TOUR",
-    image: "/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png",
-    originalPrice: 48125,
-    discountedPrice: 38500,
-    discount: 25,
+    id: uuidv4(),
+    title: "SPITI BIKE TOUR - LAH TO MANALI",
+    image: "/lovable-uploads/45fbb6b0-d8f5-4d0f-95b1-5ecfce12b08d.png",
+    originalPrice: 35000,
+    discountedPrice: 29999,
+    discount: 15,
     duration: {
-      nights: 7,
-      days: 8
+      nights: 9,
+      days: 10
     },
     nightStays: [
-      { location: "Shimla", nights: 1 },
-      { location: "Sangla", nights: 1 },
-      { location: "Nako", nights: 1 },
-      { location: "Kaza", nights: 2 },
-      { location: "Chandrataal", nights: 1 },
-      { location: "Manali", nights: 1 }
+      { location: "Leh", nights: 1 },
+      { location: "Nubra Valley", nights: 1 },
+      { location: "Pangong Lake", nights: 1 },
+      { location: "Leh", nights: 2 },
+      { location: "Jispa", nights: 1 },
+      { location: "Kaza", nights: 1 },
+      { location: "Kalpa", nights: 1 },
+      { location: "Narkanda", nights: 1 }
     ],
     inclusions: [
-      "All sightseeing as per itinerary by Bike.",
-      "Pickup & Drop from Chandigarh.",
-      "07 Breakfasts and 07 Dinners at hotel/Home stay/Camps.",
-      "Hotel taxes.",
-      "Helmet and Spare Parts with Tool Kit."
+      "Royal Enfield 350cc Bike",
+      "Fuel for the entire journey",
+      "Accommodation in standard hotels/camps on a twin/triple sharing basis",
+      "All meals (breakfast, lunch, and dinner)",
+      "Backup vehicle for luggage and emergencies",
+      "Experienced guide and mechanic",
+      "Inner Line Permit for restricted areas",
+      "First aid kit",
+      "Oxygen cylinder for emergency situations",
+      "Bonfire at camping sites (subject to availability)"
     ],
     exclusions: [
-      "Lunch not included.",
-      "05% GST not included.",
-      "Oxygen Cylinder.",
-      "AC will not be operational in hilly areas",
-      "Medical kit with Oximeter.",
-      "Walkie talkies if required.",
-      "Heater not included",
-      "Any additional expenses.",
-      "Tips and porter chargers.",
-      "Early check in and late check out at the hotel.",
-      "Expenses of personal nature.",
-      "Any other services not specified above.",
-      "Additional Costs due to Flight Cancellations, Road blocks, natural calamities and Political strikes."
+      "Flights or transportation to Leh and from Manali",
+      "Personal expenses",
+      "Travel insurance",
+      "Any cost arising due to natural calamities or roadblocks",
+      "Monument entrance fees if applicable",
+      "Activities not mentioned in the inclusions",
+      "Alcoholic beverages",
+      "Room heater charges where applicable"
     ],
-    overview: "Get ready for a Memorable 07 Nights 08 Day bike adventure through the Beautiful landscapes of Himachal Pradesh and Spiti Valley. If you love adventure this is the ride for you. Starting from Chandigarh this journey takes you through the stunning Hills of Shimla, the green valleys of Kinnaur, high-altitude terrain of Spiti. Ride through some of the world's highest villages, explore monasteries, explore the breathtaking beauty of Chandratal Lake. Experience thrilling off-road journey, roam in the Himalayan culture, and create memories that will last a lifetime.",
+    overview: "Experience the thrill of riding through the majestic landscapes of the Himalayas on this unforgettable Spiti Valley bike tour. Starting from Leh and ending in Manali, this adventure takes you through high mountain passes, serene lakes, ancient monasteries, and traditional villages. Feel the rush as you navigate winding roads with your Royal Enfield, witness breathtaking vistas, and immerse yourself in the unique culture of the region. This journey is designed for adventure enthusiasts who seek an authentic Himalayan biking experience.",
     itinerary: [
       {
         day: 1,
-        title: "Chandigarh to Shimla - Journey Begins",
-        description: "On arrival at Chandiagrh, Pick your Bikes. Scenic drive through the Shivalik Hills to Shimla. If time permits, explore Mall Road, The Ridge, and Christ Church. Enjoy a relaxed evening with a sunset view. Overnight stay in Shimla."
+        title: "Arrival in Leh & Acclimatization",
+        description: "Arrive in Leh and transfer to your hotel. Spend the day acclimatizing to the high altitude. Evening briefing session about the journey ahead and bike distribution."
       },
       {
         day: 2,
-        title: "Shimla to Sangla - Kinnaur Valley Awaits",
-        description: "After breakfast, Drive towards Sangla, the gateway to Kinnaur Valley. Drive through Kufri, Narkanda, Rampur and Taranda Dhank. Explore Baspa River banks and interact with locals. Overnight stay in Sangla/Rakchham."
+        title: "Leh to Nubra Valley via Khardung La (120 km)",
+        description: "Begin your ride to Nubra Valley crossing Khardung La, one of the world's highest motorable passes. Descend to the beautiful Nubra Valley and visit the sand dunes at Hunder. Experience a short camel safari and overnight stay in Nubra."
       },
       {
         day: 3,
-        title: "Sangla/Rakcham to Nako - Monasteries, Cliffs & River Confluences",
-        description: "Visit Chitkul, India's last village near the Indo-China border. Walk by the Baspa River, enjoy breathtaking views, and visit the local Temple. Drive via Pooh, Chango, and Khab Sangam, where Spiti & Sutlej Rivers meet. Reach Nako, a picturesque village with traditional houses. Explore Nako Lake & Nako Monastery. Optional hike to Wind Prayer Wheel Site for View of Nako Village, its serene lake, and the surrounding majestic mountain ranges. Overnight stay in Nako."
+        title: "Nubra Valley to Pangong Lake via Shyok Route (150 km)",
+        description: "Ride along the Shyok River to reach the stunning Pangong Lake, famous for its changing colors and tranquil beauty. Enjoy the evening by the lakeside and overnight stay in camps."
       },
       {
         day: 4,
-        title: "Nako to Kaza - Scenic Drive to Spiti's Heart",
-        description: "Wakeup early. After breakfast start your journey to Kaza Village. Visit Gue Village to see the 500-year-old Mummy of Sangha Tenzing(Buddhist monk). Stop at Tabo Monastery (1000 years old), known as the \"Ajanta of the Himalayas\". Explore Dhankar Monastery, perched dramatically on a cliff and witness the breathtaking confluence of the Pin and Spiti River. Drive towards Kaza, stopping at photographic viewpoints. Explore Kaza Market & Monastery. Enjoy Spitian food at famous cafes. Overnight stay in Kaza."
+        title: "Pangong Lake to Leh via Chang La (180 km)",
+        description: "Early morning at Pangong Lake to witness the sunrise. Return to Leh via Chang La pass, visiting Hemis Monastery en route. Overnight stay in Leh."
       },
       {
         day: 5,
-        title: "Kaza - Hikkim - Komic - Langza - Kaza - World's Highest Villages & Fossils",
-        description: "After breakfast visit Kaza Monastery and Market(if missed last day). Visit Hikkim, home to the world's highest post office (send a postcard!). Explore Komic (world's highest motorable village) and its ancient Tangyud Monastery. Drive to Langza, known for fossils and the giant Buddha statue. Capture breathtaking views of Peaks. Return to Kaza for an overnight stay."
+        title: "Leh Local Sightseeing",
+        description: "Explore Leh city, visiting Shanti Stupa, Leh Palace, and local markets. Bike servicing and preparation for the Spiti leg of the journey. Overnight stay in Leh."
       },
       {
         day: 6,
-        title: "Langza - Key - Kibber - Chandratal - Monasteries, Bridges & A Magical Lake",
-        description: "Start Early. After breakfast start your journey for Chandratal Lake. En-route visit Key Monastery. Largest Monastery of Spiti valley. It's a religious training centre for lamas. Further visit Kibber village. Kibber is small village and is take off point for the popular trek to Tso Moriri in Ladakh. After that Visit Chicham bridge which is Asia's highest suspension bridge. Stop at Losar village for lunch, which is the last village of spiti valley. Visit Kunzum Pass and Temple, situated at an altitude of 4551 mtrs. Reach Chandratal till evening. Checkin to the Camps. Visit lake if time permits or visit early morning before breakfast. Overnight at camps."
+        title: "Leh to Jispa via Tanglang La (340 km)",
+        description: "Longest riding day, crossing multiple high passes including Tanglang La, entering the beautiful Lahaul Valley. Overnight stay in Jispa."
       },
       {
         day: 7,
-        title: "Chandratal to Manali - Offroad Thrill & Tunnel Adventure",
-        description: "Wake early and visit Chandratal Lake. After breakfast start your journey for Manali. Start your drive via Batal – Gramphu, one of the most thrilling off-road routes. Stop at the Chacha-Chachi Dhaba for tea/snacks. Cross the Atal Tunnel (9 kms), the world's longest highway tunnel above 10,000 feet. Reach Manali, check in, and relax. Explore Mall Road & Café. Overnight stay in Manali."
+        title: "Jispa to Kaza via Kunzum Pass (200 km)",
+        description: "Enter Spiti Valley crossing Kunzum Pass. Visit Key Monastery and reach Kaza by evening. Overnight stay in Kaza."
       },
       {
         day: 8,
-        title: "Manali to Chandigarh - Farewell to the Himalayas",
-        description: "Enjoy a relaxed breakfast with a view of the mountains. Begin your journey back to Chandigarh, driving through lush valleys and scenic landscapes. Drop Your bikes at Bike Vendor. Trip concludes with unforgettable memories of Spiti Valley. TOUR END"
+        title: "Kaza to Kalpa via Dhankar (160 km)",
+        description: "Explore Dhankar Monastery and ride through the changing landscapes to reach Kalpa, offering stunning views of the Kinner Kailash range. Overnight stay in Kalpa."
+      },
+      {
+        day: 9,
+        title: "Kalpa to Narkanda via Rampur (180 km)",
+        description: "Continue descending through apple orchards and pine forests, reaching the famous hill station of Narkanda. Farewell dinner and overnight stay."
+      },
+      {
+        day: 10,
+        title: "Narkanda to Manali & Departure (120 km)",
+        description: "Final ride to Manali through Kullu Valley. Arrive in Manali by afternoon, return the bikes, and the tour concludes."
       }
     ],
     transportType: "bike"

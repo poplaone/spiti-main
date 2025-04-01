@@ -9,13 +9,86 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      tour_packages: {
+        Row: {
+          created_at: string | null
+          departure_dates: Json | null
+          discount: number
+          discounted_price: number
+          duration: Json
+          exclusions: string[]
+          id: string
+          image: string
+          inclusions: string[]
+          index: number | null
+          is_customizable: boolean | null
+          is_fixed_departure: boolean | null
+          is_women_only: boolean | null
+          itinerary: Json
+          night_stays: Json
+          original_price: number
+          overview: string | null
+          title: string
+          transport_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          departure_dates?: Json | null
+          discount: number
+          discounted_price: number
+          duration: Json
+          exclusions?: string[]
+          id: string
+          image: string
+          inclusions?: string[]
+          index?: number | null
+          is_customizable?: boolean | null
+          is_fixed_departure?: boolean | null
+          is_women_only?: boolean | null
+          itinerary?: Json
+          night_stays: Json
+          original_price: number
+          overview?: string | null
+          title: string
+          transport_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          departure_dates?: Json | null
+          discount?: number
+          discounted_price?: number
+          duration?: Json
+          exclusions?: string[]
+          id?: string
+          image?: string
+          inclusions?: string[]
+          index?: number | null
+          is_customizable?: boolean | null
+          is_fixed_departure?: boolean | null
+          is_women_only?: boolean | null
+          itinerary?: Json
+          night_stays?: Json
+          original_price?: number
+          overview?: string | null
+          title?: string
+          transport_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      to_camel_case: {
+        Args: {
+          snake_case: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
