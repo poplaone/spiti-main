@@ -19,7 +19,6 @@ import TourDetailBuddhist from "./pages/TourDetailBuddhist";
 import TourDetailWomen from "./pages/TourDetailWomen";
 import TourDetailOwnCar from "./pages/TourDetailOwnCar";
 import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
-import TourDetail from "./pages/TourDetail"; // For dynamic tour details
 
 // Import new pages for road trips and fixed departures
 import RoadTrips from "./pages/RoadTrips";
@@ -64,9 +63,6 @@ const App = () => (
           <Route path="/tour-women" element={<TourDetailWomen />} />
           <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
           <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
-          
-          {/* Dynamic tour details route */}
-          <Route path="/tour-detail/:id" element={<TourDetail />} />
           
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
