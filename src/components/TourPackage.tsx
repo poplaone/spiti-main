@@ -8,6 +8,9 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import { TourPackageProps } from './TourPackage.d';
 
+// Re-export the types so they can be imported from either location
+export type { TourPackageProps, DepartureDateField } from './TourPackage.d';
+
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };

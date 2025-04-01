@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { tourPackagesData } from '@/data/tourPackagesData';
 import TourPackageForm from '@/components/admin/tour-package/TourPackageForm';
-import { TourPackageProps } from '@/components/TourPackage.d';
+import { TourPackageProps } from '@/components/TourPackage';
 
 const EditTourPackage = () => {
   useAdminAuth();
