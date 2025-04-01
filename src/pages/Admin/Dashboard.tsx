@@ -1,14 +1,15 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { tourPackagesData } from '@/data/tourPackagesData';
+import { getAllTours } from '@/services/tourService';
 
 const Dashboard = () => {
   const [totalTours, setTotalTours] = useState(0);
   
   useEffect(() => {
-    // Get total tours from data
-    setTotalTours(tourPackagesData.length);
+    // Get total tours from the tour service
+    const tours = getAllTours();
+    setTotalTours(tours.length);
   }, []);
 
   return (

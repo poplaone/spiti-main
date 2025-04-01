@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { TourPackageProps } from "@/components/TourPackage";
-import { tourPackagesData } from '@/data/tourPackagesData';
+import { addTour, getTourByIndex, updateTour } from '@/services/tourService';
 
 const TourPackageForm = () => {
   const { id } = useParams();
@@ -35,9 +35,10 @@ const TourPackageForm = () => {
   useEffect(() => {
     if (isEditing && id) {
       const tourIndex = parseInt(id);
-      if (tourPackagesData[tourIndex]) {
+      const tour = getTourByIndex(tourIndex);
+      if (tour) {
         // Deep clone to avoid modifying original data
-        setFormData(JSON.parse(JSON.stringify(tourPackagesData[tourIndex])));
+        setFormData(JSON.parse(JSON.stringify(tour)));
       }
     }
   }, [id, isEditing]);
@@ -47,13 +48,18 @@ const TourPackageForm = () => {
     
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
-      setFormData({
-        ...formData,
-        [parent]: {
-          ...formData[parent as keyof TourPackageProps],
-          [child]: value
-        }
-      });
+      const parentKey = parent as keyof TourPackageProps;
+      
+      // Type guard to ensure we're only spreading objects
+      if (parentKey === 'duration' && typeof formData.duration === 'object') {
+        setFormData({
+          ...formData,
+          duration: {
+            ...formData.duration,
+            [child]: value
+          }
+        });
+      }
     } else {
       setFormData({
         ...formData,
@@ -67,13 +73,18 @@ const TourPackageForm = () => {
     
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
-      setFormData({
-        ...formData,
-        [parent]: {
-          ...formData[parent as keyof TourPackageProps],
-          [child]: parseInt(value) || 0
-        }
-      });
+      const parentKey = parent as keyof TourPackageProps;
+      
+      // Type guard to ensure we're only spreading objects
+      if (parentKey === 'duration' && typeof formData.duration === 'object') {
+        setFormData({
+          ...formData,
+          duration: {
+            ...formData.duration,
+            [child]: parseInt(value) || 0
+          }
+        });
+      }
     } else {
       setFormData({
         ...formData,
@@ -91,10 +102,17 @@ const TourPackageForm = () => {
       formData.discount = discount;
     }
     
-    // In a real app, you would save to database
-    toast({
-      description: isEditing ? "Tour package updated successfully" : "Tour package added successfully",
-    });
+    if (isEditing && id) {
+      updateTour(parseInt(id), formData);
+      toast({
+        description: "Tour package updated successfully",
+      });
+    } else {
+      addTour(formData);
+      toast({
+        description: "Tour package added successfully",
+      });
+    }
     
     navigate("/admin/tours");
   };
@@ -208,8 +226,6 @@ const TourPackageForm = () => {
                   />
                 </div>
                 
-                {/* This is a simplified version. In a real app, you would have more complex forms 
-                    for managing inclusions, night stays, and itinerary */}
                 <div>
                   <Label htmlFor="inclusions">Inclusions (one per line)</Label>
                   <Textarea

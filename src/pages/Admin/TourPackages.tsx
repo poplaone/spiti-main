@@ -7,7 +7,7 @@ import { Pencil, Trash, Plus, Search } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { TourPackageProps } from "@/components/TourPackage";
-import { tourPackagesData } from '@/data/tourPackagesData';
+import { getAllTours, deleteTour } from '@/services/tourService';
 
 const TourPackages = () => {
   const [tours, setTours] = useState<TourPackageProps[]>([]);
@@ -17,10 +17,15 @@ const TourPackages = () => {
   const [tourToDelete, setTourToDelete] = useState<number | null>(null);
   const { toast } = useToast();
 
+  const loadTours = () => {
+    const allTours = getAllTours();
+    setTours(allTours);
+    setFilteredTours(allTours);
+  };
+
   useEffect(() => {
-    // Initialize tours from data
-    setTours([...tourPackagesData]);
-    setFilteredTours([...tourPackagesData]);
+    // Initialize tours from service
+    loadTours();
   }, []);
 
   useEffect(() => {
@@ -33,10 +38,8 @@ const TourPackages = () => {
 
   const handleDeleteConfirm = () => {
     if (tourToDelete !== null) {
-      // In a real app, you would delete from database
-      // For now, we'll just remove from state
-      const updatedTours = tours.filter((_, index) => index !== tourToDelete);
-      setTours(updatedTours);
+      deleteTour(tourToDelete);
+      loadTours(); // Reload the tours after deletion
       
       toast({
         description: "Tour package deleted successfully",
