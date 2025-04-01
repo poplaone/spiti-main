@@ -135,7 +135,8 @@ const Footer = () => {
           <p className="text-cyan-500">© {new Date().getFullYear()} Spiti Valley Tours. All rights reserved.</p>
           <p className="mt-2">
             <Link to="/privacy-policy" className="hover:text-spiti-green transition-colors mr-4">Privacy Policy</Link>
-            <Link to="/terms-of-service" className="hover:text-spiti-green transition-colors">Terms of Service</Link>
+            <Link to="/terms-of-service" className="hover:text-spiti-green transition-colors mr-4">Terms of Service</Link>
+            <Link to="/admin/login" className="hover:text-spiti-green transition-colors">Admin</Link>
           </p>
         </div>
       </div>
