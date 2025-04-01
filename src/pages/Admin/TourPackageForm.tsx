@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTourForm } from "@/hooks/useTourForm";
@@ -9,7 +8,6 @@ import ItineraryTab from "@/components/admin/tour-form/ItineraryTab";
 import AccommodationsAndInclusionsTab from "@/components/admin/tour-form/AccommodationsAndInclusionsTab";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 const TourPackageForm = () => {
   const {
     formData,
@@ -23,11 +21,9 @@ const TourPackageForm = () => {
     handleTransportTypeChange,
     handleImageChange,
     handleSubmit,
-    handleCancel,
+    handleCancel
   } = useTourForm();
-
-  return (
-    <div className="p-6">
+  return <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">
         {isEditing ? "Edit Tour Package" : "Add New Tour Package"}
       </h1>
@@ -38,15 +34,8 @@ const TourPackageForm = () => {
           <div className="mb-6 border border-gray-200 rounded-lg p-4 bg-gray-50">
             <Label htmlFor="customUrl">Custom URL</Label>
             <div className="flex items-center mt-1">
-              <span className="text-gray-500 mr-1">/tour/</span>
-              <Input
-                id="customUrl"
-                name="customUrl"
-                value={formData.customUrl || ""}
-                onChange={handleInputChange}
-                placeholder="e.g., spiti-bike-tour"
-                className="max-w-sm"
-              />
+              <span className="text-gray-500 mr-1">/tour</span>
+              <Input id="customUrl" name="customUrl" value={formData.customUrl || ""} onChange={handleInputChange} placeholder="e.g., spiti-bike-tour" className="max-w-sm" />
             </div>
             <p className="text-xs text-gray-500 mt-1">
               This will be used in the URL to access this tour package. Use lowercase letters, numbers and hyphens only.
@@ -63,51 +52,28 @@ const TourPackageForm = () => {
             </TabsList>
             
             <TabsContent value="basic" className="space-y-6">
-              <BasicInfoTab 
-                formData={formData}
-                handleInputChange={handleInputChange}
-                handleNumberChange={handleNumberChange}
-                handleCheckboxChange={handleCheckboxChange}
-                handleTransportTypeChange={handleTransportTypeChange}
-                handleImageChange={handleImageChange}
-              />
+              <BasicInfoTab formData={formData} handleInputChange={handleInputChange} handleNumberChange={handleNumberChange} handleCheckboxChange={handleCheckboxChange} handleTransportTypeChange={handleTransportTypeChange} handleImageChange={handleImageChange} />
             </TabsContent>
 
             <TabsContent value="departures" className="space-y-6">
-              <DepartureDatesTab
-                formData={formData}
-                setFormData={setFormData}
-              />
+              <DepartureDatesTab formData={formData} setFormData={setFormData} />
             </TabsContent>
             
             <TabsContent value="overview" className="space-y-6">
-              <OverviewTab 
-                formData={formData}
-                handleInputChange={handleInputChange}
-              />
+              <OverviewTab formData={formData} handleInputChange={handleInputChange} />
             </TabsContent>
             
             <TabsContent value="itinerary" className="space-y-6">
-              <ItineraryTab 
-                formData={formData} 
-                setFormData={setFormData} 
-              />
+              <ItineraryTab formData={formData} setFormData={setFormData} />
             </TabsContent>
             
             <TabsContent value="accommodations" className="space-y-6">
-              <AccommodationsAndInclusionsTab
-                formData={formData} 
-                setFormData={setFormData} 
-              />
+              <AccommodationsAndInclusionsTab formData={formData} setFormData={setFormData} />
             </TabsContent>
           </Tabs>
           
           <div className="flex justify-end gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleCancel}
-            >
+            <Button type="button" variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
             
@@ -117,8 +83,6 @@ const TourPackageForm = () => {
           </div>
         </div>
       </form>
-    </div>
-  );
+    </div>;
 };
-
 export default TourPackageForm;
