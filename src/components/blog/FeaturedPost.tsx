@@ -7,9 +7,10 @@ import { BlogPost } from '@/types/blog';
 
 interface FeaturedPostProps {
   post: BlogPost;
+  onPostClick: () => void;
 }
 
-const FeaturedPost = ({ post }: FeaturedPostProps) => {
+const FeaturedPost = ({ post, onPostClick }: FeaturedPostProps) => {
   return (
     <section className="-mt-8 mb-12">
       <div className="container mx-auto px-4">
@@ -41,8 +42,12 @@ const FeaturedPost = ({ post }: FeaturedPostProps) => {
                     </div>
                   </div>
                 </div>
-                <Button variant="outline" className="border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white" asChild>
-                  <a href="#full-post">Read More</a>
+                <Button 
+                  variant="outline" 
+                  className="border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white"
+                  onClick={onPostClick}
+                >
+                  Read More
                 </Button>
               </div>
             </div>

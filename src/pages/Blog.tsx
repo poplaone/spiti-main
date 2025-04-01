@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BlogPost } from '@/types/blog';
@@ -25,6 +25,18 @@ const Blog = () => {
     document.getElementById('full-post')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Ensure the selectedPost has content
+  useEffect(() => {
+    // When switching tabs, make sure we have a valid post with content
+    if (activeTab === "full" && (!selectedPost || !selectedPost.content)) {
+      setSelectedPost(recentFullPosts[0]);
+    } else if (activeTab === "mini" && (!selectedPost || !selectedPost.content)) {
+      // If mini tab active but no content, select the first mini post with content
+      const firstMiniWithContent = miniBlogPosts.find(post => post.content) || recentFullPosts[0];
+      setSelectedPost(firstMiniWithContent);
+    }
+  }, [activeTab, selectedPost]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -34,8 +46,8 @@ const Blog = () => {
       
       {activeTab === "full" && (
         <>
-          <FeaturedPost post={featuredPosts[0]} />
-          <BlogPostGrid posts={recentFullPosts} />
+          <FeaturedPost post={featuredPosts[0]} onPostClick={() => handlePostClick(featuredPosts[0])} />
+          <BlogPostGrid posts={recentFullPosts} onPostClick={handlePostClick} />
           <FullBlogPost post={selectedPost} />
         </>
       )}

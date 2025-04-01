@@ -1,4 +1,3 @@
-
 import { BlogPost } from '@/types/blog';
 
 export const blogPosts: BlogPost[] = [
@@ -287,37 +286,4 @@ export const blogPosts: BlogPost[] = [
       
       <p class="mb-4"><strong>Key Monastery at Dawn:</strong> Winter sunrise casts an alpenglow on the monastery and surrounding peaks, creating a magical pink-orange light that lasts just minutes but produces spectacular images.</p>
       
-      <p class="mb-4"><strong>Langza Buddha with Milky Way:</strong> During clear winter nights, astrophotographers can capture the ancient Buddha statue silhouetted against the Milky Way galaxy, creating iconic images that showcase both cultural heritage and celestial wonders in a single frame.</p>
-      
-      <p class="mb-4"><strong>Frozen Waterfalls:</strong> The numerous frozen waterfalls throughout the valley offer macro photography opportunities to capture intricate ice formations, bubbles, and light play through translucent ice walls.</p>
-      
-      <h3 class="text-xl font-bold mb-2 mt-6">Cultural Immersion: Winter Village Life</h3>
-      <p class="mb-4">Perhaps the most rewarding winter experience isn't found on a mountain peak or frozen waterfall, but inside the traditional homes where generations of Spitians have perfected the art of thriving in extreme conditions. Winter homestay programs offer visitors unique opportunities to participate in daily life during the most challenging season.</p>
-      
-      <p class="mb-4">Visitors might join families in preparing traditional winter foods like thukpa (noodle soup), khambir (sourdough bread), and butter tea. They may learn traditional handicrafts or participate in the preparation of religious ceremonies that mark important calendar events during winter months.</p>
-      
-      <p class="mb-4">These immersive experiences provide not just cultural insights but crucial economic support for communities during what was historically a lean season. The development of winter tourism has created valuable livelihood opportunities that encourage younger generations to remain in their ancestral villages rather than migrating to cities.</p>
-      
-      <p class="mb-4">As Spiti continues to develop its winter adventure offerings, the emphasis remains on sustainable, community-based tourism that preserves both the natural environment and cultural heritage. For those willing to embrace the challenges, winter in Spiti offers adventures that combine physical accomplishment with profound cultural connection – a rare combination in today's standardized tourism landscape.</p>
-      
-      <p class="mt-6">The rewards for braving Spiti's winter challenges are immeasurable – pristine landscapes, authentic cultural exchanges, and adventures that test physical limits while expanding spiritual horizons. As the outside world grows increasingly homogenized, Spiti's winter realm remains a sanctuary of authenticity where adventure still means genuine discovery.</p>
-    `
-  },
-];
-
-// Helper functions to get different types of posts
-export const getFeaturedPosts = (): BlogPost[] => {
-  // Return posts marked as "full" for featured section
-  const fullPosts = blogPosts.filter(post => post.type === "full");
-  return fullPosts.slice(0, 1); // Return only the first post for featured
-};
-
-export const getRecentPosts = (): BlogPost[] => {
-  // Return all "full" posts for the recent posts grid
-  return blogPosts.filter(post => post.type === "full");
-};
-
-export const getPostsByType = (type: "full" | "mini"): BlogPost[] => {
-  // Filter posts by their type
-  return blogPosts.filter(post => post.type === type);
-};
+      <p class="mb-4"><strong>Langza Buddha with Milky Way:</strong> During clear winter nights, astrophotographers can capture the ancient Buddha statue silhou

@@ -7,9 +7,10 @@ import { BlogPost } from '@/types/blog';
 
 interface BlogPostGridProps {
   posts: BlogPost[];
+  onPostClick: (post: BlogPost) => void;
 }
 
-const BlogPostGrid = ({ posts }: BlogPostGridProps) => {
+const BlogPostGrid = ({ posts, onPostClick }: BlogPostGridProps) => {
   return (
     <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -34,7 +35,13 @@ const BlogPostGrid = ({ posts }: BlogPostGridProps) => {
                   <div className="text-sm text-gray-500 flex items-center">
                     <Calendar className="w-3 h-3 mr-1" /> {post.date}
                   </div>
-                  <Button variant="link" className="text-spiti-forest p-0 h-auto">Read More</Button>
+                  <Button 
+                    variant="link" 
+                    className="text-spiti-forest p-0 h-auto"
+                    onClick={() => onPostClick(post)}
+                  >
+                    Read More
+                  </Button>
                 </div>
               </div>
             </div>
