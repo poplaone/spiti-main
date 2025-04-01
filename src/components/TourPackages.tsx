@@ -5,6 +5,7 @@ import TourPackageGrid from './tour/TourPackageGrid';
 import { getAllTours } from '@/services/tourService';
 
 const TourPackages = () => {
+  // Get all tours from local storage
   const tours = getAllTours();
 
   return (
