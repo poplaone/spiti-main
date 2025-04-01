@@ -7,6 +7,28 @@ import { tourPackagesData } from '@/data/tourPackagesData';
 
 const TOURS_STORAGE_KEY = 'spiti-admin-tours';
 
+// Generate slug from title
+const generateCustomUrl = (title: string, existingTours: TourPackageProps[]): string => {
+  // Convert to lowercase, replace spaces with hyphens, remove special chars
+  let slug = title.toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+  
+  // Check if slug already exists
+  let counter = 0;
+  let uniqueSlug = slug;
+  
+  while (existingTours.some(tour => tour.customUrl === uniqueSlug)) {
+    counter++;
+    uniqueSlug = `${slug}-${counter}`;
+  }
+  
+  return uniqueSlug;
+};
+
 // Initialize storage with default data if not already set
 const initializeStorage = () => {
   const storedTours = localStorage.getItem(TOURS_STORAGE_KEY);
@@ -19,7 +41,7 @@ const initializeStorage = () => {
       availableDates: tour.availableDates || "June to October",
       exclusions: tour.exclusions || [],
       itinerary: tour.itinerary || [],
-      customUrl: tour.customUrl || "",
+      customUrl: tour.customUrl || generateCustomUrl(tour.title, []),
       departureDates: tour.departureDates || [],
       // Convert any "innova" transport type to "premium"
       transportType: tour.transportType === "premium" ? "premium" : tour.transportType
@@ -84,6 +106,12 @@ export const getTourByCustomUrl = (url: string): TourPackageProps | null => {
 // Add a new tour
 export const addTour = (tour: TourPackageProps): void => {
   const tours = getAllTours();
+  
+  // Auto-generate customUrl if not provided
+  if (!tour.customUrl) {
+    tour.customUrl = generateCustomUrl(tour.title, tours);
+  }
+  
   tours.push(tour);
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
 };
@@ -92,6 +120,12 @@ export const addTour = (tour: TourPackageProps): void => {
 export const updateTour = (index: number, updatedTour: TourPackageProps): void => {
   const tours = getAllTours();
   if (index >= 0 && index < tours.length) {
+    // If title changed or customUrl is empty, regenerate it
+    if (tours[index].title !== updatedTour.title || !updatedTour.customUrl) {
+      updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
+        tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
+    }
+    
     tours[index] = updatedTour;
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
   }
@@ -115,7 +149,7 @@ export const resetToDefaultTours = (): void => {
     availableDates: tour.availableDates || "June to October",
     exclusions: tour.exclusions || [],
     itinerary: tour.itinerary || [],
-    customUrl: tour.customUrl || "",
+    customUrl: tour.customUrl || generateCustomUrl(tour.title, []),
     departureDates: tour.departureDates || [],
     transportType: tour.transportType === "premium" ? "premium" : tour.transportType
   }));

@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTourForm } from "@/hooks/useTourForm";
@@ -6,8 +7,7 @@ import DepartureDatesTab from "@/components/admin/tour-form/DepartureDatesTab";
 import OverviewTab from "@/components/admin/tour-form/OverviewTab";
 import ItineraryTab from "@/components/admin/tour-form/ItineraryTab";
 import AccommodationsAndInclusionsTab from "@/components/admin/tour-form/AccommodationsAndInclusionsTab";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 const TourPackageForm = () => {
   const {
     formData,
@@ -30,18 +30,6 @@ const TourPackageForm = () => {
       
       <form onSubmit={handleSubmit}>
         <div className="space-y-6">
-          {/* Custom URL field */}
-          <div className="mb-6 border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <Label htmlFor="customUrl">Custom URL</Label>
-            <div className="flex items-center mt-1">
-              <span className="text-gray-500 mr-1">/tour</span>
-              <Input id="customUrl" name="customUrl" value={formData.customUrl || ""} onChange={handleInputChange} placeholder="e.g., spiti-bike-tour" className="max-w-sm" />
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              This will be used in the URL to access this tour package. Use lowercase letters, numbers and hyphens only.
-            </p>
-          </div>
-          
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-6">
               <TabsTrigger value="basic">Basic Info</TabsTrigger>

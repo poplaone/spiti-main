@@ -157,28 +157,6 @@ export function useTourForm() {
       setActiveTab("basic");
       return;
     }
-
-    // If custom URL is specified, validate it
-    if (formData.customUrl) {
-      const urlPattern = /^[a-z0-9-]+$/;
-      if (!urlPattern.test(formData.customUrl)) {
-        toast({
-          description: "Custom URL can only contain lowercase letters, numbers, and hyphens",
-          variant: "destructive"
-        });
-        return;
-      }
-      
-      // Check if the URL already exists (but ignore the current tour)
-      const existingTour = getTourByCustomUrl(formData.customUrl);
-      if (existingTour && (!isEditing || (isEditing && id && parseInt(id) !== existingTour.index))) {
-        toast({
-          description: "This URL is already in use by another tour package",
-          variant: "destructive"
-        });
-        return;
-      }
-    }
     
     // Calculate discount percentage
     if (formData.originalPrice > 0 && formData.discountedPrice > 0) {
