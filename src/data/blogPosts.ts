@@ -1,3 +1,4 @@
+
 import { BlogPost } from '@/types/blog';
 
 export const blogPosts: BlogPost[] = [
@@ -286,4 +287,39 @@ export const blogPosts: BlogPost[] = [
       
       <p class="mb-4"><strong>Key Monastery at Dawn:</strong> Winter sunrise casts an alpenglow on the monastery and surrounding peaks, creating a magical pink-orange light that lasts just minutes but produces spectacular images.</p>
       
-      <p class="mb-4"><strong>Langza Buddha with Milky Way:</strong> During clear winter nights, astrophotographers can capture the ancient Buddha statue silhou
+      <p class="mb-4"><strong>Langza Buddha with Milky Way:</strong> During clear winter nights, astrophotographers can capture the ancient Buddha statue silhouetted against the Milky Way core, creating a powerful spiritual and astronomical composition that has won multiple international photography competitions.</p>
+      
+      <p class="mb-4"><strong>Frozen Spiti River:</strong> The patterns formed as the Spiti River freezes create abstract compositions of ice crystals and trapped bubbles that offer macro photographers unique artistic opportunities. The blue-white ice contrasts dramatically with the ochre landscape.</p>
+      
+      <h3 class="text-xl font-bold mb-2 mt-6">Cultural Immersion: Winter Village Life</h3>
+      <p class="mb-4">Perhaps the most rewarding winter experience is the opportunity to participate in authentic village life during the most challenging season. Several communities have developed winter homestay programs where visitors join family activities ranging from traditional wool spinning to butter tea preparation.</p>
+      
+      <p class="mb-4"><strong>Demul Village Experience:</strong> This remote settlement at 14,300ft has pioneered a unique winter immersion program where visitors stay with local families and participate in all aspects of winter village life. Activities include traditional food preparation, handicraft workshops, and learning about indigenous knowledge systems for surviving extreme winters.</p>
+      
+      <p class="mb-4"><strong>Winter Buddhist Practices:</strong> Winter is traditionally the season for deeper Buddhist practice in Spitian villages. Visitors can join morning and evening prayers, learn basic meditation from experienced practitioners, and participate in philosophical discussions with resident scholars at monasteries including Key, Tabo, and Dhankar.</p>
+      
+      <h3 class="text-xl font-bold mb-2 mt-6">Practical Considerations</h3>
+      <p class="mb-4">Winter adventure in Spiti requires meticulous preparation and the right mindset:</p>
+      
+      <p class="mb-4"><strong>Experience Level:</strong> While some activities like cultural immersion are accessible to most travelers, technical pursuits such as ice climbing and advanced winter trekking require previous experience and proper training. Be honest about your abilities when booking activities.</p>
+      
+      <p class="mb-4"><strong>Fitness Requirements:</strong> The combination of cold temperatures, high altitude, and challenging conditions demands above-average physical fitness for most winter activities. Cardiovascular training before your trip will significantly enhance your experience and safety.</p>
+      
+      <p class="mb-4"><strong>Local Guides:</strong> All winter adventures should be undertaken with qualified local guides who understand both the technical aspects of winter activities and the specific conditions of Spiti. Never venture into remote areas alone, regardless of your experience level.</p>
+      
+      <p class="mb-4"><strong>Acclimatization:</strong> Allow 2-3 days of acclimatization in Kaza (12,500ft) before attempting any strenuous activities. Altitude sickness is a serious concern and is often exacerbated by cold temperatures.</p>
+      
+      <h3 class="text-xl font-bold mb-2 mt-6">Emerging Winter Adventures</h3>
+      <p class="mb-4">As winter tourism slowly develops in Spiti, several innovative activities are emerging:</p>
+      
+      <p class="mb-4"><strong>Fat Biking:</strong> Wide-tired bicycles designed for snow travel are opening new possibilities for day excursions around Kaza. Several operators now offer guided fat biking tours on packed snow trails connecting nearby villages.</p>
+      
+      <p class="mb-4"><strong>Ice Yoga Retreats:</strong> Combining traditional yoga practice with cold exposure training, these specialized retreats help participants develop mental resilience and physiological adaptations to cold environments.</p>
+      
+      <p class="mb-4"><strong>Winter Astronomy Tours:</strong> The exceptional atmospheric clarity of winter nights has prompted the development of specialized astronomy programs where heated observation domes allow comfortable stargazing even in extreme temperatures.</p>
+      
+      <p class="mt-6">For adventure seekers willing to embrace the challenges, winter in Spiti Valley offers experiences that transcend ordinary tourism. The combination of extreme natural beauty, authentic cultural encounters, and physical adventure creates memories that permanently alter one's perspective on mountain environments. By venturing beyond the usual tourist trail during this demanding season, travelers discover not just the extraordinary resilience of Spitian communities, but often unexpected strengths within themselves.</p>
+    `
+  },
+  // Mini blog posts would start here
+];
