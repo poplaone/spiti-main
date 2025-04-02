@@ -56,10 +56,7 @@ const TourHero: React.FC<TourHeroProps> = ({
               <Clock className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-spiti-blue" />
               <span className="text-sm sm:text-base">{tour.duration.nights} Nights / {tour.duration.days} Days</span>
             </div>
-            <div className="flex items-center">
-              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-spiti-blue" />
-              <span className="text-sm sm:text-base">Shimla to Manali</span>
-            </div>
+            
           </div>
           
           {/* Badges moved to be in line with View Itinerary button */}
