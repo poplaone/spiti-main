@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -188,14 +189,6 @@ const BasicInfoTab = ({
               onClick={() => handleTransportTypeChange('car')}
             >
               Car
-            </Button>
-            <Button
-              type="button"
-              variant={formData.transportType === 'premium' ? 'default' : 'outline'}
-              className={formData.transportType === 'premium' ? 'bg-spiti-forest' : ''}
-              onClick={() => handleTransportTypeChange('premium')}
-            >
-              Premium
             </Button>
           </div>
         </div>

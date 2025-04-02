@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { TourPackageProps } from "@/components/TourPackage";
 import { FormInputChangeEvent, FormNumberChangeEvent, TransportType } from './types';
@@ -65,7 +64,7 @@ export function useFormHandlers(
     });
   };
   
-  const handleTransportTypeChange = (type: TransportType) => {
+  const handleTransportTypeChange = (type: 'bike' | 'car' | 'premium') => {
     setFormData({
       ...formData,
       transportType: type
