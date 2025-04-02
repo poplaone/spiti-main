@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TourPackageProps } from "@/components/TourPackage";
 import { getAllTours, getTourByCustomUrl, getTourByIndex } from "@/services/tourService";
 
@@ -19,6 +19,11 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
   const [loading, setLoading] = useState<boolean>(true);
   const [relatedToursLoading, setRelatedToursLoading] = useState<boolean>(true);
+  
+  // Use useCallback to prevent function recreation on every render
+  const formatPrice = useCallback((price: number) => {
+    return new Intl.NumberFormat('en-IN').format(price);
+  }, []);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -88,6 +93,16 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
           }
         } else {
           console.error("Tour not found with identifier:", id);
+          // Even if the specific tour is not found, we still want to show other tours
+          // as recommendations
+          try {
+            const allTours = await getAllTours();
+            setOtherTours(allTours.slice(0, 4));
+          } catch (error) {
+            console.error("Error fetching tours for recommendations:", error);
+          } finally {
+            setRelatedToursLoading(false);
+          }
         }
       } catch (error) {
         console.error("Error fetching tour details:", error);
@@ -98,10 +113,6 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
     
     fetchTourData();
   }, [id]);
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-IN').format(price);
-  };
 
   return {
     tour,
