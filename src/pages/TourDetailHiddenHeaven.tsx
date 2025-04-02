@@ -12,7 +12,7 @@ import TourHero from "@/components/tour/TourHero";
 import BookingCard from "@/components/tour/BookingCard";
 import TourOverview from "@/components/tour/TourOverview";
 import TourItinerary from "@/components/tour/TourItinerary";
-import TourPackageDetails from "@/components/tour/TourPackageDetails";
+import TourDetailTabs from "@/components/tour/TourDetailTabs";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
@@ -86,7 +86,7 @@ const TourDetailHiddenHeaven = () => {
               </div>
               
               <TourItinerary tour={tour} />
-              <TourPackageDetails tour={tour} />
+              <TourDetailTabs tour={tour} />
             </div>
             
             {/* Right column - Booking info */}
