@@ -25,7 +25,14 @@ const getEmptyTourData = (): TourPackageProps => ({
   isCustomizable: true,
   transportType: 'car',
   isWomenOnly: false,
-  availableDates: "June to October"
+  availableDates: "June to October",
+  customUrl: "",
+  departureDates: [],
+  bestTime: "June to September",
+  groupSize: "2-10 People",
+  terrain: "Himalayan Mountain Passes",
+  elevation: "2,000 - 4,550 meters",
+  accommodationType: "Hotels & Homestays"
 });
 
 export function useTourForm() {
@@ -37,23 +44,45 @@ export function useTourForm() {
   
   const [activeTab, setActiveTab] = useState("basic");
   const [formData, setFormData] = useState<TourPackageProps>(getEmptyTourData());
+  const [loading, setLoading] = useState(isEditing);
   
   // Load tour data if editing
   useEffect(() => {
     if (isEditing && id) {
-      const tourIndex = parseInt(id);
-      const tour = getTourByIndex(tourIndex);
-      if (tour) {
-        // Deep clone to avoid modifying original data
-        setFormData({
-          ...JSON.parse(JSON.stringify(tour)),
-          hasFixedDepartures: tour.hasFixedDepartures !== false,
-          isCustomizable: tour.isCustomizable !== false,
-          availableDates: tour.availableDates || "June to October",
-          exclusions: tour.exclusions || [],
-          itinerary: tour.itinerary || []
-        });
-      }
+      const fetchTourData = async () => {
+        setLoading(true);
+        try {
+          const tourIndex = parseInt(id);
+          const fetchedTour = await getTourByIndex(tourIndex);
+          
+          if (fetchedTour) {
+            // Deep clone to avoid modifying original data
+            const clonedTour = JSON.parse(JSON.stringify(fetchedTour));
+            
+            setFormData({
+              ...clonedTour,
+              hasFixedDepartures: clonedTour.hasFixedDepartures !== false,
+              isCustomizable: clonedTour.isCustomizable !== false,
+              availableDates: clonedTour.availableDates || "June to October",
+              exclusions: clonedTour.exclusions || [],
+              itinerary: clonedTour.itinerary || [],
+              customUrl: clonedTour.customUrl || "",
+              departureDates: clonedTour.departureDates || [],
+              bestTime: clonedTour.bestTime || "June to September",
+              groupSize: clonedTour.groupSize || "2-10 People",
+              terrain: clonedTour.terrain || "Himalayan Mountain Passes",
+              elevation: clonedTour.elevation || "2,000 - 4,550 meters",
+              accommodationType: clonedTour.accommodationType || "Hotels & Homestays"
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching tour data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      fetchTourData();
     }
   }, [id, isEditing]);
 
@@ -131,7 +160,7 @@ export function useTourForm() {
   };
   
   // Form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate required fields
@@ -159,19 +188,27 @@ export function useTourForm() {
       formData.discount = discount;
     }
     
-    if (isEditing && id) {
-      updateTour(parseInt(id), formData);
+    try {
+      if (isEditing && id) {
+        await updateTour(parseInt(id), formData);
+        toast({
+          description: "Tour package updated successfully",
+        });
+      } else {
+        await addTour(formData);
+        toast({
+          description: "Tour package added successfully",
+        });
+      }
+      
+      navigate("/admin/tours");
+    } catch (error) {
+      console.error("Error saving tour:", error);
       toast({
-        description: "Tour package updated successfully",
-      });
-    } else {
-      addTour(formData);
-      toast({
-        description: "Tour package added successfully",
+        description: "Failed to save tour package",
+        variant: "destructive"
       });
     }
-    
-    navigate("/admin/tours");
   };
 
   const handleCancel = () => {
@@ -184,6 +221,7 @@ export function useTourForm() {
     activeTab,
     setActiveTab,
     isEditing,
+    loading,
     handleInputChange,
     handleNumberChange,
     handleCheckboxChange,
