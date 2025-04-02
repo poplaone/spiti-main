@@ -32,35 +32,35 @@ const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon }) =
           <Home className="text-spiti-blue w-5 h-5 mr-3" />
           <div>
             <p className="text-gray-600 text-sm">Accommodation</p>
-            <p className="font-medium">Hotels & Homestays</p>
+            <p className="font-medium">{tour.accommodationType || "Hotels & Homestays"}</p>
           </div>
         </div>
         <div className="flex items-center">
           <Calendar className="text-spiti-blue w-5 h-5 mr-3" />
           <div>
             <p className="text-gray-600 text-sm">Best Time</p>
-            <p className="font-medium">June to September</p>
+            <p className="font-medium">{tour.bestTime || "June to September"}</p>
           </div>
         </div>
         <div className="flex items-center">
           <Users className="text-spiti-blue w-5 h-5 mr-3" />
           <div>
             <p className="text-gray-600 text-sm">Group Size</p>
-            <p className="font-medium">2-10 People</p>
+            <p className="font-medium">{tour.groupSize || "2-10 People"}</p>
           </div>
         </div>
         <div className="flex items-center">
           <Mountain className="text-spiti-blue w-5 h-5 mr-3" />
           <div>
             <p className="text-gray-600 text-sm">Terrain</p>
-            <p className="font-medium">Himalayan Mountain Passes</p>
+            <p className="font-medium">{tour.terrain || "Himalayan Mountain Passes"}</p>
           </div>
         </div>
         <div className="flex items-center">
           <Compass className="text-spiti-blue w-5 h-5 mr-3" />
           <div>
             <p className="text-gray-600 text-sm">Elevation</p>
-            <p className="font-medium">2,000 - 4,550 meters</p>
+            <p className="font-medium">{tour.elevation || "2,000 - 4,550 meters"}</p>
           </div>
         </div>
       </div>

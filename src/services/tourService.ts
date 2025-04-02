@@ -43,33 +43,65 @@ const initializeStorage = () => {
       itinerary: tour.itinerary || [],
       customUrl: tour.customUrl || generateCustomUrl(tour.title, []),
       departureDates: tour.departureDates || [],
+      // New fields
+      bestTime: tour.bestTime || "June to September",
+      groupSize: tour.groupSize || "2-10 People",
+      terrain: tour.terrain || "Himalayan Mountain Passes",
+      elevation: tour.elevation || "2,000 - 4,550 meters",
+      accommodationType: tour.accommodationType || "Hotels & Homestays",
       // Convert any "innova" transport type to "premium"
-      transportType: tour.transportType === "premium" ? "premium" : tour.transportType
+      transportType: tour.transportType === "innova" ? "premium" : tour.transportType
     }));
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
   } else {
-    // Check if we need to update "innova" to "premium" in existing tours
+    // Check if we need to update existing tours with new fields
     try {
       const tours = JSON.parse(storedTours);
       let needsUpdate = false;
       
       const updatedTours = tours.map((tour: TourPackageProps) => {
-        if (tour.transportType === "premium") {
+        const updates: Partial<TourPackageProps> = {};
+        
+        // Check for missing fields and add if needed
+        if (tour.bestTime === undefined) {
+          updates.bestTime = "June to September";
           needsUpdate = true;
-          return {
-            ...tour,
-            transportType: "premium"
-          };
         }
-        return tour;
+        
+        if (tour.groupSize === undefined) {
+          updates.groupSize = "2-10 People";
+          needsUpdate = true;
+        }
+        
+        if (tour.terrain === undefined) {
+          updates.terrain = "Himalayan Mountain Passes";
+          needsUpdate = true;
+        }
+        
+        if (tour.elevation === undefined) {
+          updates.elevation = "2,000 - 4,550 meters";
+          needsUpdate = true;
+        }
+        
+        if (tour.accommodationType === undefined) {
+          updates.accommodationType = "Hotels & Homestays";
+          needsUpdate = true;
+        }
+        
+        if (tour.transportType === "innova") {
+          updates.transportType = "premium";
+          needsUpdate = true;
+        }
+        
+        return needsUpdate ? { ...tour, ...updates } : tour;
       });
       
       if (needsUpdate) {
         localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(updatedTours));
       }
     } catch (error) {
-      console.error("Error updating transport type:", error);
+      console.error("Error updating tour data:", error);
     }
   }
 };
@@ -151,7 +183,13 @@ export const resetToDefaultTours = (): void => {
     itinerary: tour.itinerary || [],
     customUrl: tour.customUrl || generateCustomUrl(tour.title, []),
     departureDates: tour.departureDates || [],
-    transportType: tour.transportType === "premium" ? "premium" : tour.transportType
+    // New fields with default values
+    bestTime: tour.bestTime || "June to September",
+    groupSize: tour.groupSize || "2-10 People",
+    terrain: tour.terrain || "Himalayan Mountain Passes",
+    elevation: tour.elevation || "2,000 - 4,550 meters",
+    accommodationType: tour.accommodationType || "Hotels & Homestays",
+    transportType: tour.transportType === "innova" ? "premium" : tour.transportType
   }));
   
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));

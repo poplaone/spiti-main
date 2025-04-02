@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,11 @@ export interface TourPackageProps {
   availableDates?: string;
   customUrl?: string;
   departureDates?: DepartureDate[];
-  // Add the missing props
+  bestTime?: string;
+  groupSize?: string;
+  terrain?: string;
+  elevation?: string;
+  accommodationType?: string;
   index?: number;
   className?: string;
 }
@@ -82,25 +85,26 @@ const TourPackage: React.FC<TourPackageProps> = ({
   isCustomizable = true,
   availableDates = "June to October",
   customUrl,
-  departureDates
+  departureDates,
+  bestTime,
+  groupSize,
+  terrain,
+  elevation,
+  accommodationType
 }) => {
   const navigate = useNavigate();
   
   const getDetailRoute = () => {
-    // If we have a customUrl, use it first for SEO-friendly URLs
     if (customUrl) {
       return `/tour/${customUrl}`;
     }
     
-    // For predefined routes
     if (typeof index !== 'number') return '/';
     
-    // Use predefined routes for original tours
     if (index < 6) {
       return getRouteMap[index as keyof typeof getRouteMap] || '/';
     }
     
-    // For new tours added through admin panel, use numeric index
     return `/tour/${index}`;
   };
   
