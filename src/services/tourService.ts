@@ -1,7 +1,7 @@
 
 import { TourPackageProps } from "@/components/TourPackage";
 import { generateCustomUrl, normalizeTransportType } from './tours/tourUtils';
-import { supabase, isSupabaseConfigured } from './supabase/supabaseClient';
+import { supabase, isSupabaseConfigured, getSupabaseClient } from './supabase/supabaseClient';
 import { tourPackagesData } from '@/data/tourPackagesData';
 
 // Get all tours - fetches from Supabase
@@ -13,7 +13,8 @@ export const getAllTours = async (): Promise<TourPackageProps[]> => {
     }
 
     console.log("Fetching all tours from Supabase");
-    const { data, error } = await supabase
+    const supabaseClient = getSupabaseClient();
+    const { data, error } = await supabaseClient
       .from('tour_packages')
       .select('*')
       .order('index', { ascending: true });
@@ -62,7 +63,8 @@ export const getTourByIndex = async (index: number): Promise<TourPackageProps | 
     }
 
     console.log("Fetching tour by index from Supabase:", index);
-    const { data, error } = await supabase
+    const supabaseClient = getSupabaseClient();
+    const { data, error } = await supabaseClient
       .from('tour_packages')
       .select('*')
       .eq('index', index)
@@ -120,9 +122,10 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     }
     
     console.log("Fetching tour by custom URL from Supabase:", normalizedUrl);
+    const supabaseClient = getSupabaseClient();
     
     // First try exact match
-    const { data: exactMatches, error: exactError } = await supabase
+    const { data: exactMatches, error: exactError } = await supabaseClient
       .from('tour_packages')
       .select('*')
       .eq('custom_url', normalizedUrl);
@@ -155,7 +158,7 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     }
     
     // If exact match failed, try with ILIKE for partial match
-    const { data: likeMatches, error: likeError } = await supabase
+    const { data: likeMatches, error: likeError } = await supabaseClient
       .from('tour_packages')
       .select('*')
       .or(`custom_url.ilike.%${normalizedUrl}%,custom_url.ilike.${normalizedUrl}%,custom_url.ilike.%${normalizedUrl}`)
@@ -189,7 +192,7 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     }
     
     // Try another approach - check if URL contains tour URL
-    const { data: containsMatches, error: containsError } = await supabase
+    const { data: containsMatches, error: containsError } = await supabaseClient
       .from('tour_packages')
       .select('*');
       
@@ -262,8 +265,9 @@ export const initializeToursDatabase = async (): Promise<void> => {
       return;
     }
 
+    const supabaseClient = getSupabaseClient();
     // Check if tours table is empty
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('tour_packages')
       .select('count')
       .single();
@@ -305,7 +309,7 @@ export const initializeToursDatabase = async (): Promise<void> => {
       }));
       
       // Insert default tours into database
-      const { error: insertError } = await supabase
+      const { error: insertError } = await supabaseClient
         .from('tour_packages')
         .insert(dbTours);
         
