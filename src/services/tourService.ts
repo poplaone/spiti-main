@@ -22,31 +22,72 @@ export const getAllTours = async (): Promise<TourPackageProps[]> => {
 
     if (data && data.length > 0) {
       // Transform the Supabase data to match our TourPackageProps format
-      return data.map(tour => ({
-        title: tour.title,
-        image: tour.image,
-        originalPrice: tour.original_price,
-        discountedPrice: tour.discounted_price,
-        discount: tour.discount,
-        duration: tour.duration,
-        nightStays: tour.night_stays,
-        inclusions: tour.inclusions,
-        exclusions: tour.exclusions || [],
-        overview: tour.overview || "",
-        itinerary: tour.itinerary || [],
-        hasFixedDepartures: tour.is_fixed_departure !== false,
-        isCustomizable: tour.is_customizable !== false,
-        transportType: tour.transport_type as any,
-        isWomenOnly: tour.is_women_only || false,
-        availableDates: tour.available_dates || "June to October",
-        customUrl: tour.custom_url || "",
-        departureDates: tour.departure_dates || [],
-        bestTime: tour.best_time || "June to September",
-        groupSize: tour.group_size || "2-10 People",
-        terrain: tour.terrain || "Himalayan Mountain Passes",
-        elevation: tour.elevation || "2,000 - 4,550 meters",
-        accommodationType: tour.accommodation_type || "Hotels & Homestays"
-      }));
+      return data.map(tour => {
+        // Parse JSON fields that come as strings
+        let duration = { nights: 0, days: 0 };
+        let nightStays = [];
+        let itinerary = [];
+        let departureDates = [];
+        
+        try {
+          // Parse duration JSON
+          if (typeof tour.duration === 'string') {
+            duration = JSON.parse(tour.duration);
+          } else if (typeof tour.duration === 'object') {
+            duration = tour.duration;
+          }
+          
+          // Parse nightStays JSON
+          if (typeof tour.night_stays === 'string') {
+            nightStays = JSON.parse(tour.night_stays);
+          } else if (Array.isArray(tour.night_stays)) {
+            nightStays = tour.night_stays;
+          }
+          
+          // Parse itinerary JSON
+          if (typeof tour.itinerary === 'string') {
+            itinerary = JSON.parse(tour.itinerary);
+          } else if (Array.isArray(tour.itinerary)) {
+            itinerary = tour.itinerary;
+          }
+          
+          // Parse departureDates JSON
+          if (typeof tour.departure_dates === 'string') {
+            departureDates = JSON.parse(tour.departure_dates);
+          } else if (Array.isArray(tour.departure_dates)) {
+            departureDates = tour.departure_dates;
+          }
+        } catch (e) {
+          console.error("Error parsing JSON fields:", e);
+        }
+        
+        return {
+          title: tour.title,
+          image: tour.image,
+          originalPrice: tour.original_price,
+          discountedPrice: tour.discounted_price,
+          discount: tour.discount,
+          duration: duration,
+          nightStays: nightStays,
+          inclusions: tour.inclusions || [],
+          exclusions: tour.exclusions || [],
+          overview: tour.overview || "",
+          itinerary: itinerary,
+          hasFixedDepartures: tour.is_fixed_departure !== false,
+          isCustomizable: tour.is_customizable !== false,
+          transportType: tour.transport_type as any,
+          isWomenOnly: tour.is_women_only || false,
+          availableDates: tour.available_dates || "June to October",
+          customUrl: tour.custom_url || "",
+          departureDates: departureDates,
+          bestTime: tour.best_time || "June to September",
+          groupSize: tour.group_size || "2-10 People",
+          terrain: tour.terrain || "Himalayan Mountain Passes",
+          elevation: tour.elevation || "2,000 - 4,550 meters",
+          accommodationType: tour.accommodation_type || "Hotels & Homestays",
+          index: tour.index
+        };
+      });
     } else {
       // If no data in Supabase, use localStorage
       return getLocalTours();
@@ -81,31 +122,69 @@ export const getTourByIndex = async (index: number): Promise<TourPackageProps | 
     }
 
     if (data) {
+      // Parse JSON fields that come as strings
+      let duration = { nights: 0, days: 0 };
+      let nightStays = [];
+      let itinerary = [];
+      let departureDates = [];
+      
+      try {
+        // Parse duration JSON
+        if (typeof data.duration === 'string') {
+          duration = JSON.parse(data.duration);
+        } else if (typeof data.duration === 'object') {
+          duration = data.duration;
+        }
+        
+        // Parse nightStays JSON
+        if (typeof data.night_stays === 'string') {
+          nightStays = JSON.parse(data.night_stays);
+        } else if (Array.isArray(data.night_stays)) {
+          nightStays = data.night_stays;
+        }
+        
+        // Parse itinerary JSON
+        if (typeof data.itinerary === 'string') {
+          itinerary = JSON.parse(data.itinerary);
+        } else if (Array.isArray(data.itinerary)) {
+          itinerary = data.itinerary;
+        }
+        
+        // Parse departureDates JSON
+        if (typeof data.departure_dates === 'string') {
+          departureDates = JSON.parse(data.departure_dates);
+        } else if (Array.isArray(data.departure_dates)) {
+          departureDates = data.departure_dates;
+        }
+      } catch (e) {
+        console.error("Error parsing JSON fields:", e);
+      }
+
       return {
         title: data.title,
         image: data.image,
         originalPrice: data.original_price,
         discountedPrice: data.discounted_price,
         discount: data.discount,
-        duration: data.duration,
-        nightStays: data.night_stays,
-        inclusions: data.inclusions,
+        duration: duration,
+        nightStays: nightStays,
+        inclusions: data.inclusions || [],
         exclusions: data.exclusions || [],
         overview: data.overview || "",
-        itinerary: data.itinerary || [],
+        itinerary: itinerary,
         hasFixedDepartures: data.is_fixed_departure !== false,
         isCustomizable: data.is_customizable !== false,
         transportType: data.transport_type as any,
         isWomenOnly: data.is_women_only || false,
         availableDates: data.available_dates || "June to October",
         customUrl: data.custom_url || "",
-        departureDates: data.departure_dates || [],
+        departureDates: departureDates,
         bestTime: data.best_time || "June to September",
         groupSize: data.group_size || "2-10 People",
         terrain: data.terrain || "Himalayan Mountain Passes",
         elevation: data.elevation || "2,000 - 4,550 meters",
         accommodationType: data.accommodation_type || "Hotels & Homestays",
-        index: index
+        index: data.index
       };
     } else {
       // Fallback to localStorage
@@ -144,25 +223,63 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     }
 
     if (data) {
+      // Parse JSON fields that come as strings
+      let duration = { nights: 0, days: 0 };
+      let nightStays = [];
+      let itinerary = [];
+      let departureDates = [];
+      
+      try {
+        // Parse duration JSON
+        if (typeof data.duration === 'string') {
+          duration = JSON.parse(data.duration);
+        } else if (typeof data.duration === 'object') {
+          duration = data.duration;
+        }
+        
+        // Parse nightStays JSON
+        if (typeof data.night_stays === 'string') {
+          nightStays = JSON.parse(data.night_stays);
+        } else if (Array.isArray(data.night_stays)) {
+          nightStays = data.night_stays;
+        }
+        
+        // Parse itinerary JSON
+        if (typeof data.itinerary === 'string') {
+          itinerary = JSON.parse(data.itinerary);
+        } else if (Array.isArray(data.itinerary)) {
+          itinerary = data.itinerary;
+        }
+        
+        // Parse departureDates JSON
+        if (typeof data.departure_dates === 'string') {
+          departureDates = JSON.parse(data.departure_dates);
+        } else if (Array.isArray(data.departure_dates)) {
+          departureDates = data.departure_dates;
+        }
+      } catch (e) {
+        console.error("Error parsing JSON fields:", e);
+      }
+
       return {
         title: data.title,
         image: data.image,
         originalPrice: data.original_price,
         discountedPrice: data.discounted_price,
         discount: data.discount,
-        duration: data.duration,
-        nightStays: data.night_stays,
-        inclusions: data.inclusions,
+        duration: duration,
+        nightStays: nightStays,
+        inclusions: data.inclusions || [],
         exclusions: data.exclusions || [],
         overview: data.overview || "",
-        itinerary: data.itinerary || [],
+        itinerary: itinerary,
         hasFixedDepartures: data.is_fixed_departure !== false,
         isCustomizable: data.is_customizable !== false,
         transportType: data.transport_type as any,
         isWomenOnly: data.is_women_only || false,
         availableDates: data.available_dates || "June to October",
         customUrl: data.custom_url || "",
-        departureDates: data.departure_dates || [],
+        departureDates: departureDates,
         bestTime: data.best_time || "June to September",
         groupSize: data.group_size || "2-10 People",
         terrain: data.terrain || "Himalayan Mountain Passes",
@@ -219,8 +336,7 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
   try {
     const { error } = await supabase
       .from('tour_packages')
-      .insert({
-        id: uuidv4(),
+      .insert([{
         title: tour.title,
         image: tour.image,
         original_price: tour.originalPrice,
@@ -245,7 +361,7 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
         elevation: tour.elevation || "2,000 - 4,550 meters",
         accommodation_type: tour.accommodationType || "Hotels & Homestays",
         index: tours.length - 1 // Use the array index
-      });
+      }]);
     
     if (error) {
       console.error("Error adding tour to Supabase:", error);
@@ -284,7 +400,7 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
         .eq('index', index)
         .single();
       
-      if (data) {
+      if (data?.id) {
         // If found, update the record
         const { error } = await supabase
           .from('tour_packages')
@@ -322,8 +438,7 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
         // If not found, insert as a new record
         const { error } = await supabase
           .from('tour_packages')
-          .insert({
-            id: uuidv4(),
+          .insert([{
             title: updatedTour.title,
             image: updatedTour.image,
             original_price: updatedTour.originalPrice,
@@ -348,7 +463,7 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
             elevation: updatedTour.elevation || "2,000 - 4,550 meters",
             accommodation_type: updatedTour.accommodationType || "Hotels & Homestays",
             index: index
-          });
+          }]);
         
         if (error) {
           console.error("Error inserting tour in Supabase:", error);

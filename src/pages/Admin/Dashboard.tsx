@@ -5,27 +5,59 @@ import { getAllTours } from '@/services/tourService';
 import { Bike, Car, User, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TourPackageProps } from '@/components/TourPackage';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
   const [totalTours, setTotalTours] = useState(0);
   const [bikeTours, setBikeTours] = useState(0);
   const [carTours, setCarTours] = useState(0);
   const [womenOnlyTours, setWomenOnlyTours] = useState(0);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     // Get tour statistics from the tour service
-    const tours = getAllTours();
-    setTotalTours(tours.length);
+    const fetchTours = async () => {
+      try {
+        const tours = await getAllTours();
+        setTotalTours(tours.length);
+        
+        // Count different tour types
+        const bikeToursCount = tours.filter(tour => tour.transportType === 'bike').length;
+        const carToursCount = tours.filter(tour => tour.transportType === 'car' || tour.transportType === 'premium').length;
+        const womenOnlyToursCount = tours.filter((tour: TourPackageProps) => tour.isWomenOnly === true).length;
+        
+        setBikeTours(bikeToursCount);
+        setCarTours(carToursCount);
+        setWomenOnlyTours(womenOnlyToursCount);
+      } catch (error) {
+        console.error("Error fetching tours for dashboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    // Count different tour types
-    const bikeToursCount = tours.filter(tour => tour.transportType === 'bike').length;
-    const carToursCount = tours.filter(tour => tour.transportType === 'car' || tour.transportType === 'premium').length;
-    const womenOnlyToursCount = tours.filter((tour: TourPackageProps) => tour.isWomenOnly === true).length;
-    
-    setBikeTours(bikeToursCount);
-    setCarTours(carToursCount);
-    setWomenOnlyTours(womenOnlyToursCount);
+    fetchTours();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {[1, 2, 3, 4].map(i => (
+            <Card key={i}>
+              <CardHeader className="pb-2">
+                <Skeleton className="h-4 w-24" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-10 w-10" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

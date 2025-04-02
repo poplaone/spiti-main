@@ -52,11 +52,12 @@ export const useTourPackagesAdmin = () => {
     if (tourToDelete !== null) {
       try {
         await deleteTour(tourToDelete);
-        loadTours(); // Reload the tours after deletion
-        
         toast({
           description: "Tour package deleted successfully",
         });
+        
+        // Reload the tours after deletion
+        await loadTours();
         
         setDeleteDialogOpen(false);
         setTourToDelete(null);
