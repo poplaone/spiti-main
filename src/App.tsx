@@ -32,51 +32,53 @@ import AdminTourEdit from "./pages/admin/AdminTourEdit";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Home page route */}
-          <Route path="/" element={<Index />} />
-          
-          {/* New pages */}
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/thank-you" element={<ThankYou />} />
-          
-          {/* New view all pages */}
-          <Route path="/road-trips" element={<RoadTrips />} />
-          <Route path="/fixed-departures" element={<FixedDepartures />} />
-          
-          {/* Tour detail pages with clean routes - all 6 tour types */}
-          <Route path="/tour-bike" element={<TourDetailBike />} />
-          <Route path="/tour-unexplored" element={<TourDetailUnexplored />} />
-          <Route path="/tour-buddhist" element={<TourDetailBuddhist />} />
-          <Route path="/tour-women" element={<TourDetailWomen />} />
-          <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
-          <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
-          
-          {/* Dynamic routes for tour details - both numeric IDs and custom URLs */}
-          <Route path="/tour/:id" element={<TourDetail />} />
-          
-          {/* Admin routes */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="tours" element={<AdminTours />} />
-            <Route path="tours/new" element={<AdminTourEdit />} />
-            <Route path="tours/edit/:id" element={<AdminTourEdit />} />
-          </Route>
-          
-          {/* Catch-all route for 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Home page route */}
+            <Route path="/" element={<Index />} />
+            
+            {/* New pages */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/thank-you" element={<ThankYou />} />
+            
+            {/* New view all pages */}
+            <Route path="/road-trips" element={<RoadTrips />} />
+            <Route path="/fixed-departures" element={<FixedDepartures />} />
+            
+            {/* Tour detail pages with clean routes - all 6 tour types */}
+            <Route path="/tour-bike" element={<TourDetailBike />} />
+            <Route path="/tour-unexplored" element={<TourDetailUnexplored />} />
+            <Route path="/tour-buddhist" element={<TourDetailBuddhist />} />
+            <Route path="/tour-women" element={<TourDetailWomen />} />
+            <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
+            <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
+            
+            {/* Dynamic routes for tour details - both numeric IDs and custom URLs */}
+            <Route path="/tour/:id" element={<TourDetail />} />
+            
+            {/* Admin routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="tours" element={<AdminTours />} />
+              <Route path="tours/new" element={<AdminTourEdit />} />
+              <Route path="tours/edit/:id" element={<AdminTourEdit />} />
+            </Route>
+            
+            {/* Catch-all route for 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

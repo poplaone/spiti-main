@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Package } from 'lucide-react';
+import { Home, Package, BarChart3, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const AdminLayout: React.FC = () => {
@@ -24,29 +24,32 @@ const AdminLayout: React.FC = () => {
       </header>
       
       <div className="flex flex-1">
-        {/* Sidebar */}
-        <nav className="w-64 bg-white shadow-md py-6">
+        {/* Sidebar - Simplified version without using the complex sidebar component */}
+        <aside className="w-64 bg-white shadow-md py-6">
           <div className="px-4 mb-6">
             <h2 className="text-lg font-semibold text-gray-800">Admin Panel</h2>
           </div>
-          <ul className="space-y-1">
-            <li>
-              <Link 
-                to="/admin/tours" 
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 hover:bg-gray-100",
-                  isActive('/admin/tours') ? "bg-gray-100 font-medium text-spiti-forest border-r-4 border-spiti-forest" : ""
-                )}
-              >
-                <Package size={18} />
-                <span>Tour Packages</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
+          <nav>
+            <ul className="space-y-1">
+              <li>
+                <Link 
+                  to="/admin/tours" 
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 w-full",
+                    isActive('/admin/tours') ? "bg-gray-100 font-medium text-spiti-forest border-r-4 border-spiti-forest" : ""
+                  )}
+                >
+                  <Package size={18} />
+                  <span>Tour Packages</span>
+                </Link>
+              </li>
+              {/* Additional menu items can be added here */}
+            </ul>
+          </nav>
+        </aside>
         
         {/* Main content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 bg-gray-50">
           <Outlet />
         </main>
       </div>
