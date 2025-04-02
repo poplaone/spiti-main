@@ -16,17 +16,14 @@ const TourDetailTabs: React.FC<TourDetailTabsProps> = ({ tour }) => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-heading font-bold text-spiti-forest">Package Details</h2>
-        <CollapsibleTrigger 
-          onClick={() => setIsOpen(!isOpen)} 
-          className="hover:bg-gray-100 p-2 rounded-full"
-        >
-          {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-        </CollapsibleTrigger>
-      </div>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-heading font-bold text-spiti-forest">Package Details</h2>
+          <CollapsibleTrigger className="hover:bg-gray-100 p-2 rounded-full">
+            {isOpen ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+          </CollapsibleTrigger>
+        </div>
 
-      <Collapsible open={isOpen}>
         <CollapsibleContent>
           <ToggleGroup 
             type="single" 
