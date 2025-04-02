@@ -6,14 +6,43 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
+import FirstAdminSetup from '@/components/admin/FirstAdminSetup';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showAdminSetup, setShowAdminSetup] = useState(false);
+  const [checkingAdmins, setCheckingAdmins] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  useEffect(() => {
+    // Check if any admin users exist
+    const checkAdminUsers = async () => {
+      try {
+        const { data, error, count } = await supabase
+          .from('admin_users')
+          .select('*', { count: 'exact' });
+        
+        if (error) {
+          throw error;
+        }
+        
+        // If no admin users exist, show the setup component
+        if (count === 0) {
+          setShowAdminSetup(true);
+        }
+      } catch (error) {
+        console.error('Error checking admin users:', error);
+      } finally {
+        setCheckingAdmins(false);
+      }
+    };
+    
+    checkAdminUsers();
+  }, []);
 
   useEffect(() => {
     // If already logged in, redirect to admin dashboard
@@ -67,6 +96,24 @@ const AdminLogin = () => {
       setIsLoading(false);
     }
   };
+
+  if (checkingAdmins) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (showAdminSetup) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full">
+          <FirstAdminSetup onComplete={() => setShowAdminSetup(false)} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
