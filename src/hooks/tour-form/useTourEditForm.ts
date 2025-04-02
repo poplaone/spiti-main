@@ -220,6 +220,11 @@ export const useTourEditForm = (tourId?: string) => {
       return;
     }
     
+    // Filter out empty items
+    const filteredInclusions = inclusions.filter(item => item.trim() !== '');
+    const filteredExclusions = exclusions.filter(item => item.trim() !== '');
+    const filteredItinerary = itinerary.filter(item => item.title.trim() !== '' || item.description.trim() !== '');
+    
     // Create complete tour data by merging form values with other state
     const tourData: TourPackageProps = {
       title: values.title,
@@ -231,9 +236,9 @@ export const useTourEditForm = (tourId?: string) => {
       overview: values.overview,
       duration,
       nightStays,
-      inclusions,
-      exclusions,
-      itinerary,
+      inclusions: filteredInclusions,
+      exclusions: filteredExclusions,
+      itinerary: filteredItinerary,
       isWomenOnly: values.isWomenOnly,
       hasFixedDepartures: values.hasFixedDepartures,
       isCustomizable: values.isCustomizable,

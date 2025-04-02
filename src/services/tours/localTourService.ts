@@ -23,21 +23,31 @@ export const saveToursToLocalStorage = (tours: TourPackageProps[]): void => {
 
 // Get a single tour by index from localStorage
 export const getLocalTourByIndex = (index: number): TourPackageProps | null => {
-  const tours = getLocalTours();
-  return index >= 0 && index < tours.length ? tours[index] : null;
+  try {
+    const tours = getLocalTours();
+    return index >= 0 && index < tours.length ? tours[index] : null;
+  } catch (error) {
+    console.error("Error getting tour by index:", error);
+    return null;
+  }
 };
 
 // Get a single tour by custom URL from localStorage
 export const getLocalTourByCustomUrl = (url: string): TourPackageProps | null => {
-  const tours = getLocalTours();
-  const tour = tours.find(tour => tour.customUrl === url);
-  if (tour) {
-    return {
-      ...tour,
-      index: tours.findIndex(t => t.customUrl === url)
-    };
+  try {
+    const tours = getLocalTours();
+    const tour = tours.find(tour => tour.customUrl === url);
+    if (tour) {
+      return {
+        ...tour,
+        index: tours.findIndex(t => t.customUrl === url)
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting tour by custom URL:", error);
+    return null;
   }
-  return null;
 };
 
 // Re-export for easy access

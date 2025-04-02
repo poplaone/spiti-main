@@ -43,32 +43,41 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
 export const addTour = async (tour: TourPackageProps): Promise<void> => {
   console.log("Starting to add new tour:", tour.title);
   
-  // Auto-generate customUrl if not provided
-  if (!tour.customUrl) {
-    const tours = await getAllTours();
-    tour.customUrl = generateCustomUrl(tour.title, tours);
-    console.log("Generated custom URL:", tour.customUrl);
-  }
-  
-  // Convert any legacy transport type
-  if (String(tour.transportType) === 'innova') {
-    tour.transportType = 'premium';
-  }
-
   try {
-    // Save to localStorage
+    // Get existing tours
     const tours = getLocalTours();
     
-    // Set the index for the new tour
-    const tourWithIndex = {
+    // Auto-generate customUrl if not provided
+    if (!tour.customUrl) {
+      tour.customUrl = generateCustomUrl(tour.title, tours);
+      console.log("Generated custom URL:", tour.customUrl);
+    }
+    
+    // Convert any legacy transport type
+    if (String(tour.transportType) === 'innova') {
+      tour.transportType = 'premium';
+    }
+    
+    // Ensure all required fields exist
+    const completeData = {
       ...tour,
-      index: tours.length
+      index: tours.length, // Set index to the length of the tours array
+      inclusions: tour.inclusions || [],
+      exclusions: tour.exclusions || [],
+      itinerary: tour.itinerary || [],
+      departureDates: tour.departureDates || [],
+      isWomenOnly: tour.isWomenOnly || false,
+      hasFixedDepartures: tour.hasFixedDepartures !== false,
+      isCustomizable: tour.isCustomizable !== false
     };
     
-    tours.push(tourWithIndex);
-    console.log("About to save tour to localStorage:", tourWithIndex);
+    // Add the new tour
+    tours.push(completeData);
+    console.log("About to save tour to localStorage, tour count:", tours.length);
+    
+    // Save updated tours list
     saveToursToLocalStorage(tours);
-    console.log("Tour added successfully:", tourWithIndex);
+    console.log("Tour added successfully:", completeData);
   } catch (error) {
     console.error("Error adding tour:", error);
     throw error;

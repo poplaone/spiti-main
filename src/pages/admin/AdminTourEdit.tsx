@@ -66,8 +66,9 @@ const AdminTourEdit: React.FC = () => {
         </div>
         
         <Button 
-          onClick={form.handleSubmit(onSubmit)}
+          onClick={() => form.handleSubmit(onSubmit)()}
           disabled={isLoading}
+          type="button"
         >
           <Save className="mr-1 h-4 w-4" />
           {isLoading ? 'Saving...' : 'Save Tour'}
@@ -84,7 +85,10 @@ const AdminTourEdit: React.FC = () => {
         </TabsList>
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit(onSubmit)(e);
+          }} className="space-y-8">
             <TabsContent value="basic">
               <BasicInfoTab form={form} />
             </TabsContent>
