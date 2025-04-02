@@ -60,8 +60,8 @@ export const parseNightStays = (data: Json | null): TourNightStayJSON[] => {
       return data.map(stay => {
         if (typeof stay === 'object' && stay !== null) {
           return {
-            location: String(stay.location || ''),
-            nights: Number(stay.nights || 0)
+            location: String((stay as any).location || ''),
+            nights: Number((stay as any).nights || 0)
           };
         }
         return { location: '', nights: 0 };
@@ -86,9 +86,9 @@ export const parseItinerary = (data: Json | null): TourItineraryDayJSON[] => {
       return data.map(day => {
         if (typeof day === 'object' && day !== null) {
           return {
-            day: Number(day.day || 0),
-            title: String(day.title || ''),
-            description: String(day.description || '')
+            day: Number((day as any).day || 0),
+            title: String((day as any).title || ''),
+            description: String((day as any).description || '')
           };
         }
         return { day: 0, title: '', description: '' };
@@ -113,8 +113,8 @@ export const parseDepartureDates = (data: Json | null): TourDepartureDateJSON[] 
       return data.map(month => {
         if (typeof month === 'object' && month !== null) {
           return {
-            month: String(month.month || ''),
-            dates: Array.isArray(month.dates) ? month.dates.map(String) : []
+            month: String((month as any).month || ''),
+            dates: Array.isArray((month as any).dates) ? (month as any).dates.map(String) : []
           };
         }
         return { month: '', dates: [] };
