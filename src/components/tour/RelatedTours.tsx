@@ -1,7 +1,5 @@
-
 import React from 'react';
 import TourPackage, { TourPackageProps } from "@/components/TourPackage";
-import { getAllTours } from "@/services/tourService";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface RelatedToursProps {

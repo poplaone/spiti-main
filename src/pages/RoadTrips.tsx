@@ -75,4 +75,5 @@ const RoadTrips = () => {
       <Footer />
     </div>;
 };
+
 export default RoadTrips;

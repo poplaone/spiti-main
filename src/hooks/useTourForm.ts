@@ -22,10 +22,11 @@ export function useTourForm() {
         setLoading(true);
         try {
           const tourIndex = parseInt(id);
-          const tour = await getTourByIndex(tourIndex);
-          if (tour) {
+          const fetchedTour = await getTourByIndex(tourIndex);
+          
+          if (fetchedTour) {
             // Deep clone to avoid modifying original data
-            const clonedTour = JSON.parse(JSON.stringify(tour));
+            const clonedTour = JSON.parse(JSON.stringify(fetchedTour));
             
             setFormData({
               ...clonedTour,

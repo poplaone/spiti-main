@@ -1,0 +1,69 @@
+
+import { TourPackageProps } from "@/components/TourPackage";
+import { TourTransportType } from "@/data/types/tourTypes";
+import { parseTourDuration, parseNightStays, parseItinerary, parseDepartureDates } from "./tourTypes";
+
+// Map Supabase tour data to TourPackageProps
+export const mapSupabaseTourToProps = (data: any): TourPackageProps => {
+  // Parse all JSON fields
+  const duration = parseTourDuration(data.duration);
+  const nightStays = parseNightStays(data.night_stays);
+  const itinerary = parseItinerary(data.itinerary);
+  const departureDates = parseDepartureDates(data.departure_dates);
+  
+  return {
+    title: data.title,
+    image: data.image,
+    originalPrice: data.original_price,
+    discountedPrice: data.discounted_price,
+    discount: data.discount,
+    duration: duration,
+    nightStays: nightStays,
+    inclusions: data.inclusions || [],
+    exclusions: data.exclusions || [],
+    overview: data.overview || "",
+    itinerary: itinerary,
+    hasFixedDepartures: data.is_fixed_departure !== false,
+    isCustomizable: data.is_customizable !== false,
+    transportType: data.transport_type as TourTransportType,
+    isWomenOnly: data.is_women_only || false,
+    availableDates: data.available_dates || "June to October",
+    customUrl: data.custom_url || "",
+    departureDates: departureDates,
+    bestTime: data.best_time || "June to September",
+    groupSize: data.group_size || "2-10 People",
+    terrain: data.terrain || "Himalayan Mountain Passes",
+    elevation: data.elevation || "2,000 - 4,550 meters",
+    accommodationType: data.accommodation_type || "Hotels & Homestays",
+    index: data.index
+  };
+};
+
+// Map TourPackageProps to Supabase tour format
+export const mapTourPropsToSupabase = (tour: TourPackageProps) => {
+  return {
+    title: tour.title,
+    image: tour.image,
+    original_price: tour.originalPrice,
+    discounted_price: tour.discountedPrice,
+    discount: tour.discount,
+    duration: tour.duration,
+    night_stays: tour.nightStays,
+    inclusions: tour.inclusions,
+    exclusions: tour.exclusions || [],
+    overview: tour.overview || "",
+    itinerary: tour.itinerary || [],
+    is_fixed_departure: tour.hasFixedDepartures !== false,
+    is_customizable: tour.isCustomizable !== false,
+    transport_type: tour.transportType,
+    is_women_only: tour.isWomenOnly || false,
+    available_dates: tour.availableDates || "June to October",
+    custom_url: tour.customUrl || "",
+    departure_dates: tour.departureDates || [],
+    best_time: tour.bestTime || "June to September",
+    group_size: tour.groupSize || "2-10 People",
+    terrain: tour.terrain || "Himalayan Mountain Passes",
+    elevation: tour.elevation || "2,000 - 4,550 meters",
+    accommodation_type: tour.accommodationType || "Hotels & Homestays"
+  };
+};

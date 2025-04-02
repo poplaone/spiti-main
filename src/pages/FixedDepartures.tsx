@@ -75,4 +75,5 @@ const FixedDepartures = () => {
       <Footer />
     </div>;
 };
+
 export default FixedDepartures;
