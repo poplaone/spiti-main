@@ -9,11 +9,26 @@ import TourNotFound from "@/components/tour/TourNotFound";
 import TourDetailContent from "@/components/tour/TourDetailContent";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import { useToast } from "@/components/ui/use-toast";
+import { initializeToursDatabase } from "@/services/tourService";
 
 const TourDetail = () => {
   const { id } = useParams<{ id: string; }>();
   const navigate = useNavigate();
   const { toast } = useToast();
+  
+  // Initialize tours database if needed
+  useEffect(() => {
+    const initTours = async () => {
+      console.log("Initializing tours database from TourDetail component");
+      try {
+        await initializeToursDatabase();
+      } catch (error) {
+        console.error("Error initializing tours database:", error);
+      }
+    };
+    
+    initTours();
+  }, []);
   
   const { 
     tour, 

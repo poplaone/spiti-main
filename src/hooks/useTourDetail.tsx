@@ -59,7 +59,7 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
             const allTours = await getAllTours();
             console.log("Total tours found:", allTours.length);
             
-            const currentIndex = selectedTour.index;
+            const currentIndex = selectedTour.index !== undefined ? selectedTour.index : -1;
             
             // Filter out the current tour and get up to 4 related tours
             const others = allTours

@@ -16,8 +16,17 @@ export const getAllTours = async (): Promise<TourPackageProps[]> => {
     if (error) {
       console.error("Error fetching tours from Supabase:", error);
       // Fallback to local data if Supabase fails
+      console.log("Falling back to local data");
       return tourPackagesData;
     }
+    
+    if (!data || data.length === 0) {
+      console.log("No tours found in Supabase, initializing with default data");
+      await initializeToursDatabase();
+      return tourPackagesData;
+    }
+    
+    console.log(`Fetched ${data.length} tours from Supabase`);
     
     // Convert database format to app format
     return data.map(tour => ({
@@ -49,7 +58,11 @@ export const getTourByIndex = async (index: number): Promise<TourPackageProps | 
     
     if (error) {
       console.error("Error fetching tour by index from Supabase:", error);
-      return null;
+      
+      // Fallback to local data
+      console.log("Falling back to local data for index:", index);
+      const localTour = tourPackagesData.find((t, i) => i === index);
+      return localTour || null;
     }
     
     // Convert database format to app format
@@ -65,7 +78,11 @@ export const getTourByIndex = async (index: number): Promise<TourPackageProps | 
     };
   } catch (error) {
     console.error("Error in getTourByIndex:", error);
-    return null;
+    
+    // Fallback to local data
+    console.log("Falling back to local data after error for index:", index);
+    const localTour = tourPackagesData.find((t, i) => i === index);
+    return localTour || null;
   }
 };
 
@@ -85,11 +102,17 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     
     if (exactError) {
       console.error("Error fetching tour by custom URL (exact match) from Supabase:", exactError);
-      return null;
+      
+      // Fallback to local data for exact match
+      console.log("Falling back to local data for URL (exact):", normalizedUrl);
+      const localTour = tourPackagesData.find(t => 
+        t.customUrl && t.customUrl.toLowerCase() === normalizedUrl);
+      return localTour || null;
     }
     
     if (exactMatches && exactMatches.length > 0) {
       console.log("Exact URL match found");
+      
       // Convert database format to app format
       return {
         ...exactMatches[0],
@@ -111,11 +134,17 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     
     if (likeError) {
       console.error("Error fetching tour by custom URL (ILIKE match) from Supabase:", likeError);
-      return null;
+      
+      // Fallback to local data for ILIKE match
+      console.log("Falling back to local data for URL (partial):", normalizedUrl);
+      const localTour = tourPackagesData.find(t => 
+        t.customUrl && t.customUrl.toLowerCase().includes(normalizedUrl));
+      return localTour || null;
     }
     
     if (likeMatches && likeMatches.length > 0) {
       console.log("Partial URL match found");
+      
       // Convert database format to app format
       return {
         ...likeMatches[0],
@@ -130,10 +159,97 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     }
     
     console.log("No URL match found for:", normalizedUrl);
+    
+    // If nothing found in Supabase, check local data
+    console.log("Checking local data for URL:", normalizedUrl);
+    const localExactTour = tourPackagesData.find(t => 
+      t.customUrl && t.customUrl.toLowerCase() === normalizedUrl);
+      
+    if (localExactTour) {
+      console.log("Found exact match in local data");
+      return localExactTour;
+    }
+    
+    const localPartialTour = tourPackagesData.find(t => 
+      t.customUrl && t.customUrl.toLowerCase().includes(normalizedUrl));
+      
+    if (localPartialTour) {
+      console.log("Found partial match in local data");
+      return localPartialTour;
+    }
+    
     return null;
   } catch (error) {
     console.error("Error in getTourByCustomUrl:", error);
-    return null;
+    
+    // Fallback to local data
+    console.log("Falling back to local data after error for URL:", url);
+    const normalizedUrl = url.trim().toLowerCase();
+    const localTour = tourPackagesData.find(t => 
+      t.customUrl && (t.customUrl.toLowerCase() === normalizedUrl || 
+                     t.customUrl.toLowerCase().includes(normalizedUrl)));
+    return localTour || null;
+  }
+};
+
+// Initialize database with default tours if empty
+export const initializeToursDatabase = async (): Promise<void> => {
+  try {
+    // Check if tours table is empty
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .select('count')
+      .single();
+      
+    if (error) {
+      console.error("Error checking tours database:", error);
+      return;
+    }
+    
+    if (!data || data.count === 0) {
+      console.log("Tours database is empty, initializing with default data");
+      
+      // Convert default tours to database format
+      const dbTours = tourPackagesData.map((tour, index) => ({
+        title: tour.title,
+        image: tour.image,
+        original_price: tour.originalPrice,
+        discounted_price: tour.discountedPrice,
+        discount: tour.discount,
+        duration: tour.duration,
+        night_stays: tour.nightStays || [],
+        inclusions: tour.inclusions || [],
+        exclusions: tour.exclusions || [],
+        overview: tour.overview,
+        itinerary: tour.itinerary || [],
+        is_fixed_departure: tour.hasFixedDepartures !== false,
+        is_customizable: tour.isCustomizable !== false,
+        transport_type: tour.transportType,
+        is_women_only: tour.isWomenOnly || false,
+        available_dates: tour.availableDates,
+        custom_url: generateCustomUrl(tour.title, tourPackagesData.slice(0, index)),
+        departure_dates: tour.departureDates || [],
+        best_time: tour.bestTime || "June to September",
+        group_size: tour.groupSize || "2-10 People",
+        terrain: tour.terrain || "Himalayan Mountain Passes",
+        elevation: tour.elevation || "2,000 - 4,550 meters",
+        accommodation_type: tour.accommodationType || "Hotels & Homestays",
+        index: index
+      }));
+      
+      // Insert default tours into database
+      const { error: insertError } = await supabase
+        .from('tour_packages')
+        .insert(dbTours);
+        
+      if (insertError) {
+        console.error("Error initializing tours database:", insertError);
+      } else {
+        console.log("Tours database initialized successfully");
+      }
+    }
+  } catch (error) {
+    console.error("Error initializing tours database:", error);
   }
 };
 
