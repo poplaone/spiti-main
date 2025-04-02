@@ -7,6 +7,7 @@ import { useTourDetail } from "@/hooks/useTourDetail";
 import TourDetailSkeleton from "@/components/tour/TourDetailSkeleton";
 import TourNotFound from "@/components/tour/TourNotFound";
 import TourDetailContent from "@/components/tour/TourDetailContent";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 const TourDetail = () => {
   const { id } = useParams<{ id: string; }>();
@@ -47,6 +48,8 @@ const TourDetail = () => {
         relatedToursLoading={relatedToursLoading}
         formatPrice={formatPrice}
       />
+      
+      <FloatingWhatsAppButton />
       
       <Footer />
     </div>

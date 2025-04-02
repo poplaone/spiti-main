@@ -48,10 +48,18 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
     const tours = getLocalTours();
     console.log("Current tours count:", tours.length);
     
-    // Auto-generate customUrl if not provided
-    if (!tour.customUrl) {
+    // Auto-generate customUrl if not provided or empty
+    if (!tour.customUrl || tour.customUrl.trim() === '') {
       tour.customUrl = generateCustomUrl(tour.title, tours);
       console.log("Generated custom URL:", tour.customUrl);
+    } else {
+      // Normalize custom URL (remove spaces, convert to lowercase)
+      tour.customUrl = tour.customUrl.trim().toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
     }
     
     // Convert any legacy transport type
@@ -94,6 +102,14 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
       if ((tours[index].title !== updatedTour.title) || !updatedTour.customUrl) {
         updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
           tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
+      } else {
+        // Normalize custom URL if provided
+        updatedTour.customUrl = updatedTour.customUrl.trim().toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-]+/g, '')
+          .replace(/\-\-+/g, '-')
+          .replace(/^-+/, '')
+          .replace(/-+$/, '');
       }
       
       // Ensure the index field is set correctly

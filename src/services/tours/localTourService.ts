@@ -44,13 +44,36 @@ export const getLocalTourByIndex = (index: number): TourPackageProps | null => {
 export const getLocalTourByCustomUrl = (url: string): TourPackageProps | null => {
   try {
     const tours = getLocalTours();
-    const tour = tours.find(tour => tour.customUrl === url);
+    
+    // Normalize URL for comparison (remove leading/trailing spaces, convert to lowercase)
+    const normalizedUrl = url.trim().toLowerCase();
+    
+    // First try exact match
+    let tour = tours.find(tour => tour.customUrl?.toLowerCase() === normalizedUrl);
+    
+    // If not found, try partial match (URL might contain customUrl)
+    if (!tour) {
+      tour = tours.find(tour => 
+        tour.customUrl && normalizedUrl.includes(tour.customUrl.toLowerCase())
+      );
+    }
+    
+    // If still not found, try reverse match (customUrl might contain URL)
+    if (!tour) {
+      tour = tours.find(tour => 
+        tour.customUrl && tour.customUrl.toLowerCase().includes(normalizedUrl)
+      );
+    }
+    
     if (tour) {
+      console.log("Found tour by custom URL:", tour.customUrl);
       return {
         ...tour,
-        index: tours.findIndex(t => t.customUrl === url)
+        index: tours.findIndex(t => t.customUrl === tour.customUrl)
       };
     }
+    
+    console.log(`Tour with custom URL '${url}' not found`);
     return null;
   } catch (error) {
     console.error("Error getting tour by custom URL:", error);

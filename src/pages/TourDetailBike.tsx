@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllTours } from "@/services/tourService";
-import TourDetail from './TourDetail';
+import TourDetailSkeleton from "@/components/tour/TourDetailSkeleton";
 
 const TourDetailBike = () => {
   const navigate = useNavigate();
@@ -13,14 +13,20 @@ const TourDetailBike = () => {
       try {
         const allTours = await getAllTours();
         // Find the bike tour (index 0)
-        const isValidTour = allTours.length > 0 && allTours[0];
-        if (!isValidTour) {
+        const bikeTour = allTours.length > 0 && allTours[0];
+        if (!bikeTour) {
+          console.error("Bike tour not found");
           navigate('/');
           return;
         }
         
-        // Navigate to the dynamic route with the right tour ID
-        navigate(`/tour/${allTours[0].index}`);
+        // Prefer customUrl if available, otherwise use index
+        const routePath = bikeTour.customUrl 
+          ? `/tour/${bikeTour.customUrl}`
+          : `/tour/${bikeTour.index}`;
+          
+        console.log("Navigating to bike tour:", routePath);
+        navigate(routePath);
       } catch (error) {
         console.error("Failed to load bike tour:", error);
         navigate('/');
@@ -32,7 +38,7 @@ const TourDetailBike = () => {
     loadTour();
   }, [navigate]);
   
-  return <div>{loading && <p>Loading...</p>}</div>;
+  return loading ? <TourDetailSkeleton /> : null;
 };
 
 export default TourDetailBike;
