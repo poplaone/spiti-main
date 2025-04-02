@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -152,7 +153,7 @@ const TourForm: React.FC<TourFormProps> = ({ initialData, isEdit = false }) => {
             is_customizable: data.is_customizable,
             available_from: data.available_from,
             overview: data.overview,
-            updated_at: new Date(),
+            updated_at: new Date().toISOString(), // Fix: Convert Date to ISO string
           })
           .eq('id', tourId);
 
