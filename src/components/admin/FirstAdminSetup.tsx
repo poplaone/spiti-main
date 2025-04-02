@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Label } from '@/components/ui/label';
+import { AlertCircle } from 'lucide-react';
 
 const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
   const [email] = useState('spitivalleytravels@gmail.com');
@@ -14,20 +16,11 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
   const handleSetupAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (password.length < 6) {
-      toast({
-        title: 'Error',
-        description: 'Password must be at least 6 characters',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     // Check if password matches the required one
     if (password !== 'Spiti@0001') {
       toast({
         title: 'Error',
-        description: 'Invalid password for admin setup',
+        description: 'Please use the provided admin password: Spiti@0001',
         variant: 'destructive',
       });
       return;
@@ -66,11 +59,56 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
       
       onComplete();
     } catch (error: any) {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to create admin user',
-        variant: 'destructive',
-      });
+      const isUserExists = error.message.includes('already registered');
+      
+      if (isUserExists) {
+        // User exists but might not be in admin_users table
+        try {
+          // Check if user is in admin_users table
+          const { data, error: checkError } = await supabase
+            .from('admin_users')
+            .select('*')
+            .eq('email', email);
+            
+          if (checkError) throw checkError;
+          
+          if (!data || data.length === 0) {
+            // User exists but not in admin_users table, add them
+            const { error: insertError } = await supabase
+              .from('admin_users')
+              .insert([{ email, is_active: true }]);
+              
+            if (insertError) throw insertError;
+            
+            toast({
+              title: 'Success',
+              description: 'Admin user activated. You can now log in with the provided credentials.',
+            });
+            
+            onComplete();
+            return;
+          } else {
+            toast({
+              title: 'Admin Already Exists',
+              description: 'This admin user already exists. You can log in with the provided credentials.',
+            });
+            onComplete();
+            return;
+          }
+        } catch (adminError: any) {
+          toast({
+            title: 'Error',
+            description: adminError.message || 'Failed to check or create admin user',
+            variant: 'destructive',
+          });
+        }
+      } else {
+        toast({
+          title: 'Error',
+          description: error.message || 'Failed to create admin user',
+          variant: 'destructive',
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -78,16 +116,26 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
   
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Create First Admin User</h2>
-      <p className="text-gray-600 mb-4">
-        Create your first admin user to access the admin panel.
-      </p>
+      <h2 className="text-xl font-semibold mb-4">Create Admin User</h2>
+      
+      <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md flex items-start">
+        <AlertCircle className="text-blue-500 mr-2 mt-0.5" size={18} />
+        <div>
+          <p className="text-sm text-blue-800">
+            Create your admin account with these credentials:
+          </p>
+          <ul className="list-disc list-inside text-sm text-blue-800 mt-2 ml-2">
+            <li>Email: spitivalleytravels@gmail.com</li>
+            <li>Password: Spiti@0001</li>
+          </ul>
+        </div>
+      </div>
       
       <form onSubmit={handleSetupAdmin} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
+          <Label htmlFor="email" className="block text-sm font-medium mb-1">
             Email
-          </label>
+          </Label>
           <Input
             id="email"
             type="email"
@@ -98,9 +146,9 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
         </div>
         
         <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-1">
+          <Label htmlFor="password" className="block text-sm font-medium mb-1">
             Password
-          </label>
+          </Label>
           <Input
             id="password"
             type="password"
@@ -110,7 +158,7 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
             placeholder="Enter admin password"
           />
           <p className="text-xs text-gray-500 mt-1">
-            Password must be at least 6 characters
+            Please use the provided admin password: Spiti@0001
           </p>
         </div>
         

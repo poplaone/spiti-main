@@ -36,6 +36,8 @@ const AdminLogin = () => {
         }
       } catch (error: any) {
         console.error('Error checking admin users:', error);
+        // If there's an error checking, let's show the setup button
+        setShowAdminSetup(false);
       } finally {
         setCheckingAdmins(false);
       }
@@ -101,6 +103,10 @@ const AdminLogin = () => {
     }
   };
 
+  const forceShowSetup = () => {
+    setShowAdminSetup(true);
+  };
+
   if (checkingAdmins) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -161,7 +167,7 @@ const AdminLogin = () => {
             </div>
           </div>
 
-          <div>
+          <div className="flex flex-col space-y-4">
             <Button
               type="submit"
               className="w-full"
@@ -169,6 +175,18 @@ const AdminLogin = () => {
             >
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
+            
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mt-2">First time setup?</p>
+              <Button 
+                type="button"
+                variant="outline"
+                className="mt-2"
+                onClick={forceShowSetup}
+              >
+                Create Admin Account
+              </Button>
+            </div>
           </div>
         </form>
       </div>
