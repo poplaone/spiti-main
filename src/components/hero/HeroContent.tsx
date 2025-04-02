@@ -14,9 +14,9 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-[-120px] md:mt-0">
       <img 
-        alt="Spiti Logo" 
+        alt="Spiti Valley Travels Logo" 
         className="w-40 h-40 mb-2 md:mb-4 mt-[-90px] md:mt-0" 
-        src="/lovable-uploads/d1018c3e-5c41-4572-8712-cb63ee049342.png" 
+        src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
       />
       
       {/* Google Ratings Badge */}
