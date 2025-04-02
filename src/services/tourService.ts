@@ -1,3 +1,4 @@
+
 import { TourPackageProps } from "@/components/TourPackage";
 import { generateCustomUrl, normalizeTransportType } from './tours/tourUtils';
 import { 
@@ -37,8 +38,15 @@ export const getAllTours = async (): Promise<TourPackageProps[]> => {
 export const getTourByIndex = async (index: number): Promise<TourPackageProps | null> => {
   try {
     // Try to fetch from Supabase first
+    console.log(`Fetching tour with index ${index} from Supabase...`);
     const tour = await getSupaTourByIndex(index);
-    return tour || getLocalTourByIndex(index);
+    if (tour) {
+      console.log(`Tour found in Supabase:`, tour);
+      return tour;
+    } 
+    
+    console.log(`Tour not found in Supabase, falling back to local storage...`);
+    return getLocalTourByIndex(index);
   } catch (error) {
     console.error("Error in getTourByIndex:", error);
     return getLocalTourByIndex(index);
@@ -49,8 +57,15 @@ export const getTourByIndex = async (index: number): Promise<TourPackageProps | 
 export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps | null> => {
   try {
     // Try to fetch from Supabase first
+    console.log(`Fetching tour with URL ${url} from Supabase...`);
     const tour = await getSupaTourByCustomUrl(url);
-    return tour || getLocalTourByCustomUrl(url);
+    if (tour) {
+      console.log(`Tour found in Supabase by URL:`, tour);
+      return tour;
+    }
+    
+    console.log(`Tour not found in Supabase by URL, falling back to local storage...`);
+    return getLocalTourByCustomUrl(url);
   } catch (error) {
     console.error("Error in getTourByCustomUrl:", error);
     return getLocalTourByCustomUrl(url);
@@ -78,8 +93,10 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
   };
 
   try {
+    console.log('Adding tour to Supabase:', tourWithIndex);
     // Add to Supabase FIRST
     await addSupaTour(tourWithIndex);
+    console.log('Tour successfully added to Supabase');
     
     // Then refresh from Supabase to ensure data consistency
     await getAllTours();
@@ -110,8 +127,10 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
     }
     
     try {
+      console.log(`Updating tour with index ${index} in Supabase:`, updatedTour);
       // Update in Supabase FIRST
       await updateSupaTour(index, updatedTour);
+      console.log('Tour successfully updated in Supabase');
       
       // Then refresh from Supabase to ensure data consistency
       await getAllTours();
@@ -129,8 +148,10 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
 // Delete a tour - now deletes from Supabase first, then localStorage
 export const deleteTour = async (index: number): Promise<void> => {
   try {
+    console.log(`Deleting tour with index ${index} from Supabase...`);
     // Delete from Supabase FIRST
     await deleteSupaTour(index);
+    console.log('Tour successfully deleted from Supabase');
     
     // Then refresh from Supabase to ensure data consistency
     await getAllTours();

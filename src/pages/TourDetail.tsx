@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -19,17 +18,6 @@ import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
 
-// Array of hero images for different tour types - correct paths for deployment
-const heroImages = [
-  "/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png", // Bike tour
-  "/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png", // Unexplored
-  "/lovable-uploads/e375b837-c930-402e-8fd0-0ea3280c7540.png", // Buddhist
-  "/lovable-uploads/bc21cc57-f972-4cd7-af1f-ca1542135c90.png", // Women
-  "/lovable-uploads/b619b7ac-daf4-4da4-8ebc-f30d0c9d883f.png", // Own Car
-  "/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png", // Hidden Heaven
-  "/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png", // Default
-];
-
 const TourDetail = () => {
   const { id } = useParams<{ id: string; }>();
   const [tour, setTour] = useState<TourPackageProps | null>(null);
@@ -49,6 +37,7 @@ const TourDetail = () => {
             const numId = parseInt(id, 10);
             const selectedTour = await getTourByIndex(numId);
             if (selectedTour) {
+              console.log("Fetched tour by index:", selectedTour);
               setTour(selectedTour);
               
               // Now fetch related tours
@@ -67,6 +56,7 @@ const TourDetail = () => {
           else {
             const selectedTour = await getTourByCustomUrl(id);
             if (selectedTour) {
+              console.log("Fetched tour by custom URL:", selectedTour);
               setTour(selectedTour);
               
               // Now fetch related tours
@@ -143,11 +133,6 @@ const TourDetail = () => {
     return <Car className="text-spiti-blue w-6 h-6" />;
   };
 
-  // Select hero image based on tour id
-  const heroImage = id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) < heroImages.length 
-    ? heroImages[parseInt(id, 10)] 
-    : heroImages[heroImages.length - 1];
-
   return (
     <div className="min-h-screen" style={{
       backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=80&w=1920&auto=format&fit=crop')`,
@@ -157,13 +142,12 @@ const TourDetail = () => {
     }}>
       <Header />
       
-      {/* Hero Section with Tour Title and Image */}
+      {/* Hero Section with Tour Title and Image - now uses tour's own image */}
       <TourHero 
         tour={tour} 
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage={heroImage}
       />
 
       {/* Package Details Section */}
