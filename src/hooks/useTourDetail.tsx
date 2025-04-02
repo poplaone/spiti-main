@@ -50,7 +50,20 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
           // Then check if it's a custom URL
           else {
             console.log("Fetching tour by custom URL:", id);
-            const selectedTour = await getTourByCustomUrl(id);
+            // Try to get the tour directly by custom URL first
+            let selectedTour = await getTourByCustomUrl(id);
+            
+            if (!selectedTour) {
+              // If not found by direct match, fetch all tours and search manually
+              console.log("Direct lookup failed, searching all tours for ID:", id);
+              const allTours = await getAllTours();
+              selectedTour = allTours.find(t => t.customUrl === id || String(t.index) === id) || null;
+              
+              if (selectedTour) {
+                console.log("Found tour through manual search:", selectedTour);
+              }
+            }
+            
             if (selectedTour) {
               console.log("Fetched tour by custom URL:", selectedTour);
               setTour(selectedTour);

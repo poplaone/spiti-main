@@ -15,9 +15,18 @@ export const getLocalTours = (): TourPackageProps[] => {
 // Save tours to localStorage
 export const saveToursToLocalStorage = (tours: TourPackageProps[]): void => {
   try {
-    // Ensure each tour has a valid index
+    // Ensure each tour has a valid index and customUrl
     tours.forEach((tour, idx) => {
       tour.index = idx;
+      // Make sure customUrl is set and not empty
+      if (!tour.customUrl || tour.customUrl.trim() === '') {
+        tour.customUrl = tour.title.toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-]+/g, '')
+          .replace(/\-\-+/g, '-')
+          .replace(/^-+/, '')
+          .replace(/-+$/, '');
+      }
     });
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
@@ -51,14 +60,25 @@ export const getLocalTourByCustomUrl = (url: string): TourPackageProps | null =>
       console.log(`Tour ${index}: ${tour.title}, URL: ${tour.customUrl}`);
     });
     
-    const tour = tours.find(tour => tour.customUrl === url);
+    // First try exact match
+    let tour = tours.find(tour => tour.customUrl === url);
+    
+    // If not found, try case-insensitive match
+    if (!tour) {
+      const lowerCaseUrl = url.toLowerCase();
+      tour = tours.find(tour => 
+        tour.customUrl && tour.customUrl.toLowerCase() === lowerCaseUrl
+      );
+    }
+    
     if (tour) {
       console.log(`Found tour with custom URL ${url}:`, tour);
       return {
         ...tour,
-        index: tours.findIndex(t => t.customUrl === url)
+        index: tours.findIndex(t => t.customUrl === tour.customUrl)
       };
     }
+    
     console.log(`No tour found with custom URL: ${url}`);
     return null;
   } catch (error) {

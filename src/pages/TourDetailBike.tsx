@@ -20,7 +20,7 @@ const TourDetailBike = () => {
         
         // Navigate to the dynamic route with the right tour ID
         // Use the new URL format
-        navigate(`/tour-${allTours[0].index}`);
+        navigate(`/tour-${allTours[0].customUrl || allTours[0].index}`);
       } catch (error) {
         console.error("Failed to load bike tour:", error);
         navigate('/');
