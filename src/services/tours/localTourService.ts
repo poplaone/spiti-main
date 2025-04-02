@@ -44,13 +44,22 @@ export const getLocalTourByIndex = (index: number): TourPackageProps | null => {
 export const getLocalTourByCustomUrl = (url: string): TourPackageProps | null => {
   try {
     const tours = getLocalTours();
+    console.log(`Looking for tour with custom URL: ${url}, total tours: ${tours.length}`);
+    
+    // Debug all tour custom URLs to help diagnose issues
+    tours.forEach((tour, index) => {
+      console.log(`Tour ${index}: ${tour.title}, URL: ${tour.customUrl}`);
+    });
+    
     const tour = tours.find(tour => tour.customUrl === url);
     if (tour) {
+      console.log(`Found tour with custom URL ${url}:`, tour);
       return {
         ...tour,
         index: tours.findIndex(t => t.customUrl === url)
       };
     }
+    console.log(`No tour found with custom URL: ${url}`);
     return null;
   } catch (error) {
     console.error("Error getting tour by custom URL:", error);

@@ -26,6 +26,7 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
     const fetchTourData = async () => {
       if (id) {
         try {
+          console.log("Fetching tour detail for id:", id);
           // First check if it's a numeric ID
           if (!isNaN(parseInt(id))) {
             const numId = parseInt(id, 10);
@@ -48,6 +49,7 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
           } 
           // Then check if it's a custom URL
           else {
+            console.log("Fetching tour by custom URL:", id);
             const selectedTour = await getTourByCustomUrl(id);
             if (selectedTour) {
               console.log("Fetched tour by custom URL:", selectedTour);
@@ -64,6 +66,8 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
               } finally {
                 setRelatedToursLoading(false);
               }
+            } else {
+              console.error("Tour not found with custom URL:", id);
             }
           }
         } catch (error) {

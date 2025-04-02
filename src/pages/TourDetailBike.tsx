@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllTours } from "@/services/tourService";
-import TourDetail from './TourDetail';
 
 const TourDetailBike = () => {
   const navigate = useNavigate();
@@ -20,7 +19,8 @@ const TourDetailBike = () => {
         }
         
         // Navigate to the dynamic route with the right tour ID
-        navigate(`/tour/${allTours[0].index}`);
+        // Use the new URL format
+        navigate(`/tour-${allTours[0].index}`);
       } catch (error) {
         console.error("Failed to load bike tour:", error);
         navigate('/');
