@@ -65,7 +65,7 @@ export const mapTourPropsToSupabase = (tour: TourPackageProps) => {
     original_price: tour.originalPrice,
     discounted_price: tour.discountedPrice,
     discount: tour.discount,
-    duration: tour.duration,
+    duration: JSON.stringify(tour.duration),
     night_stays: JSON.stringify(tour.nightStays),
     inclusions: tour.inclusions,
     exclusions: tour.exclusions || [],
