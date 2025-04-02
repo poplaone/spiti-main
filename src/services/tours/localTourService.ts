@@ -22,9 +22,6 @@ export const saveToursToLocalStorage = (tours: TourPackageProps[]): void => {
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
     console.log("Tours saved to localStorage successfully, count:", tours.length);
-    
-    // Force a storage event to notify other tabs/windows of the change
-    window.dispatchEvent(new Event('storage'));
   } catch (error) {
     console.error("Error saving tours to localStorage:", error);
     throw error;
@@ -82,16 +79,6 @@ export const getLocalTourByCustomUrl = (url: string): TourPackageProps | null =>
     console.error("Error getting tour by custom URL:", error);
     return null;
   }
-};
-
-// Add a storage change listener to update page when tours are modified in other tabs
-export const initializeStorageListener = () => {
-  window.addEventListener('storage', (event) => {
-    if (event.key === TOURS_STORAGE_KEY) {
-      console.log('Tour data changed in another tab, refreshing data');
-      // You can trigger a refresh here if needed
-    }
-  });
 };
 
 // Re-export for easy access

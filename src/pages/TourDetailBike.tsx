@@ -26,7 +26,7 @@ const TourDetailBike = () => {
           : `/tour/${bikeTour.index}`;
           
         console.log("Navigating to bike tour:", routePath);
-        navigate(routePath, { replace: true });
+        navigate(routePath);
       } catch (error) {
         console.error("Failed to load bike tour:", error);
         navigate('/');
