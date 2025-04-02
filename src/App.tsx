@@ -11,6 +11,8 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
 import ThankYou from "./pages/ThankYou";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 // Import individual tour detail pages
 import TourDetailBike from "./pages/TourDetailBike";
@@ -42,6 +44,8 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           
           {/* New view all pages */}
           <Route path="/road-trips" element={<RoadTrips />} />

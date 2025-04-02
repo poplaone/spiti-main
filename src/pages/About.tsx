@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { StarIcon } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const About = () => {
   return <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
@@ -87,17 +88,23 @@ const About = () => {
         </div>
       </section>
       
-      {/* Team Section - Updated without photos */}
+      {/* Team Section - Updated with photos */}
       <section className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-white mb-12 text-center">Our Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-white mb-1">Vaibhav Reekhan</h3>
-                <p className="text-spiti-green mb-3">Founder</p>
+                <div className="mb-4 flex justify-center">
+                  <Avatar className="h-32 w-32 border-2 border-spiti-green">
+                    <AvatarImage src="/lovable-uploads/d47c6479-484a-4cb5-9355-748f70db022c.png" alt="Vaibhav Reekhan" />
+                    <AvatarFallback>VR</AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Vaibhav Reekhan</h3>
+                <p className="text-spiti-green mb-3 text-center">Founder</p>
                 <p className="text-white/80 text-sm">
-                  Vaibhav is the founder of SpitiValleyTravels and HimalayanFootslog. With over nine years of experience in the travel industry, he is a passionate traveler at heart. A true nature lover, Vaibhav has always been drawn to the mountains and trekking. After undergoing two surgeries for varicose veins and hernia, his focus shifted towards road trips, which he now leads with great enthusiasm.
+                  Vaibhav is the founder of SpitiValleyTravels and HimalayanFootslog. With over nine years of experience in the travel industry, he is a passionate traveler at heart. A true nature lover, Vaibhav has always been drawn to the mountains and trekking.
                 </p>
                 <p className="text-white/80 text-sm mt-2">
                   His expertise lies in organizing and leading large road trips, as well as managing low-budget group tours for students while maintaining high-quality services. He also runs a small homestay at Chirgaon (Shimla).
@@ -107,8 +114,14 @@ const About = () => {
             
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-white mb-1">Sheetla</h3>
-                <p className="text-spiti-green mb-3">Business Development</p>
+                <div className="mb-4 flex justify-center">
+                  <Avatar className="h-32 w-32 border-2 border-spiti-green">
+                    <AvatarImage src="/lovable-uploads/ac372afb-1d03-4781-9bfb-5cb6f0eac18a.png" alt="Sheetla" />
+                    <AvatarFallback>SD</AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Sheetla</h3>
+                <p className="text-spiti-green mb-3 text-center">Business Development</p>
                 <p className="text-white/80 text-sm">
                   A hardworking and spiritual person who believes in simplicity yet dreams big. Sales and marketing are her passion, and she takes pride in supporting teammates, which is why they call her Sheetla Didi. She embraces challenges with dedication and never backs down.
                 </p>
@@ -120,8 +133,14 @@ const About = () => {
             
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-white mb-1">Monika</h3>
-                <p className="text-spiti-green mb-3">Sales Executive</p>
+                <div className="mb-4 flex justify-center">
+                  <Avatar className="h-32 w-32 border-2 border-spiti-green">
+                    <AvatarImage src="/lovable-uploads/7a0cca0c-1799-4f16-9e61-ca50207023de.png" alt="Monika" />
+                    <AvatarFallback>M</AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Monika</h3>
+                <p className="text-spiti-green mb-3 text-center">Sales Executive</p>
                 <p className="text-white/80 text-sm">
                   Colleagues call her Monu, a nickname she loves. Life has been full of ups and downs, but even in her lowest moments, her mind pushes her to focus on the positive, helping her grow and handle challenges.
                 </p>
@@ -133,8 +152,14 @@ const About = () => {
 
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-white mb-1">Jayesh Chauhan</h3>
-                <p className="text-spiti-green mb-3">Sales & Travel Director</p>
+                <div className="mb-4 flex justify-center">
+                  <Avatar className="h-32 w-32 border-2 border-spiti-green">
+                    <AvatarImage src="/lovable-uploads/666eddfd-7fea-48b0-9cfa-543555743e7a.png" alt="Jayesh Chauhan" />
+                    <AvatarFallback>JC</AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Jayesh Chauhan</h3>
+                <p className="text-spiti-green mb-3 text-center">Sales & Travel Director</p>
                 <p className="text-white/80 text-sm">
                   Son to an apple grower and a true movies and sports enthusiast working as a salesperson. Leaving his comfort zone and taking on challenges is his thing. He loves to guide people on their journey and considers himself an actor with the world as his stage.
                 </p>
@@ -146,8 +171,14 @@ const About = () => {
 
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-white mb-1">Shabnam Kultwan</h3>
-                <p className="text-spiti-green mb-3">Sales Executive</p>
+                <div className="mb-4 flex justify-center">
+                  <Avatar className="h-32 w-32 border-2 border-spiti-green">
+                    <AvatarImage src="/lovable-uploads/40aa1564-8488-400b-a683-6de12e9b4c28.png" alt="Shabnam Kultwan" />
+                    <AvatarFallback>SK</AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Shabnam Kultwan</h3>
+                <p className="text-spiti-green mb-3 text-center">Sales Executive</p>
                 <p className="text-white/80 text-sm">
                   A quiet and calm person who loves to observe and learn, which helps her grow every day. Being the youngest on the team, she feels blessed to have supportive seniors who guide her and help her improve both personally and professionally.
                 </p>
