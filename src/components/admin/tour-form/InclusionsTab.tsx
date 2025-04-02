@@ -1,9 +1,7 @@
 
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TourPackageProps } from "@/components/TourPackage";
-import { FormInputChangeEvent } from "@/hooks/tour-form/types";
+import ItemListInput from "./ItemListInput";
 
 interface InclusionsTabProps {
   formData: TourPackageProps;
@@ -11,11 +9,19 @@ interface InclusionsTabProps {
 }
 
 const InclusionsTab = ({ formData, setFormData }: InclusionsTabProps) => {
-  const handleTextareaChange = (e: FormInputChangeEvent, field: 'inclusions' | 'exclusions') => {
-    const { value } = e.target;
+  // Handle inclusions update
+  const handleInclusionsUpdate = (inclusions: string[]) => {
     setFormData({
       ...formData,
-      [field]: value.split('\n').filter(item => item.trim() !== "")
+      inclusions
+    });
+  };
+
+  // Handle exclusions update
+  const handleExclusionsUpdate = (exclusions: string[]) => {
+    setFormData({
+      ...formData,
+      exclusions: exclusions
     });
   };
 
@@ -24,35 +30,31 @@ const InclusionsTab = ({ formData, setFormData }: InclusionsTabProps) => {
       <CardHeader>
         <CardTitle>Inclusions & Exclusions</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div>
-          <Label htmlFor="inclusions">Inclusions (one per line)</Label>
-          <Textarea
-            id="inclusions"
-            value={formData.inclusions.join("\n")}
-            onChange={(e) => handleTextareaChange(e, 'inclusions')}
-            placeholder="Enter inclusions (one per line)"
-            className="min-h-32"
-            rows={8}
-          />
-          <p className="text-sm text-gray-500 mt-1">
-            List all items included in the package price
-          </p>
-        </div>
-        
-        <div>
-          <Label htmlFor="exclusions">Exclusions (one per line)</Label>
-          <Textarea
-            id="exclusions"
-            value={(formData.exclusions || []).join("\n")}
-            onChange={(e) => handleTextareaChange(e, 'exclusions')}
-            placeholder="Enter exclusions (one per line)"
-            className="min-h-32"
-            rows={8}
-          />
-          <p className="text-sm text-gray-500 mt-1">
-            List all items not included in the package price
-          </p>
+      <CardContent className="space-y-6">
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">Inclusions</h3>
+            <p className="text-sm text-gray-500">List all items included in the package price</p>
+            
+            <ItemListInput
+              label="Inclusion"
+              items={formData.inclusions}
+              setItems={handleInclusionsUpdate}
+              placeholder="e.g., Hotel accommodations, All meals"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">Exclusions</h3>
+            <p className="text-sm text-gray-500">List all items not included in the package price</p>
+            
+            <ItemListInput
+              label="Exclusion"
+              items={formData.exclusions || []}
+              setItems={handleExclusionsUpdate}
+              placeholder="e.g., Flight tickets, Personal expenses"
+            />
+          </div>
         </div>
       </CardContent>
     </Card>

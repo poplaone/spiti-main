@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Trash2 } from "lucide-react";
 import { TourPackageProps } from "@/components/TourPackage";
+import ItemListInput from "./ItemListInput";
 
 interface AccommodationsAndInclusionsTabProps {
   formData: TourPackageProps;
@@ -46,6 +46,22 @@ const AccommodationsAndInclusionsTab = ({ formData, setFormData }: Accommodation
     setFormData({
       ...formData,
       nightStays: updatedNightStays
+    });
+  };
+
+  // Handle inclusions update
+  const handleInclusionsUpdate = (inclusions: string[]) => {
+    setFormData({
+      ...formData,
+      inclusions
+    });
+  };
+
+  // Handle exclusions update
+  const handleExclusionsUpdate = (exclusions: string[]) => {
+    setFormData({
+      ...formData,
+      exclusions: exclusions
     });
   };
 
@@ -117,45 +133,35 @@ const AccommodationsAndInclusionsTab = ({ formData, setFormData }: Accommodation
 
           {/* Inclusions Tab */}
           <TabsContent value="inclusions" className="mt-4">
-            <div>
-              <Label htmlFor="inclusions">Inclusions (one per line)</Label>
-              <Textarea
-                id="inclusions"
-                value={formData.inclusions.join("\n")}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    inclusions: e.target.value.split("\n").filter(item => item.trim() !== "")
-                  });
-                }}
-                placeholder="Enter inclusions (one per line)"
-                className="min-h-32"
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-medium">Inclusions</h3>
+              </div>
+              <p className="text-sm text-gray-500">List all items included in the package price</p>
+              
+              <ItemListInput
+                label="Inclusion"
+                items={formData.inclusions}
+                setItems={handleInclusionsUpdate}
+                placeholder="e.g., Hotel accommodations, All meals"
               />
-              <p className="text-sm text-gray-500 mt-1">
-                List all items included in the package price
-              </p>
             </div>
           </TabsContent>
 
           {/* Exclusions Tab */}
           <TabsContent value="exclusions" className="mt-4">
-            <div>
-              <Label htmlFor="exclusions">Exclusions (one per line)</Label>
-              <Textarea
-                id="exclusions"
-                value={(formData.exclusions || []).join("\n")}
-                onChange={(e) => {
-                  setFormData({
-                    ...formData,
-                    exclusions: e.target.value.split("\n").filter(item => item.trim() !== "")
-                  });
-                }}
-                placeholder="Enter exclusions (one per line)"
-                className="min-h-32"
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-medium">Exclusions</h3>
+              </div>
+              <p className="text-sm text-gray-500">List all items not included in the package price</p>
+              
+              <ItemListInput
+                label="Exclusion"
+                items={formData.exclusions || []}
+                setItems={handleExclusionsUpdate}
+                placeholder="e.g., Flight tickets, Personal expenses"
               />
-              <p className="text-sm text-gray-500 mt-1">
-                List all items not included in the package price
-              </p>
             </div>
           </TabsContent>
         </Tabs>
