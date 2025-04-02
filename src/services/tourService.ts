@@ -1,4 +1,3 @@
-
 import { TourPackageProps, DepartureDate } from "@/components/TourPackage";
 import { tourPackagesData } from '@/data/tourPackagesData';
 
@@ -49,8 +48,8 @@ const initializeStorage = () => {
       terrain: tour.terrain || "Himalayan Mountain Passes",
       elevation: tour.elevation || "2,000 - 4,550 meters",
       accommodationType: tour.accommodationType || "Hotels & Homestays",
-      // Convert any "innova" transport type to "premium"
-      transportType: tour.transportType === "innova" ? "premium" : tour.transportType
+      // Convert any legacy transport type to "premium"
+      transportType: tour.transportType === "innova" ? "premium" as const : tour.transportType
     }));
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
@@ -89,8 +88,9 @@ const initializeStorage = () => {
           needsUpdate = true;
         }
         
+        // Fix the type error by handling the "innova" case properly
         if (tour.transportType === "innova") {
-          updates.transportType = "premium";
+          updates.transportType = "premium" as const;
           needsUpdate = true;
         }
         
@@ -189,7 +189,7 @@ export const resetToDefaultTours = (): void => {
     terrain: tour.terrain || "Himalayan Mountain Passes",
     elevation: tour.elevation || "2,000 - 4,550 meters",
     accommodationType: tour.accommodationType || "Hotels & Homestays",
-    transportType: tour.transportType === "innova" ? "premium" : tour.transportType
+    transportType: tour.transportType === "innova" ? "premium" as const : tour.transportType
   }));
   
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
