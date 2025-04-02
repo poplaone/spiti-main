@@ -13,6 +13,16 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
 
   const handleSetupAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password.length < 6) {
+      toast({
+        title: 'Error',
+        description: 'Password must be at least 6 characters',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
     setLoading(true);
     
     try {
@@ -20,6 +30,9 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: window.location.origin + '/admin'
+        }
       });
       
       if (authError) throw authError;
@@ -37,6 +50,9 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
         title: 'Success',
         description: 'Admin user created successfully. You can now log in.',
       });
+      
+      // Sign out so user can log in explicitly
+      await supabase.auth.signOut();
       
       onComplete();
     } catch (error: any) {
