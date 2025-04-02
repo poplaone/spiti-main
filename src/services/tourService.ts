@@ -1,4 +1,3 @@
-
 import { TourPackageProps } from "@/components/TourPackage";
 import { generateCustomUrl, normalizeTransportType } from './tours/tourUtils';
 import { 
@@ -22,7 +21,12 @@ export const getAllTours = async (): Promise<TourPackageProps[]> => {
   try {
     // Try to fetch from Supabase first
     const tours = await getSupaTours();
-    return tours && tours.length > 0 ? tours : getLocalTours();
+    if (tours && tours.length > 0) {
+      // Keep localStorage in sync with Supabase
+      saveToursToLocalStorage(tours);
+      return tours;
+    }
+    return getLocalTours();
   } catch (error) {
     console.error("Error in getAllTours:", error);
     return getLocalTours();
@@ -53,12 +57,11 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
   }
 };
 
-// Add a new tour - now adds to Supabase and localStorage
+// Add a new tour - now adds to Supabase first, then to localStorage
 export const addTour = async (tour: TourPackageProps): Promise<void> => {
-  const tours = getLocalTours();
-  
   // Auto-generate customUrl if not provided
   if (!tour.customUrl) {
+    const tours = await getAllTours();
     tour.customUrl = generateCustomUrl(tour.title, tours);
   }
   
@@ -68,30 +71,35 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
   }
 
   // Set the index for the new tour
+  const tours = await getAllTours();
   const tourWithIndex = {
     ...tour,
     index: tours.length
   };
 
-  // First, add to localStorage for backwards compatibility
-  tours.push(tourWithIndex);
-  saveToursToLocalStorage(tours);
-
-  // Then, add to Supabase
   try {
+    // Add to Supabase FIRST
     await addSupaTour(tourWithIndex);
+    
+    // Then refresh from Supabase to ensure data consistency
+    await getAllTours();
   } catch (error) {
     console.error("Error adding tour to Supabase:", error);
+    
+    // Fallback to localStorage only if Supabase fails
+    const localTours = getLocalTours();
+    localTours.push(tourWithIndex);
+    saveToursToLocalStorage(localTours);
   }
 };
 
-// Update an existing tour - now updates in Supabase and localStorage
+// Update an existing tour - now updates in Supabase first, then localStorage
 export const updateTour = async (index: number, updatedTour: TourPackageProps): Promise<void> => {
-  const tours = getLocalTours();
+  const tours = await getAllTours(); // Get latest from Supabase
   
   if (index >= 0 && index < tours.length) {
     // If title changed or customUrl is empty, regenerate it
-    if (tours[index].title !== updatedTour.title || !updatedTour.customUrl) {
+    if ((tours[index].title !== updatedTour.title) || !updatedTour.customUrl) {
       updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
         tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
     }
@@ -101,39 +109,45 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
       updatedTour.transportType = 'premium';
     }
     
-    // Update localStorage
-    tours[index] = updatedTour;
-    saveToursToLocalStorage(tours);
-    
-    // Update in Supabase
     try {
+      // Update in Supabase FIRST
       await updateSupaTour(index, updatedTour);
+      
+      // Then refresh from Supabase to ensure data consistency
+      await getAllTours();
     } catch (error) {
       console.error("Error updating tour in Supabase:", error);
+      
+      // Fallback to localStorage only if Supabase fails
+      const localTours = getLocalTours();
+      localTours[index] = updatedTour;
+      saveToursToLocalStorage(localTours);
     }
   }
 };
 
-// Delete a tour - now deletes from Supabase and localStorage
+// Delete a tour - now deletes from Supabase first, then localStorage
 export const deleteTour = async (index: number): Promise<void> => {
-  const tours = getLocalTours();
-  
-  if (index >= 0 && index < tours.length) {
-    // Delete from localStorage
-    tours.splice(index, 1);
+  try {
+    // Delete from Supabase FIRST
+    await deleteSupaTour(index);
     
-    // Update indices for remaining tours in localStorage
-    tours.forEach((tour, idx) => {
-      tour.index = idx;
-    });
+    // Then refresh from Supabase to ensure data consistency
+    await getAllTours();
+  } catch (error) {
+    console.error("Error deleting tour from Supabase:", error);
     
-    saveToursToLocalStorage(tours);
-    
-    // Delete from Supabase
-    try {
-      await deleteSupaTour(index);
-    } catch (error) {
-      console.error("Error deleting tour from Supabase:", error);
+    // Fallback to localStorage only if Supabase fails
+    const localTours = getLocalTours();
+    if (index >= 0 && index < localTours.length) {
+      localTours.splice(index, 1);
+      
+      // Update indices for remaining tours
+      localTours.forEach((tour, idx) => {
+        tour.index = idx;
+      });
+      
+      saveToursToLocalStorage(localTours);
     }
   }
 };
