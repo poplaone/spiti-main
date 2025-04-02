@@ -13,32 +13,44 @@ export function useTourForm() {
   
   const [activeTab, setActiveTab] = useState("basic");
   const [formData, setFormData] = useState<TourPackageProps>(getEmptyTourData());
+  const [loading, setLoading] = useState(isEditing);
   
   // Load tour data if editing
   useEffect(() => {
     if (isEditing && id) {
-      const tourIndex = parseInt(id);
-      const tour = getTourByIndex(tourIndex);
-      if (tour) {
-        // Deep clone to avoid modifying original data
-        const clonedTour = JSON.parse(JSON.stringify(tour));
-        
-        setFormData({
-          ...clonedTour,
-          hasFixedDepartures: clonedTour.hasFixedDepartures !== false,
-          isCustomizable: clonedTour.isCustomizable !== false,
-          availableDates: clonedTour.availableDates || "June to October",
-          exclusions: clonedTour.exclusions || [],
-          itinerary: clonedTour.itinerary || [],
-          customUrl: clonedTour.customUrl || "",
-          departureDates: clonedTour.departureDates || [],
-          bestTime: clonedTour.bestTime || "June to September",
-          groupSize: clonedTour.groupSize || "2-10 People",
-          terrain: clonedTour.terrain || "Himalayan Mountain Passes",
-          elevation: clonedTour.elevation || "2,000 - 4,550 meters",
-          accommodationType: clonedTour.accommodationType || "Hotels & Homestays"
-        });
-      }
+      const fetchTourData = async () => {
+        setLoading(true);
+        try {
+          const tourIndex = parseInt(id);
+          const tour = await getTourByIndex(tourIndex);
+          if (tour) {
+            // Deep clone to avoid modifying original data
+            const clonedTour = JSON.parse(JSON.stringify(tour));
+            
+            setFormData({
+              ...clonedTour,
+              hasFixedDepartures: clonedTour.hasFixedDepartures !== false,
+              isCustomizable: clonedTour.isCustomizable !== false,
+              availableDates: clonedTour.availableDates || "June to October",
+              exclusions: clonedTour.exclusions || [],
+              itinerary: clonedTour.itinerary || [],
+              customUrl: clonedTour.customUrl || "",
+              departureDates: clonedTour.departureDates || [],
+              bestTime: clonedTour.bestTime || "June to September",
+              groupSize: clonedTour.groupSize || "2-10 People",
+              terrain: clonedTour.terrain || "Himalayan Mountain Passes",
+              elevation: clonedTour.elevation || "2,000 - 4,550 meters",
+              accommodationType: clonedTour.accommodationType || "Hotels & Homestays"
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching tour data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      
+      fetchTourData();
     }
   }, [id, isEditing]);
 
@@ -60,6 +72,7 @@ export function useTourForm() {
     activeTab,
     setActiveTab,
     isEditing,
+    loading,
     handleInputChange,
     handleNumberChange,
     handleCheckboxChange,

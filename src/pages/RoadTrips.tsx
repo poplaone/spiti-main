@@ -1,20 +1,34 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getAllTours } from "@/services/tourService";
 import { useTourFilters } from '@/hooks/useTourFilters';
 import TourPackageGrid from '@/components/tour/TourPackageGrid';
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { TourPackageProps } from '@/components/TourPackage';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const RoadTrips = () => {
-  const tours = getAllTours();
-  const {
-    roadTripsTours
-  } = useTourFilters(tours);
+  const [tours, setTours] = useState<TourPackageProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { roadTripsTours } = useTourFilters(tours);
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    const fetchTours = async () => {
+      try {
+        const allTours = await getAllTours();
+        setTours(allTours);
+      } catch (error) {
+        console.error("Error fetching tours:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchTours();
   }, []);
   
   return <div className="min-h-screen" style={{
@@ -45,7 +59,15 @@ const RoadTrips = () => {
             
           </div>
           
-          <TourPackageGrid packages={roadTripsTours} />
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="h-80 w-full" />
+              ))}
+            </div>
+          ) : (
+            <TourPackageGrid packages={roadTripsTours} />
+          )}
         </div>
       </section>
 

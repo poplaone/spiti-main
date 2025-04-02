@@ -11,12 +11,17 @@ export type Database = {
     Tables: {
       tour_packages: {
         Row: {
+          accommodation_type: string | null
+          best_time: string | null
           created_at: string | null
+          custom_url: string | null
           departure_dates: Json | null
           discount: number
           discounted_price: number
           duration: Json
+          elevation: string | null
           exclusions: string[]
+          group_size: string | null
           id: string
           image: string
           inclusions: string[]
@@ -28,17 +33,23 @@ export type Database = {
           night_stays: Json
           original_price: number
           overview: string | null
+          terrain: string | null
           title: string
           transport_type: string
           updated_at: string | null
         }
         Insert: {
+          accommodation_type?: string | null
+          best_time?: string | null
           created_at?: string | null
+          custom_url?: string | null
           departure_dates?: Json | null
           discount: number
           discounted_price: number
           duration: Json
+          elevation?: string | null
           exclusions?: string[]
+          group_size?: string | null
           id: string
           image: string
           inclusions?: string[]
@@ -50,17 +61,23 @@ export type Database = {
           night_stays: Json
           original_price: number
           overview?: string | null
+          terrain?: string | null
           title: string
           transport_type: string
           updated_at?: string | null
         }
         Update: {
+          accommodation_type?: string | null
+          best_time?: string | null
           created_at?: string | null
+          custom_url?: string | null
           departure_dates?: Json | null
           discount?: number
           discounted_price?: number
           duration?: Json
+          elevation?: string | null
           exclusions?: string[]
+          group_size?: string | null
           id?: string
           image?: string
           inclusions?: string[]
@@ -72,6 +89,7 @@ export type Database = {
           night_stays?: Json
           original_price?: number
           overview?: string | null
+          terrain?: string | null
           title?: string
           transport_type?: string
           updated_at?: string | null

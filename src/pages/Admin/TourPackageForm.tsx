@@ -7,6 +7,7 @@ import DepartureDatesTab from "@/components/admin/tour-form/DepartureDatesTab";
 import OverviewTab from "@/components/admin/tour-form/OverviewTab";
 import ItineraryTab from "@/components/admin/tour-form/ItineraryTab";
 import AccommodationsAndInclusionsTab from "@/components/admin/tour-form/AccommodationsAndInclusionsTab";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TourPackageForm = () => {
   const {
@@ -15,6 +16,7 @@ const TourPackageForm = () => {
     activeTab,
     setActiveTab,
     isEditing,
+    loading,
     handleInputChange,
     handleNumberChange,
     handleCheckboxChange,
@@ -23,6 +25,23 @@ const TourPackageForm = () => {
     handleSubmit,
     handleCancel
   } = useTourForm();
+  
+  if (loading) {
+    return (
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-6">
+          {isEditing ? "Edit Tour Package" : "Add New Tour Package"}
+        </h1>
+        
+        <div className="space-y-6">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-12 w-40 ml-auto" />
+        </div>
+      </div>
+    );
+  }
+  
   return <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">
         {isEditing ? "Edit Tour Package" : "Add New Tour Package"}

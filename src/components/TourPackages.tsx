@@ -1,12 +1,39 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TourPackageHeader from './tour/TourPackageHeader';
 import TourPackageGrid from './tour/TourPackageGrid';
 import { getAllTours } from '@/services/tourService';
+import { TourPackageProps } from './TourPackage';
 
 const TourPackages = () => {
-  // Get all tours from local storage
-  const tours = getAllTours();
+  const [tours, setTours] = useState<TourPackageProps[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Fetch tours from Supabase or localStorage
+    const fetchTours = async () => {
+      try {
+        const tourData = await getAllTours();
+        setTours(tourData);
+      } catch (error) {
+        console.error("Error fetching tours:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTours();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-16">
+        <div className="container mx-auto px-4 text-center">
+          <p>Loading tour packages...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="discover-spiti-valley" className="py-16 relative bg-cover bg-center bg-no-repeat" 

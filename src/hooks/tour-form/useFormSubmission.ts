@@ -14,7 +14,7 @@ export function useFormSubmission(
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate required fields
@@ -42,19 +42,27 @@ export function useFormSubmission(
       formData.discount = discount;
     }
     
-    if (isEditing && id) {
-      updateTour(parseInt(id), formData);
+    try {
+      if (isEditing && id) {
+        await updateTour(parseInt(id), formData);
+        toast({
+          description: "Tour package updated successfully",
+        });
+      } else {
+        await addTour(formData);
+        toast({
+          description: "Tour package added successfully",
+        });
+      }
+      
+      navigate("/admin/tours");
+    } catch (error) {
+      console.error("Error saving tour:", error);
       toast({
-        description: "Tour package updated successfully",
-      });
-    } else {
-      addTour(formData);
-      toast({
-        description: "Tour package added successfully",
+        description: "Failed to save tour package",
+        variant: "destructive"
       });
     }
-    
-    navigate("/admin/tours");
   };
 
   const handleCancel = () => {

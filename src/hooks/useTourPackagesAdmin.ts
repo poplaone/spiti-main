@@ -10,12 +10,24 @@ export const useTourPackagesAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [tourToDelete, setTourToDelete] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
-  const loadTours = () => {
-    const allTours = getAllTours();
-    setTours(allTours);
-    setFilteredTours(allTours);
+  const loadTours = async () => {
+    setLoading(true);
+    try {
+      const allTours = await getAllTours();
+      setTours(allTours);
+      setFilteredTours(allTours);
+    } catch (error) {
+      console.error("Error loading tours:", error);
+      toast({
+        description: "Failed to load tour packages",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -36,17 +48,25 @@ export const useTourPackagesAdmin = () => {
     setDeleteDialogOpen(true);
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (tourToDelete !== null) {
-      deleteTour(tourToDelete);
-      loadTours(); // Reload the tours after deletion
-      
-      toast({
-        description: "Tour package deleted successfully",
-      });
-      
-      setDeleteDialogOpen(false);
-      setTourToDelete(null);
+      try {
+        await deleteTour(tourToDelete);
+        loadTours(); // Reload the tours after deletion
+        
+        toast({
+          description: "Tour package deleted successfully",
+        });
+        
+        setDeleteDialogOpen(false);
+        setTourToDelete(null);
+      } catch (error) {
+        console.error("Error deleting tour:", error);
+        toast({
+          description: "Failed to delete tour package",
+          variant: "destructive"
+        });
+      }
     }
   };
 
@@ -58,6 +78,7 @@ export const useTourPackagesAdmin = () => {
     setDeleteDialogOpen,
     tourToDelete,
     handleDeleteClick,
-    handleDeleteConfirm
+    handleDeleteConfirm,
+    loading
   };
 };

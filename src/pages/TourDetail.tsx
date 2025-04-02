@@ -34,39 +34,63 @@ const TourDetail = () => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const [loading, setLoading] = useState<boolean>(true);
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (id) {
-      const allTours = getAllTours();
-      
-      // First check if it's a numeric ID
-      if (!isNaN(parseInt(id))) {
-        const numId = parseInt(id, 10);
-        const selectedTour = getTourByIndex(numId);
-        if (selectedTour) {
-          setTour(selectedTour);
-          const others = allTours.filter((_, index) => index !== numId).slice(0, 4);
-          setOtherTours(others);
-        }
-      } 
-      // Then check if it's a custom URL
-      else {
-        const selectedTour = getTourByCustomUrl(id);
-        if (selectedTour) {
-          setTour(selectedTour);
+    
+    const fetchTourData = async () => {
+      if (id) {
+        try {
+          const allTours = await getAllTours();
           
-          // Find the index for the other tours logic
-          const tourIndex = allTours.findIndex((t) => t.customUrl === id);
-          const others = allTours.filter((_, index) => index !== tourIndex).slice(0, 4);
-          setOtherTours(others);
+          // First check if it's a numeric ID
+          if (!isNaN(parseInt(id))) {
+            const numId = parseInt(id, 10);
+            const selectedTour = await getTourByIndex(numId);
+            if (selectedTour) {
+              setTour(selectedTour);
+              const others = allTours.filter((_, index) => index !== numId).slice(0, 4);
+              setOtherTours(others);
+            }
+          } 
+          // Then check if it's a custom URL
+          else {
+            const selectedTour = await getTourByCustomUrl(id);
+            if (selectedTour) {
+              setTour(selectedTour);
+              
+              // Find the index for the other tours logic
+              const tourIndex = allTours.findIndex((t) => t.customUrl === id);
+              const others = allTours.filter((_, index) => index !== tourIndex).slice(0, 4);
+              setOtherTours(others);
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching tour details:", error);
+        } finally {
+          setLoading(false);
         }
       }
-    }
+    };
+    
+    fetchTourData();
   }, [id]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading tour details...</p>
+      </div>
+    );
+  }
+
   if (!tour) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Tour not found</p>
+      </div>
+    );
   }
 
   const formatPrice = (price: number) => {

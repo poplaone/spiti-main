@@ -8,8 +8,6 @@ interface RelatedToursProps {
 }
 
 const RelatedTours: React.FC<RelatedToursProps> = ({ tours }) => {
-  const allTours = getAllTours();
-  
   return (
     <section className="py-16 bg-spiti-stone">
       <div className="container mx-auto px-4">
@@ -21,13 +19,11 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours }) => {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {tours.map((tour, index) => {
-            // Find the index in the allTours array
-            const originalIndex = allTours.findIndex(t => t.title === tour.title);
             return (
               <div key={index} className="h-full">
                 <TourPackage 
                   {...tour} 
-                  index={originalIndex >= 0 ? originalIndex : undefined} 
+                  index={tour.index || index} 
                 />
               </div>
             );
