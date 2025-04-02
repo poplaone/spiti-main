@@ -5,7 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 import { getTourByIndex, addTour, updateTour } from '@/services/tourService';
-import { TourPackageProps } from '@/components/TourPackage';
+import { TourPackageProps, DepartureDate } from '@/components/TourPackage';
+import { v4 as uuidv4 } from 'uuid';
 
 // Form schema
 export const tourSchema = z.object({
@@ -45,6 +46,7 @@ export const useTourEditForm = (tourId?: string) => {
   const [inclusions, setInclusions] = useState<string[]>([]);
   const [exclusions, setExclusions] = useState<string[]>([]);
   const [itinerary, setItinerary] = useState<{ day: number; title: string; description: string }[]>([]);
+  const [departureDates, setDepartureDates] = useState<DepartureDate[]>([]);
   
   // Setup the form
   const form = useForm<TourFormValues>({
@@ -113,6 +115,7 @@ export const useTourEditForm = (tourId?: string) => {
           setInclusions(tour.inclusions || []);
           setExclusions(tour.exclusions || []);
           setItinerary(tour.itinerary || []);
+          setDepartureDates(tour.departureDates || []);
         } catch (error) {
           console.error("Error loading tour:", error);
           toast({
@@ -190,6 +193,28 @@ export const useTourEditForm = (tourId?: string) => {
     setItinerary(itinerary.filter((_, i) => i !== index));
   };
   
+  const addDepartureDate = () => {
+    setDepartureDates([
+      ...departureDates, 
+      { 
+        id: uuidv4(), 
+        startDate: new Date(), 
+        endDate: new Date(new Date().setDate(new Date().getDate() + 4)), 
+        status: "Available" 
+      }
+    ]);
+  };
+  
+  const updateDepartureDate = (index: number, field: keyof DepartureDate, value: any) => {
+    const updated = [...departureDates];
+    updated[index] = { ...updated[index], [field]: value };
+    setDepartureDates(updated);
+  };
+  
+  const removeDepartureDate = (index: number) => {
+    setDepartureDates(departureDates.filter((_, i) => i !== index));
+  };
+  
   // Handle form submission
   const onSubmit = async (values: TourFormValues) => {
     console.log("Form submitted with values:", values);
@@ -237,6 +262,7 @@ export const useTourEditForm = (tourId?: string) => {
       inclusions: filteredInclusions,
       exclusions: filteredExclusions,
       itinerary: filteredItinerary,
+      departureDates: departureDates,
       isWomenOnly: values.isWomenOnly,
       hasFixedDepartures: values.hasFixedDepartures,
       isCustomizable: values.isCustomizable,
@@ -247,7 +273,6 @@ export const useTourEditForm = (tourId?: string) => {
       elevation: values.elevation,
       accommodationType: values.accommodationType,
       customUrl: initialData?.customUrl || '',
-      departureDates: initialData?.departureDates || [],
       index: initialData?.index ?? 0,
     };
     
@@ -304,6 +329,10 @@ export const useTourEditForm = (tourId?: string) => {
     addItineraryDay,
     updateItineraryDay,
     removeItineraryDay,
+    departureDates,
+    addDepartureDate,
+    updateDepartureDate,
+    removeDepartureDate,
     onSubmit,
     navigate
   };

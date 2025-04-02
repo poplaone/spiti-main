@@ -12,6 +12,7 @@ import DetailsTab from '@/components/admin/tour-form/DetailsTab';
 import InclusionsTab from '@/components/admin/tour-form/InclusionsTab';
 import ExclusionsTab from '@/components/admin/tour-form/ExclusionsTab';
 import ItineraryTab from '@/components/admin/tour-form/ItineraryTab';
+import DepartureDatesTab from '@/components/admin/tour-form/DepartureDatesTab';
 
 const AdminTourEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,6 +42,10 @@ const AdminTourEdit: React.FC = () => {
     addItineraryDay,
     updateItineraryDay,
     removeItineraryDay,
+    departureDates,
+    addDepartureDate,
+    updateDepartureDate,
+    removeDepartureDate,
     onSubmit,
     navigate
   } = useTourEditForm(id);
@@ -82,12 +87,13 @@ const AdminTourEdit: React.FC = () => {
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-5 mb-6">
+        <TabsList className="grid grid-cols-6 mb-6">
           <TabsTrigger value="basic">Basic Info</TabsTrigger>
           <TabsTrigger value="details">Details</TabsTrigger>
           <TabsTrigger value="inclusions">Inclusions</TabsTrigger>
           <TabsTrigger value="exclusions">Exclusions</TabsTrigger>
           <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
+          <TabsTrigger value="dates">Departure Dates</TabsTrigger>
         </TabsList>
         
         <Form {...form}>
@@ -132,6 +138,15 @@ const AdminTourEdit: React.FC = () => {
                 addItineraryDay={addItineraryDay}
                 updateItineraryDay={updateItineraryDay}
                 removeItineraryDay={removeItineraryDay}
+              />
+            </TabsContent>
+            
+            <TabsContent value="dates">
+              <DepartureDatesTab
+                departureDates={departureDates}
+                addDepartureDate={addDepartureDate}
+                updateDepartureDate={updateDepartureDate}
+                removeDepartureDate={removeDepartureDate}
               />
             </TabsContent>
 
