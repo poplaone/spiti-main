@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
-  const [email, setEmail] = useState('spitivalleytravels@gmail.com');
+  const [email] = useState('spitivalleytravels@gmail.com');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -18,6 +18,16 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
       toast({
         title: 'Error',
         description: 'Password must be at least 6 characters',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Check if password matches the required one
+    if (password !== 'Spiti@0001') {
+      toast({
+        title: 'Error',
+        description: 'Invalid password for admin setup',
         variant: 'destructive',
       });
       return;
@@ -82,8 +92,8 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
             id="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            readOnly
+            className="bg-gray-100"
           />
         </div>
         
@@ -97,7 +107,7 @@ const FirstAdminSetup = ({ onComplete }: { onComplete: () => void }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            placeholder="Enter a secure password"
+            placeholder="Enter admin password"
           />
           <p className="text-xs text-gray-500 mt-1">
             Password must be at least 6 characters

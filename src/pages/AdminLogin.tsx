@@ -56,6 +56,11 @@ const AdminLogin = () => {
     setIsLoading(true);
 
     try {
+      // Only allow the specific email address to log in
+      if (email !== 'spitivalleytravels@gmail.com') {
+        throw new Error('You do not have admin privileges');
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -70,7 +75,7 @@ const AdminLogin = () => {
         const { data: adminData, error: adminError } = await supabase
           .from('admin_users')
           .select('*')
-          .eq('email', email)
+          .eq('email', 'spitivalleytravels@gmail.com')
           .eq('is_active', true)
           .single();
 
@@ -92,6 +97,7 @@ const AdminLogin = () => {
         description: error.message || "An error occurred while logging in",
         variant: "destructive",
       });
+    } finally {
       setIsLoading(false);
     }
   };
