@@ -48,10 +48,19 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
     const tours = getLocalTours();
     console.log("Current tours count:", tours.length);
     
-    // Auto-generate customUrl if not provided
-    if (!tour.customUrl) {
+    // Auto-generate customUrl if not provided or empty
+    if (!tour.customUrl || tour.customUrl.trim() === '') {
       tour.customUrl = generateCustomUrl(tour.title, tours);
       console.log("Generated custom URL:", tour.customUrl);
+    } else {
+      // Normalize the custom URL to ensure it's valid
+      tour.customUrl = tour.customUrl.toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+      console.log("Normalized custom URL:", tour.customUrl);
     }
     
     // Convert any legacy transport type
@@ -91,10 +100,20 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
     
     if (index >= 0 && index < tours.length) {
       // If title changed or customUrl is empty, regenerate it
-      if ((tours[index].title !== updatedTour.title) || !updatedTour.customUrl) {
+      if ((tours[index].title !== updatedTour.title) || !updatedTour.customUrl || updatedTour.customUrl.trim() === '') {
         updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
           tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
+      } else {
+        // Normalize the custom URL
+        updatedTour.customUrl = updatedTour.customUrl.toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-]+/g, '')
+          .replace(/\-\-+/g, '-')
+          .replace(/^-+/, '')
+          .replace(/-+$/, '');
       }
+      
+      console.log("Using custom URL for updated tour:", updatedTour.customUrl);
       
       // Ensure the index field is set correctly
       updatedTour.index = index;

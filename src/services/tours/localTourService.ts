@@ -49,37 +49,69 @@ export const getLocalTourByIndex = (index: number): TourPackageProps | null => {
   }
 };
 
-// Get a single tour by custom URL from localStorage
+// Get a single tour by custom URL from localStorage with improved matching
 export const getLocalTourByCustomUrl = (url: string): TourPackageProps | null => {
   try {
     const tours = getLocalTours();
     console.log(`Looking for tour with custom URL: ${url}, total tours: ${tours.length}`);
     
-    // Debug all tour custom URLs to help diagnose issues
+    if (!url) {
+      console.log("URL is empty, cannot search for tour");
+      return null;
+    }
+    
+    // Debug: List all tour URLs to help diagnose issues
+    console.log("Available tour URLs:");
     tours.forEach((tour, index) => {
-      console.log(`Tour ${index}: ${tour.title}, URL: ${tour.customUrl}`);
+      console.log(`Tour ${index}: ${tour.title}, URL: ${tour.customUrl || "undefined"}`);
     });
     
-    // First try exact match
+    // Normalize the search URL (trim and convert to lowercase)
+    const normalizedSearchUrl = url.trim().toLowerCase();
+    
+    // Comprehensive search strategy:
+    
+    // 1. Try exact match (case sensitive)
     let tour = tours.find(tour => tour.customUrl === url);
     
-    // If not found, try case-insensitive match
+    // 2. If not found, try case-insensitive match
     if (!tour) {
-      const lowerCaseUrl = url.toLowerCase();
       tour = tours.find(tour => 
-        tour.customUrl && tour.customUrl.toLowerCase() === lowerCaseUrl
+        tour.customUrl && tour.customUrl.toLowerCase() === normalizedSearchUrl
       );
+      if (tour) console.log("Found tour through case-insensitive match");
+    }
+    
+    // 3. Try partial match (URL might be truncated or modified)
+    if (!tour) {
+      tour = tours.find(tour => 
+        tour.customUrl && (
+          tour.customUrl.toLowerCase().includes(normalizedSearchUrl) ||
+          normalizedSearchUrl.includes(tour.customUrl.toLowerCase())
+        )
+      );
+      if (tour) console.log("Found tour through partial URL match");
+    }
+    
+    // 4. Try to match by title
+    if (!tour) {
+      tour = tours.find(tour => 
+        tour.title && tour.title.toLowerCase().replace(/\s+/g, '-')
+          .replace(/[^\w\-]+/g, '')
+          .includes(normalizedSearchUrl)
+      );
+      if (tour) console.log("Found tour through title match");
     }
     
     if (tour) {
-      console.log(`Found tour with custom URL ${url}:`, tour);
+      console.log(`Found tour with URL ${url}:`, tour);
       return {
         ...tour,
-        index: tours.findIndex(t => t.customUrl === tour.customUrl)
+        index: tours.findIndex(t => t.customUrl === tour.customUrl || t.index === tour.index)
       };
     }
     
-    console.log(`No tour found with custom URL: ${url}`);
+    console.log(`No tour found with URL: ${url} after trying multiple matching strategies`);
     return null;
   } catch (error) {
     console.error("Error getting tour by custom URL:", error);

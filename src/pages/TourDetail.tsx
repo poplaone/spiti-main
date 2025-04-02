@@ -9,7 +9,7 @@ import TourNotFound from "@/components/tour/TourNotFound";
 import TourDetailContent from "@/components/tour/TourDetailContent";
 
 const TourDetail = () => {
-  const { id } = useParams<{ id: string; }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
   // Check if the URL format is old style (/tour/customurl) and redirect if needed
@@ -36,6 +36,7 @@ const TourDetail = () => {
 
   // Show not found message if tour doesn't exist
   if (!tour) {
+    console.error("Tour not found with ID:", id);
     return <TourNotFound />;
   }
 

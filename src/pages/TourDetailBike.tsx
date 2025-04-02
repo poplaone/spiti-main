@@ -18,9 +18,17 @@ const TourDetailBike = () => {
           return;
         }
         
+        // Ensure we have a valid URL to navigate to
+        const bikeTour = allTours[0];
+        const tourUrl = bikeTour.customUrl 
+          ? bikeTour.customUrl.trim() 
+          : String(bikeTour.index);
+            
+        console.log("Navigating to bike tour with URL:", tourUrl);
+        
         // Navigate to the dynamic route with the right tour ID
         // Use the new URL format
-        navigate(`/tour-${allTours[0].customUrl || allTours[0].index}`);
+        navigate(`/tour-${tourUrl}`);
       } catch (error) {
         console.error("Failed to load bike tour:", error);
         navigate('/');
