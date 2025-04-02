@@ -1,16 +1,24 @@
 
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useTourDetail } from "@/hooks/useTourDetail";
 import TourDetailSkeleton from "@/components/tour/TourDetailSkeleton";
 import TourNotFound from "@/components/tour/TourNotFound";
 import TourDetailContent from "@/components/tour/TourDetailContent";
-import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 const TourDetail = () => {
-  const { id } = useParams<{ id: string; }>();
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  
+  // Check if the URL format is old style (/tour/customurl) and redirect if needed
+  useEffect(() => {
+    if (id && window.location.pathname.startsWith('/tour/')) {
+      navigate(`/tour-${id}`, { replace: true });
+    }
+  }, [id, navigate]);
+
   const { 
     tour, 
     otherTours, 
@@ -28,6 +36,7 @@ const TourDetail = () => {
 
   // Show not found message if tour doesn't exist
   if (!tour) {
+    console.error("Tour not found with ID:", id);
     return <TourNotFound />;
   }
 
@@ -48,8 +57,6 @@ const TourDetail = () => {
         relatedToursLoading={relatedToursLoading}
         formatPrice={formatPrice}
       />
-      
-      <FloatingWhatsAppButton />
       
       <Footer />
     </div>

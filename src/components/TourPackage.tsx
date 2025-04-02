@@ -100,7 +100,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
   
   const getDetailRoute = () => {
     if (customUrl) {
-      return `/tour/${customUrl}`;
+      // Changed from /tour/${customUrl} to /tour-${customUrl}
+      return `/tour-${customUrl}`;
     }
     
     if (typeof index !== 'number') return '/';
@@ -109,7 +110,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
       return getRouteMap[index as keyof typeof getRouteMap] || '/';
     }
     
-    return `/tour/${index}`;
+    // Changed from /tour/${index} to /tour-${index}
+    return `/tour-${index}`;
   };
   
   const handleCardClick = (e: React.MouseEvent) => {

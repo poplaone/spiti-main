@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllTours } from "@/services/tourService";
-import TourDetailSkeleton from "@/components/tour/TourDetailSkeleton";
 
 const TourDetailBike = () => {
   const navigate = useNavigate();
@@ -13,20 +12,23 @@ const TourDetailBike = () => {
       try {
         const allTours = await getAllTours();
         // Find the bike tour (index 0)
-        const bikeTour = allTours.length > 0 && allTours[0];
-        if (!bikeTour) {
-          console.error("Bike tour not found");
+        const isValidTour = allTours.length > 0 && allTours[0];
+        if (!isValidTour) {
           navigate('/');
           return;
         }
         
-        // Prefer customUrl if available, otherwise use index
-        const routePath = bikeTour.customUrl 
-          ? `/tour/${bikeTour.customUrl}`
-          : `/tour/${bikeTour.index}`;
-          
-        console.log("Navigating to bike tour:", routePath);
-        navigate(routePath);
+        // Ensure we have a valid URL to navigate to
+        const bikeTour = allTours[0];
+        const tourUrl = bikeTour.customUrl 
+          ? bikeTour.customUrl.trim() 
+          : String(bikeTour.index);
+            
+        console.log("Navigating to bike tour with URL:", tourUrl);
+        
+        // Navigate to the dynamic route with the right tour ID
+        // Use the new URL format
+        navigate(`/tour-${tourUrl}`);
       } catch (error) {
         console.error("Failed to load bike tour:", error);
         navigate('/');
@@ -38,7 +40,7 @@ const TourDetailBike = () => {
     loadTour();
   }, [navigate]);
   
-  return loading ? <TourDetailSkeleton /> : null;
+  return <div>{loading && <p>Loading...</p>}</div>;
 };
 
 export default TourDetailBike;
