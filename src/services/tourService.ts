@@ -6,7 +6,8 @@ import {
   getLocalTourByIndex, 
   getLocalTourByCustomUrl, 
   saveToursToLocalStorage, 
-  resetToDefaultTours 
+  resetToDefaultTours,
+  initializeStorageListener
 } from './tours/localTourService';
 
 // Get all tours - fetches from localStorage
@@ -154,4 +155,4 @@ export const deleteTour = async (index: number): Promise<void> => {
 };
 
 // Re-export for easy access
-export { resetToDefaultTours };
+export { resetToDefaultTours, initializeStorageListener };

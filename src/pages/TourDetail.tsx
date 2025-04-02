@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,6 +8,7 @@ import TourDetailSkeleton from "@/components/tour/TourDetailSkeleton";
 import TourNotFound from "@/components/tour/TourNotFound";
 import TourDetailContent from "@/components/tour/TourDetailContent";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { initializeStorageListener } from "@/services/tours/localTourService";
 
 const TourDetail = () => {
   const { id } = useParams<{ id: string; }>();
@@ -20,6 +21,11 @@ const TourDetail = () => {
     relatedToursLoading, 
     formatPrice 
   } = useTourDetail(id);
+
+  // Initialize the storage listener for real-time updates
+  useEffect(() => {
+    initializeStorageListener();
+  }, []);
 
   // Show loading skeleton while data is being fetched
   if (loading) {

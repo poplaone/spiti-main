@@ -45,6 +45,7 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
         }
         
         if (selectedTour) {
+          // Ensure the tour data is fully available
           setTour(selectedTour);
           
           // Now fetch related tours
