@@ -22,9 +22,9 @@ const AdminLogin = () => {
     // Check if any admin users exist
     const checkAdminUsers = async () => {
       try {
-        const { data, error, count } = await supabase
+        const { count, error } = await supabase
           .from('admin_users')
-          .select('*', { count: 'exact' });
+          .select('*', { count: 'exact', head: true });
         
         if (error) {
           throw error;
@@ -34,7 +34,7 @@ const AdminLogin = () => {
         if (count === 0) {
           setShowAdminSetup(true);
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error checking admin users:', error);
       } finally {
         setCheckingAdmins(false);
@@ -74,12 +74,11 @@ const AdminLogin = () => {
         // Check if the user is an admin
         const { data: adminData, error: adminError } = await supabase
           .from('admin_users')
-          .select('*')
+          .select('id, is_active')
           .eq('email', 'spitivalleytravels@gmail.com')
-          .eq('is_active', true)
           .single();
 
-        if (adminError || !adminData) {
+        if (adminError || !adminData || !adminData.is_active) {
           // Not an admin, sign out
           await supabase.auth.signOut();
           throw new Error('You do not have admin privileges');
