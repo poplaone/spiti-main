@@ -14,7 +14,7 @@ export const getLocalTours = (): TourPackageProps[] => {
 export const saveToursToLocalStorage = (tours: TourPackageProps[]): void => {
   try {
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
-    console.log("Tours saved to localStorage, count:", tours.length);
+    console.log("Tours saved to localStorage successfully, count:", tours.length);
   } catch (error) {
     console.error("Error saving tours to localStorage:", error);
     throw error;

@@ -41,10 +41,13 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
 
 // Add a new tour - ensure all required properties are present
 export const addTour = async (tour: TourPackageProps): Promise<void> => {
+  console.log("Starting to add new tour:", tour.title);
+  
   // Auto-generate customUrl if not provided
   if (!tour.customUrl) {
     const tours = await getAllTours();
     tour.customUrl = generateCustomUrl(tour.title, tours);
+    console.log("Generated custom URL:", tour.customUrl);
   }
   
   // Convert any legacy transport type
@@ -63,6 +66,7 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
     };
     
     tours.push(tourWithIndex);
+    console.log("About to save tour to localStorage:", tourWithIndex);
     saveToursToLocalStorage(tours);
     console.log("Tour added successfully:", tourWithIndex);
   } catch (error) {
@@ -74,6 +78,7 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
 // Update an existing tour
 export const updateTour = async (index: number, updatedTour: TourPackageProps): Promise<void> => {
   try {
+    console.log("Updating tour at index:", index, updatedTour);
     const tours = getLocalTours();
     
     if (index >= 0 && index < tours.length) {

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
@@ -200,6 +201,7 @@ const AdminTourEdit: React.FC = () => {
       accommodationType: values.accommodationType,
       customUrl: initialData?.customUrl || '',
       departureDates: initialData?.departureDates || [],
+      index: initialData?.index ?? 0,
     };
     
     try {
@@ -211,6 +213,7 @@ const AdminTourEdit: React.FC = () => {
           description: "Tour updated successfully",
         });
       } else {
+        console.log("Adding new tour:", tourData);
         await addTour(tourData);
         toast({
           title: "Success",
