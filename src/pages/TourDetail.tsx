@@ -62,7 +62,7 @@ const TourDetail = () => {
       variant: "destructive"
     });
     
-    return <TourNotFound />;
+    return <TourNotFound requestedId={id} recommendedTours={otherTours} />;
   }
 
   return (

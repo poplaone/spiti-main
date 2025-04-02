@@ -81,6 +81,17 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
         } else {
           console.error("Tour not found for ID/URL:", id);
           setTour(null);
+          setOtherTours([]);
+          
+          // Try to fetch some recommended tours anyway
+          try {
+            const allTours = await getAllTours();
+            setOtherTours(allTours.slice(0, 4));
+          } catch (e) {
+            console.error("Error fetching recommended tours:", e);
+          } finally {
+            setRelatedToursLoading(false);
+          }
         }
       } catch (error) {
         console.error("Error fetching tour details:", error);

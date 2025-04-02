@@ -42,7 +42,8 @@ export const getAllTours = async (): Promise<TourPackageProps[]> => {
       isCustomizable: tour.is_customizable !== false,
       isWomenOnly: tour.is_women_only,
       transportType: normalizeTransportType(String(tour.transport_type)),
-      customUrl: tour.custom_url
+      customUrl: tour.custom_url,
+      availableDates: Array.isArray(tour.available_dates) ? tour.available_dates.join(", ") : tour.available_dates
     }));
   } catch (error) {
     console.error("Error in getAllTours:", error);
@@ -85,7 +86,8 @@ export const getTourByIndex = async (index: number): Promise<TourPackageProps | 
       isCustomizable: data.is_customizable !== false,
       isWomenOnly: data.is_women_only,
       transportType: normalizeTransportType(String(data.transport_type)),
-      customUrl: data.custom_url
+      customUrl: data.custom_url,
+      availableDates: Array.isArray(data.available_dates) ? data.available_dates.join(", ") : data.available_dates
     };
   } catch (error) {
     console.error("Error in getTourByIndex:", error);
@@ -147,7 +149,8 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
         isCustomizable: exactMatches[0].is_customizable !== false,
         isWomenOnly: exactMatches[0].is_women_only,
         transportType: normalizeTransportType(String(exactMatches[0].transport_type)),
-        customUrl: exactMatches[0].custom_url
+        customUrl: exactMatches[0].custom_url,
+        availableDates: Array.isArray(exactMatches[0].available_dates) ? exactMatches[0].available_dates.join(", ") : exactMatches[0].available_dates
       };
     }
     
@@ -180,7 +183,8 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
         isCustomizable: likeMatches[0].is_customizable !== false,
         isWomenOnly: likeMatches[0].is_women_only,
         transportType: normalizeTransportType(String(likeMatches[0].transport_type)),
-        customUrl: likeMatches[0].custom_url
+        customUrl: likeMatches[0].custom_url,
+        availableDates: Array.isArray(likeMatches[0].available_dates) ? likeMatches[0].available_dates.join(", ") : likeMatches[0].available_dates
       };
     }
     
@@ -208,7 +212,8 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
           isCustomizable: match.is_customizable !== false,
           isWomenOnly: match.is_women_only,
           transportType: normalizeTransportType(String(match.transport_type)),
-          customUrl: match.custom_url
+          customUrl: match.custom_url,
+          availableDates: Array.isArray(match.available_dates) ? match.available_dates.join(", ") : match.available_dates
         };
       }
     }
@@ -288,7 +293,7 @@ export const initializeToursDatabase = async (): Promise<void> => {
         is_customizable: tour.isCustomizable !== false,
         transport_type: tour.transportType,
         is_women_only: tour.isWomenOnly || false,
-        available_dates: tour.availableDates,
+        available_dates: [tour.availableDates],
         custom_url: generateCustomUrl(tour.title, tourPackagesData.slice(0, index)),
         departure_dates: tour.departureDates || [],
         best_time: tour.bestTime || "June to September",
@@ -355,7 +360,7 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
       is_customizable: tour.isCustomizable !== false,
       transport_type: tour.transportType,
       is_women_only: tour.isWomenOnly || false,
-      available_dates: tour.availableDates,
+      available_dates: [tour.availableDates],
       custom_url: tour.customUrl,
       departure_dates: tour.departureDates || [],
       best_time: tour.bestTime || "June to September",
@@ -425,7 +430,7 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
       is_customizable: updatedTour.isCustomizable !== false,
       transport_type: updatedTour.transportType,
       is_women_only: updatedTour.isWomenOnly || false,
-      available_dates: updatedTour.availableDates,
+      available_dates: [updatedTour.availableDates],
       custom_url: updatedTour.customUrl,
       departure_dates: updatedTour.departureDates || [],
       best_time: updatedTour.bestTime || "June to September",
@@ -485,67 +490,6 @@ export const deleteTour = async (index: number): Promise<void> => {
   } catch (error) {
     console.error("Error deleting tour:", error);
     throw error;
-  }
-};
-
-// Initialize database with default tours if empty
-export const initializeToursDatabase = async (): Promise<void> => {
-  try {
-    // Check if tours table is empty
-    const { data, error } = await supabase
-      .from('tour_packages')
-      .select('count')
-      .single();
-      
-    if (error) {
-      console.error("Error checking tours database:", error);
-      return;
-    }
-    
-    if (!data || data.count === 0) {
-      console.log("Tours database is empty, initializing with default data");
-      
-      // Convert default tours to database format
-      const dbTours = tourPackagesData.map((tour, index) => ({
-        title: tour.title,
-        image: tour.image,
-        original_price: tour.originalPrice,
-        discounted_price: tour.discountedPrice,
-        discount: tour.discount,
-        duration: tour.duration,
-        night_stays: tour.nightStays || [],
-        inclusions: tour.inclusions || [],
-        exclusions: tour.exclusions || [],
-        overview: tour.overview,
-        itinerary: tour.itinerary || [],
-        is_fixed_departure: tour.hasFixedDepartures !== false,
-        is_customizable: tour.isCustomizable !== false,
-        transport_type: tour.transportType,
-        is_women_only: tour.isWomenOnly || false,
-        available_dates: tour.availableDates,
-        custom_url: generateCustomUrl(tour.title, tourPackagesData.slice(0, index)),
-        departure_dates: tour.departureDates || [],
-        best_time: tour.bestTime || "June to September",
-        group_size: tour.groupSize || "2-10 People",
-        terrain: tour.terrain || "Himalayan Mountain Passes",
-        elevation: tour.elevation || "2,000 - 4,550 meters",
-        accommodation_type: tour.accommodationType || "Hotels & Homestays",
-        index: index
-      }));
-      
-      // Insert default tours into database
-      const { error: insertError } = await supabase
-        .from('tour_packages')
-        .insert(dbTours);
-        
-      if (insertError) {
-        console.error("Error initializing tours database:", insertError);
-      } else {
-        console.log("Tours database initialized successfully");
-      }
-    }
-  } catch (error) {
-    console.error("Error initializing tours database:", error);
   }
 };
 
