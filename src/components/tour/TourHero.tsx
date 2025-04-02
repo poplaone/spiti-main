@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Clock, Calendar, MapPin, Bike, Car, Settings, Calendar as CalendarIcon } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +5,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TourPackageProps } from "@/components/TourPackage";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
-
 interface TourHeroProps {
   tour: TourPackageProps;
   selectedMonth: string;
@@ -14,7 +12,6 @@ interface TourHeroProps {
   formatPrice: (price: number) => string;
   heroImage?: string;
 }
-
 const TourHero: React.FC<TourHeroProps> = ({
   tour,
   selectedMonth,
@@ -37,12 +34,8 @@ const TourHero: React.FC<TourHeroProps> = ({
       });
     }
   };
-
-  // Use the tour's own image if available, fall back to hero image if not
-  const backgroundImage = tour.image || heroImage;
-  
   return <section className="relative h-[80vh] sm:h-[70vh] mt-0" style={{
-    backgroundImage: `url(${backgroundImage})`,
+    backgroundImage: `url(${heroImage})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     marginTop: '0',
@@ -96,11 +89,13 @@ const TourHero: React.FC<TourHeroProps> = ({
             <span className="text-sm sm:text-lg line-through opacity-75 text-white">₹{formatPrice(tour.originalPrice)}/-</span>
             <Badge className="bg-red-500 text-sm sm:text-base px-2 sm:px-3 py-0.5 sm:py-1">{tour.discount}% OFF</Badge>
           </div>
+          
+          {/* Month selection dropdown moved to the bottom */}
+          
         </div>
       </div>
       
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-20"></div>
     </section>;
 };
-
 export default TourHero;

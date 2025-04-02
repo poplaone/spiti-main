@@ -11,22 +11,12 @@ interface NightStay {
   location: string;
   nights: number;
 }
-
 interface ItineraryDay {
   day: number;
   title: string;
   description: string;
 }
-
-export interface DepartureDate {
-  id: string;
-  startDate?: Date;
-  endDate?: Date;
-  status: 'Available' | 'Limited' | 'Full';
-}
-
 export interface TourPackageProps {
-  // Required properties
   title: string;
   image: string;
   originalPrice: number;
@@ -38,23 +28,11 @@ export interface TourPackageProps {
   };
   nightStays: NightStay[];
   inclusions: string[];
-  overview: string;
-  transportType: 'bike' | 'car' | 'premium';
-  
-  // Optional properties
   exclusions?: string[];
   itinerary?: ItineraryDay[];
-  hasFixedDepartures?: boolean;
-  isCustomizable?: boolean;
+  overview?: string;
+  transportType?: 'bike' | 'car' | 'innova';
   isWomenOnly?: boolean;
-  availableDates?: string;
-  customUrl?: string;
-  departureDates?: DepartureDate[];
-  bestTime?: string;
-  groupSize?: string;
-  terrain?: string;
-  elevation?: string;
-  accommodationType?: string;
   index?: number;
   className?: string;
 }
@@ -84,34 +62,13 @@ const TourPackage: React.FC<TourPackageProps> = ({
   transportType,
   isWomenOnly,
   index,
-  className = "",
-  hasFixedDepartures = true,
-  isCustomizable = true,
-  availableDates = "June to October",
-  customUrl,
-  departureDates,
-  bestTime,
-  groupSize,
-  terrain,
-  elevation,
-  accommodationType
+  className = ""
 }) => {
   const navigate = useNavigate();
   
   const getDetailRoute = () => {
-    if (customUrl) {
-      // Changed from /tour/${customUrl} to /tour-${customUrl}
-      return `/tour-${customUrl}`;
-    }
-    
     if (typeof index !== 'number') return '/';
-    
-    if (index < 6) {
-      return getRouteMap[index as keyof typeof getRouteMap] || '/';
-    }
-    
-    // Changed from /tour/${index} to /tour-${index}
-    return `/tour-${index}`;
+    return getRouteMap[index as keyof typeof getRouteMap] || '/';
   };
   
   const handleCardClick = (e: React.MouseEvent) => {
@@ -147,23 +104,19 @@ const TourPackage: React.FC<TourPackageProps> = ({
         
         <div className="flex flex-col space-y-1 mb-3">
           <div className="flex items-center space-x-4">
-            {hasFixedDepartures && (
-              <div className="flex items-center text-rose-500">
-                <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
-                <span className="text-xs font-medium uppercase">Fixed Departures</span>
-              </div>
-            )}
+            <div className="flex items-center text-rose-500">
+              <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
+              <span className="text-xs font-medium uppercase">Fixed Departures</span>
+            </div>
             
-            {isCustomizable && (
-              <div className="flex items-center text-rose-500">
-                <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
-                <span className="text-xs font-medium uppercase">Customizable</span>
-              </div>
-            )}
+            <div className="flex items-center text-rose-500">
+              <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
+              <span className="text-xs font-medium uppercase">Customizable</span>
+            </div>
           </div>
           
           <div className="text-xs text-gray-600">
-            Available from {availableDates}
+            Available from June to October
           </div>
         </div>
         

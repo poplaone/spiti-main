@@ -1,36 +1,17 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getAllTours } from "@/services/tourService";
+import { tourPackagesData } from "@/data/tourPackagesData";
 import { useTourFilters } from '@/hooks/useTourFilters';
 import TourPackageGrid from '@/components/tour/TourPackageGrid';
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
-import { TourPackageProps } from '@/components/TourPackage';
-import { Skeleton } from "@/components/ui/skeleton";
-
 const RoadTrips = () => {
-  const [tours, setTours] = useState<TourPackageProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { roadTripsTours } = useTourFilters(tours);
-  
+  const {
+    roadTripsTours
+  } = useTourFilters(tourPackagesData);
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    const fetchTours = async () => {
-      try {
-        const allTours = await getAllTours();
-        setTours(allTours);
-      } catch (error) {
-        console.error("Error fetching tours:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchTours();
   }, []);
-  
   return <div className="min-h-screen" style={{
     backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1920&auto=format&fit=crop')`,
     backgroundAttachment: 'fixed',
@@ -59,15 +40,7 @@ const RoadTrips = () => {
             
           </div>
           
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-80 w-full" />
-              ))}
-            </div>
-          ) : (
-            <TourPackageGrid packages={roadTripsTours} />
-          )}
+          <TourPackageGrid packages={roadTripsTours} />
         </div>
       </section>
 
@@ -75,5 +48,4 @@ const RoadTrips = () => {
       <Footer />
     </div>;
 };
-
 export default RoadTrips;

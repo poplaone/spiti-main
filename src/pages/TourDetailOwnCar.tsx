@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/components/TourPackage";
-import { getAllTours } from "@/services/tourService";
+import { tourPackagesData } from "@/data/tourPackagesData";
 import { Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
@@ -22,36 +22,21 @@ const TourDetailOwnCar = () => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
-  const [loading, setLoading] = useState<boolean>(true);
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    const fetchData = async () => {
-      try {
-        // Get all tours
-        const allTours = await getAllTours();
-        
-        // Get the Own Car tour (index 4)
-        const selectedTour = allTours[4];
-        if (selectedTour) {
-          setTour(selectedTour);
-          
-          // Get other tours for the "More Popular Tours" section
-          const others = allTours.filter((_, index) => index !== 4).slice(0, 4);
-          setOtherTours(others);
-        }
-      } catch (error) {
-        console.error("Error fetching tour data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchData();
+    // Get the Own Car tour (index 4)
+    const selectedTour = tourPackagesData[4];
+    if (selectedTour) {
+      setTour(selectedTour);
+
+      // Get other tours for the "More Popular Tours" section
+      const others = tourPackagesData.filter((_, index) => index !== 4).slice(0, 4);
+      setOtherTours(others);
+    }
   }, []);
 
-  if (loading || !tour) {
+  if (!tour) {
     return <div>Loading...</div>;
   }
 
@@ -120,7 +105,7 @@ const TourDetailOwnCar = () => {
       </section>
 
       {/* More Popular Tours Section */}
-      <RelatedTours tours={otherTours} />
+      <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 
