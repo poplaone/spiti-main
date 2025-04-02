@@ -1,11 +1,9 @@
-
 import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { StarIcon } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-
 const About = () => {
   return <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
       <Header />
@@ -97,7 +95,7 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="mb-4 flex justify-center">
                   <Avatar className="h-32 w-32 border-2 border-spiti-green">
-                    <AvatarImage src="/lovable-uploads/d47c6479-484a-4cb5-9355-748f70db022c.png" alt="Vaibhav Reekhan" />
+                    <AvatarImage alt="Vaibhav Reekhan" src="/lovable-uploads/ed34f4b1-cde8-4aba-9fec-9d4a2688cf0f.jpg" />
                     <AvatarFallback>VR</AvatarFallback>
                   </Avatar>
                 </div>
@@ -116,7 +114,7 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="mb-4 flex justify-center">
                   <Avatar className="h-32 w-32 border-2 border-spiti-green">
-                    <AvatarImage src="/lovable-uploads/ac372afb-1d03-4781-9bfb-5cb6f0eac18a.png" alt="Sheetla" />
+                    <AvatarImage alt="Sheetla" src="/lovable-uploads/611d1761-ce18-4adc-aa48-307649900605.jpg" />
                     <AvatarFallback>SD</AvatarFallback>
                   </Avatar>
                 </div>
@@ -135,7 +133,7 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="mb-4 flex justify-center">
                   <Avatar className="h-32 w-32 border-2 border-spiti-green">
-                    <AvatarImage src="/lovable-uploads/7a0cca0c-1799-4f16-9e61-ca50207023de.png" alt="Monika" />
+                    <AvatarImage alt="Monika" src="/lovable-uploads/6d10bd08-90f9-4f8c-ba75-eec09b61ff44.jpg" />
                     <AvatarFallback>M</AvatarFallback>
                   </Avatar>
                 </div>
@@ -173,7 +171,7 @@ const About = () => {
               <CardContent className="p-6">
                 <div className="mb-4 flex justify-center">
                   <Avatar className="h-32 w-32 border-2 border-spiti-green">
-                    <AvatarImage src="/lovable-uploads/40aa1564-8488-400b-a683-6de12e9b4c28.png" alt="Shabnam Kultwan" />
+                    <AvatarImage alt="Shabnam Kultwan" src="/lovable-uploads/0cebf3cc-4644-4b86-9e99-33de6eea80e8.jpg" />
                     <AvatarFallback>SK</AvatarFallback>
                   </Avatar>
                 </div>
@@ -194,5 +192,4 @@ const About = () => {
       <Footer />
     </div>;
 };
-
 export default About;
