@@ -1,10 +1,11 @@
 
 import { TourPackageProps } from "@/components/TourPackage";
+import { TourTransportType } from "@/data/types/tourTypes";
 
 // Form action types
 export type FormInputChangeEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 export type FormNumberChangeEvent = React.ChangeEvent<HTMLInputElement>;
-export type TransportType = 'bike' | 'car' | 'premium' | 'innova'; // Keeping premium for backward compatibility
+export type TransportType = TourTransportType; // Using the central type definition
 
 // Tour form state interface
 export interface TourFormState {

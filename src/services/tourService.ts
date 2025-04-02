@@ -2,11 +2,20 @@
 import { TourPackageProps, DepartureDate } from "@/components/TourPackage";
 import { tourPackagesData } from '@/data/tourPackagesData';
 import { TransportType } from "@/hooks/tour-form/types";
+import { TourTransportType } from "@/data/types/tourTypes";
 
 // In a real application, these would communicate with a backend API
 // For now, we'll use localStorage to persist changes
 
 const TOURS_STORAGE_KEY = 'spiti-admin-tours';
+
+// Convert legacy transport types to supported types
+const normalizeTransportType = (transportType: string): TourTransportType => {
+  if (transportType === 'innova') {
+    return 'premium';
+  }
+  return transportType as TourTransportType;
+};
 
 // Generate slug from title
 const generateCustomUrl = (title: string, existingTours: TourPackageProps[]): string => {
@@ -50,8 +59,8 @@ const initializeStorage = () => {
       terrain: tour.terrain || "Himalayan Mountain Passes",
       elevation: tour.elevation || "2,000 - 4,550 meters",
       accommodationType: tour.accommodationType || "Hotels & Homestays",
-      // Convert any legacy transport type to "premium"
-      transportType: (tour.transportType === "innova" ? "premium" : tour.transportType) as TransportType
+      // Convert any legacy transport type
+      transportType: normalizeTransportType(tour.transportType)
     }));
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
@@ -90,9 +99,10 @@ const initializeStorage = () => {
           needsUpdate = true;
         }
         
-        // Fix the type error by handling the "innova" case properly
-        if (tour.transportType === "innova") {
-          updates.transportType = "premium" as TransportType;
+        // Fix legacy transport types
+        const currentTransportType = String(tour.transportType);
+        if (currentTransportType === 'innova') {
+          updates.transportType = 'premium' as TourTransportType;
           needsUpdate = true;
         }
         
@@ -147,8 +157,8 @@ export const addTour = (tour: TourPackageProps): void => {
   }
   
   // Convert any legacy transport type
-  if (tour.transportType === "innova") {
-    tour.transportType = "premium" as TransportType;
+  if (String(tour.transportType) === 'innova') {
+    tour.transportType = 'premium' as TourTransportType;
   }
   
   tours.push(tour);
@@ -166,8 +176,8 @@ export const updateTour = (index: number, updatedTour: TourPackageProps): void =
     }
     
     // Convert any legacy transport type
-    if (updatedTour.transportType === "innova") {
-      updatedTour.transportType = "premium" as TransportType;
+    if (String(updatedTour.transportType) === 'innova') {
+      updatedTour.transportType = 'premium' as TourTransportType;
     }
     
     tours[index] = updatedTour;
@@ -201,7 +211,7 @@ export const resetToDefaultTours = (): void => {
     terrain: tour.terrain || "Himalayan Mountain Passes",
     elevation: tour.elevation || "2,000 - 4,550 meters",
     accommodationType: tour.accommodationType || "Hotels & Homestays",
-    transportType: (tour.transportType === "innova" ? "premium" : tour.transportType) as TransportType
+    transportType: normalizeTransportType(String(tour.transportType))
   }));
   
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
