@@ -9,16 +9,208 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          email: string
+          id: string
+          is_active: boolean | null
+        }
+        Insert: {
+          email: string
+          id?: string
+          is_active?: boolean | null
+        }
+        Update: {
+          email?: string
+          id?: string
+          is_active?: boolean | null
+        }
+        Relationships: []
+      }
+      exclusions: {
+        Row: {
+          description: string
+          id: string
+          tour_id: string | null
+        }
+        Insert: {
+          description: string
+          id?: string
+          tour_id?: string | null
+        }
+        Update: {
+          description?: string
+          id?: string
+          tour_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exclusions_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inclusions: {
+        Row: {
+          description: string
+          id: string
+          tour_id: string | null
+        }
+        Insert: {
+          description: string
+          id?: string
+          tour_id?: string | null
+        }
+        Update: {
+          description?: string
+          id?: string
+          tour_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inclusions_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      itinerary_days: {
+        Row: {
+          day_number: number
+          description: string
+          id: string
+          title: string
+          tour_id: string | null
+        }
+        Insert: {
+          day_number: number
+          description: string
+          id?: string
+          title: string
+          tour_id?: string | null
+        }
+        Update: {
+          day_number?: number
+          description?: string
+          id?: string
+          title?: string
+          tour_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itinerary_days_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      night_stays: {
+        Row: {
+          id: string
+          location: string
+          nights: number
+          tour_id: string | null
+        }
+        Insert: {
+          id?: string
+          location: string
+          nights: number
+          tour_id?: string | null
+        }
+        Update: {
+          id?: string
+          location?: string
+          nights?: number
+          tour_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "night_stays_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tours: {
+        Row: {
+          available_from: string | null
+          created_at: string | null
+          days: number
+          discount: number
+          discounted_price: number
+          has_fixed_departures: boolean | null
+          id: string
+          image: string | null
+          is_customizable: boolean | null
+          is_women_only: boolean | null
+          nights: number
+          original_price: number
+          overview: string | null
+          title: string
+          transport_type: Database["public"]["Enums"]["transport_type"]
+          updated_at: string | null
+        }
+        Insert: {
+          available_from?: string | null
+          created_at?: string | null
+          days: number
+          discount: number
+          discounted_price: number
+          has_fixed_departures?: boolean | null
+          id?: string
+          image?: string | null
+          is_customizable?: boolean | null
+          is_women_only?: boolean | null
+          nights: number
+          original_price: number
+          overview?: string | null
+          title: string
+          transport_type: Database["public"]["Enums"]["transport_type"]
+          updated_at?: string | null
+        }
+        Update: {
+          available_from?: string | null
+          created_at?: string | null
+          days?: number
+          discount?: number
+          discounted_price?: number
+          has_fixed_departures?: boolean | null
+          id?: string
+          image?: string | null
+          is_customizable?: boolean | null
+          is_women_only?: boolean | null
+          nights?: number
+          original_price?: number
+          overview?: string | null
+          title?: string
+          transport_type?: Database["public"]["Enums"]["transport_type"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: {
+          email: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      transport_type: "bike" | "car" | "innova"
     }
     CompositeTypes: {
       [_ in never]: never

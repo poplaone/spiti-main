@@ -27,6 +27,13 @@ import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
 import RoadTrips from "./pages/RoadTrips";
 import FixedDepartures from "./pages/FixedDepartures";
 
+// Import admin pages
+import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
+import AdminTours from "./pages/AdminTours";
+import AdminTourNew from "./pages/AdminTourNew";
+import AdminTourEdit from "./pages/AdminTourEdit";
+
 const App = () => {
   // Create a new QueryClient instance within the component function
   // This ensures proper React context usage
@@ -62,6 +69,13 @@ const App = () => {
             <Route path="/tour-women" element={<TourDetailWomen />} />
             <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
             <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
+            
+            {/* Admin panel routes */}
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/tours" element={<AdminTours />} />
+            <Route path="/admin/tours/new" element={<AdminTourNew />} />
+            <Route path="/admin/tours/edit/:id" element={<AdminTourEdit />} />
             
             {/* Catch-all route for 404 */}
             <Route path="*" element={<NotFound />} />
