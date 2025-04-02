@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TourPackageProps } from "@/components/TourPackage";
+import { FormInputChangeEvent } from "@/hooks/tour-form/types";
 
 interface InclusionsTabProps {
   formData: TourPackageProps;
@@ -10,6 +11,14 @@ interface InclusionsTabProps {
 }
 
 const InclusionsTab = ({ formData, setFormData }: InclusionsTabProps) => {
+  const handleTextareaChange = (e: FormInputChangeEvent, field: 'inclusions' | 'exclusions') => {
+    const { value } = e.target;
+    setFormData({
+      ...formData,
+      [field]: value.split('\n').filter(item => item.trim() !== "")
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -21,14 +30,10 @@ const InclusionsTab = ({ formData, setFormData }: InclusionsTabProps) => {
           <Textarea
             id="inclusions"
             value={formData.inclusions.join("\n")}
-            onChange={(e) => {
-              setFormData({
-                ...formData,
-                inclusions: e.target.value.split("\n").filter(item => item.trim() !== "")
-              });
-            }}
+            onChange={(e) => handleTextareaChange(e, 'inclusions')}
             placeholder="Enter inclusions (one per line)"
             className="min-h-32"
+            rows={8}
           />
           <p className="text-sm text-gray-500 mt-1">
             List all items included in the package price
@@ -40,14 +45,10 @@ const InclusionsTab = ({ formData, setFormData }: InclusionsTabProps) => {
           <Textarea
             id="exclusions"
             value={(formData.exclusions || []).join("\n")}
-            onChange={(e) => {
-              setFormData({
-                ...formData,
-                exclusions: e.target.value.split("\n").filter(item => item.trim() !== "")
-              });
-            }}
+            onChange={(e) => handleTextareaChange(e, 'exclusions')}
             placeholder="Enter exclusions (one per line)"
             className="min-h-32"
+            rows={8}
           />
           <p className="text-sm text-gray-500 mt-1">
             List all items not included in the package price
