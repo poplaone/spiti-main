@@ -7,12 +7,19 @@ import { initializeStorage, resetToDefaultTours } from './tourStorage';
 export const getLocalTours = (): TourPackageProps[] => {
   initializeStorage();
   const storedTours = localStorage.getItem(TOURS_STORAGE_KEY);
-  return storedTours ? JSON.parse(storedTours) : [];
+  const tours = storedTours ? JSON.parse(storedTours) : [];
+  console.log("Retrieved tours from localStorage, count:", tours.length);
+  return tours;
 };
 
 // Save tours to localStorage
 export const saveToursToLocalStorage = (tours: TourPackageProps[]): void => {
   try {
+    // Ensure each tour has a valid index
+    tours.forEach((tour, idx) => {
+      tour.index = idx;
+    });
+    
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
     console.log("Tours saved to localStorage successfully, count:", tours.length);
   } catch (error) {
@@ -25,6 +32,7 @@ export const saveToursToLocalStorage = (tours: TourPackageProps[]): void => {
 export const getLocalTourByIndex = (index: number): TourPackageProps | null => {
   try {
     const tours = getLocalTours();
+    console.log(`Retrieving tour at index ${index}, total tours: ${tours.length}`);
     return index >= 0 && index < tours.length ? tours[index] : null;
   } catch (error) {
     console.error("Error getting tour by index:", error);

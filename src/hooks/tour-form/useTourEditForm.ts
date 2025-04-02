@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -7,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 import { getTourByIndex, addTour, updateTour } from '@/services/tourService';
 import { TourPackageProps } from '@/components/TourPackage';
-import { FormInputChangeEvent, TourFormState } from './types';
 
 // Form schema
 export const tourSchema = z.object({

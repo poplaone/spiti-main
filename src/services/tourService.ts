@@ -46,6 +46,7 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
   try {
     // Get existing tours
     const tours = getLocalTours();
+    console.log("Current tours count:", tours.length);
     
     // Auto-generate customUrl if not provided
     if (!tour.customUrl) {
@@ -54,9 +55,7 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
     }
     
     // Convert any legacy transport type
-    if (String(tour.transportType) === 'innova') {
-      tour.transportType = 'premium';
-    }
+    tour.transportType = normalizeTransportType(String(tour.transportType));
     
     // Ensure all required fields exist
     const completeData = {
@@ -101,9 +100,7 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
       updatedTour.index = index;
       
       // Convert any legacy transport type
-      if (String(updatedTour.transportType) === 'innova') {
-        updatedTour.transportType = 'premium';
-      }
+      updatedTour.transportType = normalizeTransportType(String(updatedTour.transportType));
       
       // Update in localStorage
       tours[index] = updatedTour;
@@ -132,6 +129,7 @@ export const deleteTour = async (index: number): Promise<void> => {
       });
       
       saveToursToLocalStorage(tours);
+      console.log("Tour deleted successfully at index:", index);
     }
   } catch (error) {
     console.error("Error deleting tour:", error);

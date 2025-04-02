@@ -53,6 +53,12 @@ const AdminTourEdit: React.FC = () => {
     );
   }
   
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form submit triggered");
+    await form.handleSubmit(onSubmit)(e);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -66,7 +72,7 @@ const AdminTourEdit: React.FC = () => {
         </div>
         
         <Button 
-          onClick={() => form.handleSubmit(onSubmit)()}
+          onClick={handleFormSubmit}
           disabled={isLoading}
           type="button"
         >
@@ -85,10 +91,7 @@ const AdminTourEdit: React.FC = () => {
         </TabsList>
         
         <Form {...form}>
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            form.handleSubmit(onSubmit)(e);
-          }} className="space-y-8">
+          <form onSubmit={handleFormSubmit} className="space-y-8">
             <TabsContent value="basic">
               <BasicInfoTab form={form} />
             </TabsContent>
@@ -131,6 +134,16 @@ const AdminTourEdit: React.FC = () => {
                 removeItineraryDay={removeItineraryDay}
               />
             </TabsContent>
+
+            <div className="flex justify-end pt-4">
+              <Button 
+                type="submit" 
+                disabled={isLoading}
+              >
+                <Save className="mr-1 h-4 w-4" />
+                {isLoading ? 'Saving...' : 'Save Tour'}
+              </Button>
+            </div>
           </form>
         </Form>
       </Tabs>
