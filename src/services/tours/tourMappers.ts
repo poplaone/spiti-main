@@ -1,7 +1,8 @@
 
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps, DepartureDate } from "@/components/TourPackage";
 import { TourTransportType } from "@/data/types/tourTypes";
-import { parseTourDuration, parseNightStays, parseItinerary, parseDepartureDates } from "./tourTypes";
+import { Json } from "@/integrations/supabase/types";
+import { parseTourDuration, parseNightStays, parseItinerary, parseDepartureDates, TourDepartureDateJSON } from "./tourTypes";
 
 // Map Supabase tour data to TourPackageProps
 export const mapSupabaseTourToProps = (data: any): TourPackageProps => {
@@ -9,7 +10,15 @@ export const mapSupabaseTourToProps = (data: any): TourPackageProps => {
   const duration = parseTourDuration(data.duration);
   const nightStays = parseNightStays(data.night_stays);
   const itinerary = parseItinerary(data.itinerary);
-  const departureDates = parseDepartureDates(data.departure_dates);
+  const departureDatesRaw = parseDepartureDates(data.departure_dates);
+  
+  // Convert from TourDepartureDateJSON[] to DepartureDate[] format
+  const departureDates: DepartureDate[] = departureDatesRaw.map((month) => {
+    return {
+      id: `${month.month}-${Math.random().toString(36).substring(2, 9)}`,
+      status: 'Available'
+    };
+  });
   
   return {
     title: data.title,
@@ -41,6 +50,15 @@ export const mapSupabaseTourToProps = (data: any): TourPackageProps => {
 
 // Map TourPackageProps to Supabase tour format
 export const mapTourPropsToSupabase = (tour: TourPackageProps) => {
+  // Convert departureDates to a format that can be stored in Supabase
+  // We need to convert from DepartureDate[] to a JSONB structure
+  const departureDatesForSupabase = JSON.stringify(
+    tour.departureDates?.map(d => ({
+      month: d.id.split('-')[0] || 'June',
+      dates: []
+    })) || []
+  );
+
   return {
     title: tour.title,
     image: tour.image,
@@ -48,18 +66,18 @@ export const mapTourPropsToSupabase = (tour: TourPackageProps) => {
     discounted_price: tour.discountedPrice,
     discount: tour.discount,
     duration: tour.duration,
-    night_stays: tour.nightStays,
+    night_stays: JSON.stringify(tour.nightStays),
     inclusions: tour.inclusions,
     exclusions: tour.exclusions || [],
     overview: tour.overview || "",
-    itinerary: tour.itinerary || [],
+    itinerary: JSON.stringify(tour.itinerary || []),
     is_fixed_departure: tour.hasFixedDepartures !== false,
     is_customizable: tour.isCustomizable !== false,
     transport_type: tour.transportType,
     is_women_only: tour.isWomenOnly || false,
     available_dates: tour.availableDates || "June to October",
     custom_url: tour.customUrl || "",
-    departure_dates: tour.departureDates || [],
+    departure_dates: departureDatesForSupabase,
     best_time: tour.bestTime || "June to September",
     group_size: tour.groupSize || "2-10 People",
     terrain: tour.terrain || "Himalayan Mountain Passes",

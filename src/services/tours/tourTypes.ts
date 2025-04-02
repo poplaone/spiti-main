@@ -56,7 +56,8 @@ export const parseNightStays = (data: Json | null): TourNightStayJSON[] => {
     if (typeof data === 'string') {
       return JSON.parse(data);
     } else if (Array.isArray(data)) {
-      return data as TourNightStayJSON[];
+      // First convert to unknown to avoid direct type assignment
+      return (data as unknown) as TourNightStayJSON[];
     }
   } catch (e) {
     console.error("Error parsing night stays:", e);
@@ -74,7 +75,8 @@ export const parseItinerary = (data: Json | null): TourItineraryDayJSON[] => {
     if (typeof data === 'string') {
       return JSON.parse(data);
     } else if (Array.isArray(data)) {
-      return data as TourItineraryDayJSON[];
+      // First convert to unknown to avoid direct type assignment
+      return (data as unknown) as TourItineraryDayJSON[];
     }
   } catch (e) {
     console.error("Error parsing itinerary:", e);
@@ -92,7 +94,8 @@ export const parseDepartureDates = (data: Json | null): TourDepartureDateJSON[] 
     if (typeof data === 'string') {
       return JSON.parse(data);
     } else if (Array.isArray(data)) {
-      return data as TourDepartureDateJSON[];
+      // First convert to unknown to avoid direct type assignment
+      return (data as unknown) as TourDepartureDateJSON[];
     }
   } catch (e) {
     console.error("Error parsing departure dates:", e);

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -21,24 +22,36 @@ const TourDetailWomen = () => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const [loading, setLoading] = useState<boolean>(true);
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Get all tours
-    const allTours = getAllTours();
     
-    // Get the Women Only tour (index 3)
-    const selectedTour = allTours[3];
-    if (selectedTour) {
-      setTour(selectedTour);
-
-      // Get other tours for the "More Popular Tours" section
-      const others = allTours.filter((_, index) => index !== 3).slice(0, 4);
-      setOtherTours(others);
-    }
+    const fetchData = async () => {
+      try {
+        // Get all tours
+        const allTours = await getAllTours();
+        
+        // Get the Women Only tour (index 3)
+        const selectedTour = allTours[3];
+        if (selectedTour) {
+          setTour(selectedTour);
+          
+          // Get other tours for the "More Popular Tours" section
+          const others = allTours.filter((_, index) => index !== 3).slice(0, 4);
+          setOtherTours(others);
+        }
+      } catch (error) {
+        console.error("Error fetching tour data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
   }, []);
 
-  if (!tour) {
+  if (loading || !tour) {
     return <div>Loading...</div>;
   }
 

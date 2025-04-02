@@ -84,6 +84,7 @@ export const addSupaTour = async (tour: TourPackageProps): Promise<void> => {
   try {
     const tourData = mapTourPropsToSupabase(tour);
     
+    // Create a new tour object that matches Supabase's schema
     const { error } = await supabase
       .from('tour_packages')
       .insert({
