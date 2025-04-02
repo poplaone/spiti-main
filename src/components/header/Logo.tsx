@@ -15,7 +15,7 @@ const Logo = ({ isVisible, isTourPage, isHomePage }: LogoProps) => {
           <img 
             src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
             alt="Spiti Valley Travels Logo" 
-            className="h-12 w-auto mr-2" 
+            className="h-12 w-auto object-contain mr-2" 
           />
         )}
       </div>
