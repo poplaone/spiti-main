@@ -1,12 +1,17 @@
 
 import { TourPackageProps } from "@/components/TourPackage";
 import { generateCustomUrl, normalizeTransportType } from './tours/tourUtils';
-import { supabase } from './supabase/supabaseClient';
+import { supabase, isSupabaseConfigured } from './supabase/supabaseClient';
 import { tourPackagesData } from '@/data/tourPackagesData';
 
 // Get all tours - fetches from Supabase
 export const getAllTours = async (): Promise<TourPackageProps[]> => {
   try {
+    if (!isSupabaseConfigured()) {
+      console.log("Supabase not configured, using local data");
+      return tourPackagesData;
+    }
+
     console.log("Fetching all tours from Supabase");
     const { data, error } = await supabase
       .from('tour_packages')
@@ -49,6 +54,12 @@ export const getAllTours = async (): Promise<TourPackageProps[]> => {
 // Get a single tour by index
 export const getTourByIndex = async (index: number): Promise<TourPackageProps | null> => {
   try {
+    if (!isSupabaseConfigured()) {
+      console.log("Supabase not configured, using local data for index:", index);
+      const localTour = tourPackagesData.find((t, i) => i === index);
+      return localTour || null;
+    }
+
     console.log("Fetching tour by index from Supabase:", index);
     const { data, error } = await supabase
       .from('tour_packages')
@@ -92,6 +103,20 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     // Normalize URL for comparison
     const normalizedUrl = url.trim().toLowerCase();
     
+    if (!isSupabaseConfigured()) {
+      console.log("Supabase not configured, using local data for URL:", normalizedUrl);
+      // Try exact match first
+      const localTour = tourPackagesData.find(t => 
+        t.customUrl && t.customUrl.toLowerCase() === normalizedUrl);
+      
+      if (localTour) return localTour;
+      
+      // Then try partial matches
+      return tourPackagesData.find(t => 
+        t.customUrl && (t.customUrl.toLowerCase().includes(normalizedUrl) ||
+                       normalizedUrl.includes(t.customUrl.toLowerCase())));
+    }
+    
     console.log("Fetching tour by custom URL from Supabase:", normalizedUrl);
     
     // First try exact match
@@ -130,7 +155,8 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     const { data: likeMatches, error: likeError } = await supabase
       .from('tour_packages')
       .select('*')
-      .ilike('custom_url', `%${normalizedUrl}%`);
+      .or(`custom_url.ilike.%${normalizedUrl}%,custom_url.ilike.${normalizedUrl}%,custom_url.ilike.%${normalizedUrl}`)
+      .order('custom_url', { ascending: true });
     
     if (likeError) {
       console.error("Error fetching tour by custom URL (ILIKE match) from Supabase:", likeError);
@@ -143,7 +169,7 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     }
     
     if (likeMatches && likeMatches.length > 0) {
-      console.log("Partial URL match found");
+      console.log("Partial URL match found:", likeMatches[0].custom_url);
       
       // Convert database format to app format
       return {
@@ -156,6 +182,35 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
         transportType: normalizeTransportType(String(likeMatches[0].transport_type)),
         customUrl: likeMatches[0].custom_url
       };
+    }
+    
+    // Try another approach - check if URL contains tour URL
+    const { data: containsMatches, error: containsError } = await supabase
+      .from('tour_packages')
+      .select('*');
+      
+    if (!containsError && containsMatches) {
+      // Find any match where either the URL contains the custom_url or vice versa
+      const match = containsMatches.find(tour => 
+        tour.custom_url && (
+          normalizedUrl.includes(tour.custom_url.toLowerCase()) || 
+          tour.custom_url.toLowerCase().includes(normalizedUrl)
+        )
+      );
+      
+      if (match) {
+        console.log("Found match through contains check:", match.custom_url);
+        return {
+          ...match,
+          originalPrice: match.original_price,
+          discountedPrice: match.discounted_price,
+          hasFixedDepartures: match.is_fixed_departure,
+          isCustomizable: match.is_customizable !== false,
+          isWomenOnly: match.is_women_only,
+          transportType: normalizeTransportType(String(match.transport_type)),
+          customUrl: match.custom_url
+        };
+      }
     }
     
     console.log("No URL match found for:", normalizedUrl);
@@ -171,7 +226,8 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     }
     
     const localPartialTour = tourPackagesData.find(t => 
-      t.customUrl && t.customUrl.toLowerCase().includes(normalizedUrl));
+      t.customUrl && (t.customUrl.toLowerCase().includes(normalizedUrl) || 
+                     normalizedUrl.includes(t.customUrl.toLowerCase())));
       
     if (localPartialTour) {
       console.log("Found partial match in local data");
@@ -187,7 +243,8 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     const normalizedUrl = url.trim().toLowerCase();
     const localTour = tourPackagesData.find(t => 
       t.customUrl && (t.customUrl.toLowerCase() === normalizedUrl || 
-                     t.customUrl.toLowerCase().includes(normalizedUrl)));
+                     t.customUrl.toLowerCase().includes(normalizedUrl) ||
+                     normalizedUrl.includes(t.customUrl.toLowerCase())));
     return localTour || null;
   }
 };
@@ -195,6 +252,11 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
 // Initialize database with default tours if empty
 export const initializeToursDatabase = async (): Promise<void> => {
   try {
+    if (!isSupabaseConfigured()) {
+      console.log("Supabase not configured, skipping database initialization");
+      return;
+    }
+
     // Check if tours table is empty
     const { data, error } = await supabase
       .from('tour_packages')

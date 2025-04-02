@@ -46,7 +46,7 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
           // Then check if it's a custom URL
           console.log("Treating as custom URL:", id);
           selectedTour = await getTourByCustomUrl(id);
-          console.log("Custom URL lookup result:", selectedTour);
+          console.log("Custom URL lookup result:", selectedTour ? "Found" : "Not found", selectedTour?.title || "");
         }
         
         if (selectedTour) {
