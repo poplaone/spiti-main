@@ -52,18 +52,19 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
     tour.transportType = 'premium';
   }
 
-  // Set the index for the new tour
-  const tours = await getAllTours();
-  const tourWithIndex = {
-    ...tour,
-    index: tours.length
-  };
-
   try {
     // Save to localStorage
-    const localTours = getLocalTours();
-    localTours.push(tourWithIndex);
-    saveToursToLocalStorage(localTours);
+    const tours = getLocalTours();
+    
+    // Set the index for the new tour
+    const tourWithIndex = {
+      ...tour,
+      index: tours.length
+    };
+    
+    tours.push(tourWithIndex);
+    saveToursToLocalStorage(tours);
+    console.log("Tour added successfully:", tourWithIndex);
   } catch (error) {
     console.error("Error adding tour:", error);
     throw error;
@@ -72,34 +73,34 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
 
 // Update an existing tour
 export const updateTour = async (index: number, updatedTour: TourPackageProps): Promise<void> => {
-  const tours = await getAllTours();
-  
-  if (index >= 0 && index < tours.length) {
-    // If title changed or customUrl is empty, regenerate it
-    if ((tours[index].title !== updatedTour.title) || !updatedTour.customUrl) {
-      updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
-        tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
-    }
+  try {
+    const tours = getLocalTours();
     
-    // Ensure the index field is set correctly
-    updatedTour.index = index;
-    
-    // Convert any legacy transport type
-    if (String(updatedTour.transportType) === 'innova') {
-      updatedTour.transportType = 'premium';
-    }
-    
-    try {
+    if (index >= 0 && index < tours.length) {
+      // If title changed or customUrl is empty, regenerate it
+      if ((tours[index].title !== updatedTour.title) || !updatedTour.customUrl) {
+        updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
+          tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
+      }
+      
+      // Ensure the index field is set correctly
+      updatedTour.index = index;
+      
+      // Convert any legacy transport type
+      if (String(updatedTour.transportType) === 'innova') {
+        updatedTour.transportType = 'premium';
+      }
+      
       // Update in localStorage
-      const localTours = getLocalTours();
-      localTours[index] = updatedTour;
-      saveToursToLocalStorage(localTours);
-    } catch (error) {
-      console.error("Error updating tour:", error);
-      throw error;
+      tours[index] = updatedTour;
+      saveToursToLocalStorage(tours);
+      console.log("Tour updated successfully:", updatedTour);
+    } else {
+      throw new Error(`Tour with index ${index} not found`);
     }
-  } else {
-    throw new Error(`Tour with index ${index} not found`);
+  } catch (error) {
+    console.error("Error updating tour:", error);
+    throw error;
   }
 };
 
@@ -107,16 +108,16 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
 export const deleteTour = async (index: number): Promise<void> => {
   try {
     // Delete from localStorage
-    const localTours = getLocalTours();
-    if (index >= 0 && index < localTours.length) {
-      localTours.splice(index, 1);
+    const tours = getLocalTours();
+    if (index >= 0 && index < tours.length) {
+      tours.splice(index, 1);
       
       // Update indices for remaining tours
-      localTours.forEach((tour, idx) => {
+      tours.forEach((tour, idx) => {
         tour.index = idx;
       });
       
-      saveToursToLocalStorage(localTours);
+      saveToursToLocalStorage(tours);
     }
   } catch (error) {
     console.error("Error deleting tour:", error);

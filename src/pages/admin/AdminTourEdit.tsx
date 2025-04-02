@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
@@ -146,11 +145,35 @@ const AdminTourEdit: React.FC = () => {
     };
     
     loadTour();
-  }, [isEditing, id, navigate]);
+  }, [isEditing, id, navigate, form]);
   
   // Handle form submission
   const onSubmit = async (values: TourFormValues) => {
+    console.log("Form submitted with values:", values);
     setIsLoading(true);
+    
+    // Validation for basic requirements
+    if (inclusions.length === 0) {
+      toast({
+        title: "Warning",
+        description: "Please add at least one inclusion",
+        variant: "destructive",
+      });
+      setActiveTab('inclusions');
+      setIsLoading(false);
+      return;
+    }
+    
+    if (nightStays.length === 0) {
+      toast({
+        title: "Warning",
+        description: "Please add at least one night stay location",
+        variant: "destructive",
+      });
+      setActiveTab('details');
+      setIsLoading(false);
+      return;
+    }
     
     // Create complete tour data by merging form values with other state
     const tourData: TourPackageProps = {
@@ -180,6 +203,7 @@ const AdminTourEdit: React.FC = () => {
     };
     
     try {
+      console.log("Saving tour data:", tourData);
       if (isEditing && id) {
         await updateTour(parseInt(id, 10), tourData);
         toast({
@@ -198,7 +222,7 @@ const AdminTourEdit: React.FC = () => {
       console.error("Error saving tour:", error);
       toast({
         title: "Error",
-        description: "Failed to save tour",
+        description: "Failed to save tour: " + (error instanceof Error ? error.message : String(error)),
         variant: "destructive",
       });
     } finally {
@@ -415,6 +439,7 @@ const AdminTourEdit: React.FC = () => {
                         <Select 
                           onValueChange={field.onChange}
                           defaultValue={field.value}
+                          value={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>

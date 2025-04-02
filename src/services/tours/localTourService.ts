@@ -12,7 +12,13 @@ export const getLocalTours = (): TourPackageProps[] => {
 
 // Save tours to localStorage
 export const saveToursToLocalStorage = (tours: TourPackageProps[]): void => {
-  localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
+  try {
+    localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
+    console.log("Tours saved to localStorage, count:", tours.length);
+  } catch (error) {
+    console.error("Error saving tours to localStorage:", error);
+    throw error;
+  }
 };
 
 // Get a single tour by index from localStorage
