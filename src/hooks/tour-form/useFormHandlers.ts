@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { TourPackageProps } from "@/components/TourPackage";
 import { FormInputChangeEvent, FormNumberChangeEvent, TransportType } from './types';

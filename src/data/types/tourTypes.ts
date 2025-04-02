@@ -1,7 +1,7 @@
 
 import { TourPackageProps } from '@/components/TourPackage';
 
-export type TourTransportType = 'bike' | 'car' | 'premium';
+export type TourTransportType = 'bike' | 'car' | 'premium' | 'innova';
 
 export interface TourNightStay {
   location: string;

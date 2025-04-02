@@ -1,5 +1,7 @@
+
 import { TourPackageProps, DepartureDate } from "@/components/TourPackage";
 import { tourPackagesData } from '@/data/tourPackagesData';
+import { TransportType } from "@/hooks/tour-form/types";
 
 // In a real application, these would communicate with a backend API
 // For now, we'll use localStorage to persist changes
@@ -49,7 +51,7 @@ const initializeStorage = () => {
       elevation: tour.elevation || "2,000 - 4,550 meters",
       accommodationType: tour.accommodationType || "Hotels & Homestays",
       // Convert any legacy transport type to "premium"
-      transportType: tour.transportType === "innova" ? "premium" as const : tour.transportType
+      transportType: (tour.transportType === "innova" ? "premium" : tour.transportType) as TransportType
     }));
     
     localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
@@ -90,7 +92,7 @@ const initializeStorage = () => {
         
         // Fix the type error by handling the "innova" case properly
         if (tour.transportType === "innova") {
-          updates.transportType = "premium" as const;
+          updates.transportType = "premium" as TransportType;
           needsUpdate = true;
         }
         
@@ -144,6 +146,11 @@ export const addTour = (tour: TourPackageProps): void => {
     tour.customUrl = generateCustomUrl(tour.title, tours);
   }
   
+  // Convert any legacy transport type
+  if (tour.transportType === "innova") {
+    tour.transportType = "premium" as TransportType;
+  }
+  
   tours.push(tour);
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(tours));
 };
@@ -156,6 +163,11 @@ export const updateTour = (index: number, updatedTour: TourPackageProps): void =
     if (tours[index].title !== updatedTour.title || !updatedTour.customUrl) {
       updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
         tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
+    }
+    
+    // Convert any legacy transport type
+    if (updatedTour.transportType === "innova") {
+      updatedTour.transportType = "premium" as TransportType;
     }
     
     tours[index] = updatedTour;
@@ -172,7 +184,7 @@ export const deleteTour = (index: number): void => {
   }
 };
 
-// Reset to default data (useful for testing or reset functionality)
+// Reset to default tours
 export const resetToDefaultTours = (): void => {
   const enhancedTours = tourPackagesData.map(tour => ({
     ...tour,
@@ -189,7 +201,7 @@ export const resetToDefaultTours = (): void => {
     terrain: tour.terrain || "Himalayan Mountain Passes",
     elevation: tour.elevation || "2,000 - 4,550 meters",
     accommodationType: tour.accommodationType || "Hotels & Homestays",
-    transportType: tour.transportType === "innova" ? "premium" as const : tour.transportType
+    transportType: (tour.transportType === "innova" ? "premium" : tour.transportType) as TransportType
   }));
   
   localStorage.setItem(TOURS_STORAGE_KEY, JSON.stringify(enhancedTours));
