@@ -39,7 +39,7 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
   }
 };
 
-// Add a new tour
+// Add a new tour - ensure all required properties are present
 export const addTour = async (tour: TourPackageProps): Promise<void> => {
   // Auto-generate customUrl if not provided
   if (!tour.customUrl) {

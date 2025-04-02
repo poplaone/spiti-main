@@ -152,14 +152,29 @@ const AdminTourEdit: React.FC = () => {
   const onSubmit = async (values: TourFormValues) => {
     setIsLoading(true);
     
+    // Create complete tour data by merging form values with other state
     const tourData: TourPackageProps = {
-      ...values,
+      title: values.title,
+      image: values.image,
+      originalPrice: values.originalPrice,
+      discountedPrice: values.discountedPrice,
+      discount: values.discount,
+      transportType: values.transportType,
+      overview: values.overview,
       duration,
       nightStays,
       inclusions,
       exclusions,
       itinerary,
-      // Ensure these fields are included
+      isWomenOnly: values.isWomenOnly,
+      hasFixedDepartures: values.hasFixedDepartures,
+      isCustomizable: values.isCustomizable,
+      availableDates: values.availableDates,
+      bestTime: values.bestTime,
+      groupSize: values.groupSize,
+      terrain: values.terrain,
+      elevation: values.elevation,
+      accommodationType: values.accommodationType,
       customUrl: initialData?.customUrl || '',
       departureDates: initialData?.departureDates || [],
     };

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export interface DepartureDate {
 }
 
 export interface TourPackageProps {
+  // Required properties
   title: string;
   image: string;
   originalPrice: number;
@@ -36,12 +38,14 @@ export interface TourPackageProps {
   };
   nightStays: NightStay[];
   inclusions: string[];
-  exclusions?: string[];
   overview: string;
+  transportType: 'bike' | 'car' | 'premium';
+  
+  // Optional properties
+  exclusions?: string[];
   itinerary?: ItineraryDay[];
   hasFixedDepartures?: boolean;
   isCustomizable?: boolean;
-  transportType: 'bike' | 'car' | 'premium';
   isWomenOnly?: boolean;
   availableDates?: string;
   customUrl?: string;
