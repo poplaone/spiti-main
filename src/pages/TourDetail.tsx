@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useTourDetail } from "@/hooks/useTourDetail";
@@ -8,9 +8,13 @@ import TourDetailSkeleton from "@/components/tour/TourDetailSkeleton";
 import TourNotFound from "@/components/tour/TourNotFound";
 import TourDetailContent from "@/components/tour/TourDetailContent";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { useToast } from "@/components/ui/use-toast";
 
 const TourDetail = () => {
   const { id } = useParams<{ id: string; }>();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
   const { 
     tour, 
     otherTours, 
@@ -21,6 +25,12 @@ const TourDetail = () => {
     formatPrice 
   } = useTourDetail(id);
 
+  useEffect(() => {
+    if (id) {
+      console.log("TourDetail component mounted with ID:", id);
+    }
+  }, [id]);
+
   // Show loading skeleton while data is being fetched
   if (loading) {
     return <TourDetailSkeleton />;
@@ -28,6 +38,15 @@ const TourDetail = () => {
 
   // Show not found message if tour doesn't exist
   if (!tour) {
+    console.log("Tour not found for ID:", id);
+    
+    // Display toast notification
+    toast({
+      title: "Tour Not Found",
+      description: `The tour "${id}" could not be found.`,
+      variant: "destructive"
+    });
+    
     return <TourNotFound />;
   }
 

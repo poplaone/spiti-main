@@ -78,30 +78,58 @@ export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps 
     console.log("Fetching tour by custom URL from Supabase:", normalizedUrl);
     
     // First try exact match
-    const { data, error } = await supabase
+    const { data: exactMatches, error: exactError } = await supabase
       .from('tour_packages')
       .select('*')
-      .ilike('custom_url', normalizedUrl);
+      .eq('custom_url', normalizedUrl);
     
-    if (error) {
-      console.error("Error fetching tour by custom URL from Supabase:", error);
+    if (exactError) {
+      console.error("Error fetching tour by custom URL (exact match) from Supabase:", exactError);
       return null;
     }
     
-    if (data && data.length > 0) {
+    if (exactMatches && exactMatches.length > 0) {
+      console.log("Exact URL match found");
       // Convert database format to app format
       return {
-        ...data[0],
-        originalPrice: data[0].original_price,
-        discountedPrice: data[0].discounted_price,
-        hasFixedDepartures: data[0].is_fixed_departure,
-        isCustomizable: data[0].is_customizable !== false,
-        isWomenOnly: data[0].is_women_only,
-        transportType: normalizeTransportType(String(data[0].transport_type)),
-        customUrl: data[0].custom_url
+        ...exactMatches[0],
+        originalPrice: exactMatches[0].original_price,
+        discountedPrice: exactMatches[0].discounted_price,
+        hasFixedDepartures: exactMatches[0].is_fixed_departure,
+        isCustomizable: exactMatches[0].is_customizable !== false,
+        isWomenOnly: exactMatches[0].is_women_only,
+        transportType: normalizeTransportType(String(exactMatches[0].transport_type)),
+        customUrl: exactMatches[0].custom_url
       };
     }
     
+    // If exact match failed, try with ILIKE for partial match
+    const { data: likeMatches, error: likeError } = await supabase
+      .from('tour_packages')
+      .select('*')
+      .ilike('custom_url', `%${normalizedUrl}%`);
+    
+    if (likeError) {
+      console.error("Error fetching tour by custom URL (ILIKE match) from Supabase:", likeError);
+      return null;
+    }
+    
+    if (likeMatches && likeMatches.length > 0) {
+      console.log("Partial URL match found");
+      // Convert database format to app format
+      return {
+        ...likeMatches[0],
+        originalPrice: likeMatches[0].original_price,
+        discountedPrice: likeMatches[0].discounted_price,
+        hasFixedDepartures: likeMatches[0].is_fixed_departure,
+        isCustomizable: likeMatches[0].is_customizable !== false,
+        isWomenOnly: likeMatches[0].is_women_only,
+        transportType: normalizeTransportType(String(likeMatches[0].transport_type)),
+        customUrl: likeMatches[0].custom_url
+      };
+    }
+    
+    console.log("No URL match found for:", normalizedUrl);
     return null;
   } catch (error) {
     console.error("Error in getTourByCustomUrl:", error);

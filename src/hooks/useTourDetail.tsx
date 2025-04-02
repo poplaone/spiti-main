@@ -27,36 +27,46 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
     
     const fetchTourData = async () => {
       if (!id) {
+        console.error("No tour ID provided");
         setLoading(false);
         return;
       }
       
       try {
-        console.log("Fetching tour data for ID:", id);
+        console.log("Fetching tour data for ID/URL:", id);
         let selectedTour = null;
         
         // First check if it's a numeric ID
         if (!isNaN(parseInt(id))) {
           const numId = parseInt(id, 10);
+          console.log("Treating as numeric ID:", numId);
           selectedTour = await getTourByIndex(numId);
           console.log("Numeric ID lookup result:", selectedTour);
         } else {
           // Then check if it's a custom URL
+          console.log("Treating as custom URL:", id);
           selectedTour = await getTourByCustomUrl(id);
           console.log("Custom URL lookup result:", selectedTour);
         }
         
         if (selectedTour) {
+          console.log("Tour found:", selectedTour.title);
           setTour(selectedTour);
           
           // Now fetch related tours
           try {
+            console.log("Fetching related tours");
             const allTours = await getAllTours();
+            console.log("Total tours found:", allTours.length);
+            
             const currentIndex = selectedTour.index;
+            
             // Filter out the current tour and get up to 4 related tours
             const others = allTours
               .filter(tour => tour.index !== currentIndex)
               .slice(0, 4);
+              
+            console.log("Related tours:", others.length);
             setOtherTours(others);
           } catch (error) {
             console.error("Error fetching related tours:", error);
@@ -69,12 +79,8 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
             setRelatedToursLoading(false);
           }
         } else {
-          console.error("Tour not found for ID:", id);
-          toast({
-            title: "Tour Not Found",
-            description: "The requested tour could not be found.",
-            variant: "destructive"
-          });
+          console.error("Tour not found for ID/URL:", id);
+          setTour(null);
         }
       } catch (error) {
         console.error("Error fetching tour details:", error);
