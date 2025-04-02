@@ -17,19 +17,25 @@ import {
   deleteSupaTour
 } from './tours/supaTourService';
 
-// Get all tours - now fetches from Supabase with fallback to localStorage
+// Get all tours - fetches from Supabase with fallback to localStorage
 export const getAllTours = async (): Promise<TourPackageProps[]> => {
   try {
+    console.log("Fetching all tours from Supabase...");
     // Try to fetch from Supabase first
     const tours = await getSupaTours();
+    console.log(`Fetched ${tours.length} tours from Supabase`);
+    
     if (tours && tours.length > 0) {
       // Keep localStorage in sync with Supabase
       saveToursToLocalStorage(tours);
       return tours;
     }
+    
+    console.log("No tours found in Supabase, using local storage");
     return getLocalTours();
   } catch (error) {
     console.error("Error in getAllTours:", error);
+    console.log("Using local storage as fallback...");
     return getLocalTours();
   }
 };
@@ -100,8 +106,11 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
     
     // Then refresh from Supabase to ensure data consistency
     await getAllTours();
+    
+    return;
   } catch (error) {
     console.error("Error adding tour to Supabase:", error);
+    console.log("Falling back to localStorage...");
     
     // Fallback to localStorage only if Supabase fails
     const localTours = getLocalTours();
@@ -121,6 +130,9 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
         tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
     }
     
+    // Ensure the index field is set correctly
+    updatedTour.index = index;
+    
     // Convert any legacy transport type
     if (String(updatedTour.transportType) === 'innova') {
       updatedTour.transportType = 'premium';
@@ -134,14 +146,19 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
       
       // Then refresh from Supabase to ensure data consistency
       await getAllTours();
+      
+      return;
     } catch (error) {
       console.error("Error updating tour in Supabase:", error);
+      console.log("Falling back to localStorage...");
       
       // Fallback to localStorage only if Supabase fails
       const localTours = getLocalTours();
       localTours[index] = updatedTour;
       saveToursToLocalStorage(localTours);
     }
+  } else {
+    throw new Error(`Tour with index ${index} not found`);
   }
 };
 
@@ -155,8 +172,11 @@ export const deleteTour = async (index: number): Promise<void> => {
     
     // Then refresh from Supabase to ensure data consistency
     await getAllTours();
+    
+    return;
   } catch (error) {
     console.error("Error deleting tour from Supabase:", error);
+    console.log("Falling back to localStorage...");
     
     // Fallback to localStorage only if Supabase fails
     const localTours = getLocalTours();

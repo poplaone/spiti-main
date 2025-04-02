@@ -21,7 +21,9 @@ export const getSupaTours = async (): Promise<TourPackageProps[]> => {
     if (data && data.length > 0) {
       console.log(`Found ${data.length} tours in Supabase`);
       // Transform the Supabase data to match our TourPackageProps format
-      return data.map(tour => mapSupabaseTourToProps(tour));
+      const mappedTours = data.map(tour => mapSupabaseTourToProps(tour));
+      console.log("First mapped tour:", mappedTours[0]);
+      return mappedTours;
     }
     
     console.log("No tours found in Supabase");
@@ -101,16 +103,17 @@ export const addSupaTour = async (tour: TourPackageProps): Promise<void> => {
       .insert({
         ...tourData,
         id: uuidv4(),
-        index: tour.index
-      })
-      .select();
+        index: tour.index,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      });
     
     if (error) {
       console.error("Error adding tour to Supabase:", error);
       throw error;
     }
     
-    console.log('Tour added successfully to Supabase:', data);
+    console.log('Tour added successfully to Supabase');
   } catch (error) {
     console.error("Error in addSupaTour:", error);
     throw error;
@@ -122,22 +125,23 @@ export const updateSupaTour = async (index: number, updatedTour: TourPackageProp
   try {
     console.log(`Converting tour at index ${index} for Supabase update...`);
     const tourData = mapTourPropsToSupabase(updatedTour);
+    tourData.updated_at = new Date().toISOString();
     
     // First, try to find the existing record by index
     console.log(`Looking up existing tour with index ${index}...`);
-    const { data } = await supabase
+    const { data: findResult } = await supabase
       .from('tour_packages')
       .select('id')
       .eq('index', index)
       .maybeSingle();
     
-    if (data?.id) {
+    if (findResult?.id) {
       // If found, update the record
-      console.log(`Found tour with ID ${data.id}, updating...`);
+      console.log(`Found tour with ID ${findResult.id}, updating...`);
       const { error } = await supabase
         .from('tour_packages')
         .update(tourData)
-        .eq('id', data.id);
+        .eq('id', findResult.id);
       
       if (error) {
         console.error("Error updating tour in Supabase:", error);
@@ -184,6 +188,8 @@ export const deleteSupaTour = async (index: number): Promise<void> => {
     
     if (remainingTours) {
       console.log(`Found ${remainingTours.length} remaining tours to reindex`);
+      
+      // Update each tour with its new index
       for (let i = 0; i < remainingTours.length; i++) {
         const tour = remainingTours[i];
         if (tour.index !== i) {

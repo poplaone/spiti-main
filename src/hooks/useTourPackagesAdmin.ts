@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { TourPackageProps } from "@/components/TourPackage";
 import { getAllTours, deleteTour } from '@/services/tourService';
@@ -13,10 +13,12 @@ export const useTourPackagesAdmin = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
-  const loadTours = async () => {
+  const loadTours = useCallback(async () => {
     setLoading(true);
     try {
+      console.log("Fetching all tours...");
       const allTours = await getAllTours();
+      console.log("Fetched tours:", allTours);
       setTours(allTours);
       setFilteredTours(allTours);
     } catch (error) {
@@ -28,12 +30,12 @@ export const useTourPackagesAdmin = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   useEffect(() => {
     // Initialize tours from service
     loadTours();
-  }, []);
+  }, [loadTours]);
 
   useEffect(() => {
     // Filter tours based on search term
@@ -71,6 +73,8 @@ export const useTourPackagesAdmin = () => {
     }
   };
 
+  const refetchTours = loadTours;
+
   return {
     filteredTours,
     searchTerm,
@@ -80,6 +84,7 @@ export const useTourPackagesAdmin = () => {
     tourToDelete,
     handleDeleteClick,
     handleDeleteConfirm,
-    loading
+    loading,
+    refetchTours
   };
 };

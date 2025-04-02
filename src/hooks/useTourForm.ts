@@ -1,15 +1,17 @@
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TourPackageProps } from "@/components/TourPackage";
-import { getTourByIndex } from '@/services/tourService';
+import { getTourByIndex, addTour, updateTour } from '@/services/tourService';
 import { getEmptyTourData } from './tour-form/utils';
 import { useFormHandlers } from './tour-form/useFormHandlers';
-import { useFormSubmission } from './tour-form/useFormSubmission';
+import { useToast } from "@/components/ui/use-toast";
 
 export function useTourForm() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const isEditing = id !== undefined;
+  const { toast } = useToast();
   
   const [activeTab, setActiveTab] = useState("basic");
   const [formData, setFormData] = useState<TourPackageProps>(getEmptyTourData());
@@ -25,27 +27,38 @@ export function useTourForm() {
           const fetchedTour = await getTourByIndex(tourIndex);
           
           if (fetchedTour) {
+            console.log("Fetched tour for editing:", fetchedTour);
             // Deep clone to avoid modifying original data
-            const clonedTour = JSON.parse(JSON.stringify(fetchedTour));
-            
             setFormData({
-              ...clonedTour,
-              hasFixedDepartures: clonedTour.hasFixedDepartures !== false,
-              isCustomizable: clonedTour.isCustomizable !== false,
-              availableDates: clonedTour.availableDates || "June to October",
-              exclusions: clonedTour.exclusions || [],
-              itinerary: clonedTour.itinerary || [],
-              customUrl: clonedTour.customUrl || "",
-              departureDates: clonedTour.departureDates || [],
-              bestTime: clonedTour.bestTime || "June to September",
-              groupSize: clonedTour.groupSize || "2-10 People",
-              terrain: clonedTour.terrain || "Himalayan Mountain Passes",
-              elevation: clonedTour.elevation || "2,000 - 4,550 meters",
-              accommodationType: clonedTour.accommodationType || "Hotels & Homestays"
+              ...JSON.parse(JSON.stringify(fetchedTour)),
+              hasFixedDepartures: fetchedTour.hasFixedDepartures !== false,
+              isCustomizable: fetchedTour.isCustomizable !== false,
+              availableDates: fetchedTour.availableDates || "June to October",
+              exclusions: fetchedTour.exclusions || [],
+              itinerary: fetchedTour.itinerary || [],
+              customUrl: fetchedTour.customUrl || "",
+              departureDates: fetchedTour.departureDates || [],
+              bestTime: fetchedTour.bestTime || "June to September",
+              groupSize: fetchedTour.groupSize || "2-10 People",
+              terrain: fetchedTour.terrain || "Himalayan Mountain Passes",
+              elevation: fetchedTour.elevation || "2,000 - 4,550 meters",
+              accommodationType: fetchedTour.accommodationType || "Hotels & Homestays"
             });
+          } else {
+            toast({
+              title: "Error",
+              description: "Tour not found",
+              variant: "destructive"
+            });
+            navigate("/admin/tours");
           }
         } catch (error) {
           console.error("Error fetching tour data:", error);
+          toast({
+            title: "Error",
+            description: "Failed to load tour data",
+            variant: "destructive"
+          });
         } finally {
           setLoading(false);
         }
@@ -53,7 +66,7 @@ export function useTourForm() {
       
       fetchTourData();
     }
-  }, [id, isEditing]);
+  }, [id, isEditing, navigate, toast]);
 
   // Import form handlers
   const {
@@ -64,8 +77,39 @@ export function useTourForm() {
     handleImageChange
   } = useFormHandlers(formData, setFormData);
   
-  // Import form submission
-  const { handleSubmit, handleCancel } = useFormSubmission(formData, isEditing, id, setActiveTab);
+  // Form submission handler
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      if (isEditing && id) {
+        const tourIndex = parseInt(id);
+        await updateTour(tourIndex, formData);
+        toast({
+          description: "Tour package updated successfully",
+        });
+      } else {
+        await addTour(formData);
+        toast({
+          description: "Tour package added successfully",
+        });
+      }
+      
+      // Redirect back to tours list
+      navigate("/admin/tours");
+    } catch (error) {
+      console.error("Error saving tour:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save tour package",
+        variant: "destructive"
+      });
+    }
+  };
+  
+  const handleCancel = () => {
+    navigate("/admin/tours");
+  };
 
   return {
     formData,

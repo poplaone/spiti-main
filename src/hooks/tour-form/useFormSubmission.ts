@@ -3,24 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/components/ui/use-toast";
 import { TourPackageProps } from "@/components/TourPackage";
 import { addTour, updateTour } from '@/services/tourService';
-import { calculateDiscount } from './utils';
 
-export function useFormSubmission(
-  formData: TourPackageProps,
+export const useFormSubmission = (
+  formData: TourPackageProps, 
   isEditing: boolean, 
   id: string | undefined,
-  setActiveTab: (tab: string) => void
-) {
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>
+) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate required fields
+    // Basic validation
     if (!formData.title) {
       toast({
-        description: "Title is required",
+        title: "Validation Error",
+        description: "Tour title is required",
         variant: "destructive"
       });
       setActiveTab("basic");
@@ -29,6 +29,7 @@ export function useFormSubmission(
     
     if (!formData.image) {
       toast({
+        title: "Validation Error",
         description: "Tour image is required",
         variant: "destructive"
       });
@@ -36,15 +37,30 @@ export function useFormSubmission(
       return;
     }
     
-    // Calculate discount percentage
-    if (formData.originalPrice > 0 && formData.discountedPrice > 0) {
-      const discount = calculateDiscount(formData.originalPrice, formData.discountedPrice);
-      formData.discount = discount;
+    if (!formData.transportType) {
+      toast({
+        title: "Validation Error",
+        description: "Transport type is required",
+        variant: "destructive"
+      });
+      setActiveTab("basic");
+      return;
+    }
+    
+    if (formData.originalPrice <= 0 || formData.discountedPrice <= 0) {
+      toast({
+        title: "Validation Error",
+        description: "Tour prices must be greater than zero",
+        variant: "destructive"
+      });
+      setActiveTab("basic");
+      return;
     }
     
     try {
       if (isEditing && id) {
-        await updateTour(parseInt(id), formData);
+        const tourIndex = parseInt(id);
+        await updateTour(tourIndex, formData);
         toast({
           description: "Tour package updated successfully",
         });
@@ -55,22 +71,24 @@ export function useFormSubmission(
         });
       }
       
+      // Redirect back to tours list
       navigate("/admin/tours");
     } catch (error) {
       console.error("Error saving tour:", error);
       toast({
+        title: "Error",
         description: "Failed to save tour package",
         variant: "destructive"
       });
     }
   };
-
+  
   const handleCancel = () => {
     navigate("/admin/tours");
   };
 
   return {
     handleSubmit,
-    handleCancel
+    handleCancel,
   };
-}
+};
