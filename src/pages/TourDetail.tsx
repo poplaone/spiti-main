@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useTourDetail } from "@/hooks/useTourDetail";
@@ -10,6 +10,15 @@ import TourDetailContent from "@/components/tour/TourDetailContent";
 
 const TourDetail = () => {
   const { id } = useParams<{ id: string; }>();
+  const navigate = useNavigate();
+  
+  // Check if the URL format is old style (/tour/customurl) and redirect if needed
+  useEffect(() => {
+    if (id && window.location.pathname.startsWith('/tour/')) {
+      navigate(`/tour-${id}`, { replace: true });
+    }
+  }, [id, navigate]);
+
   const { 
     tour, 
     otherTours, 

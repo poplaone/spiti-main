@@ -62,7 +62,10 @@ const App = () => {
             <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
             <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
             
-            {/* Dynamic routes for tour details - both numeric IDs and custom URLs */}
+            {/* Dynamic routes for tour details - numeric IDs */}
+            <Route path="/tour-:id" element={<TourDetail />} />
+            
+            {/* Backward compatibility route - will redirect in TourDetail component */}
             <Route path="/tour/:id" element={<TourDetail />} />
             
             {/* Admin routes */}
