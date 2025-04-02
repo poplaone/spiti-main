@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { TourPackageProps } from "@/components/TourPackage";
 import { getAllTours, deleteTour } from '@/services/tourService';
 
@@ -73,8 +73,6 @@ export const useTourPackagesAdmin = () => {
     }
   };
 
-  const refetchTours = loadTours;
-
   return {
     filteredTours,
     searchTerm,
@@ -85,6 +83,6 @@ export const useTourPackagesAdmin = () => {
     handleDeleteClick,
     handleDeleteConfirm,
     loading,
-    refetchTours
+    refetchTours: loadTours
   };
 };

@@ -17,7 +17,7 @@ const AdminLogin = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simple authentication - in a real app, you'd want to use a secure auth system
+    // Simple authentication - in a real app, you'd use Supabase Auth
     if (username === "admin" && password === "spitiValley123") {
       // Store admin status in localStorage
       localStorage.setItem("isAdminLoggedIn", "true");

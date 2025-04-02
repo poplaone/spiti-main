@@ -2,7 +2,79 @@
 import { TourPackageProps, DepartureDate } from "@/components/TourPackage";
 import { TourTransportType } from "@/data/types/tourTypes";
 import { Json } from "@/integrations/supabase/types";
-import { parseTourDuration, parseNightStays, parseItinerary, parseDepartureDates, TourDepartureDateJSON } from "./tourTypes";
+
+// Parse tour duration from JSON
+export const parseTourDuration = (json: Json) => {
+  if (!json) return { days: 0, nights: 0 };
+  
+  try {
+    if (typeof json === 'string') {
+      const parsed = JSON.parse(json as string);
+      return {
+        days: parseInt(parsed?.days || 0),
+        nights: parseInt(parsed?.nights || 0)
+      };
+    }
+    return {
+      days: parseInt((json as any)?.days || 0),
+      nights: parseInt((json as any)?.nights || 0)
+    };
+  } catch (e) {
+    console.error("Error parsing tour duration:", e);
+    return { days: 0, nights: 0 };
+  }
+};
+
+// Parse night stays from JSON
+export const parseNightStays = (json: Json) => {
+  if (!json) return [];
+  
+  try {
+    if (typeof json === 'string') {
+      return JSON.parse(json as string) || [];
+    }
+    return json as any[] || [];
+  } catch (e) {
+    console.error("Error parsing night stays:", e);
+    return [];
+  }
+};
+
+// Parse itinerary from JSON
+export const parseItinerary = (json: Json) => {
+  if (!json) return [];
+  
+  try {
+    if (typeof json === 'string') {
+      return JSON.parse(json as string) || [];
+    }
+    return json as any[] || [];
+  } catch (e) {
+    console.error("Error parsing itinerary:", e);
+    return [];
+  }
+};
+
+// Define departure date JSON structure
+export interface TourDepartureDateJSON {
+  month: string;
+  dates?: string[];
+}
+
+// Parse departure dates from JSON
+export const parseDepartureDates = (json: Json): TourDepartureDateJSON[] => {
+  if (!json) return [];
+  
+  try {
+    if (typeof json === 'string') {
+      return JSON.parse(json as string) || [];
+    }
+    return json as any[] || [];
+  } catch (e) {
+    console.error("Error parsing departure dates:", e);
+    return [];
+  }
+};
 
 // Map Supabase tour data to TourPackageProps
 export const mapSupabaseTourToProps = (data: any): TourPackageProps => {
@@ -51,7 +123,6 @@ export const mapSupabaseTourToProps = (data: any): TourPackageProps => {
 // Map TourPackageProps to Supabase tour format
 export const mapTourPropsToSupabase = (tour: TourPackageProps) => {
   // Convert departureDates to a format that can be stored in Supabase
-  // We need to convert from DepartureDate[] to a JSONB structure
   const departureDatesForSupabase = JSON.stringify(
     tour.departureDates?.map(d => ({
       month: d.id.split('-')[0] || 'June',
@@ -83,6 +154,6 @@ export const mapTourPropsToSupabase = (tour: TourPackageProps) => {
     terrain: tour.terrain || "Himalayan Mountain Passes",
     elevation: tour.elevation || "2,000 - 4,550 meters",
     accommodation_type: tour.accommodationType || "Hotels & Homestays",
-    updated_at: new Date().toISOString() // Add this line to include updated_at in the returned object
+    updated_at: new Date().toISOString()
   };
 };

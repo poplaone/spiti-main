@@ -2,9 +2,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TourPackageProps } from "@/components/TourPackage";
-import { getTourByIndex, addTour, updateTour } from '@/services/tourService';
+import { getTourByIndex } from '@/services/tourService';
 import { getEmptyTourData } from './tour-form/utils';
 import { useFormHandlers } from './tour-form/useFormHandlers';
+import { useFormSubmission } from './tour-form/useFormSubmission';
 import { useToast } from "@/components/ui/use-toast";
 
 export function useTourForm() {
@@ -77,39 +78,13 @@ export function useTourForm() {
     handleImageChange
   } = useFormHandlers(formData, setFormData);
   
-  // Form submission handler
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      if (isEditing && id) {
-        const tourIndex = parseInt(id);
-        await updateTour(tourIndex, formData);
-        toast({
-          description: "Tour package updated successfully",
-        });
-      } else {
-        await addTour(formData);
-        toast({
-          description: "Tour package added successfully",
-        });
-      }
-      
-      // Redirect back to tours list
-      navigate("/admin/tours");
-    } catch (error) {
-      console.error("Error saving tour:", error);
-      toast({
-        title: "Error",
-        description: "Failed to save tour package",
-        variant: "destructive"
-      });
-    }
-  };
-  
-  const handleCancel = () => {
-    navigate("/admin/tours");
-  };
+  // Import form submission handler
+  const { handleSubmit, handleCancel } = useFormSubmission(
+    formData, 
+    isEditing, 
+    id,
+    setActiveTab
+  );
 
   return {
     formData,
@@ -124,6 +99,6 @@ export function useTourForm() {
     handleTransportTypeChange,
     handleImageChange,
     handleSubmit,
-    handleCancel,
+    handleCancel
   };
 }

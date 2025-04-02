@@ -20,9 +20,7 @@ export const getSupaTours = async (): Promise<TourPackageProps[]> => {
 
     if (data && data.length > 0) {
       console.log(`Found ${data.length} tours in Supabase`);
-      // Transform the Supabase data to match our TourPackageProps format
       const mappedTours = data.map(tour => mapSupabaseTourToProps(tour));
-      console.log("First mapped tour:", mappedTours[0]);
       return mappedTours;
     }
     
@@ -104,8 +102,7 @@ export const addSupaTour = async (tour: TourPackageProps): Promise<void> => {
         ...tourData,
         id: uuidv4(),
         index: tour.index,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        created_at: new Date().toISOString()
       });
     
     if (error) {
@@ -125,8 +122,6 @@ export const updateSupaTour = async (index: number, updatedTour: TourPackageProp
   try {
     console.log(`Converting tour at index ${index} for Supabase update...`);
     const tourData = mapTourPropsToSupabase(updatedTour);
-    // Remove this line since updated_at is now included in mapTourPropsToSupabase
-    // tourData.updated_at = new Date().toISOString();
     
     // First, try to find the existing record by index
     console.log(`Looking up existing tour with index ${index}...`);
