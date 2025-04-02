@@ -82,6 +82,7 @@ export const mapTourPropsToSupabase = (tour: TourPackageProps) => {
     group_size: tour.groupSize || "2-10 People",
     terrain: tour.terrain || "Himalayan Mountain Passes",
     elevation: tour.elevation || "2,000 - 4,550 meters",
-    accommodation_type: tour.accommodationType || "Hotels & Homestays"
+    accommodation_type: tour.accommodationType || "Hotels & Homestays",
+    updated_at: new Date().toISOString() // Add this line to include updated_at in the returned object
   };
 };

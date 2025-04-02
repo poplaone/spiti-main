@@ -125,7 +125,8 @@ export const updateSupaTour = async (index: number, updatedTour: TourPackageProp
   try {
     console.log(`Converting tour at index ${index} for Supabase update...`);
     const tourData = mapTourPropsToSupabase(updatedTour);
-    tourData.updated_at = new Date().toISOString();
+    // Remove this line since updated_at is now included in mapTourPropsToSupabase
+    // tourData.updated_at = new Date().toISOString();
     
     // First, try to find the existing record by index
     console.log(`Looking up existing tour with index ${index}...`);
