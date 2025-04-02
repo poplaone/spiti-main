@@ -1,29 +1,68 @@
 
 import { TourPackageProps } from "@/components/TourPackage";
 import { generateCustomUrl, normalizeTransportType } from './tours/tourUtils';
-import { 
-  getLocalTours, 
-  getLocalTourByIndex, 
-  getLocalTourByCustomUrl, 
-  saveToursToLocalStorage, 
-  resetToDefaultTours,
-  initializeStorageListener
-} from './tours/localTourService';
+import { supabase } from './supabase/supabaseClient';
+import { tourPackagesData } from '@/data/tourPackagesData';
 
-// Get all tours - fetches from localStorage
+// Get all tours - fetches from Supabase
 export const getAllTours = async (): Promise<TourPackageProps[]> => {
   try {
-    return getLocalTours();
+    console.log("Fetching all tours from Supabase");
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .select('*')
+      .order('index', { ascending: true });
+    
+    if (error) {
+      console.error("Error fetching tours from Supabase:", error);
+      // Fallback to local data if Supabase fails
+      return tourPackagesData;
+    }
+    
+    // Convert database format to app format
+    return data.map(tour => ({
+      ...tour,
+      originalPrice: tour.original_price,
+      discountedPrice: tour.discounted_price,
+      hasFixedDepartures: tour.is_fixed_departure,
+      isCustomizable: tour.is_customizable !== false,
+      isWomenOnly: tour.is_women_only,
+      transportType: normalizeTransportType(String(tour.transport_type)),
+      customUrl: tour.custom_url
+    }));
   } catch (error) {
     console.error("Error in getAllTours:", error);
-    return [];
+    // Fallback to local data if something goes wrong
+    return tourPackagesData;
   }
 };
 
 // Get a single tour by index
 export const getTourByIndex = async (index: number): Promise<TourPackageProps | null> => {
   try {
-    return getLocalTourByIndex(index);
+    console.log("Fetching tour by index from Supabase:", index);
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .select('*')
+      .eq('index', index)
+      .single();
+    
+    if (error) {
+      console.error("Error fetching tour by index from Supabase:", error);
+      return null;
+    }
+    
+    // Convert database format to app format
+    return {
+      ...data,
+      originalPrice: data.original_price,
+      discountedPrice: data.discounted_price,
+      hasFixedDepartures: data.is_fixed_departure,
+      isCustomizable: data.is_customizable !== false,
+      isWomenOnly: data.is_women_only,
+      transportType: normalizeTransportType(String(data.transport_type)),
+      customUrl: data.custom_url
+    };
   } catch (error) {
     console.error("Error in getTourByIndex:", error);
     return null;
@@ -33,28 +72,55 @@ export const getTourByIndex = async (index: number): Promise<TourPackageProps | 
 // Get a single tour by custom URL
 export const getTourByCustomUrl = async (url: string): Promise<TourPackageProps | null> => {
   try {
-    return getLocalTourByCustomUrl(url);
+    // Normalize URL for comparison
+    const normalizedUrl = url.trim().toLowerCase();
+    
+    console.log("Fetching tour by custom URL from Supabase:", normalizedUrl);
+    
+    // First try exact match
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .select('*')
+      .ilike('custom_url', normalizedUrl);
+    
+    if (error) {
+      console.error("Error fetching tour by custom URL from Supabase:", error);
+      return null;
+    }
+    
+    if (data && data.length > 0) {
+      // Convert database format to app format
+      return {
+        ...data[0],
+        originalPrice: data[0].original_price,
+        discountedPrice: data[0].discounted_price,
+        hasFixedDepartures: data[0].is_fixed_departure,
+        isCustomizable: data[0].is_customizable !== false,
+        isWomenOnly: data[0].is_women_only,
+        transportType: normalizeTransportType(String(data[0].transport_type)),
+        customUrl: data[0].custom_url
+      };
+    }
+    
+    return null;
   } catch (error) {
     console.error("Error in getTourByCustomUrl:", error);
     return null;
   }
 };
 
-// Add a new tour - ensure all required properties are present
+// Add a new tour
 export const addTour = async (tour: TourPackageProps): Promise<void> => {
-  console.log("Starting to add new tour:", tour.title);
+  console.log("Starting to add new tour to Supabase:", tour.title);
   
   try {
-    // Get existing tours
-    const tours = getLocalTours();
-    console.log("Current tours count:", tours.length);
-    
     // Auto-generate customUrl if not provided or empty
     if (!tour.customUrl || tour.customUrl.trim() === '') {
-      tour.customUrl = generateCustomUrl(tour.title, tours);
+      const allTours = await getAllTours();
+      tour.customUrl = generateCustomUrl(tour.title, allTours);
       console.log("Generated custom URL:", tour.customUrl);
     } else {
-      // Normalize custom URL (remove spaces, convert to lowercase)
+      // Normalize custom URL
       tour.customUrl = tour.customUrl.trim().toLowerCase()
         .replace(/\s+/g, '-')
         .replace(/[^\w\-]+/g, '')
@@ -66,26 +132,45 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
     // Convert any legacy transport type
     tour.transportType = normalizeTransportType(String(tour.transportType));
     
-    // Ensure all required fields exist
-    const completeData = {
-      ...tour,
-      index: tours.length, // Set index to the length of the tours array
+    // Convert to database format
+    const dbTour = {
+      title: tour.title,
+      image: tour.image,
+      original_price: tour.originalPrice,
+      discounted_price: tour.discountedPrice,
+      discount: tour.discount,
+      duration: tour.duration,
+      night_stays: tour.nightStays || [],
       inclusions: tour.inclusions || [],
       exclusions: tour.exclusions || [],
+      overview: tour.overview,
       itinerary: tour.itinerary || [],
-      departureDates: tour.departureDates || [],
-      isWomenOnly: tour.isWomenOnly || false,
-      hasFixedDepartures: tour.hasFixedDepartures !== false,
-      isCustomizable: tour.isCustomizable !== false
+      is_fixed_departure: tour.hasFixedDepartures !== false,
+      is_customizable: tour.isCustomizable !== false,
+      transport_type: tour.transportType,
+      is_women_only: tour.isWomenOnly || false,
+      available_dates: tour.availableDates,
+      custom_url: tour.customUrl,
+      departure_dates: tour.departureDates || [],
+      best_time: tour.bestTime || "June to September",
+      group_size: tour.groupSize || "2-10 People",
+      terrain: tour.terrain || "Himalayan Mountain Passes",
+      elevation: tour.elevation || "2,000 - 4,550 meters",
+      accommodation_type: tour.accommodationType || "Hotels & Homestays",
+      index: (await getAllTours()).length // Set index to the current length
     };
     
-    // Add the new tour
-    tours.push(completeData);
-    console.log("About to save tour to localStorage, tour count:", tours.length);
+    // Add the new tour to Supabase
+    const { error } = await supabase
+      .from('tour_packages')
+      .insert([dbTour]);
+      
+    if (error) {
+      console.error("Error adding tour to Supabase:", error);
+      throw error;
+    }
     
-    // Save updated tours list
-    saveToursToLocalStorage(tours);
-    console.log("Tour added successfully:", completeData);
+    console.log("Tour added successfully to Supabase:", tour.title);
   } catch (error) {
     console.error("Error adding tour:", error);
     throw error;
@@ -95,37 +180,67 @@ export const addTour = async (tour: TourPackageProps): Promise<void> => {
 // Update an existing tour
 export const updateTour = async (index: number, updatedTour: TourPackageProps): Promise<void> => {
   try {
-    console.log("Updating tour at index:", index, updatedTour);
-    const tours = getLocalTours();
+    console.log("Updating tour at index in Supabase:", index, updatedTour);
     
-    if (index >= 0 && index < tours.length) {
-      // If title changed or customUrl is empty, regenerate it
-      if ((tours[index].title !== updatedTour.title) || !updatedTour.customUrl) {
-        updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
-          tours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
-      } else {
-        // Normalize custom URL if provided
-        updatedTour.customUrl = updatedTour.customUrl.trim().toLowerCase()
-          .replace(/\s+/g, '-')
-          .replace(/[^\w\-]+/g, '')
-          .replace(/\-\-+/g, '-')
-          .replace(/^-+/, '')
-          .replace(/-+$/, '');
-      }
-      
-      // Ensure the index field is set correctly
-      updatedTour.index = index;
-      
-      // Convert any legacy transport type
-      updatedTour.transportType = normalizeTransportType(String(updatedTour.transportType));
-      
-      // Update in localStorage
-      tours[index] = updatedTour;
-      saveToursToLocalStorage(tours);
-      console.log("Tour updated successfully:", updatedTour);
+    // Get all tours to check for duplicate custom URLs
+    const allTours = await getAllTours();
+    
+    // If title changed or customUrl is empty, regenerate it
+    if (!updatedTour.customUrl) {
+      updatedTour.customUrl = generateCustomUrl(updatedTour.title, 
+        allTours.filter((_, i) => i !== index)); // Exclude current tour from duplicates check
     } else {
-      throw new Error(`Tour with index ${index} not found`);
+      // Normalize custom URL if provided
+      updatedTour.customUrl = updatedTour.customUrl.trim().toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
     }
+    
+    // Convert any legacy transport type
+    updatedTour.transportType = normalizeTransportType(String(updatedTour.transportType));
+    
+    // Convert to database format
+    const dbTour = {
+      title: updatedTour.title,
+      image: updatedTour.image,
+      original_price: updatedTour.originalPrice,
+      discounted_price: updatedTour.discountedPrice,
+      discount: updatedTour.discount,
+      duration: updatedTour.duration,
+      night_stays: updatedTour.nightStays || [],
+      inclusions: updatedTour.inclusions || [],
+      exclusions: updatedTour.exclusions || [],
+      overview: updatedTour.overview,
+      itinerary: updatedTour.itinerary || [],
+      is_fixed_departure: updatedTour.hasFixedDepartures !== false,
+      is_customizable: updatedTour.isCustomizable !== false,
+      transport_type: updatedTour.transportType,
+      is_women_only: updatedTour.isWomenOnly || false,
+      available_dates: updatedTour.availableDates,
+      custom_url: updatedTour.customUrl,
+      departure_dates: updatedTour.departureDates || [],
+      best_time: updatedTour.bestTime || "June to September",
+      group_size: updatedTour.groupSize || "2-10 People",
+      terrain: updatedTour.terrain || "Himalayan Mountain Passes",
+      elevation: updatedTour.elevation || "2,000 - 4,550 meters",
+      accommodation_type: updatedTour.accommodationType || "Hotels & Homestays"
+    };
+    
+    // Update the tour in Supabase
+    const { error } = await supabase
+      .from('tour_packages')
+      .update(dbTour)
+      .eq('index', index);
+      
+    if (error) {
+      console.error("Error updating tour in Supabase:", error);
+      throw error;
+    }
+    
+    console.log("Tour updated successfully in Supabase:", updatedTour.title);
   } catch (error) {
     console.error("Error updating tour:", error);
     throw error;
@@ -135,24 +250,118 @@ export const updateTour = async (index: number, updatedTour: TourPackageProps): 
 // Delete a tour
 export const deleteTour = async (index: number): Promise<void> => {
   try {
-    // Delete from localStorage
-    const tours = getLocalTours();
-    if (index >= 0 && index < tours.length) {
-      tours.splice(index, 1);
+    console.log("Deleting tour at index from Supabase:", index);
+    
+    // Delete the tour from Supabase
+    const { error } = await supabase
+      .from('tour_packages')
+      .delete()
+      .eq('index', index);
       
-      // Update indices for remaining tours
-      tours.forEach((tour, idx) => {
-        tour.index = idx;
-      });
-      
-      saveToursToLocalStorage(tours);
-      console.log("Tour deleted successfully at index:", index);
+    if (error) {
+      console.error("Error deleting tour from Supabase:", error);
+      throw error;
     }
+    
+    // Update indices for remaining tours
+    const remainingTours = await getAllTours();
+    
+    for (let i = 0; i < remainingTours.length; i++) {
+      if (remainingTours[i].index !== i) {
+        await supabase
+          .from('tour_packages')
+          .update({ index: i })
+          .eq('index', remainingTours[i].index);
+      }
+    }
+    
+    console.log("Tour deleted successfully from Supabase");
   } catch (error) {
     console.error("Error deleting tour:", error);
     throw error;
   }
 };
 
-// Re-export for easy access
-export { resetToDefaultTours, initializeStorageListener };
+// Initialize database with default tours if empty
+export const initializeToursDatabase = async (): Promise<void> => {
+  try {
+    // Check if tours table is empty
+    const { data, error } = await supabase
+      .from('tour_packages')
+      .select('count')
+      .single();
+      
+    if (error) {
+      console.error("Error checking tours database:", error);
+      return;
+    }
+    
+    if (!data || data.count === 0) {
+      console.log("Tours database is empty, initializing with default data");
+      
+      // Convert default tours to database format
+      const dbTours = tourPackagesData.map((tour, index) => ({
+        title: tour.title,
+        image: tour.image,
+        original_price: tour.originalPrice,
+        discounted_price: tour.discountedPrice,
+        discount: tour.discount,
+        duration: tour.duration,
+        night_stays: tour.nightStays || [],
+        inclusions: tour.inclusions || [],
+        exclusions: tour.exclusions || [],
+        overview: tour.overview,
+        itinerary: tour.itinerary || [],
+        is_fixed_departure: tour.hasFixedDepartures !== false,
+        is_customizable: tour.isCustomizable !== false,
+        transport_type: tour.transportType,
+        is_women_only: tour.isWomenOnly || false,
+        available_dates: tour.availableDates,
+        custom_url: generateCustomUrl(tour.title, tourPackagesData.slice(0, index)),
+        departure_dates: tour.departureDates || [],
+        best_time: tour.bestTime || "June to September",
+        group_size: tour.groupSize || "2-10 People",
+        terrain: tour.terrain || "Himalayan Mountain Passes",
+        elevation: tour.elevation || "2,000 - 4,550 meters",
+        accommodation_type: tour.accommodationType || "Hotels & Homestays",
+        index: index
+      }));
+      
+      // Insert default tours into database
+      const { error: insertError } = await supabase
+        .from('tour_packages')
+        .insert(dbTours);
+        
+      if (insertError) {
+        console.error("Error initializing tours database:", insertError);
+      } else {
+        console.log("Tours database initialized successfully");
+      }
+    }
+  } catch (error) {
+    console.error("Error initializing tours database:", error);
+  }
+};
+
+// Reset to default tours
+export const resetToDefaultTours = async (): Promise<void> => {
+  try {
+    // Delete all existing tours
+    const { error: deleteError } = await supabase
+      .from('tour_packages')
+      .delete()
+      .neq('index', -1); // Delete all tours
+      
+    if (deleteError) {
+      console.error("Error deleting existing tours:", deleteError);
+      return;
+    }
+    
+    // Re-initialize with default data
+    await initializeToursDatabase();
+    
+    console.log("Tours reset to default successfully");
+  } catch (error) {
+    console.error("Error resetting tours:", error);
+  }
+};

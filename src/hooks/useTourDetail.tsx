@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { TourPackageProps } from "@/components/TourPackage";
 import { getAllTours, getTourByCustomUrl, getTourByIndex } from "@/services/tourService";
+import { useToast } from "@/components/ui/use-toast";
 
 interface UseTourDetailReturn {
   tour: TourPackageProps | null;
@@ -19,6 +20,7 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
   const [loading, setLoading] = useState<boolean>(true);
   const [relatedToursLoading, setRelatedToursLoading] = useState<boolean>(true);
+  const { toast } = useToast();
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,7 +47,6 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
         }
         
         if (selectedTour) {
-          // Ensure the tour data is fully available
           setTour(selectedTour);
           
           // Now fetch related tours
@@ -59,21 +60,36 @@ export const useTourDetail = (id: string | undefined): UseTourDetailReturn => {
             setOtherTours(others);
           } catch (error) {
             console.error("Error fetching related tours:", error);
+            toast({
+              title: "Error",
+              description: "Failed to load related tours. Please refresh the page.",
+              variant: "destructive"
+            });
           } finally {
             setRelatedToursLoading(false);
           }
         } else {
           console.error("Tour not found for ID:", id);
+          toast({
+            title: "Tour Not Found",
+            description: "The requested tour could not be found.",
+            variant: "destructive"
+          });
         }
       } catch (error) {
         console.error("Error fetching tour details:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load tour details. Please try again later.",
+          variant: "destructive"
+        });
       } finally {
         setLoading(false);
       }
     };
     
     fetchTourData();
-  }, [id]);
+  }, [id, toast]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN').format(price);
