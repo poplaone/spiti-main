@@ -6,8 +6,37 @@ import { useToast } from '@/hooks/use-toast';
 import AdminLayout from '@/components/admin/AdminLayout';
 import TourForm from '@/components/admin/TourForm';
 
+interface TourData {
+  id: string;
+  title: string;
+  [key: string]: any;
+}
+
+interface NightStay {
+  id: string;
+  location: string;
+  nights: number;
+}
+
+interface Inclusion {
+  id: string;
+  description: string;
+}
+
+interface Exclusion {
+  id: string;
+  description: string;
+}
+
+interface ItineraryDay {
+  id: string;
+  day_number: number;
+  title: string;
+  description: string;
+}
+
 const AdminTourEdit = () => {
-  const [tour, setTour] = useState<any>(null);
+  const [tour, setTour] = useState<TourData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
