@@ -1,6 +1,5 @@
 
 import { TourPackageProps } from "@/components/TourPackage";
-import { Json } from "@/integrations/supabase/types";
 
 export interface TourDurationJSON {
   nights: number;
@@ -23,8 +22,8 @@ export interface TourDepartureDateJSON {
   dates: string[];
 }
 
-// Helper functions to safely parse JSON fields from Supabase
-export const parseTourDuration = (data: Json | null): TourDurationJSON => {
+// Helper functions to safely parse JSON fields
+export const parseTourDuration = (data: any): TourDurationJSON => {
   if (!data) {
     return { nights: 0, days: 0 };
   }
@@ -33,7 +32,7 @@ export const parseTourDuration = (data: Json | null): TourDurationJSON => {
     if (typeof data === 'string') {
       return JSON.parse(data);
     } else if (typeof data === 'object' && data !== null) {
-      // Handle direct object representation from Supabase
+      // Handle direct object representation
       if ('nights' in data && 'days' in data) {
         return {
           nights: Number(data.nights) || 0,
@@ -48,7 +47,7 @@ export const parseTourDuration = (data: Json | null): TourDurationJSON => {
   return { nights: 0, days: 0 };
 };
 
-export const parseNightStays = (data: Json | null): TourNightStayJSON[] => {
+export const parseNightStays = (data: any): TourNightStayJSON[] => {
   if (!data) {
     return [];
   }
@@ -74,7 +73,7 @@ export const parseNightStays = (data: Json | null): TourNightStayJSON[] => {
   return [];
 };
 
-export const parseItinerary = (data: Json | null): TourItineraryDayJSON[] => {
+export const parseItinerary = (data: any): TourItineraryDayJSON[] => {
   if (!data) {
     return [];
   }
@@ -101,7 +100,7 @@ export const parseItinerary = (data: Json | null): TourItineraryDayJSON[] => {
   return [];
 };
 
-export const parseDepartureDates = (data: Json | null): TourDepartureDateJSON[] => {
+export const parseDepartureDates = (data: any): TourDepartureDateJSON[] => {
   if (!data) {
     return [];
   }

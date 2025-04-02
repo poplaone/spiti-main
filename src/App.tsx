@@ -25,6 +25,11 @@ import TourDetail from "./pages/TourDetail";
 import RoadTrips from "./pages/RoadTrips";
 import FixedDepartures from "./pages/FixedDepartures";
 
+// Admin panel imports
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminTours from "./pages/admin/AdminTours";
+import AdminTourEdit from "./pages/admin/AdminTourEdit";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -58,6 +63,13 @@ const App = () => (
           
           {/* Dynamic routes for tour details - both numeric IDs and custom URLs */}
           <Route path="/tour/:id" element={<TourDetail />} />
+          
+          {/* Admin routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="tours" element={<AdminTours />} />
+            <Route path="tours/new" element={<AdminTourEdit />} />
+            <Route path="tours/edit/:id" element={<AdminTourEdit />} />
+          </Route>
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
