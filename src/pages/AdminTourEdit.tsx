@@ -5,34 +5,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import AdminLayout from '@/components/admin/AdminLayout';
 import TourForm from '@/components/admin/TourForm';
+import { Loader2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface TourData {
   id: string;
   title: string;
   [key: string]: any;
-}
-
-interface NightStay {
-  id: string;
-  location: string;
-  nights: number;
-}
-
-interface Inclusion {
-  id: string;
-  description: string;
-}
-
-interface Exclusion {
-  id: string;
-  description: string;
-}
-
-interface ItineraryDay {
-  id: string;
-  day_number: number;
-  title: string;
-  description: string;
 }
 
 const AdminTourEdit = () => {
@@ -41,10 +20,18 @@ const AdminTourEdit = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user, isLoading: authLoading } = useAuth();
+
+  // Check authentication
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/admin/login');
+    }
+  }, [user, authLoading, navigate]);
 
   useEffect(() => {
     const fetchTourData = async () => {
-      if (!id) return;
+      if (!id || !user) return;
 
       try {
         // Fetch tour data
@@ -110,18 +97,24 @@ const AdminTourEdit = () => {
       }
     };
 
-    fetchTourData();
-  }, [id, toast, navigate]);
+    if (user) {
+      fetchTourData();
+    }
+  }, [id, toast, navigate, user]);
 
-  if (isLoading) {
+  if (authLoading || (isLoading && user)) {
     return (
       <AdminLayout>
-        <div className="p-6">
-          <h1 className="text-2xl font-bold mb-6">Edit Tour</h1>
-          <div className="text-center p-4">Loading tour data...</div>
+        <div className="p-6 flex flex-col items-center justify-center min-h-[50vh]">
+          <Loader2 className="h-10 w-10 animate-spin" />
+          <p className="mt-4">Loading tour data...</p>
         </div>
       </AdminLayout>
     );
+  }
+
+  if (!user) {
+    return null; // Will redirect to login
   }
 
   if (!tour) {
@@ -129,7 +122,9 @@ const AdminTourEdit = () => {
       <AdminLayout>
         <div className="p-6">
           <h1 className="text-2xl font-bold mb-6">Edit Tour</h1>
-          <div className="text-center p-4">Tour not found</div>
+          <div className="text-center p-4 bg-red-50 text-red-700 rounded-md">
+            Tour not found
+          </div>
         </div>
       </AdminLayout>
     );

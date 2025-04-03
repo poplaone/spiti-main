@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import { 
   SidebarProvider, 
   Sidebar, 
@@ -7,7 +9,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarHeader
+  SidebarHeader,
+  SidebarFooter 
 } from '@/components/ui/sidebar';
 
 interface AdminLayoutProps {
@@ -15,9 +18,8 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
-  const navigate = (path: string) => {
-    window.location.href = path;
-  };
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <SidebarProvider>
@@ -51,6 +53,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
+          <SidebarFooter>
+            <button
+              onClick={() => signOut()}
+              className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 rounded-md"
+            >
+              Logout
+            </button>
+          </SidebarFooter>
         </Sidebar>
         <main className="flex-1 overflow-auto">
           {children}

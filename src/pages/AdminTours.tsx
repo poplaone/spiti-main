@@ -13,6 +13,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Tour {
   id: string;
@@ -32,6 +34,14 @@ const AdminTours = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { user, isLoading: authLoading } = useAuth();
+
+  // Check authentication
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/admin/login');
+    }
+  }, [user, authLoading, navigate]);
 
   // Fetch tours from the database
   const fetchTours = async () => {
@@ -63,6 +73,13 @@ const AdminTours = () => {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this tour?")) {
       try {
+        // Delete related records first (due to foreign key constraints)
+        await supabase.from('night_stays').delete().eq('tour_id', id);
+        await supabase.from('inclusions').delete().eq('tour_id', id);
+        await supabase.from('exclusions').delete().eq('tour_id', id);
+        await supabase.from('itinerary_days').delete().eq('tour_id', id);
+
+        // Then delete the tour
         const { error } = await supabase
           .from('tours')
           .delete()
@@ -89,8 +106,18 @@ const AdminTours = () => {
   };
 
   useEffect(() => {
-    fetchTours();
-  }, []);
+    if (user) {
+      fetchTours();
+    }
+  }, [user]);
+
+  if (authLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
+  if (!user) {
+    return null; // Will redirect to login
+  }
 
   return (
     <AdminLayout>
@@ -101,10 +128,13 @@ const AdminTours = () => {
         </div>
 
         {isLoading ? (
-          <div className="text-center p-4">Loading tours...</div>
+          <div className="text-center p-10">
+            <Loader2 className="h-10 w-10 animate-spin mx-auto" />
+            <p className="mt-2">Loading tours...</p>
+          </div>
         ) : tours.length === 0 ? (
           <div className="bg-white p-6 rounded-lg shadow-sm border text-center">
-            <p className="text-gray-600">No tours found. Create one to get started!</p>
+            <p className="text-gray-600 mb-4">No tours found. Create one to get started!</p>
             <Button 
               onClick={() => navigate('/admin/tours/new')}
               className="mt-4"

@@ -29,6 +29,7 @@ import FixedDepartures from "./pages/FixedDepartures";
 
 // Import admin pages
 import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
 import AdminTours from "./pages/AdminTours";
 import AdminTourNew from "./pages/AdminTourNew";
 import AdminTourEdit from "./pages/AdminTourEdit";
@@ -70,6 +71,7 @@ const App = () => {
             <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
             
             {/* Admin panel routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/admin/tours" element={<AdminTours />} />
             <Route path="/admin/tours/new" element={<AdminTourNew />} />

@@ -34,5 +34,22 @@ export const useAuth = () => {
     await supabase.auth.signOut();
   };
 
-  return { user, session, isLoading, signOut };
+  const isAdmin = async (): Promise<boolean> => {
+    if (!user) return false;
+    
+    try {
+      const { data, error } = await supabase
+        .from('admin_users')
+        .select('*')
+        .eq('email', user.email)
+        .single();
+        
+      return !!data && !error;
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      return false;
+    }
+  };
+
+  return { user, session, isLoading, signOut, isAdmin };
 };
