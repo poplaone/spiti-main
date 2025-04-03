@@ -50,6 +50,20 @@ const getRouteMap = {
   5: '/tour-hiddenheaven'
 };
 
+// Function to highlight month names in a text string
+const highlightMonths = (text: string) => {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  let result = text;
+  
+  months.forEach(month => {
+    if (text.includes(month)) {
+      result = result.replace(month, `<span class="text-spiti-blue font-medium">${month}</span>`);
+    }
+  });
+  
+  return <span dangerouslySetInnerHTML={{ __html: result }} />;
+};
+
 const TourPackage: React.FC<TourPackageProps> = ({
   title,
   image,
@@ -100,7 +114,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
       </div>
       
       <div className="p-4">
-        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2">{title}</h3>
+        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2 line-clamp-2">{title}</h3>
         
         <div className="flex flex-col space-y-1 mb-3">
           <div className="flex items-center space-x-4">
@@ -115,8 +129,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
             </div>
           </div>
           
-          <div className="text-xs text-gray-600">
-            Available from June to October
+          <div className="text-sm text-gray-700 font-medium">
+            {highlightMonths("Available from June to October")}
           </div>
         </div>
         
@@ -130,7 +144,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </div>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full">
           <Button variant="outline" className="flex-1 border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white" asChild>
             <Link to={getDetailRoute()}>
               <MessageSquareMore className="mr-1 w-4 h-4" />
