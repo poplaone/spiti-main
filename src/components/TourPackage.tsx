@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,6 @@ import { MessageSquareMore, Send, CalendarCheck, Settings2 } from 'lucide-react'
 import { Link, useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
-
 interface NightStay {
   location: string;
   nights: number;
@@ -36,11 +34,9 @@ export interface TourPackageProps {
   index?: number;
   className?: string;
 }
-
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-IN').format(price);
 };
-
 const getRouteMap = {
   0: '/tour-bike',
   1: '/tour-unexplored',
@@ -54,16 +50,15 @@ const getRouteMap = {
 const highlightMonths = (text: string) => {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   let result = text;
-  
   months.forEach(month => {
     if (text.includes(month)) {
       result = result.replace(month, `<span class="text-spiti-blue font-medium">${month}</span>`);
     }
   });
-  
-  return <span dangerouslySetInnerHTML={{ __html: result }} />;
+  return <span dangerouslySetInnerHTML={{
+    __html: result
+  }} />;
 };
-
 const TourPackage: React.FC<TourPackageProps> = ({
   title,
   image,
@@ -79,24 +74,17 @@ const TourPackage: React.FC<TourPackageProps> = ({
   className = ""
 }) => {
   const navigate = useNavigate();
-  
   const getDetailRoute = () => {
     if (typeof index !== 'number') return '/';
     return getRouteMap[index as keyof typeof getRouteMap] || '/';
   };
-  
   const handleCardClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('.enquiry-btn')) {
       return;
     }
     navigate(getDetailRoute());
   };
-  
-  return (
-    <div 
-      className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className} cursor-pointer`}
-      onClick={handleCardClick}
-    >
+  return <div className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className} cursor-pointer`} onClick={handleCardClick}>
       <div className="relative h-52 overflow-hidden">
         <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
         
@@ -120,12 +108,12 @@ const TourPackage: React.FC<TourPackageProps> = ({
           <div className="flex items-center space-x-4">
             <div className="flex items-center text-rose-500">
               <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase">Fixed Departures</span>
+              <span className="text-xs font-medium uppercase px-0 py-[2px]">Fixed Departures</span>
             </div>
             
             <div className="flex items-center text-rose-500">
               <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase">Customizable</span>
+              <span className="text-xs font-medium uppercase px-[3px] text-left">Customizable</span>
             </div>
           </div>
           
@@ -164,8 +152,6 @@ const TourPackage: React.FC<TourPackageProps> = ({
           </Dialog>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default React.memo(TourPackage);
