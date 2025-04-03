@@ -108,12 +108,12 @@ const TourPackage: React.FC<TourPackageProps> = ({
           <div className="flex items-center space-x-4">
             <div className="flex items-center text-rose-500">
               <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase px-0 py-[2px]">Fixed Departures</span>
+              <span className="text-xs font-medium uppercase py-[2px] px-px">Fixed Departures</span>
             </div>
             
-            <div className="flex items-center text-rose-500">
+            <div className="flex items-center text-rose-500 px-[3px]">
               <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase px-[3px] text-left">Customizable</span>
+              <span className="text-xs font-medium uppercase text-left px-0">Customizable</span>
             </div>
           </div>
           
