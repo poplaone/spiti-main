@@ -1,9 +1,6 @@
-
 import { Star } from 'lucide-react';
-
 const GoogleRatingBadge = () => {
-  return (
-    <div className="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full mb-3 md:mb-5">
+  return <div className="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full mb-3 md:mb-5">
       {/* Google Icon */}
       <div className="flex items-center justify-center h-5 w-5 mr-1">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
@@ -16,9 +13,7 @@ const GoogleRatingBadge = () => {
       <span className="text-white font-semibold">4.9</span>
       <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
       <span className="text-white/90 text-sm">on Google ratings</span>
-      <span className="text-white/80 text-sm ml-1">1k+ reviews</span>
-    </div>
-  );
+      <span className="text-white/80 text-sm ml-1">300+ reviews</span>
+    </div>;
 };
-
 export default GoogleRatingBadge;
