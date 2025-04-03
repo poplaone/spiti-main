@@ -82,9 +82,9 @@ const SpitiCircuitMap = () => {
       initializeMap();
     }
   }, []);
-  return <div className="my-12 py-8 bg-white rounded-lg shadow-md">
-      <div className="mx-auto px-4 text-center mb-8">
-        <h3 className="text-2xl md:text-3xl font-bold text-spiti-dark mb-2">
+  return <div className="my-6 md:my-8 py-6 md:py-8 bg-white rounded-lg shadow-md">
+      <div className="mx-auto px-4 text-center mb-4 md:mb-6">
+        <h3 className="text-xl md:text-3xl font-bold text-spiti-dark mb-2">
           Spiti Valley Circuit Tour Map
         </h3>
         <p className="text-gray-600 max-w-3xl mx-auto">
@@ -95,18 +95,15 @@ const SpitiCircuitMap = () => {
       {/* Google Maps API key input */}
       {!isMapLoaded && <GoogleMapsKeyInput googleMapsKey={googleMapsKey} setGoogleMapsKey={setGoogleMapsKey} initializeMap={initializeMap} mapError={mapError} />}
       
-      <div className={`hero-container relative w-full h-[500px] md:h-[600px] flex justify-center items-center overflow-hidden ${!isMapLoaded ? fallbackBackground : ''}`}>
+      <div className={`hero-container relative w-full h-[400px] md:h-[600px] flex justify-center items-center overflow-hidden ${!isMapLoaded ? fallbackBackground : ''}`}>
         {/* Base Google Map Layer */}
         {googleMapsKey && <GoogleMapBackground googleMapRef={googleMapRef} isMapLoaded={isMapLoaded} setMapError={setMapError} setIsMapLoaded={setIsMapLoaded} mapRef={mapRef} googleMapsKey={googleMapsKey} />}
-        
-        {/* Semi-transparent overlay */}
-        
         
         {/* Circuit Map Overlay */}
         <CircuitRouteSvg />
       </div>
       
-      <div className="mt-4 text-center text-sm text-gray-500">
+      <div className="mt-2 text-center text-sm text-gray-500">
         
       </div>
     </div>;

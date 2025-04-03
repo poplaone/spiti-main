@@ -36,12 +36,12 @@ const PhotoGallery = () => {
     }
   };
   
-  return <div className="relative py-8">
+  return <div className="relative py-4 md:py-6">
       <div className="relative overflow-hidden">
         <div id="gallery" className="flex gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory" style={{
         scrollBehavior: 'smooth'
       }}>
-          {photos.map((photo, index) => <div key={index} className="min-w-[300px] h-[300px] snap-center rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300">
+          {photos.map((photo, index) => <div key={index} className="min-w-[300px] h-[280px] md:h-[300px] snap-center rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300">
               <img src={photo.url} alt={photo.alt} className="w-full h-full object-cover" loading="lazy" />
             </div>)}
         </div>

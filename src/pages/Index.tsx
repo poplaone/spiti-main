@@ -1,3 +1,4 @@
+
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -27,18 +28,18 @@ const Index = () => {
       <ScrollingInfoStrip />
       
       {/* Tour Packages Section - Updated to remove cream gradient */}
-      <section id="tour-packages" ref={packagesSectionRef} className="py-16 bg-transparent">
+      <section id="tour-packages" ref={packagesSectionRef} className="py-8 md:py-12 bg-transparent">
         <div className="container mx-auto px-4 bg-transparent">
-          <div className="flex flex-col md:flex-row gap-8 items-start mb-12">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start mb-8 md:mb-12">
             {/* Booking Card */}
-            <div className="w-full md:w-[350px] bg-white/90 p-6 rounded-lg shadow-lg order-2 md:order-1">
-              <h2 className="text-2xl font-heading font-bold text-center text-spiti-forest mb-4">Book Your Spiti Adventure</h2>
-              <div className="space-y-4">
+            <div className="w-full md:w-[350px] bg-white/90 p-4 md:p-6 rounded-lg shadow-lg order-2 md:order-1">
+              <h2 className="text-xl md:text-2xl font-heading font-bold text-center text-spiti-forest mb-3 md:mb-4">Book Your Spiti Adventure</h2>
+              <div className="space-y-3 md:space-y-4">
                 <div className="text-center">
                   <p className="text-xl font-bold text-green-600">Starting from ₹18,900/-</p>
                   <p className="text-sm text-gray-600">All-inclusive packages with accommodation, meals & transport</p>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1 md:space-y-2">
                   <p className="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500"><path d="M20 6 9 17l-5-5" /></svg>
                     Expert Himalayan Local Guides
@@ -71,13 +72,9 @@ const Index = () => {
 
             {/* Section heading and text */}
             <div className="max-w-3xl mx-auto text-left md:text-left order-1 md:order-2">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest text-center">Explore Unforgettable Spiti Valley Tour Packages</h2>
-              <p className="mb-4 text-neutral-950 text-base text-center">Embark on an extraordinary journey through the breathtaking landscapes of Spiti Valley, where rugged terrains meet ancient monasteries, pristine lakes, and towering Himalayan peaks. Our meticulously designed tour packages ensure an immersive experience, blending adventure, culture, and natural beauty.
-
-            </p>
-              <p className="text-neutral-950 text-center">Whether you crave the thrill of a bike expedition, a women-only adventure, or a family road trip, we have the perfect itinerary tailored for you. Choose from our all-inclusive packages and let us take care of the details while you soak in the magic of Spiti.
-
-            </p>
+              <h2 className="text-2xl md:text-4xl font-heading font-bold mb-3 text-spiti-forest text-center">Explore Unforgettable Spiti Valley Tour Packages</h2>
+              <p className="mb-3 text-neutral-950 text-base text-center">Embark on an extraordinary journey through the breathtaking landscapes of Spiti Valley, where rugged terrains meet ancient monasteries, pristine lakes, and towering Himalayan peaks. Our meticulously designed tour packages ensure an immersive experience, blending adventure, culture, and natural beauty.</p>
+              <p className="text-neutral-950 text-center">Whether you crave the thrill of a bike expedition, a women-only adventure, or a family road trip, we have the perfect itinerary tailored for you. Choose from our all-inclusive packages and let us take care of the details while you soak in the magic of Spiti.</p>
             </div>
           </div>
 
@@ -85,10 +82,8 @@ const Index = () => {
           <TourPackages />
           
           {/* Then show the Spiti Circuit Map section - moved as requested */}
-          <div className="mt-8">
-            <div className="text-center mb-6">
-              
-              
+          <div className="mt-6 md:mt-8">
+            <div className="text-center mb-4 md:mb-6">
             </div>
             <SpitiCircuitMap />
           </div>
@@ -96,11 +91,11 @@ const Index = () => {
       </section>
 
       {/* Gallery Section - Updated to maintain bluish background but reduced top margin */}
-      <section className="pt-8 pb-16 bg-transparent">
+      <section className="pt-6 pb-10 md:pt-8 md:pb-12 bg-transparent">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 text-spiti-forest">Spiti Valley Photo Gallery</h2>
-            <p className="text-gray-700 mb-4">
+          <div className="max-w-3xl mx-auto text-center mb-6">
+            <h2 className="text-2xl md:text-4xl font-heading font-bold mb-3 text-spiti-forest">Spiti Valley Photo Gallery</h2>
+            <p className="text-gray-700 mb-3">
               Immerse yourself in the breathtaking vistas and cultural wonders of Spiti Valley through our curated collection of photographs.
               From ancient monasteries perched on hilltops to the crystal-clear Chandrataal Lake and the rugged terrain of the Himalayan cold desert,
               these images offer a glimpse into the remote paradise awaiting your exploration.
@@ -111,18 +106,18 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-16 relative" style={{
+      <section className="py-10 md:py-12 relative" style={{
       backgroundImage: `linear-gradient(to bottom, rgba(45, 58, 58, 0.9), rgba(45, 58, 58, 0.95)), url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=70)`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }}>
         <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Ready for Your Spiti Valley Adventure?</h2>
-          <p className="text-xl mb-4 max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-4xl lg:text-5xl font-heading font-bold mb-4">Ready for Your Spiti Valley Adventure?</h2>
+          <p className="text-lg mb-3 max-w-2xl mx-auto">
             Explore our curated collection of Spiti Valley tours and create memories that last a lifetime. Our expert local guides
             are waiting to show you the hidden gems of this Himalayan wonderland.
           </p>
-          <p className="mb-8 max-w-2xl mx-auto">
+          <p className="mb-6 max-w-2xl mx-auto">
             Book your journey through the ancient monasteries, remote villages, and breathtaking landscapes of the Tibetan Buddhist 
             culture tucked away in the Indian Himalayas.
           </p>

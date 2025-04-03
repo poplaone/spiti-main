@@ -10,11 +10,10 @@ const TourPackageHeader: React.FC<TourPackageHeaderProps> = ({
   title,
   description
 }) => {
-  return <div className="text-center mb-8">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-spiti-dark">
+  return <div className="text-center mb-6">
+      <h2 className="text-2xl md:text-3xl font-bold mb-3 text-spiti-dark">
         {title}
-      </h2>
-      
+      </h2>      
     </div>;
 };
 
