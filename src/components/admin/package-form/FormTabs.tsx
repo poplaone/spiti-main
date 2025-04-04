@@ -5,6 +5,7 @@ import BasicInfoTab from './BasicInfoTab';
 import DetailsTab from './DetailsTab';
 import ItineraryTab from './ItineraryTab';
 import ImageTab from './ImageTab';
+import DepartureDatesTab from './DepartureDatesTab';
 
 interface FormTabsProps {
   activeTab: string;
@@ -19,10 +20,11 @@ const FormTabs: React.FC<FormTabsProps> = ({
 }) => {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
+      <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8">
         <TabsTrigger value="basic">Basic Info</TabsTrigger>
         <TabsTrigger value="details">Package Details</TabsTrigger>
         <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
+        <TabsTrigger value="dates">Departure Dates</TabsTrigger>
         <TabsTrigger value="image">Images</TabsTrigger>
       </TabsList>
       
@@ -80,6 +82,13 @@ const FormTabs: React.FC<FormTabsProps> = ({
         <ItineraryTab 
           itineraryDays={formProps.itineraryDays}
           setItineraryDays={formProps.setItineraryDays}
+        />
+      </TabsContent>
+      
+      <TabsContent value="dates">
+        <DepartureDatesTab 
+          tourId={formProps.packageId}
+          isFixedDeparture={formProps.isFixedDeparture}
         />
       </TabsContent>
       

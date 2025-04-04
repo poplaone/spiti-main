@@ -45,7 +45,10 @@ const TourContent: React.FC<TourContentProps> = ({
               <h2 className="text-xl font-heading font-bold text-spiti-forest mb-4">
                 Departure Dates
               </h2>
-              <DepartureDatesCard className="p-0 bg-transparent shadow-none" />
+              <DepartureDatesCard 
+                className="p-0 bg-transparent shadow-none" 
+                tourId={tour.id}
+              />
             </div>
           )}
           
@@ -83,7 +86,7 @@ const TourContent: React.FC<TourContentProps> = ({
           
           {/* Only show departure dates if this is a fixed departure tour */}
           {tour.isFixedDeparture && (
-            <DepartureDatesCard />
+            <DepartureDatesCard tourId={tour.id} />
           )}
         </div>
       </div>

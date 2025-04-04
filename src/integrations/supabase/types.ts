@@ -137,6 +137,41 @@ export type Database = {
           },
         ]
       }
+      tour_departure_dates: {
+        Row: {
+          created_at: string | null
+          end_date: string
+          id: string
+          start_date: string
+          status: string
+          tour_package_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          end_date: string
+          id?: string
+          start_date: string
+          status?: string
+          tour_package_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          end_date?: string
+          id?: string
+          start_date?: string
+          status?: string
+          tour_package_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_departure_dates_tour_package_id_fkey"
+            columns: ["tour_package_id"]
+            isOneToOne: false
+            referencedRelation: "tour_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tour_packages: {
         Row: {
           created_at: string
