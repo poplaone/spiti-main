@@ -1,6 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { TourPackageProps, TourNightStay, TourItineraryDay, TourPackageWithId } from "@/data/types/tourTypes";
+import { TourPackageProps, TourNightStay, TourItineraryDay, TourPackageWithId, TourOverviewDetails } from "@/data/types/tourTypes";
 
 // Convert database tour to frontend tour package format
 export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps> => {
@@ -45,6 +45,16 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
     description: day.description
   }));
   
+  // Parse overview details if available
+  let overviewDetails: TourOverviewDetails | undefined;
+  if (dbTour.overview_details) {
+    try {
+      overviewDetails = JSON.parse(dbTour.overview_details);
+    } catch (e) {
+      console.error("Error parsing overview details:", e);
+    }
+  }
+  
   return {
     id: dbTour.id, // Include the ID in the returned object
     title: dbTour.title,
@@ -58,11 +68,14 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
     },
     transportType: dbTour.transport_type,
     isWomenOnly: dbTour.is_women_only,
+    isFixedDeparture: dbTour.is_fixed_departure,
+    isCustomizable: dbTour.is_customizable,
     overview: dbTour.overview,
     nightStays,
     inclusions,
     exclusions,
-    itinerary
+    itinerary,
+    overviewDetails
   };
 };
 

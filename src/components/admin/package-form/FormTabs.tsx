@@ -48,6 +48,20 @@ const FormTabs: React.FC<FormTabsProps> = ({
           setIsFixedDeparture={formProps.setIsFixedDeparture}
           isCustomizable={formProps.isCustomizable}
           setIsCustomizable={formProps.setIsCustomizable}
+          accommodation={formProps.accommodation}
+          setAccommodation={formProps.setAccommodation}
+          bestTime={formProps.bestTime}
+          setBestTime={formProps.setBestTime}
+          groupSize={formProps.groupSize}
+          setGroupSize={formProps.setGroupSize}
+          terrain={formProps.terrain}
+          setTerrain={formProps.setTerrain}
+          elevation={formProps.elevation}
+          setElevation={formProps.setElevation}
+          availableFrom={formProps.availableFrom}
+          setAvailableFrom={formProps.setAvailableFrom}
+          availableTo={formProps.availableTo}
+          setAvailableTo={formProps.setAvailableTo}
         />
       </TabsContent>
       

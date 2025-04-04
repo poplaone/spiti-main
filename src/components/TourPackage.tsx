@@ -20,7 +20,8 @@ const TourPackage: React.FC<TourPackageProps & {
   transportType,
   isWomenOnly,
   isFixedDeparture,
-  isCustomizable
+  isCustomizable,
+  overviewDetails
 }) => {
   const getTransportIcon = () => {
     switch (transportType.toLowerCase()) {
@@ -30,6 +31,10 @@ const TourPackage: React.FC<TourPackageProps & {
         return <Car className="h-5 w-5" />;
     }
   };
+
+  // Get availability dates with fallbacks
+  const availableFrom = overviewDetails?.availableFrom || 'June';
+  const availableTo = overviewDetails?.availableTo || 'October';
 
   // Modified to use the tour ID directly when available
   return (
@@ -56,7 +61,7 @@ const TourPackage: React.FC<TourPackageProps & {
           </div>
         </div>
         
-        <p className="text-md text-gray-800 font-medium mb-4">Available from <span className="text-red-500 font-semibold">June</span> to <span className="text-red-500 font-semibold">October</span></p>
+        <p className="text-md text-gray-800 font-medium mb-4">Available from <span className="text-red-500 font-semibold">{availableFrom}</span> to <span className="text-red-500 font-semibold">{availableTo}</span></p>
 
         <div className="flex justify-between items-center mb-4">
           <div>

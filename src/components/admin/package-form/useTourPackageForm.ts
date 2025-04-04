@@ -28,6 +28,16 @@ interface ItineraryDay {
   description: string;
 }
 
+interface OverviewDetails {
+  accommodation: string;
+  bestTime: string;
+  groupSize: string;
+  terrain: string;
+  elevation: string;
+  availableFrom: string;
+  availableTo: string;
+}
+
 export const useTourPackageForm = (packageId?: string, isEditing: boolean = false) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +55,15 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
   const [isWomenOnly, setIsWomenOnly] = useState(false);
   const [isFixedDeparture, setIsFixedDeparture] = useState(false);
   const [isCustomizable, setIsCustomizable] = useState(true);
+  
+  // Overview details
+  const [accommodation, setAccommodation] = useState("Hotels & Homestays");
+  const [bestTime, setBestTime] = useState("June to September");
+  const [groupSize, setGroupSize] = useState("2-10 People");
+  const [terrain, setTerrain] = useState("Himalayan Mountain Passes");
+  const [elevation, setElevation] = useState("2,000 - 4,550 meters");
+  const [availableFrom, setAvailableFrom] = useState("June");
+  const [availableTo, setAvailableTo] = useState("October");
   
   const [nightStays, setNightStays] = useState<NightStay[]>([]);
   const [inclusions, setInclusions] = useState<Inclusion[]>([]);
@@ -80,6 +99,22 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
         setIsFixedDeparture(packageData.is_fixed_departure || false);
         setIsCustomizable(packageData.is_customizable !== false);
         setImagePreview(packageData.image || '');
+        
+        // Load overview details if available
+        if (packageData.overview_details) {
+          try {
+            const details = JSON.parse(packageData.overview_details);
+            setAccommodation(details.accommodation || 'Hotels & Homestays');
+            setBestTime(details.bestTime || 'June to September');
+            setGroupSize(details.groupSize || '2-10 People');
+            setTerrain(details.terrain || 'Himalayan Mountain Passes');
+            setElevation(details.elevation || '2,000 - 4,550 meters');
+            setAvailableFrom(details.availableFrom || 'June');
+            setAvailableTo(details.availableTo || 'October');
+          } catch (e) {
+            console.error("Error parsing overview details:", e);
+          }
+        }
       }
       
       const { data: nightStaysData, error: nightStaysError } = await supabase
@@ -194,6 +229,17 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
         }
       }
       
+      // Prepare overview details as JSON string
+      const overviewDetails = JSON.stringify({
+        accommodation,
+        bestTime,
+        groupSize,
+        terrain,
+        elevation,
+        availableFrom,
+        availableTo
+      });
+      
       let tourPackageId = packageId;
       
       if (isEditing && packageId) {
@@ -211,7 +257,8 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
             is_women_only: isWomenOnly,
             is_fixed_departure: isFixedDeparture,
             is_customizable: isCustomizable,
-            overview
+            overview,
+            overview_details: overviewDetails
           })
           .eq('id', packageId);
         
@@ -231,7 +278,8 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
             is_women_only: isWomenOnly,
             is_fixed_departure: isFixedDeparture,
             is_customizable: isCustomizable,
-            overview
+            overview,
+            overview_details: overviewDetails
           })
           .select('id')
           .single();
@@ -363,6 +411,22 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     setIsFixedDeparture,
     isCustomizable,
     setIsCustomizable,
+    
+    // Overview details
+    accommodation,
+    setAccommodation,
+    bestTime,
+    setBestTime,
+    groupSize,
+    setGroupSize,
+    terrain,
+    setTerrain,
+    elevation,
+    setElevation,
+    availableFrom,
+    setAvailableFrom,
+    availableTo,
+    setAvailableTo,
     
     // Details
     nightStays,

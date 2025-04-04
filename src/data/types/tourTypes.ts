@@ -10,6 +10,16 @@ export interface TourItineraryDay {
   description: string;
 }
 
+export interface TourOverviewDetails {
+  accommodation?: string;
+  bestTime?: string;
+  groupSize?: string;
+  terrain?: string;
+  elevation?: string;
+  availableFrom?: string;
+  availableTo?: string;
+}
+
 export interface TourPackageProps {
   id?: string;  // Making id optional in base type
   title: string;
@@ -30,6 +40,7 @@ export interface TourPackageProps {
   inclusions: string[];
   exclusions: string[];
   itinerary: TourItineraryDay[];
+  overviewDetails?: TourOverviewDetails;
 }
 
 export interface TourPackageWithId extends TourPackageProps {
