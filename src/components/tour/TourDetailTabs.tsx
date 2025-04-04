@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { TourPackageProps } from "@/data/types/tourTypes";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,10 +18,26 @@ const TourDetailTabs: React.FC<TourDetailTabsProps> = ({
       </h2>
 
       <Tabs defaultValue="accommodations" className="w-full" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="accommodations" className="make accomodations fit here use short form nstead and make the backgriund darkr so the toogle selection white colour looks more visible\n">Accommodations</TabsTrigger>
-          <TabsTrigger value="inclusions">Inclusions</TabsTrigger>
-          <TabsTrigger value="exclusions">Exclusions</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 bg-gray-200">
+          <TabsTrigger 
+            value="accommodations" 
+            className="data-[state=active]:bg-spiti-blue data-[state=active]:text-white font-medium"
+          >
+            <span className="hidden sm:inline">Accommodations</span>
+            <span className="sm:hidden">Stays</span>
+          </TabsTrigger>
+          <TabsTrigger 
+            value="inclusions"
+            className="data-[state=active]:bg-spiti-blue data-[state=active]:text-white font-medium"
+          >
+            Inclusions
+          </TabsTrigger>
+          <TabsTrigger 
+            value="exclusions"
+            className="data-[state=active]:bg-spiti-blue data-[state=active]:text-white font-medium"
+          >
+            Exclusions
+          </TabsTrigger>
         </TabsList>
         
         {/* Accommodations Tab */}
