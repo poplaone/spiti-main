@@ -27,6 +27,15 @@ import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
 import RoadTrips from "./pages/RoadTrips";
 import FixedDepartures from "./pages/FixedDepartures";
 
+// Import admin pages
+import AdminLogin from "./pages/AdminLogin";
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import TourPackageList from "./pages/admin/TourPackageList";
+import CreatePackage from "./pages/admin/CreatePackage";
+import EditPackage from "./pages/admin/EditPackage";
+import AdminSettings from "./pages/admin/AdminSettings";
+
 const App = () => {
   // Create a new QueryClient instance within the component function
   // This ensures proper React context usage
@@ -62,6 +71,16 @@ const App = () => {
             <Route path="/tour-women" element={<TourDetailWomen />} />
             <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
             <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
+            
+            {/* Admin routes */}
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="tour-packages" element={<TourPackageList />} />
+              <Route path="tour-packages/create" element={<CreatePackage />} />
+              <Route path="tour-packages/edit/:id" element={<EditPackage />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
             
             {/* Catch-all route for 404 */}
             <Route path="*" element={<NotFound />} />

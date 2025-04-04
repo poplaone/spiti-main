@@ -2,9 +2,12 @@
 import React from 'react';
 import TourPackageHeader from './tour/TourPackageHeader';
 import TourPackageGrid from './tour/TourPackageGrid';
-import { tourPackagesData } from '../data/tourPackagesData';
+import { useToursContext } from '@/context/ToursContext';
+import { Loader2 } from 'lucide-react';
 
 const TourPackages = () => {
+  const { tours, loading, error } = useToursContext();
+
   return (
     <section id="discover-spiti-valley" className="py-6 md:py-10 relative bg-cover bg-center bg-no-repeat" 
       style={{ 
@@ -17,7 +20,28 @@ const TourPackages = () => {
           description="Explore our carefully crafted tour packages designed to provide you with an unforgettable Spiti Valley experience. Choose from a variety of options to match your preferences and budget."
         />
         
-        <TourPackageGrid packages={tourPackagesData} />
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-spiti-forest" />
+            <p className="mt-4 text-gray-600">Loading tour packages...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-500">{error}</p>
+            <button 
+              className="mt-4 bg-spiti-forest text-white px-4 py-2 rounded hover:bg-spiti-forest/80"
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </button>
+          </div>
+        ) : tours.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No tour packages available at the moment.</p>
+          </div>
+        ) : (
+          <TourPackageGrid packages={tours} />
+        )}
       </div>
     </section>
   );
