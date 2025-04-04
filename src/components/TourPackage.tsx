@@ -51,22 +51,22 @@ const TourPackage: React.FC<TourPackageProps & {
             <Calendar className="w-4 h-4 mr-1" style={{
             color: isFixedDeparture ? '#EF4444' : '#6B7280'
           }} />
-            <span className="font-medium text-sm" style={{
+            <span style={{
             color: isFixedDeparture ? '#EF4444' : '#6B7280'
-          }}>FIXED DEPARTURES</span>
+          }} className="font-medium text-xs">FIXED DEPARTURES</span>
           </div>
           
           <div className="flex items-center">
             <Sliders className="w-4 h-4 mr-1" style={{
             color: isCustomizable ? '#EF4444' : '#6B7280'
           }} />
-            <span className="font-medium text-sm" style={{
+            <span style={{
             color: isCustomizable ? '#EF4444' : '#6B7280'
-          }}>CUSTOMIZABLE</span>
+          }} className="font-medium text-xs">CUSTOMIZABLE</span>
           </div>
         </div>
         
-        <p className="text-md text-gray-800 font-medium mb-4">Available from <span className="text-red-500 font-semibold">{availableFrom}</span> to <span className="text-red-500 font-semibold">{availableTo}</span></p>
+        <p className="text-md text-gray-800 mb-4 font-medium text-sm">Available from <span className="text-red-500 font-semibold">{availableFrom}</span> to <span className="text-red-500 font-semibold">{availableTo}</span></p>
 
         <div className="flex justify-between items-center mb-4">
           <div>
