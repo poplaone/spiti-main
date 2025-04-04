@@ -45,6 +45,20 @@ const TourPackage: React.FC<TourPackageProps & {
         <div className="absolute top-1 left-1 bg-red-500 text-white text-xs sm:text-sm md:text-base font-bold py-0.5 px-1.5 rounded-sm">
           {discount}% OFF
         </div>
+        
+        {/* Tour type badges */}
+        <div className="absolute top-1 right-1 flex gap-1">
+          {isFixedDeparture && (
+            <Badge variant="outline" className="bg-blue-500 text-white border-blue-500 text-xs">
+              Fixed
+            </Badge>
+          )}
+          {isCustomizable && (
+            <Badge variant="outline" className="bg-green-500 text-white border-green-500 text-xs">
+              Custom
+            </Badge>
+          )}
+        </div>
       </div>
       
       <CardContent className="p-4 sm:p-6 mx-[3px] my-0 py-[12px] px-[6px]">
@@ -53,20 +67,22 @@ const TourPackage: React.FC<TourPackageProps & {
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center">
             <Calendar className="w-4 h-4 mr-1" style={{
-              color: isFixedDeparture ? '#EF4444' : '#6B7280'
+              color: isFixedDeparture ? '#3B82F6' : '#6B7280'
             }} />
             <span style={{
-              color: isFixedDeparture ? '#EF4444' : '#6B7280'
-            }} className="font-medium text-xs">FIXED DEPARTURES</span>
+              color: isFixedDeparture ? '#3B82F6' : '#6B7280',
+              fontWeight: isFixedDeparture ? 'bold' : 'normal'
+            }} className="text-xs">FIXED DEPARTURES</span>
           </div>
           
           <div className="flex items-center">
             <Sliders className="w-4 h-4 mr-1" style={{
-              color: isCustomizable ? '#EF4444' : '#6B7280'
+              color: isCustomizable ? '#10B981' : '#6B7280'
             }} />
             <span style={{
-              color: isCustomizable ? '#EF4444' : '#6B7280'
-            }} className="font-medium text-xs">CUSTOMIZABLE</span>
+              color: isCustomizable ? '#10B981' : '#6B7280',
+              fontWeight: isCustomizable ? 'bold' : 'normal'
+            }} className="text-xs">CUSTOMIZABLE</span>
           </div>
         </div>
         

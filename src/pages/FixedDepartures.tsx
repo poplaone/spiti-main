@@ -49,8 +49,9 @@ const FixedDepartures = () => {
           </div>
           
           {fixedDepartureTours.length === 0 ? (
-            <div className="text-center py-8">
+            <div className="text-center py-8 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
               <p className="text-xl text-gray-600">No fixed departure tours available at the moment.</p>
+              <p className="mt-2 text-gray-500">Please check back later or contact us to schedule a custom tour.</p>
             </div>
           ) : (
             <TourPackageGrid packages={fixedDepartureTours} />

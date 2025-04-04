@@ -170,32 +170,43 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-        <div className="flex items-center space-x-2">
-          <Switch 
-            id="isWomenOnly" 
-            checked={isWomenOnly}
-            onCheckedChange={setIsWomenOnly}
-          />
-          <Label htmlFor="isWomenOnly">Women-Only Tour</Label>
+      {/* Tour Type Options Section - Made more prominent */}
+      <div className="border rounded-lg p-4 bg-gray-50">
+        <h3 className="text-lg font-medium mb-4">Tour Type Options</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex items-center space-x-2">
+            <Switch 
+              id="isWomenOnly" 
+              checked={isWomenOnly}
+              onCheckedChange={setIsWomenOnly}
+            />
+            <Label htmlFor="isWomenOnly">Women-Only Tour</Label>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Switch 
+              id="isFixedDeparture" 
+              checked={isFixedDeparture}
+              onCheckedChange={setIsFixedDeparture}
+            />
+            <Label htmlFor="isFixedDeparture" className="font-medium text-blue-700">Fixed Departure Tour</Label>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <Switch 
+              id="isCustomizable" 
+              checked={isCustomizable}
+              onCheckedChange={setIsCustomizable}
+            />
+            <Label htmlFor="isCustomizable" className="font-medium text-green-700">Customizable Tour</Label>
+          </div>
         </div>
         
-        <div className="flex items-center space-x-2">
-          <Switch 
-            id="isFixedDeparture" 
-            checked={isFixedDeparture}
-            onCheckedChange={setIsFixedDeparture}
-          />
-          <Label htmlFor="isFixedDeparture">Fixed Departure Tour</Label>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <Switch 
-            id="isCustomizable" 
-            checked={isCustomizable}
-            onCheckedChange={setIsCustomizable}
-          />
-          <Label htmlFor="isCustomizable">Customizable Tour</Label>
+        <div className="mt-4 text-sm text-gray-600">
+          <p>
+            <span className="font-semibold">Note:</span> Fixed departure tours will be displayed on the Fixed Departures page. 
+            Customizable tours will appear on the Customizable Tours page. All car and bike tours automatically appear on Road Trips.
+          </p>
         </div>
       </div>
 

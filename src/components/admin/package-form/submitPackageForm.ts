@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { TourPackageFormData, NightStay, Inclusion, Exclusion, ItineraryDay } from "./types";
 import { uploadImage } from "./imageHandler";
@@ -66,6 +67,11 @@ export const submitPackageForm = async (
         .eq('id', packageId);
       
       if (updateError) throw updateError;
+      
+      console.log(`Updated tour package with ID ${packageId}:`, {
+        isFixedDeparture: formData.isFixedDeparture,
+        isCustomizable: formData.isCustomizable
+      });
     } else {
       const { data: newPackage, error: insertError } = await supabase
         .from('tour_packages')
@@ -89,6 +95,11 @@ export const submitPackageForm = async (
       
       if (insertError) throw insertError;
       tourPackageId = newPackage?.id;
+      
+      console.log(`Created new tour package with ID ${tourPackageId}:`, {
+        isFixedDeparture: formData.isFixedDeparture,
+        isCustomizable: formData.isCustomizable
+      });
       
       if (!tourPackageId) throw new Error('Failed to get tour package ID');
     }
