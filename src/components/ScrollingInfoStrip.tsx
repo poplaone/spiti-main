@@ -17,17 +17,31 @@ const ScrollingInfoStrip = () => {
 
   // Initialize the plugin after component mount to avoid type errors
   useEffect(() => {
-    // Using the AutoplayPlugin correctly with delay and stop options
-    const plugin = AutoplayPlugin({ delay: 3000, stopOnInteraction: false });
-    setAutoplayPlugin(plugin);
+    // Only create the plugin if we're on mobile
+    if (isMobile) {
+      // Create a new instance of the plugin with options
+      const plugin = AutoplayPlugin({ 
+        delay: 3000, 
+        stopOnInteraction: false 
+      });
+      
+      setAutoplayPlugin(plugin);
+      
+      // Safe cleanup function that checks if plugin exists before destroying
+      return () => {
+        if (plugin && typeof plugin.destroy === 'function') {
+          try {
+            plugin.destroy();
+          } catch (error) {
+            console.error('Error destroying autoplay plugin:', error);
+          }
+        }
+      };
+    }
     
-    // Cleanup function
-    return () => {
-      if (plugin && plugin.destroy) {
-        plugin.destroy();
-      }
-    };
-  }, []);
+    // No cleanup needed if plugin wasn't created
+    return undefined;
+  }, [isMobile]); // Re-initialize when mobile status changes
 
   return (
     <div className="bg-spiti-forest text-white py-1 overflow-hidden">
@@ -43,10 +57,10 @@ const ScrollingInfoStrip = () => {
         
         {/* Mobile version - with auto-scrolling */}
         <div className="md:hidden">
-          {autoplayPlugin && (
+          {isMobile && (
             <Carousel 
               className="w-full"
-              plugins={[autoplayPlugin]} 
+              plugins={autoplayPlugin ? [autoplayPlugin] : undefined} 
               opts={{
                 align: "start",
                 loop: true,
