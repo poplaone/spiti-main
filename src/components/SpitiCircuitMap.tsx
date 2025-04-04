@@ -15,7 +15,7 @@ const SpitiCircuitMap: React.FC = () => {
       
       <div className="p-1 md:p-2 rounded-lg overflow-hidden">
         <iframe 
-          src="https://www.google.com/maps/d/u/0/embed?mid=1zV5a5rlboYm_n8NduQFb5YwHfI71K70&ehbc=2E312F" 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d433868.3888932906!2d77.35233541892902!3d32.251321072639685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39045fdf49fb89c3%3A0xec7fc71b837aac48!2sSpiti%20Valley%2C%20Himachal%20Pradesh!5e0!3m2!1sen!2sin!4v1712258693158!5m2!1sen!2sin" 
           width="100%" 
           height="550" 
           style={{ border: 0 }} 
