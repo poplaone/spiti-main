@@ -43,7 +43,7 @@ const TourPackage: React.FC<TourPackageProps & {
         </div>
       </div>
       
-      <CardContent className="p-4 sm:p-5">
+      <CardContent className="p-4 sm:p-6 py-[15px] px-[16px] mx-[3px] my-0">
         <h3 className="font-heading font-bold text-xl mb-3 text-gray-800">{title}</h3>
         
         <div className="flex justify-between items-center mb-3">
