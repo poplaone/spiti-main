@@ -1,5 +1,4 @@
-
-import { TourPackageProps } from '@/components/TourPackage';
+import { TourPackageProps } from '@/data/types/tourTypes';
 
 export const bikeTours: TourPackageProps[] = [
   {

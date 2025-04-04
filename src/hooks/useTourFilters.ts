@@ -1,7 +1,5 @@
-
 import { useMemo } from 'react';
-import { TourPackageProps } from '@/components/TourPackage';
-import { bikeTours, carTours, womenOnlyTours } from '@/data/tourPackagesData';
+import { TourPackageProps } from '@/data/types/tourTypes';
 
 /**
  * Custom hook to filter tours by different criteria

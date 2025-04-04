@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from '@/data/types/tourTypes';
 import { tourPackagesData } from "@/data/tourPackagesData";
 import { Bike } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";

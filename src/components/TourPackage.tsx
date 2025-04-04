@@ -100,4 +100,7 @@ const TourPackage: React.FC<TourPackageProps & { id?: string }> = ({
   );
 };
 
+// Re-export the types from tourTypes.ts for easier access by other components
+export type { TourPackageProps, TourPackageWithId } from '@/data/types/tourTypes';
+
 export default TourPackage;

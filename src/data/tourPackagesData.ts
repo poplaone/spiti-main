@@ -1,5 +1,5 @@
 
-import { TourPackageProps } from '@/components/TourPackage';
+import { TourPackageProps } from '@/data/types/tourTypes';
 import { bikeTours } from './tours/bikeTours';
 import { unexploredTours } from './tours/carTours';
 import { ownCarTours } from './tours/ownCarTours';
