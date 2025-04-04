@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useToursContext } from '@/context/ToursContext';
 import { TourPackageProps } from '@/data/types/tourTypes';
 
@@ -15,60 +15,46 @@ export const useTourData = (tourType: string, tourId?: string): UseTourDataResul
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { tours, loading } = useToursContext();
 
-  useEffect(() => {
-    if (loading) {
-      setIsLoading(true);
-      return;
-    }
-
-    if (tours.length === 0) {
-      setIsLoading(false);
-      return;
-    }
-
+  // Memoized filter function to avoid recalculating on every render
+  const filterTours = useCallback((allTours: TourPackageProps[], type: string, id?: string) => {
     // If we have a specific tour ID, use that to find the tour
-    if (tourId) {
-      const foundTour = tours.find(t => t.id === tourId);
+    if (id) {
+      const foundTour = allTours.find(t => t.id === id);
       if (foundTour) {
-        setTour(foundTour);
-        
         // Get ALL other tours except the current one for related tours section
-        // No longer limiting the related tours to just 3
-        const relatedTours = tours.filter(t => t.id !== tourId);
-        setOtherTours(relatedTours);
-        setIsLoading(false);
-        return;
+        const relatedTours = allTours.filter(t => t.id !== id);
+        return { selectedTour: foundTour, relatedTours };
       }
     }
 
     // Filter tours based on tour type if no specific tourId is provided
     let filteredTours: TourPackageProps[] = [];
     
-    switch (tourType) {
+    switch (type) {
       case 'bike':
-        filteredTours = tours.filter(t => t.transportType.toLowerCase() === 'bike');
+        filteredTours = allTours.filter(t => t.transportType.toLowerCase() === 'bike');
         break;
       case 'women':
-        filteredTours = tours.filter(t => t.isWomenOnly);
+        filteredTours = allTours.filter(t => t.isWomenOnly);
         break;
       case 'buddhist':
-        filteredTours = tours.filter(t => 
+        filteredTours = allTours.filter(t => 
           t.title.toLowerCase().includes('buddhist') || 
           t.title.toLowerCase().includes('tribal')
         );
         break;
       case 'owncar':
-        filteredTours = tours.filter(t => 
+        filteredTours = allTours.filter(t => 
           t.title.toLowerCase().includes('own car') || 
           t.title.toLowerCase().includes('self drive')
         );
         break;
       case 'hiddenheaven':
-        filteredTours = tours.filter(t => t.title.toLowerCase().includes('hidden'));
+        filteredTours = allTours.filter(t => t.title.toLowerCase().includes('hidden'));
         break;
       case 'unexplored':
       default:
-        filteredTours = tours.filter(t => 
+        filteredTours = allTours.filter(t => 
           t.transportType.toLowerCase() !== 'bike' && 
           !t.isWomenOnly && 
           !t.title.toLowerCase().includes('buddhist') && 
@@ -81,19 +67,38 @@ export const useTourData = (tourType: string, tourId?: string): UseTourDataResul
     }
 
     if (filteredTours.length > 0) {
-      setTour(filteredTours[0]);
-      
-      // Get ALL other tours of the same type, no longer limiting to 3
-      setOtherTours(filteredTours.slice(1));
+      return { 
+        selectedTour: filteredTours[0], 
+        relatedTours: filteredTours.slice(1)
+      };
     } else {
       // Fallback to first tour if no tours match the type
-      setTour(tours[0]);
-      // Get all other tours, not just 3
-      setOtherTours(tours.slice(1));
+      return { 
+        selectedTour: allTours[0], 
+        relatedTours: allTours.slice(1)
+      };
     }
+  }, []);
+
+  useEffect(() => {
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (tours.length === 0) {
+      setIsLoading(false);
+      return;
+    }
+
+    // Use the memoized filter function
+    const { selectedTour, relatedTours } = filterTours(tours, tourType, tourId);
     
+    setTour(selectedTour || null);
+    setOtherTours(relatedTours || []);
     setIsLoading(false);
-  }, [tours, loading, tourType, tourId]);
+    
+  }, [tours, loading, tourType, tourId, filterTours]);
 
   return { tour, otherTours, isLoading };
 };

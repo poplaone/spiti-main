@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import TourPackage from "@/components/TourPackage";
 import { TourPackageProps } from "@/data/types/tourTypes";
 import { 
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
@@ -22,11 +23,23 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
   const filteredTours = currentTourId 
     ? tours.filter(tour => tour.id !== currentTourId) 
     : tours;
+  
+  const isMobile = useIsMobile();
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   // If no related tours available after filtering current tour
   if (filteredTours.length === 0) {
     return null;
   }
+
+  // Memoized navigation handler
+  const handleNavigation = useCallback((direction: 'prev' | 'next') => {
+    const button = document.querySelector(
+      `[data-carousel-${direction === 'prev' ? 'prev' : 'next'}="true"]`
+    ) as HTMLButtonElement;
+    
+    if (button) button.click();
+  }, []);
 
   return (
     <section className="py-8 md:py-16 bg-spiti-stone">
@@ -39,15 +52,17 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
         </p>
         
         {/* Swipe indicator for mobile */}
-        <div className="flex justify-center items-center mb-4 md:hidden">
-          <div className="flex items-center gap-2 bg-white/80 px-3 py-1 rounded-full shadow-sm">
-            <ArrowLeft className="h-4 w-4 text-spiti-forest animate-pulse" />
-            <span className="text-sm text-spiti-forest font-medium">Swipe to explore all {filteredTours.length} tours</span>
-            <ArrowRight className="h-4 w-4 text-spiti-forest animate-pulse" />
+        {isMobile && (
+          <div className="flex justify-center items-center mb-4 md:hidden">
+            <div className="flex items-center gap-2 bg-white/80 px-3 py-1 rounded-full shadow-sm">
+              <ArrowLeft className="h-4 w-4 text-spiti-forest animate-pulse" />
+              <span className="text-sm text-spiti-forest font-medium">Swipe to explore all {filteredTours.length} tours</span>
+              <ArrowRight className="h-4 w-4 text-spiti-forest animate-pulse" />
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="relative">
+        <div className="relative" ref={carouselRef}>
           <Carousel 
             className="w-full" 
             opts={{ 
@@ -63,7 +78,7 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
                   className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                 >
                   <div className="h-full">
-                    <TourPackage {...tour} id={tour.id} />
+                    <TourPackage {...tour} id={tour.id || `tour-${index}`} />
                   </div>
                 </CarouselItem>
               ))}
@@ -76,10 +91,7 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
                 size="icon" 
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
                 aria-label="Previous slide"
-                onClick={() => {
-                  const prevButton = document.querySelector('[data-carousel-prev="true"]') as HTMLButtonElement;
-                  if (prevButton) prevButton.click();
-                }}
+                onClick={() => handleNavigation('prev')}
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
@@ -89,10 +101,7 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
                 size="icon" 
                 className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
                 aria-label="Next slide"
-                onClick={() => {
-                  const nextButton = document.querySelector('[data-carousel-next="true"]') as HTMLButtonElement;
-                  if (nextButton) nextButton.click();
-                }}
+                onClick={() => handleNavigation('next')}
               >
                 <ArrowRight className="h-5 w-5" />
               </Button>
@@ -104,33 +113,29 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
           </Carousel>
   
           {/* Mobile custom navigation arrows - made more visible */}
-          <div className="flex justify-between md:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 px-2 z-10">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
-              aria-label="Previous slide"
-              onClick={() => {
-                const prevButton = document.querySelector('[data-carousel-prev="true"]') as HTMLButtonElement;
-                if (prevButton) prevButton.click();
-              }}
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
-              aria-label="Next slide"
-              onClick={() => {
-                const nextButton = document.querySelector('[data-carousel-next="true"]') as HTMLButtonElement;
-                if (nextButton) nextButton.click();
-              }}
-            >
-              <ArrowRight className="h-5 w-5" />
-            </Button>
-          </div>
+          {isMobile && (
+            <div className="flex justify-between md:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 px-2 z-10">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
+                aria-label="Previous slide"
+                onClick={() => handleNavigation('prev')}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
+                aria-label="Next slide"
+                onClick={() => handleNavigation('next')}
+              >
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Display total number of tours available */}

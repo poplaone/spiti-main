@@ -1,16 +1,15 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Bike, Car, Users, Calendar, Sliders } from 'lucide-react';
+import { Bike, Car, Calendar, Sliders } from 'lucide-react';
 import { TourPackageProps } from '@/data/types/tourTypes';
-import { Badge } from './ui/badge';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { useIsMobile } from '@/hooks/use-mobile';
 
+// Memoized TourPackage component to prevent unnecessary re-renders
 const TourPackage: React.FC<TourPackageProps & {
   id?: string;
-}> = ({
+}> = memo(({
   id,
   title,
   image,
@@ -24,15 +23,6 @@ const TourPackage: React.FC<TourPackageProps & {
   isCustomizable = true,
   overviewDetails
 }) => {
-  const getTransportIcon = () => {
-    switch (transportType.toLowerCase()) {
-      case 'bike':
-        return <Bike className="h-5 w-5" />;
-      default:
-        return <Car className="h-5 w-5" />;
-    }
-  };
-
   // Get availability dates with fallbacks
   const availableFrom = overviewDetails?.availableFrom || 'June';
   const availableTo = overviewDetails?.availableTo || 'October';
@@ -41,16 +31,22 @@ const TourPackage: React.FC<TourPackageProps & {
   return (
     <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full w-full">
       <div className="relative">
-        <img src={image} alt={title} className="w-full h-[200px] object-cover" />
+        <img 
+          src={image} 
+          alt={title} 
+          className="w-full h-[200px] object-cover" 
+          loading="lazy"
+          decoding="async"
+          width="400"
+          height="200"
+        />
         <div className="absolute top-1 left-1 bg-red-500 text-white text-xs sm:text-sm md:text-base font-bold py-0.5 px-1.5 rounded-sm">
           {discount}% OFF
         </div>
-        
-        {/* Removed the redundant tour type badges that were here */}
       </div>
       
       <CardContent className="p-4 sm:p-6 mx-[3px] my-0 py-[12px] px-[6px]">
-        <h3 className="font-heading font-bold text-xl mb-3 text-gray-800">{title}</h3>
+        <h3 className="font-heading font-bold text-xl mb-3 text-gray-800 line-clamp-2">{title}</h3>
         
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center">
@@ -104,7 +100,10 @@ const TourPackage: React.FC<TourPackageProps & {
       </CardContent>
     </Card>
   );
-};
+});
+
+// For React DevTools
+TourPackage.displayName = 'TourPackage';
 
 // Re-export the types from tourTypes.ts for easier access by other components
 export type { TourPackageProps, TourPackageWithId } from '@/data/types/tourTypes';

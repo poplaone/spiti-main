@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
 import AutoplayPlugin from 'embla-carousel-autoplay';
@@ -13,6 +13,7 @@ const ScrollingInfoStrip = () => {
   ];
 
   const isMobile = useIsMobile();
+  const autoplayPluginRef = useRef<any>(null);
   const [autoplayPlugin, setAutoplayPlugin] = useState<any>(null);
 
   // Initialize the plugin after component mount to avoid type errors
@@ -20,23 +21,41 @@ const ScrollingInfoStrip = () => {
     // Only create the plugin if we're on mobile
     if (isMobile) {
       // Create a new instance of the plugin with options
-      const plugin = AutoplayPlugin({ 
-        delay: 3000, 
-        stopOnInteraction: false 
-      });
-      
-      setAutoplayPlugin(plugin);
+      if (!autoplayPluginRef.current) {
+        try {
+          autoplayPluginRef.current = AutoplayPlugin({ 
+            delay: 3000, 
+            stopOnInteraction: false 
+          });
+          setAutoplayPlugin(autoplayPluginRef.current);
+        } catch (error) {
+          console.error('Error creating autoplay plugin:', error);
+        }
+      }
       
       // Safe cleanup function that checks if plugin exists before destroying
       return () => {
-        if (plugin && typeof plugin.destroy === 'function') {
+        if (autoplayPluginRef.current && typeof autoplayPluginRef.current.destroy === 'function') {
           try {
-            plugin.destroy();
+            autoplayPluginRef.current.destroy();
+            autoplayPluginRef.current = null;
+            setAutoplayPlugin(null);
           } catch (error) {
             console.error('Error destroying autoplay plugin:', error);
           }
         }
       };
+    } else {
+      // Cleanup plugin if switching from mobile to desktop
+      if (autoplayPluginRef.current) {
+        try {
+          autoplayPluginRef.current.destroy();
+          autoplayPluginRef.current = null;
+          setAutoplayPlugin(null);
+        } catch (error) {
+          console.error('Error destroying autoplay plugin:', error);
+        }
+      }
     }
     
     // No cleanup needed if plugin wasn't created

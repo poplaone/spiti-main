@@ -25,15 +25,36 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
   const [imagesToShow, setImagesToShow] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({0: false});
   
   // Wait for the isMobile value to be determined before showing any images
   useEffect(() => {
     if (isMobile !== undefined) {
       const appropriateImages = isMobile ? mobileImages : desktopImages;
       setImagesToShow(appropriateImages);
+      // Pre-initialize first image as loading
       setIsLoaded(true);
     }
   }, [isMobile]);
+
+  // Track image loading state
+  const handleImageLoad = (index: number) => {
+    setLoadedImages(prev => ({...prev, [index]: true}));
+  };
+
+  // Preload the next image when current changes
+  useEffect(() => {
+    if (imagesToShow.length > 0) {
+      // Preload the next image (circular)
+      const nextIdx = (current + 1) % imagesToShow.length;
+      
+      if (!loadedImages[nextIdx]) {
+        const img = new Image();
+        img.src = imagesToShow[nextIdx];
+        img.onload = () => handleImageLoad(nextIdx);
+      }
+    }
+  }, [current, imagesToShow, loadedImages]);
 
   // Don't render anything until we know which device type we're on
   if (!isLoaded) {
@@ -45,13 +66,21 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
       {imagesToShow.map((src, index) => (
         <div 
           key={index} 
-          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+            index === current ? 'opacity-100' : 'opacity-0'
+          }`}
+          aria-hidden={index !== current}
         >
           <img 
             src={src} 
             alt={getImageAlt(src, index)}
             className="w-full h-full object-cover" 
             loading={index === 0 ? "eager" : "lazy"} 
+            onLoad={() => handleImageLoad(index)}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            width={1920}
+            height={1080}
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
         </div>
