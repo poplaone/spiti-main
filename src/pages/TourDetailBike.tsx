@@ -17,11 +17,13 @@ import TourDetailTabs from "@/components/tour/TourDetailTabs";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TourDetailBike = () => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const { tours, loading, refreshTours } = useToursContext();
   
   useEffect(() => {
@@ -30,43 +32,42 @@ const TourDetailBike = () => {
     // Refresh tours when component mounts
     refreshTours();
     
-    // Use either context tours or fallback to static data
-    const toursToUse = tours.length > 0 ? tours : tourPackagesData;
-    
-    // Find the bike tour (first one with transportType = bike)
-    const selectedTour = toursToUse.find(tour => 
-      tour.transportType === 'bike' || 
-      (tour.title && tour.title.toLowerCase().includes('bike'))
-    );
-    
-    if (selectedTour) {
-      setTour(selectedTour);
+    // Find the bike tour from available data
+    const findBikeTour = () => {
+      // Use either context tours or fallback to static data
+      const toursToUse = tours.length > 0 ? tours : tourPackagesData;
+      
+      // Find the bike tour (first one with transportType = bike)
+      const selectedTour = toursToUse.find(tour => 
+        tour.transportType.toLowerCase() === 'bike' || 
+        (tour.title && tour.title.toLowerCase().includes('bike'))
+      );
+      
+      if (selectedTour) {
+        setTour(selectedTour);
 
-      // Get other tours for the "More Popular Tours" section
-      const others = toursToUse.filter(t => t.id !== selectedTour.id).slice(0, 4);
-      setOtherTours(others);
+        // Get other tours for the "More Popular Tours" section
+        const others = toursToUse.filter(t => t.id !== selectedTour.id).slice(0, 4);
+        setOtherTours(others);
+      } else {
+        // Fallback to first tour in static data if no bike tour is found
+        const fallbackTour = tourPackagesData[0];
+        if (fallbackTour) {
+          setTour(fallbackTour);
+          const others = tourPackagesData.filter(t => t.id !== fallbackTour.id).slice(0, 4);
+          setOtherTours(others);
+        }
+      }
+      
+      // Initial load complete
+      setIsInitialLoad(false);
+    };
+
+    // Only update state when tours change or if we're on initial load
+    if (!loading || isInitialLoad) {
+      findBikeTour();
     }
-  }, [tours, loading, refreshTours]);
-
-  if (loading && !tour) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin h-10 w-10 border-4 border-spiti-blue border-t-transparent rounded-full"></div>
-        <p className="ml-4 text-lg">Loading bike tour details...</p>
-      </div>
-    );
-  }
-
-  if (!tour) {
-    // Fallback to first bike tour in static data if no tour is found
-    const fallbackTour = tourPackagesData.find(t => t.transportType === 'bike');
-    if (!fallbackTour) {
-      return <div>Bike tour not found. Please check back later.</div>;
-    }
-    // Set the fallback tour before rendering
-    setTour(fallbackTour);
-    return null; // Will re-render with the fallback tour
-  }
+  }, [tours, loading, refreshTours, isInitialLoad]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN').format(price);
@@ -76,6 +77,52 @@ const TourDetailBike = () => {
   const getTransportIcon = () => {
     return <Bike className="text-spiti-blue w-6 h-6" />;
   };
+
+  // Render loading skeleton if initial load and no tour yet
+  if (isInitialLoad && !tour) {
+    return (
+      <div className="min-h-screen" style={{
+        backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=80&w=1920&auto=format&fit=crop')`,
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
+        <Header />
+        
+        <div className="container mx-auto px-4 py-24">
+          <Skeleton className="h-64 w-full mb-8 rounded-xl" />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              <Skeleton className="h-48 w-full rounded-lg" />
+              <Skeleton className="h-96 w-full rounded-lg" />
+              <Skeleton className="h-64 w-full rounded-lg" />
+            </div>
+            
+            <div className="hidden lg:block">
+              <Skeleton className="h-96 w-full rounded-lg sticky top-24" />
+            </div>
+          </div>
+        </div>
+        
+        <Footer />
+      </div>
+    );
+  }
+
+  // If no tour after loading, show a proper message
+  if (!tour) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="container mx-auto px-4 py-24 text-center">
+          <h2 className="text-2xl font-bold mb-4">Tour Not Found</h2>
+          <p>We couldn't find the bike tour you're looking for. Please check back later.</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen" style={{

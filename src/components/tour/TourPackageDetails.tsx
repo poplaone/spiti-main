@@ -3,17 +3,37 @@ import React from 'react';
 import { Home, Check, X, MapPin } from 'lucide-react';
 import { TourPackageProps } from "@/data/types/tourTypes";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TourPackageDetailsProps {
   tour: TourPackageProps;
+  isLoading?: boolean;
 }
 
-const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({ tour }) => {
+const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({ tour, isLoading = false }) => {
+  // Show skeleton loading state
+  if (isLoading) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow-sm">
+        <Skeleton className="h-8 w-48 mb-4" />
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-3/4 mb-6" />
+        
+        <div className="space-y-4">
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      </div>
+    );
+  }
+  
   // Make sure the tour object has all required properties
   if (!tour || !tour.nightStays || !tour.inclusions) {
     return (
       <div className="bg-white p-6 rounded-lg shadow-sm">
-        <p className="text-red-500">Tour information is loading or unavailable.</p>
+        <p className="text-red-500">Tour information is unavailable. Please try again later.</p>
       </div>
     );
   }

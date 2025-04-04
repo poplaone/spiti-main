@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Clock, Calendar, MapPin, Bike, Car, Settings, Calendar as CalendarIcon } from 'lucide-react';
+
+import React from 'react';
+import { Clock, Calendar, Bike, Car, Settings, Calendar as CalendarIcon } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TourPackageProps } from '@/data/types/tourTypes';
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TourHeroProps {
   tour: TourPackageProps;
@@ -12,6 +13,7 @@ interface TourHeroProps {
   setSelectedMonth: (month: string) => void;
   formatPrice: (price: number) => string;
   heroImage?: string;
+  isLoading?: boolean;
 }
 
 const TourHero: React.FC<TourHeroProps> = ({
@@ -19,13 +21,11 @@ const TourHero: React.FC<TourHeroProps> = ({
   selectedMonth,
   setSelectedMonth,
   formatPrice,
-  heroImage = "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80"
+  heroImage = "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80",
+  isLoading = false
 }) => {
   const isMobile = useIsMobile();
-  const seoTitle = tour.title.toLowerCase().includes('spiti') ? tour.title : `${tour.title} - Spiti Valley Adventure`;
-
-  // Array of available months
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const seoTitle = tour.title?.toLowerCase().includes('spiti') ? tour.title : `${tour.title} - Spiti Valley Adventure`;
 
   // Function to scroll to itinerary section
   const scrollToItinerary = () => {
@@ -36,13 +36,35 @@ const TourHero: React.FC<TourHeroProps> = ({
       });
     }
   };
-  return <section className="relative h-[80vh] sm:h-[70vh] mt-0" style={{
-    backgroundImage: `url(${heroImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    marginTop: '0',
-    paddingTop: '0'
-  }}>
+
+  if (isLoading) {
+    return (
+      <section className="relative h-[80vh] sm:h-[70vh] mt-0 bg-gray-200">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
+        <div className="container mx-auto px-4 h-full flex items-end sm:items-center pb-16 sm:pb-0 relative z-10">
+          <div className="max-w-3xl space-y-6">
+            <Skeleton className="h-10 w-3/4 bg-gray-400" />
+            <Skeleton className="h-6 w-1/2 bg-gray-400" />
+            <div className="flex flex-wrap items-center gap-3">
+              <Skeleton className="h-8 w-32 bg-gray-400" />
+              <Skeleton className="h-8 w-8 rounded-full bg-gray-400" />
+              <Skeleton className="h-8 w-8 rounded-full bg-gray-400" />
+            </div>
+            <Skeleton className="h-10 w-40 bg-gray-400" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="relative h-[80vh] sm:h-[70vh] mt-0" style={{
+      backgroundImage: `url(${heroImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      marginTop: '0',
+      paddingTop: '0'
+    }}>
       {/* Darkening overlay - reduced opacity on mobile for better image visibility */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 sm:from-black/70 sm:via-black/50 sm:to-black/20"></div>
       
@@ -58,7 +80,6 @@ const TourHero: React.FC<TourHeroProps> = ({
               <Clock className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-spiti-blue" />
               <span className="text-sm sm:text-base">{tour.duration.nights} Nights / {tour.duration.days} Days</span>
             </div>
-            
           </div>
           
           {/* Badges moved to be in line with View Itinerary button */}
@@ -67,11 +88,15 @@ const TourHero: React.FC<TourHeroProps> = ({
               View Itinerary
             </Button>
             
-            {tour.transportType === 'bike' ? <Badge className="bg-orange-500 p-1.5">
+            {tour.transportType?.toLowerCase() === 'bike' ? (
+              <Badge className="bg-orange-500 p-1.5">
                 <Bike className="w-4 h-4" />
-              </Badge> : <Badge className="bg-green-500 p-1.5">
+              </Badge>
+            ) : (
+              <Badge className="bg-green-500 p-1.5">
                 <Car className="w-4 h-4" />
-              </Badge>}
+              </Badge>
+            )}
             
             <Badge className="bg-purple-500 p-1.5">
               <CalendarIcon className="w-4 h-4" />
@@ -88,14 +113,12 @@ const TourHero: React.FC<TourHeroProps> = ({
             <span className="text-sm sm:text-lg line-through opacity-75 text-white">₹{formatPrice(tour.originalPrice)}/-</span>
             <Badge className="bg-red-500 text-sm sm:text-base px-2 sm:px-3 py-0.5 sm:py-1">{tour.discount}% OFF</Badge>
           </div>
-          
-          {/* Month selection dropdown moved to the bottom */}
-          
         </div>
       </div>
       
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-20"></div>
-    </section>;
+    </section>
+  );
 };
 
 export default TourHero;

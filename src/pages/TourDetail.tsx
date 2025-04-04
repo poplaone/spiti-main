@@ -7,14 +7,15 @@ import { TourPackageProps } from "@/data/types/tourTypes";
 import { Bike, Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import { useToursContext } from '@/context/ToursContext';
+import { tourPackagesData } from "@/data/tourPackagesData";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
 import BookingCard from "@/components/tour/BookingCard";
 import TourOverview from "@/components/tour/TourOverview";
 import TourItinerary from "@/components/tour/TourItinerary";
-import TourAccommodation from "@/components/tour/TourAccommodation";
-import TourInclusions from "@/components/tour/TourInclusions";
+import TourPackageDetails from "@/components/tour/TourPackageDetails";
 import RelatedTours from "@/components/tour/RelatedTours";
 import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
@@ -35,48 +36,50 @@ const TourDetail = () => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const { tours, loading, refreshTours } = useToursContext();
   
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    // Ensure tours are loaded
-    if (loading) return;
-
-    if (id) {
-      // Find the tour by ID instead of index
-      const selectedTour = tours.find(tour => tour.id === id);
-      if (selectedTour) {
-        setTour(selectedTour);
-
-        // Get other tours for the "More Popular Tours" section
-        const others = tours.filter(t => t.id !== id).slice(0, 4);
+    // Refresh tours when component mounts
+    refreshTours();
+    
+    const findTour = () => {
+      // Use either context tours or fallback to static data
+      const toursToUse = tours.length > 0 ? tours : tourPackagesData;
+      
+      if (id) {
+        // Find the tour by ID
+        const selectedTour = toursToUse.find(tour => tour.id === id);
+        if (selectedTour) {
+          setTour(selectedTour);
+  
+          // Get other tours for the "More Popular Tours" section
+          const others = toursToUse.filter(t => t.id !== id).slice(0, 4);
+          setOtherTours(others);
+        } else if (toursToUse.length > 0) {
+          // If tour with ID not found but we have tours, use the first one as fallback
+          setTour(toursToUse[0]);
+          const others = toursToUse.filter((_, i) => i > 0).slice(0, 4);
+          setOtherTours(others);
+        }
+      } else if (toursToUse.length > 0) {
+        // If no ID provided but we have tours, use the first one
+        setTour(toursToUse[0]);
+        const others = toursToUse.filter((_, i) => i > 0).slice(0, 4);
         setOtherTours(others);
       }
+      
+      // Initial load complete
+      setIsInitialLoad(false);
+    };
+    
+    // Only update state when tours change or if we're on initial load
+    if (!loading || isInitialLoad) {
+      findTour();
     }
-  }, [id, tours, loading]);
-
-  // Refresh tours when component mounts to ensure we have latest data
-  useEffect(() => {
-    refreshTours();
-  }, [refreshTours]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin h-10 w-10 border-4 border-spiti-blue border-t-transparent rounded-full"></div>
-        <p className="ml-4 text-lg">Loading tour details...</p>
-      </div>
-    );
-  }
-
-  if (!tour) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg">Tour not found. Please try again later.</p>
-      </div>
-    );
-  }
+  }, [id, tours, loading, refreshTours, isInitialLoad]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN').format(price);
@@ -84,10 +87,57 @@ const TourDetail = () => {
 
   // Choose the appropriate transport icon
   const getTransportIcon = () => {
-    if (tour.transportType === 'bike') return <Bike className="text-spiti-blue w-6 h-6" />;
-    if (tour.transportType === 'car') return <Car className="text-spiti-blue w-6 h-6" />;
+    if (!tour) return <Car className="text-spiti-blue w-6 h-6" />;
+    
+    if (tour.transportType.toLowerCase() === 'bike') return <Bike className="text-spiti-blue w-6 h-6" />;
     return <Car className="text-spiti-blue w-6 h-6" />;
   };
+
+  // Render loading skeleton if initial load and no tour yet
+  if (isInitialLoad || (loading && !tour)) {
+    return (
+      <div className="min-h-screen" style={{
+        backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=80&w=1920&auto=format&fit=crop')`,
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
+        <Header />
+        
+        <div className="container mx-auto px-4 py-24">
+          <Skeleton className="h-64 w-full mb-8 rounded-xl" />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              <Skeleton className="h-48 w-full rounded-lg" />
+              <Skeleton className="h-96 w-full rounded-lg" />
+              <Skeleton className="h-64 w-full rounded-lg" />
+            </div>
+            
+            <div className="hidden lg:block">
+              <Skeleton className="h-96 w-full rounded-lg sticky top-24" />
+            </div>
+          </div>
+        </div>
+        
+        <Footer />
+      </div>
+    );
+  }
+
+  // If no tour after loading, show a proper message
+  if (!tour) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="container mx-auto px-4 py-24 text-center">
+          <h2 className="text-2xl font-bold mb-4">Tour Not Found</h2>
+          <p>We couldn't find the tour you're looking for. Please check back later.</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   // Select hero image based on tour index in the tours array
   const tourIndex = tours.findIndex(t => t.id === tour.id);
@@ -132,8 +182,7 @@ const TourDetail = () => {
               </div>
               
               <TourItinerary tour={tour} />
-              <TourAccommodation tour={tour} />
-              <TourInclusions tour={tour} />
+              <TourPackageDetails tour={tour} />
             </div>
             
             {/* Right column - Booking info */}
