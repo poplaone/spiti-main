@@ -14,14 +14,16 @@ const FixedDepartures = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    console.log("Fixed departure tours:", fixedDepartureTours);
+  }, [fixedDepartureTours]);
   
-  return <div className="min-h-screen" style={{
-    backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1920&auto=format&fit=crop')`,
-    backgroundAttachment: 'fixed',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
-  }}>
+  return (
+    <div className="min-h-screen" style={{
+      backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1920&auto=format&fit=crop')`,
+      backgroundAttachment: 'fixed',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
       <Header />
       
       {/* Hero Section */}
@@ -46,13 +48,20 @@ const FixedDepartures = () => {
             </p>
           </div>
           
-          <TourPackageGrid packages={fixedDepartureTours} />
+          {fixedDepartureTours.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-xl text-gray-600">No fixed departure tours available at the moment.</p>
+            </div>
+          ) : (
+            <TourPackageGrid packages={fixedDepartureTours} />
+          )}
         </div>
       </section>
 
       <FloatingWhatsAppButton />
       <Footer />
-    </div>;
+    </div>
+  );
 };
 
 export default FixedDepartures;

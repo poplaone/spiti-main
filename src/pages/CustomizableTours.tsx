@@ -14,7 +14,8 @@ const CustomizableTours = () => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    console.log("Customizable tours:", customizableTours);
+  }, [customizableTours]);
   
   return (
     <div className="min-h-screen" style={{
@@ -47,7 +48,13 @@ const CustomizableTours = () => {
             </p>
           </div>
           
-          <TourPackageGrid packages={customizableTours} />
+          {customizableTours.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-xl text-gray-600">No customizable tours available at the moment.</p>
+            </div>
+          ) : (
+            <TourPackageGrid packages={customizableTours} />
+          )}
         </div>
       </section>
 

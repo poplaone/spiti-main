@@ -20,8 +20,8 @@ const TourPackage: React.FC<TourPackageProps & {
   duration,
   transportType,
   isWomenOnly,
-  isFixedDeparture,
-  isCustomizable,
+  isFixedDeparture = false,
+  isCustomizable = true,
   overviewDetails
 }) => {
   const getTransportIcon = () => {
@@ -38,7 +38,8 @@ const TourPackage: React.FC<TourPackageProps & {
   const availableTo = overviewDetails?.availableTo || 'October';
 
   // Modified to use the tour ID directly when available
-  return <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full w-full">
+  return (
+    <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full w-full">
       <div className="relative">
         <img src={image} alt={title} className="w-full h-[200px] object-cover" />
         <div className="absolute top-1 left-1 bg-red-500 text-white text-xs sm:text-sm md:text-base font-bold py-0.5 px-1.5 rounded-sm">
@@ -52,20 +53,20 @@ const TourPackage: React.FC<TourPackageProps & {
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center">
             <Calendar className="w-4 h-4 mr-1" style={{
-            color: isFixedDeparture ? '#EF4444' : '#6B7280'
-          }} />
+              color: isFixedDeparture ? '#EF4444' : '#6B7280'
+            }} />
             <span style={{
-            color: isFixedDeparture ? '#EF4444' : '#6B7280'
-          }} className="font-medium text-xs">FIXED DEPARTURES</span>
+              color: isFixedDeparture ? '#EF4444' : '#6B7280'
+            }} className="font-medium text-xs">FIXED DEPARTURES</span>
           </div>
           
           <div className="flex items-center">
             <Sliders className="w-4 h-4 mr-1" style={{
-            color: isCustomizable ? '#EF4444' : '#6B7280'
-          }} />
+              color: isCustomizable ? '#EF4444' : '#6B7280'
+            }} />
             <span style={{
-            color: isCustomizable ? '#EF4444' : '#6B7280'
-          }} className="font-medium text-xs">CUSTOMIZABLE</span>
+              color: isCustomizable ? '#EF4444' : '#6B7280'
+            }} className="font-medium text-xs">CUSTOMIZABLE</span>
           </div>
         </div>
         
@@ -97,7 +98,8 @@ const TourPackage: React.FC<TourPackageProps & {
           </Link>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
 
 // Re-export the types from tourTypes.ts for easier access by other components

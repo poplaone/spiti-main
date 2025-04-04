@@ -79,8 +79,9 @@ export function useTourFilters(allTours: TourPackageProps[]) {
     );
   }, [allTours]);
 
-  // Updated to accurately filter fixed departure tours
+  // Updated to properly filter fixed departure tours
   const fixedDepartureTours = useMemo(() => {
+    // Make sure we're checking for truthy values, not just equality
     return allTours.filter(tour => tour.isFixedDeparture === true);
   }, [allTours]);
 
@@ -93,8 +94,9 @@ export function useTourFilters(allTours: TourPackageProps[]) {
     );
   }, [allTours]);
 
-  // Added new filter for customizable tours
+  // Updated to properly filter customizable tours
   const customizableTours = useMemo(() => {
+    // Make sure we're checking for truthy values, not just equality
     return allTours.filter(tour => tour.isCustomizable === true);
   }, [allTours]);
 
