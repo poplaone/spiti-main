@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from '@/data/types/tourTypes';
-import { tourPackagesData } from "@/data/tourPackagesData";
 import { Bike } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { useToursContext } from '@/context/ToursContext';
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -18,26 +18,42 @@ import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
 
 const TourDetailBike = () => {
-  // Using first tour (bike tour)
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const { tours, loading, refreshTours } = useToursContext();
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Get the bike tour (index 0)
-    const selectedTour = tourPackagesData[0];
+    
+    // Refresh tours when component mounts
+    refreshTours();
+    
+    // Wait for tours to load
+    if (loading || tours.length === 0) return;
+    
+    // Find the bike tour (first one with transportType = bike)
+    const selectedTour = tours.find(tour => tour.transportType === 'bike');
     if (selectedTour) {
       setTour(selectedTour);
 
       // Get other tours for the "More Popular Tours" section
-      const others = tourPackagesData.filter((_, index) => index !== 0).slice(0, 4);
+      const others = tours.filter(t => t.id !== selectedTour.id).slice(0, 4);
       setOtherTours(others);
     }
-  }, []);
+  }, [tours, loading, refreshTours]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-10 w-10 border-4 border-spiti-blue border-t-transparent rounded-full"></div>
+        <p className="ml-4 text-lg">Loading bike tour details...</p>
+      </div>
+    );
+  }
 
   if (!tour) {
-    return <div>Loading...</div>;
+    return <div>Bike tour not found. Please check back later.</div>;
   }
 
   const formatPrice = (price: number) => {

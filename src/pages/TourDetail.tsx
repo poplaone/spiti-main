@@ -1,11 +1,12 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from "@/data/types/tourTypes";
-import { tourPackagesData } from "@/data/tourPackagesData";
 import { Bike, Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { useToursContext } from '@/context/ToursContext';
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -34,24 +35,47 @@ const TourDetail = () => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const { tours, loading, refreshTours } = useToursContext();
   
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Ensure tours are loaded
+    if (loading) return;
+
     if (id) {
-      const numId = parseInt(id, 10);
-      const selectedTour = tourPackagesData.find((_, index) => index === numId);
+      // Find the tour by ID instead of index
+      const selectedTour = tours.find(tour => tour.id === id);
       if (selectedTour) {
         setTour(selectedTour);
 
         // Get other tours for the "More Popular Tours" section
-        const others = tourPackagesData.filter((_, index) => index !== numId).slice(0, 4);
+        const others = tours.filter(t => t.id !== id).slice(0, 4);
         setOtherTours(others);
       }
     }
-  }, [id]);
+  }, [id, tours, loading]);
+
+  // Refresh tours when component mounts to ensure we have latest data
+  useEffect(() => {
+    refreshTours();
+  }, [refreshTours]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-10 w-10 border-4 border-spiti-blue border-t-transparent rounded-full"></div>
+        <p className="ml-4 text-lg">Loading tour details...</p>
+      </div>
+    );
+  }
 
   if (!tour) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg">Tour not found. Please try again later.</p>
+      </div>
+    );
   }
 
   const formatPrice = (price: number) => {
@@ -65,9 +89,10 @@ const TourDetail = () => {
     return <Car className="text-spiti-blue w-6 h-6" />;
   };
 
-  // Select hero image based on tour id
-  const heroImage = id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) < heroImages.length 
-    ? heroImages[parseInt(id, 10)] 
+  // Select hero image based on tour index in the tours array
+  const tourIndex = tours.findIndex(t => t.id === tour.id);
+  const heroImage = tourIndex >= 0 && tourIndex < heroImages.length 
+    ? heroImages[tourIndex] 
     : heroImages[heroImages.length - 1];
 
   return (

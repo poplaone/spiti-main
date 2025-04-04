@@ -1,10 +1,11 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TourPackageProps } from '@/data/types/tourTypes';
-import { tourPackagesData } from "@/data/tourPackagesData";
 import { Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { useToursContext } from '@/context/ToursContext';
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -17,26 +18,46 @@ import MobileStickyFooter from "@/components/tour/MobileStickyFooter";
 import DepartureDatesCard from "@/components/tour/DepartureDatesCard";
 
 const TourDetailBuddhist = () => {
-  // Using third tour (Buddhist and Tribal Circuit)
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
+  const { tours, loading, refreshTours } = useToursContext();
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Get the Buddhist tour (index 2)
-    const selectedTour = tourPackagesData[2];
+    
+    // Refresh tours when component mounts
+    refreshTours();
+    
+    // Wait for tours to load
+    if (loading || tours.length === 0) return;
+    
+    // Find the Buddhist tour (by title or specific criteria)
+    const selectedTour = tours.find(tour => 
+      tour.title.toLowerCase().includes('buddhist') ||
+      tour.title.toLowerCase().includes('tribal')
+    );
+    
     if (selectedTour) {
       setTour(selectedTour);
 
       // Get other tours for the "More Popular Tours" section
-      const others = tourPackagesData.filter((_, index) => index !== 2).slice(0, 4);
+      const others = tours.filter(t => t.id !== selectedTour.id).slice(0, 4);
       setOtherTours(others);
     }
-  }, []);
+  }, [tours, loading, refreshTours]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-10 w-10 border-4 border-spiti-blue border-t-transparent rounded-full"></div>
+        <p className="ml-4 text-lg">Loading Buddhist tour details...</p>
+      </div>
+    );
+  }
 
   if (!tour) {
-    return <div>Loading...</div>;
+    return <div>Buddhist tour not found. Please check back later.</div>;
   }
 
   const formatPrice = (price: number) => {
@@ -63,7 +84,7 @@ const TourDetailBuddhist = () => {
         selectedMonth={selectedMonth} 
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
-        heroImage="/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png" // Swapped with Hidden Heaven image
+        heroImage="/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png" 
       />
 
       {/* Package Details Section remains the same */}
