@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bike, Car, Users, Calendar, Sliders } from 'lucide-react';
@@ -6,7 +5,6 @@ import { TourPackageProps } from '@/data/types/tourTypes';
 import { Badge } from './ui/badge';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
-
 const TourPackage: React.FC<TourPackageProps & {
   id?: string;
 }> = ({
@@ -37,8 +35,7 @@ const TourPackage: React.FC<TourPackageProps & {
   const availableTo = overviewDetails?.availableTo || 'October';
 
   // Modified to use the tour ID directly when available
-  return (
-    <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full w-full">
+  return <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full w-full">
       <div className="relative">
         <img src={image} alt={title} className="w-full h-[200px] object-cover" />
         <div className="absolute top-1 left-1 bg-red-500 text-white text-lg font-bold py-0 px-[7px] mx-0 my-0 rounded-sm">
@@ -51,13 +48,21 @@ const TourPackage: React.FC<TourPackageProps & {
         
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center">
-            <Calendar className="w-4 h-4 mr-1" style={{ color: isFixedDeparture ? '#EF4444' : '#6B7280' }} />
-            <span className="font-medium text-sm" style={{ color: isFixedDeparture ? '#EF4444' : '#6B7280' }}>FIXED DEPARTURES</span>
+            <Calendar className="w-4 h-4 mr-1" style={{
+            color: isFixedDeparture ? '#EF4444' : '#6B7280'
+          }} />
+            <span className="font-medium text-sm" style={{
+            color: isFixedDeparture ? '#EF4444' : '#6B7280'
+          }}>FIXED DEPARTURES</span>
           </div>
           
           <div className="flex items-center">
-            <Sliders className="w-4 h-4 mr-1" style={{ color: isCustomizable ? '#EF4444' : '#6B7280' }} />
-            <span className="font-medium text-sm" style={{ color: isCustomizable ? '#EF4444' : '#6B7280' }}>CUSTOMIZABLE</span>
+            <Sliders className="w-4 h-4 mr-1" style={{
+            color: isCustomizable ? '#EF4444' : '#6B7280'
+          }} />
+            <span className="font-medium text-sm" style={{
+            color: isCustomizable ? '#EF4444' : '#6B7280'
+          }}>CUSTOMIZABLE</span>
           </div>
         </div>
         
@@ -70,7 +75,7 @@ const TourPackage: React.FC<TourPackageProps & {
           </div>
           
           <div className="text-right">
-            <p className="text-lg font-semibold text-spiti-forest">
+            <p className="font-semibold text-spiti-forest text-sm">
               {duration.nights} NIGHTS / {duration.days} DAYS
             </p>
           </div>
@@ -89,8 +94,7 @@ const TourPackage: React.FC<TourPackageProps & {
           </Link>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
 
 // Re-export the types from tourTypes.ts for easier access by other components
