@@ -22,19 +22,32 @@ const TourContent: React.FC<TourContentProps> = ({
   getTransportIcon,
   formatPrice
 }) => {
+  // Determine if we should show package details or departure dates
+  const showPackageDetails = !tour.isFixedDeparture;
+  
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
       <div className="flex flex-col md:flex-row gap-6 md:gap-8">
         {/* Main content */}
         <div className="flex-1 space-y-6">
-          {/* First - Details including departure dates */}
-          <TourPackageDetails
-            transportType={tour.transportType}
-            getTransportIcon={getTransportIcon}
-            isWomenOnly={tour.isWomenOnly}
-            isFixedDeparture={tour.isFixedDeparture}
-            isCustomizable={tour.isCustomizable}
-          />
+          {/* First - Only show Package Details for non-fixed departure tours */}
+          {showPackageDetails ? (
+            <TourPackageDetails
+              transportType={tour.transportType}
+              getTransportIcon={getTransportIcon}
+              isWomenOnly={tour.isWomenOnly}
+              isFixedDeparture={tour.isFixedDeparture}
+              isCustomizable={tour.isCustomizable}
+            />
+          ) : (
+            // Show departure dates for fixed departure tours
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <h2 className="text-xl font-heading font-bold text-spiti-forest mb-4">
+                Departure Dates
+              </h2>
+              <DepartureDatesCard className="p-0 bg-transparent shadow-none" />
+            </div>
+          )}
           
           {/* Second - Overview */}
           <TourOverview 

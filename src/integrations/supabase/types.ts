@@ -146,9 +146,12 @@ export type Database = {
           duration_nights: number
           id: string
           image: string
+          is_customizable: boolean | null
+          is_fixed_departure: boolean | null
           is_women_only: boolean
           original_price: number
           overview: string | null
+          overview_details: Json | null
           title: string
           transport_type: string
           updated_at: string
@@ -161,9 +164,12 @@ export type Database = {
           duration_nights: number
           id?: string
           image: string
+          is_customizable?: boolean | null
+          is_fixed_departure?: boolean | null
           is_women_only?: boolean
           original_price: number
           overview?: string | null
+          overview_details?: Json | null
           title: string
           transport_type: string
           updated_at?: string
@@ -176,9 +182,12 @@ export type Database = {
           duration_nights?: number
           id?: string
           image?: string
+          is_customizable?: boolean | null
+          is_fixed_departure?: boolean | null
           is_women_only?: boolean
           original_price?: number
           overview?: string | null
+          overview_details?: Json | null
           title?: string
           transport_type?: string
           updated_at?: string
