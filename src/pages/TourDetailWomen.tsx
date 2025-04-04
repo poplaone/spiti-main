@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -32,10 +31,9 @@ const TourDetailWomen = () => {
     // Wait for tours to load
     if (loading || tours.length === 0) return;
     
-    // Find the Women Only tour
+    // Find the Women Only tour - fixed to use isWomenOnly
     const selectedTour = tours.find(tour => 
-      tour.is_women_only === true ||
-      (typeof tour.isWomenOnly === 'boolean' && tour.isWomenOnly) ||
+      tour.isWomenOnly === true ||
       tour.title.toLowerCase().includes('women')
     );
     

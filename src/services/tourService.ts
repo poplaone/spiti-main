@@ -46,6 +46,7 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
   }));
   
   return {
+    id: dbTour.id, // Include the ID in the returned object
     title: dbTour.title,
     image: dbTour.image,
     originalPrice: dbTour.original_price,

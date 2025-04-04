@@ -11,6 +11,7 @@ export interface TourItineraryDay {
 }
 
 export interface TourPackageProps {
+  id?: string;  // Making id optional in base type
   title: string;
   image: string;
   originalPrice: number;
@@ -30,5 +31,5 @@ export interface TourPackageProps {
 }
 
 export interface TourPackageWithId extends TourPackageProps {
-  id: string;
+  id: string;  // Required in this interface
 }

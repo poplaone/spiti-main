@@ -15,7 +15,7 @@ interface ToursContextProps {
 const ToursContext = createContext<ToursContextProps | undefined>(undefined);
 
 export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [tours, setTours] = useState<TourPackageProps[]>(tourPackagesData); // Initialize with original data
+  const [tours, setTours] = useState<TourPackageProps[]>([]); // Initialize with empty array
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,21 +37,31 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       // If there are tours in Supabase, map them to frontend format
       if (dbTours && dbTours.length > 0) {
         const tourPromises = dbTours.map(async (dbTour) => {
-          return await mapDbTourToFrontend(dbTour);
+          const tour = await mapDbTourToFrontend(dbTour);
+          // Make sure to include the id from the database
+          return { ...tour, id: dbTour.id };
         });
         
         const mappedTours = await Promise.all(tourPromises);
         setTours(mappedTours);
       } else {
-        // If no tours in Supabase, use the original data
-        setTours(tourPackagesData);
+        // If no tours in Supabase, use the original data with generated ids
+        const toursWithIds = tourPackagesData.map((tour, index) => ({
+          ...tour,
+          id: `static-${index}`
+        }));
+        setTours(toursWithIds);
       }
       
     } catch (err: any) {
       console.error("Error fetching tours:", err);
       setError("Failed to load tour packages. Please try again later.");
-      // Fall back to original data on error
-      setTours(tourPackagesData);
+      // Fall back to original data on error with generated ids
+      const toursWithIds = tourPackagesData.map((tour, index) => ({
+        ...tour,
+        id: `static-${index}`
+      }));
+      setTours(toursWithIds);
     } finally {
       setLoading(false);
     }
