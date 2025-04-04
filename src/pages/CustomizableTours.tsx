@@ -41,9 +41,7 @@ const CustomizableTours = () => {
       {/* Customizable Packages Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="mb-12">
-            <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 text-center">Tailor Your Spiti Adventure</h2>
-          </div>
+          {/* Removed heading text as requested */}
           
           {customizableTours.length === 0 ? (
             <div className="text-center py-8">
