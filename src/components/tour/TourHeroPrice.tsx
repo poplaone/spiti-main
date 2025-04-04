@@ -16,15 +16,7 @@ const TourHeroPrice: React.FC<TourHeroPriceProps> = ({
   formatPrice
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
-      <div className="flex items-baseline gap-2">
-        <span className="text-2xl sm:text-3xl font-bold text-white">
-          ₹{formatPrice(discountedPrice)}
-        </span>
-        <span className="text-base sm:text-lg line-through text-gray-300">
-          ₹{formatPrice(originalPrice)}
-        </span>
-      </div>
+    <div className="flex items-center">
       <Badge className="bg-red-500 hover:bg-red-600 text-white px-2 py-1">
         {discount}% OFF
       </Badge>
