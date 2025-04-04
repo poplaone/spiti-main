@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = "https://ttyhfrbubjpmzruwwihd.supabase.co";
@@ -19,6 +20,7 @@ export interface Database {
           duration_days: number
           transport_type: string
           is_women_only: boolean
+          is_visible: boolean
           overview: string | null
           created_at: string
           updated_at: string
@@ -34,6 +36,7 @@ export interface Database {
           duration_days: number
           transport_type: string
           is_women_only?: boolean
+          is_visible?: boolean
           overview?: string | null
           created_at?: string
           updated_at?: string
@@ -49,6 +52,7 @@ export interface Database {
           duration_days?: number
           transport_type?: string
           is_women_only?: boolean
+          is_visible?: boolean
           overview?: string | null
           created_at?: string
           updated_at?: string

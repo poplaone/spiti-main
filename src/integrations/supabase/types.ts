@@ -183,6 +183,7 @@ export type Database = {
           image: string
           is_customizable: boolean | null
           is_fixed_departure: boolean | null
+          is_visible: boolean
           is_women_only: boolean
           original_price: number
           overview: string | null
@@ -201,6 +202,7 @@ export type Database = {
           image: string
           is_customizable?: boolean | null
           is_fixed_departure?: boolean | null
+          is_visible?: boolean
           is_women_only?: boolean
           original_price: number
           overview?: string | null
@@ -219,6 +221,7 @@ export type Database = {
           image?: string
           is_customizable?: boolean | null
           is_fixed_departure?: boolean | null
+          is_visible?: boolean
           is_women_only?: boolean
           original_price?: number
           overview?: string | null

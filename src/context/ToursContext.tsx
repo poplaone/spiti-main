@@ -28,6 +28,7 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       const { data: dbTours, error } = await supabase
         .from('tour_packages')
         .select('*')
+        .eq('is_visible', true) // Only fetch visible tours for the frontend
         .order('title');
       
       if (error) {

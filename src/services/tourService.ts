@@ -70,6 +70,7 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
     isWomenOnly: dbTour.is_women_only,
     isFixedDeparture: dbTour.is_fixed_departure,
     isCustomizable: dbTour.is_customizable,
+    isVisible: dbTour.is_visible,
     overview: dbTour.overview,
     nightStays,
     inclusions,

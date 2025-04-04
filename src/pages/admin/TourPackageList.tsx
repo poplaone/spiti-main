@@ -20,9 +20,10 @@ import {
   DialogTrigger,
   DialogClose
 } from "@/components/ui/dialog";
-import { Edit, Plus, Trash2 } from "lucide-react";
+import { Edit, Eye, EyeOff, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import SeedOriginalToursButton from '@/components/admin/SeedOriginalToursButton';
+import { Switch } from "@/components/ui/switch";
 
 interface TourPackage {
   id: string;
@@ -33,6 +34,7 @@ interface TourPackage {
   discount: number;
   transport_type: string;
   is_women_only: boolean;
+  is_visible: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -42,6 +44,7 @@ const TourPackageList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [updatingVisibility, setUpdatingVisibility] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPackages();
@@ -130,6 +133,31 @@ const TourPackageList: React.FC = () => {
     }
   };
 
+  const toggleVisibility = async (id: string, currentVisibility: boolean) => {
+    try {
+      setUpdatingVisibility(id);
+      
+      const { error } = await supabase
+        .from('tour_packages')
+        .update({ is_visible: !currentVisibility })
+        .eq('id', id);
+        
+      if (error) throw error;
+      
+      // Update the local state to reflect the change
+      setPackages(packages.map(pkg => 
+        pkg.id === id ? { ...pkg, is_visible: !currentVisibility } : pkg
+      ));
+      
+      toast.success(`Tour package ${!currentVisibility ? 'visible' : 'hidden'} successfully`);
+    } catch (error: any) {
+      console.error('Error updating visibility:', error);
+      toast.error('Failed to update tour package visibility');
+    } finally {
+      setUpdatingVisibility(null);
+    }
+  };
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
@@ -176,12 +204,13 @@ const TourPackageList: React.FC = () => {
                 <TableHead>Price</TableHead>
                 <TableHead>Transport</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Visibility</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {packages.map((pkg) => (
-                <TableRow key={pkg.id}>
+                <TableRow key={pkg.id} className={!pkg.is_visible ? "opacity-60" : ""}>
                   <TableCell>
                     <div className="w-12 h-12 rounded overflow-hidden">
                       <img 
@@ -203,6 +232,28 @@ const TourPackageList: React.FC = () => {
                     <div className="flex items-center">
                       <span className="inline-block h-2 w-2 rounded-full bg-green-500 mr-2"></span>
                       Active
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleVisibility(pkg.id, pkg.is_visible)}
+                        disabled={updatingVisibility === pkg.id}
+                        className="text-gray-600 hover:text-gray-900"
+                      >
+                        {updatingVisibility === pkg.id ? (
+                          <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full"></div>
+                        ) : pkg.is_visible ? (
+                          <Eye className="w-4 h-4" />
+                        ) : (
+                          <EyeOff className="w-4 h-4" />
+                        )}
+                      </Button>
+                      <span className="ml-2 text-sm">
+                        {pkg.is_visible ? 'Visible' : 'Hidden'}
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
