@@ -5,10 +5,9 @@ import { TourPackageProps } from "@/data/types/tourTypes";
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
-  tourPackagesData: TourPackageProps[]; // Add this prop
 }
 
-const RelatedTours: React.FC<RelatedToursProps> = ({ tours, tourPackagesData }) => {
+const RelatedTours: React.FC<RelatedToursProps> = ({ tours }) => {
   return (
     <section className="py-16 bg-spiti-stone">
       <div className="container mx-auto px-4">
@@ -20,7 +19,7 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, tourPackagesData }) 
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {tours.map((tour, index) => (
-            <div key={index} className="h-full">
+            <div key={`related-tour-${index}`} className="h-full">
               <TourPackage {...tour} id={`related-${index}`} />
             </div>
           ))}

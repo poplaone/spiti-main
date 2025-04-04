@@ -1,28 +1,22 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getAllTourPackages } from '@/services/tourService';
-import { TourPackageWithId } from '@/data/types/tourTypes';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from "@/integrations/supabase/client";
+import { TourPackageProps } from '@/data/types/tourTypes';
+import { mapDbTourToFrontend } from '@/services/tourService';
+import { tourPackagesData } from '@/data/tourPackagesData'; // Import the original data
 
-interface ToursContextType {
-  tours: TourPackageWithId[];
+interface ToursContextProps {
+  tours: TourPackageProps[];
   loading: boolean;
   error: string | null;
   refreshTours: () => Promise<void>;
 }
 
-const ToursContext = createContext<ToursContextType | undefined>(undefined);
+const ToursContext = createContext<ToursContextProps | undefined>(undefined);
 
-export const useToursContext = () => {
-  const context = useContext(ToursContext);
-  if (!context) {
-    throw new Error('useToursContext must be used within a ToursProvider');
-  }
-  return context;
-};
-
-export const ToursProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [tours, setTours] = useState<TourPackageWithId[]>([]);
-  const [loading, setLoading] = useState(true);
+export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [tours, setTours] = useState<TourPackageProps[]>(tourPackagesData); // Initialize with original data
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchTours = async () => {
@@ -30,11 +24,34 @@ export const ToursProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setLoading(true);
       setError(null);
       
-      const tourData = await getAllTourPackages();
-      setTours(tourData);
-    } catch (error: any) {
-      console.error('Error fetching tours:', error);
-      setError(error.message || 'Failed to fetch tours');
+      // Fetch tours from Supabase
+      const { data: dbTours, error } = await supabase
+        .from('tour_packages')
+        .select('*')
+        .order('title');
+      
+      if (error) {
+        throw error;
+      }
+      
+      // If there are tours in Supabase, map them to frontend format
+      if (dbTours && dbTours.length > 0) {
+        const tourPromises = dbTours.map(async (dbTour) => {
+          return await mapDbTourToFrontend(dbTour);
+        });
+        
+        const mappedTours = await Promise.all(tourPromises);
+        setTours(mappedTours);
+      } else {
+        // If no tours in Supabase, use the original data
+        setTours(tourPackagesData);
+      }
+      
+    } catch (err: any) {
+      console.error("Error fetching tours:", err);
+      setError("Failed to load tour packages. Please try again later.");
+      // Fall back to original data on error
+      setTours(tourPackagesData);
     } finally {
       setLoading(false);
     }
@@ -55,4 +72,10 @@ export const ToursProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   );
 };
 
-export default ToursProvider;
+export const useToursContext = (): ToursContextProps => {
+  const context = useContext(ToursContext);
+  if (context === undefined) {
+    throw new Error("useToursContext must be used within a ToursProvider");
+  }
+  return context;
+};

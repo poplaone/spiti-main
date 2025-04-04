@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Edit, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import SeedOriginalToursButton from '@/components/admin/SeedOriginalToursButton';
 
 interface TourPackage {
   id: string;
@@ -134,12 +134,15 @@ const TourPackageList: React.FC = () => {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Tour Packages</h1>
-        <Button asChild className="bg-spiti-forest hover:bg-spiti-forest/90">
-          <Link to="/admin/tour-packages/create">
-            <Plus className="w-4 h-4 mr-2" />
-            Add New Package
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <SeedOriginalToursButton />
+          <Button asChild className="bg-spiti-forest hover:bg-spiti-forest/90">
+            <Link to="/admin/tour-packages/create">
+              <Plus className="w-4 h-4 mr-2" />
+              Add New Package
+            </Link>
+          </Button>
+        </div>
       </div>
       
       {loading ? (
@@ -151,14 +154,17 @@ const TourPackageList: React.FC = () => {
         <div className="bg-white rounded-lg p-8 text-center">
           <h2 className="text-xl font-medium mb-2">No tour packages yet</h2>
           <p className="text-gray-500 mb-6">
-            Create your first tour package to get started.
+            Create your first tour package or import the original tour data to get started.
           </p>
-          <Button asChild className="bg-spiti-forest hover:bg-spiti-forest/90">
-            <Link to="/admin/tour-packages/create">
-              <Plus className="w-4 h-4 mr-2" />
-              Create Tour Package
-            </Link>
-          </Button>
+          <div className="flex gap-4 justify-center">
+            <SeedOriginalToursButton />
+            <Button asChild className="bg-spiti-forest hover:bg-spiti-forest/90">
+              <Link to="/admin/tour-packages/create">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Tour Package
+              </Link>
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="bg-white rounded-lg shadow overflow-hidden">
