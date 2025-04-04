@@ -78,7 +78,7 @@ export const getAllTourPackages = async (): Promise<TourPackageWithId[]> => {
   }
   
   // Map all tours to frontend format and include the id
-  const tourPromises = dbTours.map(async (dbTour) => {
+  const tourPromises = (dbTours || []).map(async (dbTour) => {
     const tourPackage = await mapDbTourToFrontend(dbTour);
     return { ...tourPackage, id: dbTour.id };
   });
