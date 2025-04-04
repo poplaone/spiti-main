@@ -84,6 +84,7 @@ export const bikeTours: TourPackageProps[] = [
         description: "Enjoy a relaxed breakfast with a view of the mountains. Begin your journey back to Chandigarh, driving through lush valleys and scenic landscapes. Drop Your bikes at Bike Vendor. Trip concludes with unforgettable memories of Spiti Valley. TOUR END"
       }
     ],
-    transportType: "bike"
+    transportType: "bike",
+    isWomenOnly: false
   }
 ];

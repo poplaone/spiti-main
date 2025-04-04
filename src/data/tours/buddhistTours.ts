@@ -1,5 +1,4 @@
-
-import { TourPackageProps } from '@/components/TourPackage';
+import { TourPackageProps } from '@/data/types/tourTypes';
 
 export const buddhistTours: TourPackageProps[] = [
   {
@@ -104,6 +103,7 @@ export const buddhistTours: TourPackageProps[] = [
         description: "Enjoy a relaxed breakfast with a view of the mountains. Begin your journey back to Chandigarh, driving through lush valleys and scenic landscapes. Drop at Chandigarh Airport/Railway Station in the evening. Trip concludes with unforgettable memories of Spiti Valley. TOUR END"
       }
     ],
-    transportType: "car"
+    transportType: "car",
+    isWomenOnly: false
   }
 ];

@@ -20,7 +20,7 @@ export interface TourPackageProps {
     nights: number;
     days: number;
   };
-  transportType: string;  // Changed from strict type to string to match DB
+  transportType: string;  
   isWomenOnly: boolean;
   overview: string | null;
   nightStays: TourNightStay[];

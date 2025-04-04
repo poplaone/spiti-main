@@ -1,6 +1,7 @@
 
 import React from 'react';
-import TourPackage, { TourPackageProps } from "@/components/TourPackage";
+import TourPackage from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
@@ -20,7 +21,7 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, tourPackagesData }) 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {tours.map((tour, index) => (
             <div key={index} className="h-full">
-              <TourPackage {...tour} index={tourPackagesData.findIndex(t => t.title === tour.title)} />
+              <TourPackage {...tour} id={`related-${index}`} />
             </div>
           ))}
         </div>
