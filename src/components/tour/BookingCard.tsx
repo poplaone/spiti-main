@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -19,9 +19,31 @@ const BookingCard: React.FC<BookingCardProps> = ({
   discount, 
   formatPrice 
 }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Add scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      // Start sticky behavior after scrolling down 300px
+      setIsScrolled(scrollPosition > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    // Clean up
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="hidden lg:block w-[400px]">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+    <div className="hidden lg:block w-full max-w-[350px]">
+      <div 
+        className={`bg-white p-6 rounded-lg shadow-lg ${
+          isScrolled ? 'sticky top-24 transition-all duration-300' : ''
+        }`}
+      >
         <h2 className="text-2xl font-heading font-bold text-center text-spiti-forest mb-4">Book This Tour</h2>
         
         <div className="mb-6">

@@ -27,7 +27,7 @@ const TourContent: React.FC<TourContentProps> = ({
   
   return (
     <div className="container mx-auto px-4 py-6 sm:py-10">
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         {/* Main content */}
         <div className="flex-1 space-y-6">
           {/* First - Only show Package Details for non-fixed departure tours */}
@@ -76,7 +76,7 @@ const TourContent: React.FC<TourContentProps> = ({
         </div>
         
         {/* Sidebar */}
-        <div className="md:w-[350px] space-y-6">
+        <div className="lg:w-[350px] space-y-6 flex-shrink-0">
           <BookingCard 
             discountedPrice={tour.discountedPrice} 
             originalPrice={tour.originalPrice} 
