@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -20,16 +20,48 @@ const BookingCard: React.FC<BookingCardProps> = ({
   formatPrice 
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollStatus, setScrollStatus] = useState<'top' | 'middle' | 'bottom'>('top');
+  const cardRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Add scroll event listener
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      // Start sticky behavior after scrolling down 300px
-      setIsScrolled(scrollPosition > 300);
+      const windowHeight = window.innerHeight;
+      
+      // Get parent container position and dimensions
+      const container = containerRef.current?.parentElement;
+      if (!container || !cardRef.current) return;
+      
+      const containerRect = container.getBoundingClientRect();
+      const containerTop = containerRect.top + window.scrollY;
+      const containerBottom = containerRect.bottom + window.scrollY;
+      const cardHeight = cardRef.current.offsetHeight;
+      
+      // Calculate the maximum scroll position where the card should stop
+      // (container bottom minus card height minus some padding)
+      const maxScrollPosition = containerBottom - cardHeight - 50;
+      
+      // Calculate the position where the card should start being sticky
+      const startPosition = containerTop + 300;
+      
+      if (scrollPosition < startPosition) {
+        setScrollStatus('top');
+        setIsScrolled(false);
+      } else if (scrollPosition > maxScrollPosition) {
+        setScrollStatus('bottom');
+        setIsScrolled(true);
+      } else {
+        setScrollStatus('middle');
+        setIsScrolled(true);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
+    
+    // Call once to initialize correctly
+    handleScroll();
     
     // Clean up
     return () => {
@@ -37,12 +69,23 @@ const BookingCard: React.FC<BookingCardProps> = ({
     };
   }, []);
 
+  // Calculate styles based on scroll status
+  const getCardStyle = () => {
+    if (scrollStatus === 'top') {
+      return {};
+    } else if (scrollStatus === 'bottom') {
+      return { position: 'absolute', bottom: '50px', width: 'calc(100% - 24px)' };
+    } else {
+      return { position: 'fixed', top: '100px', width: 'inherit', maxWidth: 'inherit' };
+    }
+  };
+
   return (
-    <div className="hidden lg:block w-full max-w-[350px]">
+    <div ref={containerRef} className="hidden lg:block w-full max-w-[350px] relative">
       <div 
-        className={`bg-white p-6 rounded-lg shadow-lg ${
-          isScrolled ? 'sticky top-24 transition-all duration-300' : ''
-        }`}
+        ref={cardRef}
+        className={`bg-white p-6 rounded-lg shadow-lg transition-all duration-300`}
+        style={getCardStyle()}
       >
         <h2 className="text-2xl font-heading font-bold text-center text-spiti-forest mb-4">Book This Tour</h2>
         
