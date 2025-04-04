@@ -1,6 +1,7 @@
 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useEffect, useState } from 'react';
+import CarouselImage from './CarouselImage';
 
 // Different sets of images for mobile and desktop
 const desktopImages = [
@@ -32,7 +33,6 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
     if (isMobile !== undefined) {
       const appropriateImages = isMobile ? mobileImages : desktopImages;
       setImagesToShow(appropriateImages);
-      // Pre-initialize first image as loading
       setIsLoaded(true);
     }
   }, [isMobile]);
@@ -64,53 +64,17 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
   return (
     <>
       {imagesToShow.map((src, index) => (
-        <div 
+        <CarouselImage 
           key={index} 
-          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-            index === current ? 'opacity-100' : 'opacity-0'
-          }`}
-          aria-hidden={index !== current}
-        >
-          <img 
-            src={src} 
-            alt={getImageAlt(src, index)}
-            className="w-full h-full object-cover" 
-            loading={index === 0 ? "eager" : "lazy"} 
-            onLoad={() => handleImageLoad(index)}
-            fetchPriority={index === 0 ? "high" : "auto"}
-            width={1920}
-            height={1080}
-            decoding="async"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
-        </div>
+          src={src} 
+          index={index} 
+          isCurrent={index === current}
+          onLoad={() => handleImageLoad(index)}
+        />
       ))}
     </>
   );
 };
-
-// Helper function to provide appropriate alt text for SEO
-function getImageAlt(src: string, index: number): string {
-  if (src.includes('19314897')) {
-    return "Chandrataal Lake with snow-capped mountains in Spiti Valley, Himachal Pradesh";
-  } else if (src.includes('9b3798e9')) {
-    return "Stunning Milky Way night sky over Spiti Valley mountains";
-  } else if (src.includes('84853251')) {
-    return "Suspension bridge in Spiti Valley with mountains in background";
-  } else if (src.includes('8edf4fb0')) {
-    return "Key Monastery with snow-capped mountains in Spiti Valley";
-  } else if (src.includes('fa13766a')) {
-    return "Ancient monastery in snowy Spiti Valley";
-  } else if (src.includes('fe95c61b')) {
-    return "River valley in Spiti region";
-  } else if (src.includes('e1880eea')) {
-    return "Local child at doorway in Spiti Valley";
-  } else if (src.includes('adad2c0d')) {
-    return "Motorcycle tour on mountain roads in Spiti";
-  }
-  
-  return `Spiti Valley landscape - slide ${index + 1}`;
-}
 
 export { desktopImages, mobileImages };
 export default CarouselImages;
