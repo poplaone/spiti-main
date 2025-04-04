@@ -48,7 +48,7 @@ const TourContent: React.FC<TourContentProps> = ({
             
             <TabsContent value="itinerary" className="focus:outline-none tour-itinerary">
               <TourItinerary 
-                itinerary={tour.itinerary}
+                itinerary={tour.itinerary || []}
                 nightStays={tour.nightStays}
                 duration={tour.duration}
               />

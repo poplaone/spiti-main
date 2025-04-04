@@ -1,14 +1,7 @@
 
 import React from 'react';
 import { Users } from 'lucide-react';
-
-interface TourPackageDetailsProps {
-  transportType: string;
-  getTransportIcon: () => React.ReactNode;
-  isWomenOnly: boolean;
-  isFixedDeparture?: boolean;
-  isCustomizable?: boolean;
-}
+import { TourPackageDetailsProps } from "@/data/types/tourTypes";
 
 const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({
   transportType,
@@ -25,7 +18,7 @@ const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({
 
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          {getTransportIcon()}
+          {typeof getTransportIcon === 'function' ? getTransportIcon() : null}
           <div>
             <h3 className="font-medium">Transport Type</h3>
             <p className="text-gray-600">{transportType.charAt(0).toUpperCase() + transportType.slice(1)}</p>

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { TourItineraryProps } from "@/data/types/tourTypes";
 import { Calendar } from 'lucide-react';
 import { Accordion } from "@/components/ui/accordion";

@@ -1,13 +1,7 @@
 
 import React from 'react';
-import { Clock, Home, Calendar, Users, MapPin, Mountain, Compass } from 'lucide-react';
-import { TourPackageProps } from "@/data/types/tourTypes";
-
-interface TourOverviewProps {
-  tour: TourPackageProps;
-  getTransportIcon: () => JSX.Element;
-  overview?: string | null;
-}
+import { Clock, Home, Calendar, Users, Mountain, Compass } from 'lucide-react';
+import { TourOverviewProps } from "@/data/types/tourTypes";
 
 const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon, overview }) => {
   // Use the overview prop if provided, otherwise use the tour's overview
@@ -16,7 +10,7 @@ const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon, ove
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">
-        {getTransportIcon()}
+        {typeof getTransportIcon === 'function' ? getTransportIcon() : null}
         <span className="ml-2">Tour Overview</span>
       </h2>
       <p className="text-gray-700 mb-6">
