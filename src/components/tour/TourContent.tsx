@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TourPackageProps } from '@/data/types/tourTypes';
 import TourOverview from './TourOverview';
@@ -75,8 +74,8 @@ const TourContent: React.FC<TourContentProps> = ({
           </div>
         </div>
         
-        {/* Sidebar */}
-        <div className="lg:w-[350px] space-y-6 flex-shrink-0">
+        {/* Sidebar - updated with relative positioning for proper sticky behavior */}
+        <div className="lg:w-[350px] space-y-6 flex-shrink-0 relative">
           <BookingCard 
             discountedPrice={tour.discountedPrice} 
             originalPrice={tour.originalPrice} 
