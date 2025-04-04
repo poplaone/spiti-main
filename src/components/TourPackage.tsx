@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bike, Car, Users, Calendar, Sliders } from 'lucide-react';
@@ -88,7 +87,7 @@ const TourPackage: React.FC<TourPackageProps & {
 
         <div className="flex gap-2 mt-2">
           <Link to={getLinkPath()} className="flex-1">
-            <Button variant="default" className="w-full bg-blue-600 hover:bg-blue-700">
+            <Button variant="default" className="w-full bg-spiti-forest">
               Details
             </Button>
           </Link>
