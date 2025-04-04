@@ -12,6 +12,9 @@ interface FormInputProps {
   icon: LucideIcon;
   min?: string;
   className?: string;
+  required?: boolean;
+  pattern?: string;
+  title?: string;
 }
 
 const FormInput = ({ 
@@ -22,7 +25,10 @@ const FormInput = ({
   onChange, 
   icon: Icon,
   min,
-  className
+  className,
+  required,
+  pattern,
+  title
 }: FormInputProps) => {
   return (
     <div className="relative">
@@ -37,6 +43,9 @@ const FormInput = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        required={required}
+        pattern={pattern}
+        title={title}
       />
     </div>
   );

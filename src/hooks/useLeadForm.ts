@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
 import { useFormValidation, FormData } from './useFormValidation';
+import { toast } from "sonner";
 
 interface FormState extends FormData {
   duration: string;
@@ -28,6 +29,15 @@ export const useLeadForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+    
+    // Add specific validation for phone field - only allow numbers, +, (, and )
+    if (id === 'phone') {
+      const validPhoneRegex = /^[+()0-9]*$/;
+      if (value && !validPhoneRegex.test(value)) {
+        return; // Reject invalid input
+      }
+    }
+    
     setFormData(prev => ({ ...prev, [id]: value }));
   };
 
@@ -40,7 +50,18 @@ export const useLeadForm = () => {
   };
 
   const handleSubmit = () => {
-    if (!validateForm(formData)) return;
+    if (!formData.name.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    if (!formData.phone.trim()) {
+      toast.error("Please enter your phone number");
+      return;
+    }
 
     // In a real application, you would send this data to a server
     console.log("Form submission:", {
@@ -77,7 +98,18 @@ export const useLeadForm = () => {
   };
 
   const sendWhatsApp = () => {
-    if (!validateForm(formData)) return;
+    if (!formData.name.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    if (!formData.phone.trim()) {
+      toast.error("Please enter your phone number");
+      return;
+    }
 
     const message = `
 *New Tour Inquiry*
