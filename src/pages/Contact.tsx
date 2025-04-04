@@ -27,8 +27,8 @@ const Contact = () => {
       <section className="relative pt-20 lg:pt-28">
         <div className="h-[40vh] md:h-[50vh] relative overflow-hidden">
           <img 
-            src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&q=80" 
-            alt="Spiti Valley Road" 
+            src="/lovable-uploads/10da3573-5f4e-489a-96f4-bdaad9c314e6.png" 
+            alt="Tourists enjoying at Chandrataal Lake, Spiti Valley" 
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-spiti-forest/80 to-transparent"></div>
