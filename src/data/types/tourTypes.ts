@@ -35,6 +35,7 @@ export interface TourPackageProps {
   isWomenOnly: boolean;
   isFixedDeparture?: boolean;
   isCustomizable?: boolean;
+  isVisible?: boolean; // Add this property
   overview: string | null;
   nightStays: TourNightStay[];
   inclusions: string[];

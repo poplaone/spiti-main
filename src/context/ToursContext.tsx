@@ -49,7 +49,8 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         // If no tours in Supabase, use the original data with generated ids
         const toursWithIds = tourPackagesData.map((tour, index) => ({
           ...tour,
-          id: `static-${index}`
+          id: `static-${index}`,
+          isVisible: true // Set default visibility for static data
         }));
         setTours(toursWithIds);
       }
@@ -60,7 +61,8 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       // Fall back to original data on error with generated ids
       const toursWithIds = tourPackagesData.map((tour, index) => ({
         ...tour,
-        id: `static-${index}`
+        id: `static-${index}`,
+        isVisible: true // Set default visibility for static data
       }));
       setTours(toursWithIds);
     } finally {
