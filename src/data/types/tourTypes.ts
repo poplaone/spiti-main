@@ -35,3 +35,21 @@ export interface TourPackageProps {
 export interface TourPackageWithId extends TourPackageProps {
   id: string;  // Required in this interface
 }
+
+// Add types for the component props to fix the errors
+export interface TourOverviewProps {
+  overview: string | null;
+}
+
+export interface TourItineraryProps {
+  itinerary: TourItineraryDay[];
+}
+
+export interface TourInclusionsProps {
+  inclusions: string[];
+  exclusions: string[];
+}
+
+export interface TourAccommodationProps {
+  nightStays: TourNightStay[];
+}
