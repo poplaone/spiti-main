@@ -46,19 +46,7 @@ const TourPackage: React.FC<TourPackageProps & {
           {discount}% OFF
         </div>
         
-        {/* Tour type badges */}
-        <div className="absolute top-1 right-1 flex gap-1">
-          {isFixedDeparture && (
-            <Badge variant="outline" className="bg-blue-500 text-white border-blue-500 text-xs">
-              Fixed
-            </Badge>
-          )}
-          {isCustomizable && (
-            <Badge variant="outline" className="bg-green-500 text-white border-green-500 text-xs">
-              Custom
-            </Badge>
-          )}
-        </div>
+        {/* Removed the redundant tour type badges that were here */}
       </div>
       
       <CardContent className="p-4 sm:p-6 mx-[3px] my-0 py-[12px] px-[6px]">
