@@ -13,12 +13,13 @@ const ScrollingInfoStrip = () => {
   ];
 
   const isMobile = useIsMobile();
-  const [plugin, setPlugin] = useState<any>(null);
+  const [autoplayPlugin, setAutoplayPlugin] = useState<any>(null);
 
   // Initialize the plugin after component mount to avoid type errors
   useEffect(() => {
-    // Create the autoplay plugin once the component mounts
-    setPlugin(AutoplayPlugin({ delay: 3000, stopOnInteraction: false }));
+    // Wait for component to mount before creating the plugin
+    // This helps avoid type conflicts between packages
+    setAutoplayPlugin(AutoplayPlugin({ delay: 3000, stopOnInteraction: false }));
   }, []);
 
   return (
@@ -35,24 +36,26 @@ const ScrollingInfoStrip = () => {
         
         {/* Mobile version - with auto-scrolling */}
         <div className="md:hidden">
-          <Carousel 
-            className="w-full"
-            plugins={plugin ? [plugin] : undefined}
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-          >
-            <CarouselContent className="py-1">
-              {infoItems.map((item, index) => (
-                <CarouselItem key={index} className="basis-full">
-                  <div className="text-center text-xs px-2 py-1">
-                    {item}
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
+          {autoplayPlugin && (
+            <Carousel 
+              className="w-full"
+              plugins={[autoplayPlugin]} 
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+            >
+              <CarouselContent className="py-1">
+                {infoItems.map((item, index) => (
+                  <CarouselItem key={index} className="basis-full">
+                    <div className="text-center text-xs px-2 py-1">
+                      {item}
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          )}
         </div>
       </div>
     </div>

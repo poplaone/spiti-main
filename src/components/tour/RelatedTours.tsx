@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import TourPackage from "@/components/TourPackage";
 import { TourPackageProps } from "@/data/types/tourTypes";
 import { 
@@ -42,7 +42,7 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
         <div className="flex justify-center items-center mb-4 md:hidden">
           <div className="flex items-center gap-2 bg-white/80 px-3 py-1 rounded-full shadow-sm">
             <ArrowLeft className="h-4 w-4 text-spiti-forest animate-pulse" />
-            <span className="text-sm text-spiti-forest font-medium">Swipe to explore</span>
+            <span className="text-sm text-spiti-forest font-medium">Swipe to explore all {filteredTours.length} tours</span>
             <ArrowRight className="h-4 w-4 text-spiti-forest animate-pulse" />
           </div>
         </div>
@@ -53,12 +53,13 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
             opts={{ 
               align: "start",
               loop: filteredTours.length > 2,
+              dragFree: true
             }}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {filteredTours.map((tour, index) => (
                 <CarouselItem 
-                  key={`related-tour-${index}`} 
+                  key={`related-tour-${tour.id || index}`} 
                   className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/3"
                 >
                   <div className="h-full">
@@ -130,6 +131,13 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
               <ArrowRight className="h-5 w-5" />
             </Button>
           </div>
+        </div>
+
+        {/* Mobile counter showing how many tours are available */}
+        <div className="text-center mt-4 md:hidden">
+          <span className="text-sm text-gray-600">
+            {filteredTours.length} tours available - scroll to see all
+          </span>
         </div>
       </div>
     </section>
