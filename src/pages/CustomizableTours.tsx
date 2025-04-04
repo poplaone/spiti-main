@@ -43,9 +43,6 @@ const CustomizableTours = () => {
         <div className="container mx-auto px-4">
           <div className="mb-12">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 text-center">Tailor Your Spiti Adventure</h2>
-            <p className="text-center text-gray-700 max-w-3xl mx-auto">
-              Our customizable tour packages offer the flexibility to adjust itineraries, accommodations, and activities to suit your preferences. Whether you want to spend more time in specific villages, add meditation sessions at monasteries, or include special adventure activities, we can tailor the experience just for you.
-            </p>
           </div>
           
           {customizableTours.length === 0 ? (

@@ -43,9 +43,6 @@ const FixedDepartures = () => {
         <div className="container mx-auto px-4">
           <div className="mb-12">
             <h2 className="text-2xl md:text-3xl font-heading font-bold mb-4 text-center">Upcoming Spiti Valley Group Tours</h2>
-            <p className="text-center text-gray-700 max-w-3xl mx-auto">
-              Our fixed departure tours offer you the chance to join like-minded travelers on a shared adventure through the breathtaking landscapes of Spiti Valley. These tours run on specific dates with guaranteed departures, making your trip planning easier and more affordable.
-            </p>
           </div>
           
           {fixedDepartureTours.length === 0 ? (
