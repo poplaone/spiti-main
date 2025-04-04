@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bike, Car, Users, Calendar, Sliders } from 'lucide-react';
@@ -70,7 +71,7 @@ const TourPackage: React.FC<TourPackageProps & {
           </div>
         </div>
         
-        <p className="text-md text-red-500 font-medium mb-4">Available from <span className="text-red-500 font-semibold">June</span> to <span className="text-red-500 font-semibold">October</span></p>
+        <p className="text-md text-gray-800 font-medium mb-4">Available from <span className="text-red-500 font-semibold">June</span> to <span className="text-red-500 font-semibold">October</span></p>
 
         <div className="flex justify-between items-center mb-4">
           <div>
