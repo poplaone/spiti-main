@@ -15,6 +15,9 @@ import ThankYou from "./pages/ThankYou";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
+// Import the new dynamic TourDetail page
+import TourDetail from "./pages/TourDetail";
+
 // Import individual tour detail pages
 import TourDetailBike from "./pages/TourDetailBike";
 import TourDetailUnexplored from "./pages/TourDetailUnexplored";
@@ -63,6 +66,9 @@ const App = () => {
             {/* New view all pages */}
             <Route path="/road-trips" element={<RoadTrips />} />
             <Route path="/fixed-departures" element={<FixedDepartures />} />
+            
+            {/* Dynamic tour detail page route */}
+            <Route path="/tour/:id" element={<TourDetail />} />
             
             {/* Tour detail pages with clean routes - all 6 tour types */}
             <Route path="/tour-bike" element={<TourDetailBike />} />

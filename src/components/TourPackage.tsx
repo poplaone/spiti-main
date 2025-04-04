@@ -29,27 +29,7 @@ const TourPackage: React.FC<TourPackageProps & {
     }
   };
 
-  // Determine the path to link to based on the title
-  const getLinkPath = () => {
-    if (title.includes("BIKE") || transportType.toLowerCase() === 'bike') {
-      return '/tour-bike';
-    }
-    if (title.includes("WOMEN") || isWomenOnly === true) {
-      return '/tour-women';
-    }
-    if (title.includes("OWN CAR") || title.includes("OWN VEHICLE")) {
-      return '/tour-owncar';
-    }
-    if (title.includes("BUDDHIST") || title.includes("TRIBAL")) {
-      return '/tour-buddhist';
-    }
-    if (title.includes("HIDDEN HEAVEN")) {
-      return '/tour-hiddenheaven';
-    }
-    // Default to unexplored tour page
-    return '/tour-unexplored';
-  };
-
+  // Modified to use the tour ID directly when available
   return (
     <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full w-full">
       <div className="relative">
@@ -90,7 +70,7 @@ const TourPackage: React.FC<TourPackageProps & {
         </div>
 
         <div className="flex gap-2 mt-2">
-          <Link to={getLinkPath()} className="flex-1">
+          <Link to={id ? `/tour/${id}` : "#"} className="flex-1">
             <Button variant="default" className="w-full bg-spiti-forest">
               Details
             </Button>

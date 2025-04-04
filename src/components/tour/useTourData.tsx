@@ -4,7 +4,7 @@ import { TourPackageProps } from '@/data/types/tourTypes';
 import { useToursContext } from '@/context/ToursContext';
 import { tourPackagesData } from "@/data/tourPackagesData";
 
-export const useTourData = (tourType: string) => {
+export const useTourData = (tourType: string, tourId?: string) => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,58 +21,65 @@ export const useTourData = (tourType: string) => {
       refreshTours();
     }
     
-    // Debounced function to find tour by type - helps prevent state flickering
+    // Debounced function to find tour by type or ID - helps prevent state flickering
     const timeoutId = setTimeout(() => {
       // Skip processing if context is still loading
       if (contextLoading) return;
       
-      const findTourByType = () => {
+      const findTour = () => {
         // Use either context tours or fallback to static data
         const toursToUse = tours.length > 0 ? tours : tourPackagesData;
         
         let selectedTour = null;
         
-        // Find the tour based on tourType
-        switch (tourType) {
-          case 'bike':
-            selectedTour = toursToUse.find(t => 
-              t.transportType.toLowerCase() === 'bike' || 
-              (t.title && t.title.toLowerCase().includes('bike'))
-            );
-            break;
-          case 'buddhist':
-            selectedTour = toursToUse.find(t => 
-              (t.title && t.title.toLowerCase().includes('buddhist')) ||
-              (t.title && t.title.toLowerCase().includes('tribal'))
-            );
-            break;
-          case 'women':
-            selectedTour = toursToUse.find(t => 
-              t.isWomenOnly === true ||
-              (t.title && t.title.toLowerCase().includes('women'))
-            );
-            break;
-          case 'owncar':
-            selectedTour = toursToUse.find(t => 
-              (t.title && t.title.toLowerCase().includes('own car')) ||
-              (t.title && t.title.toLowerCase().includes('self drive'))
-            );
-            break;
-          case 'unexplored':
-            selectedTour = toursToUse.find(t => 
-              (t.title && t.title.toLowerCase().includes('unexplored')) || 
-              (t.title && t.title.toLowerCase().includes('exploration'))
-            );
-            break;
-          case 'hiddenheaven':
-            selectedTour = toursToUse.find(t => 
-              (t.title && t.title.toLowerCase().includes('hidden heaven')) || 
-              (t.title && t.title.toLowerCase().includes('hidden'))
-            );
-            break;
-          default:
-            // Default to first tour if no matches
-            selectedTour = toursToUse[0];
+        // First, check if we have a specific tour ID to look for
+        if (tourId) {
+          selectedTour = toursToUse.find(t => t.id === tourId);
+        }
+        
+        // If no tour found by ID (or no ID provided), find by tour type
+        if (!selectedTour) {
+          switch (tourType) {
+            case 'bike':
+              selectedTour = toursToUse.find(t => 
+                t.transportType.toLowerCase() === 'bike' || 
+                (t.title && t.title.toLowerCase().includes('bike'))
+              );
+              break;
+            case 'buddhist':
+              selectedTour = toursToUse.find(t => 
+                (t.title && t.title.toLowerCase().includes('buddhist')) ||
+                (t.title && t.title.toLowerCase().includes('tribal'))
+              );
+              break;
+            case 'women':
+              selectedTour = toursToUse.find(t => 
+                t.isWomenOnly === true ||
+                (t.title && t.title.toLowerCase().includes('women'))
+              );
+              break;
+            case 'owncar':
+              selectedTour = toursToUse.find(t => 
+                (t.title && t.title.toLowerCase().includes('own car')) ||
+                (t.title && t.title.toLowerCase().includes('self drive'))
+              );
+              break;
+            case 'unexplored':
+              selectedTour = toursToUse.find(t => 
+                (t.title && t.title.toLowerCase().includes('unexplored')) || 
+                (t.title && t.title.toLowerCase().includes('exploration'))
+              );
+              break;
+            case 'hiddenheaven':
+              selectedTour = toursToUse.find(t => 
+                (t.title && t.title.toLowerCase().includes('hidden heaven')) || 
+                (t.title && t.title.toLowerCase().includes('hidden'))
+              );
+              break;
+            default:
+              // Default to first tour if no matches
+              selectedTour = toursToUse[0];
+          }
         }
         
         // Fallback to first tour of appropriate type if no specific match found
@@ -104,13 +111,13 @@ export const useTourData = (tourType: string) => {
         setIsLoading(false);
       };
       
-      findTourByType();
+      findTour();
     }, 300); // Add a small delay to prevent rapid loading state changes
     
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [tourType, tours, contextLoading, refreshTours]);
+  }, [tourType, tourId, tours, contextLoading, refreshTours]);
 
   return { tour, otherTours, isLoading };
 };

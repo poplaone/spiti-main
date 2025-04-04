@@ -16,11 +16,12 @@ import { useTourData } from "@/components/tour/useTourData";
 interface BaseTourDetailPageProps {
   tourType: string; // 'bike', 'buddhist', 'women', 'owncar', 'unexplored', 'hiddenheaven'
   heroImage: string;
+  tourId?: string; // Added tourId as an optional prop
 }
 
-const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroImage }) => {
+const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroImage, tourId }) => {
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
-  const { tour, otherTours, isLoading } = useTourData(tourType);
+  const { tour, otherTours, isLoading } = useTourData(tourType, tourId);
   
   // Format price with thousands separator
   const formatPrice = (price: number) => {
