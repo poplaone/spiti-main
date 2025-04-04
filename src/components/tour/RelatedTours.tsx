@@ -60,7 +60,7 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
               {filteredTours.map((tour, index) => (
                 <CarouselItem 
                   key={`related-tour-${tour.id || index}`} 
-                  className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/3"
+                  className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                 >
                   <div className="h-full">
                     <TourPackage {...tour} id={tour.id} />
