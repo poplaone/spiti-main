@@ -84,6 +84,14 @@ export function useTourFilters(allTours: TourPackageProps[]) {
     return allTours.filter((_, index) => index % 2 === 0);
   }, [allTours]);
 
+  // Add roadTripsTours: Filter for road trip tours
+  const roadTripsTours = useMemo(() => {
+    return allTours.filter(tour => 
+      tour.transportType.toLowerCase() === 'car' || 
+      tour.transportType.toLowerCase() === 'suv'
+    );
+  }, [allTours]);
+
   // Helper function to update filters
   const updateFilter = (filterType: string, value: any) => {
     setSelectedFilters(prev => ({
@@ -102,6 +110,7 @@ export function useTourFilters(allTours: TourPackageProps[]) {
     buddhistTours,
     hiddenHeavenTours,
     unexploredTours,
-    fixedDepartureTours
+    fixedDepartureTours,
+    roadTripsTours // Add the new property to the returned object
   };
 }
