@@ -68,7 +68,7 @@ const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroI
         formatPrice={formatPrice}
       />
 
-      {/* More Popular Tours Section */}
+      {/* More Popular Tours Section - reduced top padding on mobile */}
       <RelatedTours tours={otherTours} />
       
       {/* Mobile Sticky Footer */}

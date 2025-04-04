@@ -75,8 +75,8 @@ const TourContent: React.FC<TourContentProps> = ({
           </div>
         </div>
         
-        {/* Sidebar - with relative positioning for the booking card to work properly */}
-        <div className="lg:w-[350px] space-y-6 flex-shrink-0 relative" style={{ minHeight: '850px' }}>
+        {/* Sidebar - with fixed height and no relative positioning on mobile */}
+        <div className="lg:w-[350px] space-y-6 flex-shrink-0 lg:relative" style={{ minHeight: 'auto', maxHeight: 'none' }}>
           <BookingCard 
             discountedPrice={tour.discountedPrice} 
             originalPrice={tour.originalPrice} 

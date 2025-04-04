@@ -9,10 +9,10 @@ interface RelatedToursProps {
 
 const RelatedTours: React.FC<RelatedToursProps> = ({ tours }) => {
   return (
-    <section className="py-16 bg-spiti-stone">
+    <section className="py-8 md:py-16 bg-spiti-stone">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-heading font-bold text-center mb-6 text-spiti-forest">More Popular Spiti Valley Tours</h2>
-        <p className="text-center text-gray-700 mb-12 max-w-3xl mx-auto">
+        <h2 className="text-3xl font-heading font-bold text-center mb-4 md:mb-6 text-spiti-forest">More Popular Spiti Valley Tours</h2>
+        <p className="text-center text-gray-700 mb-6 md:mb-12 max-w-3xl mx-auto">
           Discover our other handcrafted Spiti Valley adventures, each offering unique experiences through 
           this mesmerizing Himalayan region. From bike tours and women-only expeditions to family-friendly 
           journeys, find the perfect package for your next mountain getaway.
