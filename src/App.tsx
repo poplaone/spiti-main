@@ -29,6 +29,7 @@ import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
 // Import new pages for road trips and fixed departures
 import RoadTrips from "./pages/RoadTrips";
 import FixedDepartures from "./pages/FixedDepartures";
+import CustomizableTours from "./pages/CustomizableTours";
 
 // Import admin pages
 import AdminLogin from "./pages/AdminLogin";
@@ -66,6 +67,7 @@ const App = () => {
             {/* New view all pages */}
             <Route path="/road-trips" element={<RoadTrips />} />
             <Route path="/fixed-departures" element={<FixedDepartures />} />
+            <Route path="/customizable-tours" element={<CustomizableTours />} />
             
             {/* Dynamic tour detail page route */}
             <Route path="/tour/:id" element={<TourDetail />} />

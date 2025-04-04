@@ -25,7 +25,7 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
   const isMobile = useIsMobile();
   
   // Using our custom hook to filter tours
-  const { roadTripsTours, fixedDepartureTours } = useTourFilters(tourPackagesData);
+  const { roadTripsTours, fixedDepartureTours, customizableTours } = useTourFilters(tourPackagesData);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,7 +62,8 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
 
           <DesktopMenu 
             roadTripsTours={roadTripsTours} 
-            fixedDepartureTours={fixedDepartureTours} 
+            fixedDepartureTours={fixedDepartureTours}
+            customizableTours={customizableTours}
           />
 
           {/* Mobile Menu Button */}
@@ -76,6 +77,7 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
           onClose={() => setIsMenuOpen(false)}
           roadTripsTours={roadTripsTours}
           fixedDepartureTours={fixedDepartureTours}
+          customizableTours={customizableTours}
         />
       </div>
     </header>

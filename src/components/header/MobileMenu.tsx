@@ -12,13 +12,15 @@ interface MobileMenuProps {
   onClose: () => void;
   roadTripsTours: TourPackageProps[];
   fixedDepartureTours: TourPackageProps[];
+  customizableTours?: TourPackageProps[];
 }
 
 const MobileMenu = ({ 
   isOpen, 
   onClose,
   roadTripsTours,
-  fixedDepartureTours 
+  fixedDepartureTours,
+  customizableTours = []
 }: MobileMenuProps) => {
   if (!isOpen) return null;
 
@@ -95,6 +97,48 @@ const MobileMenu = ({
           </div>
           <div className="grid grid-cols-1 gap-4">
             {fixedDepartureTours.map((tour) => (
+              <Link 
+                key={tour.title} 
+                to={getTourRoute(tour)}
+                className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                onClick={onClose}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="h-14 w-14 rounded overflow-hidden flex-shrink-0">
+                    <img src={tour.image} alt={tour.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">{tour.title}</h3>
+                    <p className="text-xs text-gray-300">
+                      {tour.duration.nights} Nights / {tour.duration.days} Days
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
+      
+      <Popover>
+        <PopoverTrigger asChild>
+          <button className="w-full flex justify-between items-center text-white hover:text-spiti-green transition-colors">
+            Customizable Tours <ChevronDown size={18} />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
+          <div className="border-b border-gray-700 pb-3 mb-3">
+            <Link 
+              to="/customizable-tours" 
+              className="flex items-center justify-between text-white hover:text-spiti-green font-medium py-2"
+              onClick={onClose}
+            >
+              View All Customizable Tours
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            {customizableTours.map((tour) => (
               <Link 
                 key={tour.title} 
                 to={getTourRoute(tour)}

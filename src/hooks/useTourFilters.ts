@@ -79,17 +79,23 @@ export function useTourFilters(allTours: TourPackageProps[]) {
     );
   }, [allTours]);
 
+  // Updated to accurately filter fixed departure tours
   const fixedDepartureTours = useMemo(() => {
-    // This is just an example - you may want to add a specific property to determine fixed departure tours
-    return allTours.filter((_, index) => index % 2 === 0);
+    return allTours.filter(tour => tour.isFixedDeparture === true);
   }, [allTours]);
 
-  // Add roadTripsTours: Filter for road trip tours
+  // Updated to include all tours that involve road travel (car or bike)
   const roadTripsTours = useMemo(() => {
     return allTours.filter(tour => 
       tour.transportType.toLowerCase() === 'car' || 
-      tour.transportType.toLowerCase() === 'suv'
+      tour.transportType.toLowerCase() === 'suv' ||
+      tour.transportType.toLowerCase() === 'bike'
     );
+  }, [allTours]);
+
+  // Added new filter for customizable tours
+  const customizableTours = useMemo(() => {
+    return allTours.filter(tour => tour.isCustomizable === true);
   }, [allTours]);
 
   // Helper function to update filters
@@ -111,6 +117,7 @@ export function useTourFilters(allTours: TourPackageProps[]) {
     hiddenHeavenTours,
     unexploredTours,
     fixedDepartureTours,
-    roadTripsTours // Add the new property to the returned object
+    roadTripsTours,
+    customizableTours
   };
 }
