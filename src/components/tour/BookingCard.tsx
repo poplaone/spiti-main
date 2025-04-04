@@ -24,38 +24,50 @@ const BookingCard: React.FC<BookingCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Add scroll event listener
+  // Add scroll event listener with debounce for smoother performance
   useEffect(() => {
+    let requestId: number;
+    
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      
-      // Get parent container position and dimensions
-      const container = containerRef.current?.parentElement;
-      if (!container || !cardRef.current) return;
-      
-      const containerRect = container.getBoundingClientRect();
-      const containerTop = containerRect.top + window.scrollY;
-      const containerBottom = containerRect.bottom + window.scrollY;
-      const cardHeight = cardRef.current.offsetHeight;
-      
-      // Calculate the maximum scroll position where the card should stop
-      // (container bottom minus card height minus some padding)
-      const maxScrollPosition = containerBottom - cardHeight - 50;
-      
-      // Calculate the position where the card should start being sticky
-      const startPosition = containerTop + 300;
-      
-      if (scrollPosition < startPosition) {
-        setScrollStatus('top');
-        setIsScrolled(false);
-      } else if (scrollPosition > maxScrollPosition) {
-        setScrollStatus('bottom');
-        setIsScrolled(true);
-      } else {
-        setScrollStatus('middle');
-        setIsScrolled(true);
+      if (requestId) {
+        return;
       }
+      
+      requestId = requestAnimationFrame(() => {
+        const scrollPosition = window.scrollY;
+        
+        // Get parent container position and dimensions
+        const container = containerRef.current?.parentElement;
+        if (!container || !cardRef.current) {
+          requestId = 0;
+          return;
+        }
+        
+        const containerRect = container.getBoundingClientRect();
+        const containerTop = containerRect.top + window.scrollY;
+        const containerBottom = containerRect.bottom + window.scrollY;
+        const cardHeight = cardRef.current.offsetHeight;
+        
+        // Calculate the maximum scroll position where the card should stop
+        // with more padding to ensure it doesn't go off the container
+        const maxScrollPosition = containerBottom - cardHeight - 80;
+        
+        // Calculate the position where the card should start being sticky
+        const startPosition = containerTop + 200;
+        
+        if (scrollPosition < startPosition) {
+          setScrollStatus('top');
+          setIsScrolled(false);
+        } else if (scrollPosition > maxScrollPosition) {
+          setScrollStatus('bottom');
+          setIsScrolled(true);
+        } else {
+          setScrollStatus('middle');
+          setIsScrolled(true);
+        }
+        
+        requestId = 0;
+      });
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -66,17 +78,30 @@ const BookingCard: React.FC<BookingCardProps> = ({
     // Clean up
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (requestId) {
+        cancelAnimationFrame(requestId);
+      }
     };
   }, []);
 
-  // Calculate styles based on scroll status
-  const getCardStyle = () => {
+  // Calculate styles based on scroll status with explicit TypeScript types
+  const getCardStyle = (): React.CSSProperties => {
     if (scrollStatus === 'top') {
       return {};
     } else if (scrollStatus === 'bottom') {
-      return { position: 'absolute', bottom: '50px', width: 'calc(100% - 24px)' };
+      return { 
+        position: 'absolute' as const, 
+        bottom: '50px', 
+        width: 'calc(100% - 24px)' 
+      };
     } else {
-      return { position: 'fixed', top: '100px', width: 'inherit', maxWidth: 'inherit' };
+      return { 
+        position: 'fixed' as const, 
+        top: '100px', 
+        width: 'inherit', 
+        maxWidth: 'inherit',
+        transition: 'transform 0.2s ease-out' 
+      };
     }
   };
 
