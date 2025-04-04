@@ -1,14 +1,18 @@
 
 import React from 'react';
 import { Clock, Home, Calendar, Users, MapPin, Mountain, Compass } from 'lucide-react';
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
 
 interface TourOverviewProps {
   tour: TourPackageProps;
   getTransportIcon: () => JSX.Element;
+  overview?: string | null;
 }
 
-const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon }) => {
+const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon, overview }) => {
+  // Use the overview prop if provided, otherwise use the tour's overview
+  const displayOverview = overview || tour.overview;
+  
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">
@@ -16,7 +20,7 @@ const TourOverview: React.FC<TourOverviewProps> = ({ tour, getTransportIcon }) =
         <span className="ml-2">Tour Overview</span>
       </h2>
       <p className="text-gray-700 mb-6">
-        {tour.overview || `Experience the magic of Spiti Valley with our ${tour.duration.nights}-night, ${tour.duration.days}-day adventure through the breathtaking
+        {displayOverview || `Experience the magic of Spiti Valley with our ${tour.duration.nights}-night, ${tour.duration.days}-day adventure through the breathtaking
         Himalayan landscape. Journey through ancient Buddhist monasteries, remote high-altitude villages, and pristine
         natural wonders in this trans-Himalayan region often called "Little Tibet" or the "Middle Land."`}
       </p>

@@ -36,9 +36,11 @@ export interface TourPackageWithId extends TourPackageProps {
   id: string;  // Required in this interface
 }
 
-// Add types for the component props to fix the errors
+// Add component props interfaces
 export interface TourOverviewProps {
-  overview: string | null;
+  tour: TourPackageProps;
+  getTransportIcon: () => JSX.Element;
+  overview?: string | null;
 }
 
 export interface TourItineraryProps {
@@ -48,6 +50,14 @@ export interface TourItineraryProps {
 export interface TourInclusionsProps {
   inclusions: string[];
   exclusions: string[];
+}
+
+export interface TourPackageDetailsProps {
+  transportType: string;
+  getTransportIcon: () => JSX.Element;
+  isWomenOnly: boolean;
+  isFixedDeparture?: boolean;
+  isCustomizable?: boolean;
 }
 
 export interface TourAccommodationProps {

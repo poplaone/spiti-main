@@ -39,15 +39,23 @@ const TourContent: React.FC<TourContentProps> = ({
             </TabsList>
             
             <TabsContent value="overview" className="focus:outline-none">
-              <TourOverview overview={tour.overview} />
+              <TourOverview 
+                tour={tour} 
+                getTransportIcon={getTransportIcon} 
+              />
             </TabsContent>
             
             <TabsContent value="itinerary" className="focus:outline-none tour-itinerary">
-              <TourItinerary itinerary={tour.itinerary} />
+              <TourItinerary 
+                itinerary={tour.itinerary} 
+              />
             </TabsContent>
             
             <TabsContent value="inclusions" className="focus:outline-none">
-              <TourInclusions inclusions={tour.inclusions} exclusions={tour.exclusions} />
+              <TourInclusions 
+                inclusions={tour.inclusions} 
+                exclusions={tour.exclusions} 
+              />
             </TabsContent>
             
             <TabsContent value="details" className="focus:outline-none">
@@ -61,7 +69,9 @@ const TourContent: React.FC<TourContentProps> = ({
             </TabsContent>
             
             <TabsContent value="accommodation" className="focus:outline-none">
-              <TourAccommodation nightStays={tour.nightStays} />
+              <TourAccommodation 
+                nightStays={tour.nightStays} 
+              />
             </TabsContent>
           </Tabs>
           
