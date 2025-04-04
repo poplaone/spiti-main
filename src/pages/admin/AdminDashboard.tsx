@@ -1,126 +1,134 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, Users, Calendar, FileText, Plus } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import AdminLayout from '@/components/admin/AdminLayout';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
     totalPackages: 0,
-    totalInclusions: 0,
-    totalItineraryDays: 0
+    bikePackages: 0,
+    carPackages: 0,
   });
-  
-  const [loading, setLoading] = useState(true);
+
+  const fetchStats = async () => {
+    try {
+      // Get total packages
+      const { data: totalPackages, error: totalError } = await supabase
+        .from('tour_packages')
+        .select('id');
+      
+      if (totalError) throw totalError;
+
+      // Get bike packages
+      const { data: bikePackages, error: bikeError } = await supabase
+        .from('tour_packages')
+        .select('id')
+        .eq('transport_type', 'bike');
+      
+      if (bikeError) throw bikeError;
+
+      // Get car packages
+      const { data: carPackages, error: carError } = await supabase
+        .from('tour_packages')
+        .select('id')
+        .eq('transport_type', 'car');
+      
+      if (carError) throw carError;
+
+      setStats({
+        totalPackages: totalPackages.length,
+        bikePackages: bikePackages.length,
+        carPackages: carPackages.length
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      setLoading(true);
-      try {
-        // Get count of packages
-        const { count: packageCount, error: packageError } = await supabase
-          .from('tour_packages')
-          .select('*', { count: 'exact', head: true });
-        
-        // Get count of inclusions
-        const { count: inclusionsCount, error: inclusionsError } = await supabase
-          .from('inclusions')
-          .select('*', { count: 'exact', head: true });
-        
-        // Get count of itinerary days
-        const { count: daysCount, error: daysError } = await supabase
-          .from('itinerary_days')
-          .select('*', { count: 'exact', head: true });
-        
-        if (packageError || inclusionsError || daysError) {
-          throw new Error('Error fetching stats');
-        }
-        
-        setStats({
-          totalPackages: packageCount || 0,
-          totalInclusions: inclusionsCount || 0,
-          totalItineraryDays: daysCount || 0
-        });
-      } catch (error) {
-        console.error('Error fetching dashboard stats:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchStats();
   }, []);
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Tour Packages</CardTitle>
-            <Package className="h-5 w-5 text-spiti-forest" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">
-              {loading ? '...' : stats.totalPackages}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Available tour packages
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Inclusions</CardTitle>
-            <FileText className="h-5 w-5 text-spiti-forest" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">
-              {loading ? '...' : stats.totalInclusions}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Features included across all packages
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Itinerary Days</CardTitle>
-            <Calendar className="h-5 w-5 text-spiti-forest" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">
-              {loading ? '...' : stats.totalItineraryDays}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Total tour days managed
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-      
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <a href="/admin/tour-packages" className="bg-white p-4 rounded-md border border-gray-200 hover:border-spiti-forest transition-colors">
-            <div className="flex items-center">
-              <Package className="h-5 w-5 mr-2 text-spiti-forest" />
-              <span>Manage Tour Packages</span>
-            </div>
-          </a>
-          
-          <a href="/admin/tour-packages/create" className="bg-white p-4 rounded-md border border-gray-200 hover:border-spiti-forest transition-colors">
-            <div className="flex items-center">
-              <Plus className="h-5 w-5 mr-2 text-spiti-forest" />
-              <span>Create New Tour</span>
-            </div>
-          </a>
+    <AdminLayout>
+      <div className="space-y-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <Link to="/admin/tour-packages/create">
+            <Button className="bg-spiti-forest hover:bg-spiti-forest/90">
+              <Plus className="h-4 w-4 mr-2" />
+              Create New Package
+            </Button>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {/* Total Packages */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">
+                Total Tour Packages
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{stats.totalPackages}</div>
+            </CardContent>
+          </Card>
+
+          {/* Bike Tours */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">
+                Bike Tours
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{stats.bikePackages}</div>
+            </CardContent>
+          </Card>
+
+          {/* Car Tours */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">
+                Car Tours
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{stats.carPackages}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <Link to="/admin/tour-packages/create">
+              <Button className="w-full flex justify-start bg-spiti-forest hover:bg-spiti-forest/90">
+                <Plus className="h-4 w-4 mr-2" />
+                Add New Tour Package
+              </Button>
+            </Link>
+
+            <Link to="/admin/tour-packages">
+              <Button variant="outline" className="w-full flex justify-start">
+                Manage Tour Packages
+              </Button>
+            </Link>
+
+            <Link to="/admin/settings">
+              <Button variant="outline" className="w-full flex justify-start">
+                Admin Settings
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

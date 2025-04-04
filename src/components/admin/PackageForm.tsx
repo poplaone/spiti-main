@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -93,16 +94,18 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       
       if (packageError) throw packageError;
       
-      // Set basic form fields
-      setTitle(packageData.title || '');
-      setOriginalPrice(packageData.original_price?.toString() || '');
-      setDiscountedPrice(packageData.discounted_price?.toString() || '');
-      setTransportType(packageData.transport_type || 'car');
-      setDurationNights(packageData.duration_nights?.toString() || '');
-      setDurationDays(packageData.duration_days?.toString() || '');
-      setOverview(packageData.overview || '');
-      setIsWomenOnly(packageData.is_women_only || false);
-      setImagePreview(packageData.image || '');
+      // Set basic form fields - handle null safely
+      if (packageData) {
+        setTitle(packageData.title || '');
+        setOriginalPrice(packageData.original_price?.toString() || '');
+        setDiscountedPrice(packageData.discounted_price?.toString() || '');
+        setTransportType(packageData.transport_type || 'car');
+        setDurationNights(packageData.duration_nights?.toString() || '');
+        setDurationDays(packageData.duration_days?.toString() || '');
+        setOverview(packageData.overview || '');
+        setIsWomenOnly(packageData.is_women_only || false);
+        setImagePreview(packageData.image || '');
+      }
       
       // Fetch night stays
       const { data: nightStaysData, error: nightStaysError } = await supabase
@@ -271,13 +274,13 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
           .single();
         
         if (insertError) throw insertError;
-        tourPackageId = newPackage.id;
+        tourPackageId = newPackage?.id;
+        
+        if (!tourPackageId) throw new Error('Failed to get tour package ID');
       }
       
-      if (!tourPackageId) throw new Error('Failed to get tour package ID');
-      
       // Handle night stays
-      if (isEditing) {
+      if (isEditing && tourPackageId) {
         // Delete existing night stays
         await supabase
           .from('night_stays')
@@ -286,7 +289,7 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       }
       
       // Insert night stays
-      if (nightStays.length > 0) {
+      if (nightStays.length > 0 && tourPackageId) {
         const { error: nightStaysError } = await supabase
           .from('night_stays')
           .insert(
@@ -301,14 +304,14 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       }
       
       // Handle inclusions
-      if (isEditing) {
+      if (isEditing && tourPackageId) {
         await supabase
           .from('inclusions')
           .delete()
           .eq('tour_package_id', tourPackageId);
       }
       
-      if (inclusions.length > 0) {
+      if (inclusions.length > 0 && tourPackageId) {
         const { error: inclusionsError } = await supabase
           .from('inclusions')
           .insert(
@@ -322,14 +325,14 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       }
       
       // Handle exclusions
-      if (isEditing) {
+      if (isEditing && tourPackageId) {
         await supabase
           .from('exclusions')
           .delete()
           .eq('tour_package_id', tourPackageId);
       }
       
-      if (exclusions.length > 0) {
+      if (exclusions.length > 0 && tourPackageId) {
         const { error: exclusionsError } = await supabase
           .from('exclusions')
           .insert(
@@ -343,14 +346,14 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       }
       
       // Handle itinerary days
-      if (isEditing) {
+      if (isEditing && tourPackageId) {
         await supabase
           .from('itinerary_days')
           .delete()
           .eq('tour_package_id', tourPackageId);
       }
       
-      if (itineraryDays.length > 0) {
+      if (itineraryDays.length > 0 && tourPackageId) {
         const { error: itineraryError } = await supabase
           .from('itinerary_days')
           .insert(

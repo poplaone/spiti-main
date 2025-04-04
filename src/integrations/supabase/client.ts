@@ -11,6 +11,8 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
+export type Tables = Database['public']['Tables'];
+
 // Add custom types for our tables
 declare module '@supabase/supabase-js' {
   export interface Database {
@@ -154,6 +156,18 @@ declare module '@supabase/supabase-js' {
             created_at?: string
           }
         }
+      }
+      Views: {
+        [_ in never]: never
+      }
+      Functions: {
+        [_ in never]: never
+      }
+      Enums: {
+        [_ in never]: never
+      }
+      CompositeTypes: {
+        [_ in never]: never
       }
     }
   }

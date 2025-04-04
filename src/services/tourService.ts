@@ -1,7 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { TourPackageProps } from "@/components/TourPackage";
-import { TourNightStay, TourItineraryDay } from "@/data/types/tourTypes";
+import { TourPackageProps, TourNightStay, TourItineraryDay, TourPackageWithId } from "@/data/types/tourTypes";
 
 // Convert database tour to frontend tour package format
 export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps> => {
@@ -47,7 +46,6 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
   }));
   
   return {
-    id: dbTour.id,
     title: dbTour.title,
     image: dbTour.image,
     originalPrice: dbTour.original_price,
@@ -68,7 +66,7 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
 };
 
 // Get all tour packages
-export const getAllTourPackages = async (): Promise<TourPackageProps[]> => {
+export const getAllTourPackages = async (): Promise<TourPackageWithId[]> => {
   const { data: dbTours, error } = await supabase
     .from('tour_packages')
     .select('*')
@@ -79,13 +77,17 @@ export const getAllTourPackages = async (): Promise<TourPackageProps[]> => {
     return [];
   }
   
-  // Map all tours to frontend format
-  const tourPromises = dbTours.map(mapDbTourToFrontend);
+  // Map all tours to frontend format and include the id
+  const tourPromises = dbTours.map(async (dbTour) => {
+    const tourPackage = await mapDbTourToFrontend(dbTour);
+    return { ...tourPackage, id: dbTour.id };
+  });
+  
   return Promise.all(tourPromises);
 };
 
 // Get a single tour package by ID
-export const getTourPackageById = async (id: string): Promise<TourPackageProps | null> => {
+export const getTourPackageById = async (id: string): Promise<TourPackageWithId | null> => {
   const { data: dbTour, error } = await supabase
     .from('tour_packages')
     .select('*')
@@ -97,7 +99,8 @@ export const getTourPackageById = async (id: string): Promise<TourPackageProps |
     return null;
   }
   
-  return mapDbTourToFrontend(dbTour);
+  const tourPackage = await mapDbTourToFrontend(dbTour);
+  return { ...tourPackage, id: dbTour.id };
 };
 
 // More methods can be added as needed for filtering, etc.
