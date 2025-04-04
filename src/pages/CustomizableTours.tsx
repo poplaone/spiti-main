@@ -2,20 +2,20 @@
 import React, { useEffect } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { tourPackagesData } from "@/data/tourPackagesData";
-import { useTourFilters } from '@/hooks/useTourFilters';
+import { useToursContext } from '@/context/ToursContext';
 import TourPackageGrid from '@/components/tour/TourPackageGrid';
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { Loader2 } from 'lucide-react';
 
 const CustomizableTours = () => {
-  const {
-    customizableTours
-  } = useTourFilters(tourPackagesData);
+  const { tours, loading, error } = useToursContext();
+  
+  // Filter for customizable tours
+  const customizableTours = tours.filter(tour => tour.isCustomizable === true);
   
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("Customizable tours:", customizableTours);
-  }, [customizableTours]);
+  }, []);
   
   return (
     <div className="min-h-screen" style={{
@@ -41,11 +41,20 @@ const CustomizableTours = () => {
       {/* Customizable Packages Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          {/* Removed heading text as requested */}
-          
-          {customizableTours.length === 0 ? (
-            <div className="text-center py-8">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-spiti-forest" />
+              <p className="mt-4 text-gray-600">Loading tour packages...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
+              <p className="text-xl text-red-500">{error}</p>
+              <p className="mt-2 text-gray-600">Please try again later or contact us for assistance.</p>
+            </div>
+          ) : customizableTours.length === 0 ? (
+            <div className="text-center py-8 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
               <p className="text-xl text-gray-600">No customizable tours available at the moment.</p>
+              <p className="mt-2 text-gray-500">Please check back later or contact us for assistance.</p>
             </div>
           ) : (
             <TourPackageGrid packages={customizableTours} />

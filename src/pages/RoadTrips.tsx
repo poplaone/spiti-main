@@ -2,15 +2,20 @@
 import React, { useEffect } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { tourPackagesData } from "@/data/tourPackagesData";
-import { useTourFilters } from '@/hooks/useTourFilters';
+import { useToursContext } from '@/context/ToursContext';
 import TourPackageGrid from '@/components/tour/TourPackageGrid';
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import { Loader2 } from 'lucide-react';
 
 const RoadTrips = () => {
-  const {
-    roadTripsTours
-  } = useTourFilters(tourPackagesData);
+  const { tours, loading, error } = useToursContext();
+  
+  // Filter for road trips - any tour with car, suv, or bike transport type
+  const roadTripsTours = tours.filter(tour => 
+    tour.transportType.toLowerCase() === 'car' || 
+    tour.transportType.toLowerCase() === 'suv' ||
+    tour.transportType.toLowerCase() === 'bike'
+  );
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,10 +44,24 @@ const RoadTrips = () => {
       {/* Road Trip Packages Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="mb-12">
-          </div>
-          
-          <TourPackageGrid packages={roadTripsTours} />
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-spiti-forest" />
+              <p className="mt-4 text-gray-600">Loading tour packages...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
+              <p className="text-xl text-red-500">{error}</p>
+              <p className="mt-2 text-gray-600">Please try again later or contact us for assistance.</p>
+            </div>
+          ) : roadTripsTours.length === 0 ? (
+            <div className="text-center py-8 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
+              <p className="text-xl text-gray-600">No road trip tours available at the moment.</p>
+              <p className="mt-2 text-gray-500">Please check back later or contact us to schedule a custom tour.</p>
+            </div>
+          ) : (
+            <TourPackageGrid packages={roadTripsTours} />
+          )}
         </div>
       </section>
 
