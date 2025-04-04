@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bike, Car, Users, Calendar, Sliders } from 'lucide-react';
@@ -5,6 +6,7 @@ import { TourPackageProps } from '@/data/types/tourTypes';
 import { Badge } from './ui/badge';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
+
 const TourPackage: React.FC<TourPackageProps & {
   id?: string;
 }> = ({
@@ -47,7 +49,9 @@ const TourPackage: React.FC<TourPackageProps & {
     // Default to unexplored tour page
     return '/tour-unexplored';
   };
-  return <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full">
+
+  return (
+    <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full w-full">
       <div className="relative">
         <img src={image} alt={title} className="w-full h-[200px] object-cover" />
         <div className="absolute top-1 left-1 bg-red-500 text-white text-lg font-bold py-0 px-[7px] mx-0 my-0 rounded-sm">
@@ -55,7 +59,7 @@ const TourPackage: React.FC<TourPackageProps & {
         </div>
       </div>
       
-      <CardContent className="p-5">
+      <CardContent className="p-4 sm:p-5">
         <h3 className="font-heading font-bold text-xl mb-3 text-gray-800">{title}</h3>
         
         <div className="flex justify-between items-center mb-3">
@@ -98,7 +102,8 @@ const TourPackage: React.FC<TourPackageProps & {
           </Link>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
 
 // Re-export the types from tourTypes.ts for easier access by other components
