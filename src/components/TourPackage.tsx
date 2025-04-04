@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bike, Car, Users, Calendar, Sliders } from 'lucide-react';
@@ -5,6 +6,7 @@ import { TourPackageProps } from '@/data/types/tourTypes';
 import { Badge } from './ui/badge';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
+
 const TourPackage: React.FC<TourPackageProps & {
   id?: string;
 }> = ({
@@ -32,13 +34,13 @@ const TourPackage: React.FC<TourPackageProps & {
     if (title.includes("BIKE") || transportType.toLowerCase() === 'bike') {
       return '/tour-bike';
     }
-    if (title.includes("WOMEN")) {
+    if (title.includes("WOMEN") || isWomenOnly === true) {
       return '/tour-women';
     }
     if (title.includes("OWN CAR") || title.includes("OWN VEHICLE")) {
       return '/tour-owncar';
     }
-    if (title.includes("BUDDHIST")) {
+    if (title.includes("BUDDHIST") || title.includes("TRIBAL")) {
       return '/tour-buddhist';
     }
     if (title.includes("HIDDEN HEAVEN")) {
@@ -47,7 +49,9 @@ const TourPackage: React.FC<TourPackageProps & {
     // Default to unexplored tour page
     return '/tour-unexplored';
   };
-  return <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full">
+
+  return (
+    <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white h-full">
       <div className="relative">
         <img src={image} alt={title} className="w-full h-[200px] object-cover" />
         <div className="absolute top-4 left-4 bg-red-500 text-white px-4 py-2 text-lg font-bold rounded-full">
@@ -98,7 +102,8 @@ const TourPackage: React.FC<TourPackageProps & {
           </Link>
         </div>
       </CardContent>
-    </Card>;
+    </Card>
+  );
 };
 
 // Re-export the types from tourTypes.ts for easier access by other components

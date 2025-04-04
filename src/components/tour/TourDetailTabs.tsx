@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Bed, Check, X, ChevronDown, ChevronUp } from "lucide-react";
@@ -62,7 +62,7 @@ const TourDetailTabs: React.FC<TourDetailTabsProps> = ({ tour }) => {
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {tour.nightStays.map((stay, index) => (
+                {tour.nightStays && tour.nightStays.map((stay, index) => (
                   <div key={index} className="border border-gray-200 rounded-md p-4 bg-gray-50 hover:shadow-md transition-shadow">
                     <div className="flex items-start">
                       <MapPin className="text-spiti-blue w-5 h-5 mr-2 mt-1 flex-shrink-0" />
@@ -84,7 +84,7 @@ const TourDetailTabs: React.FC<TourDetailTabsProps> = ({ tour }) => {
                 Our all-inclusive Spiti Valley package ensures you have everything you need for a comfortable and memorable journey:
               </p>
               <ul className="space-y-2">
-                {tour.inclusions.map((inclusion, index) => (
+                {tour.inclusions && tour.inclusions.map((inclusion, index) => (
                   <li key={index} className="flex items-start">
                     <Check className="text-green-500 w-5 h-5 mr-2 mt-1 flex-shrink-0" />
                     <span>{inclusion}</span>

@@ -6,6 +6,7 @@ import { TourPackageProps } from '@/data/types/tourTypes';
 import { Bike } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import { useToursContext } from '@/context/ToursContext';
+import { tourPackagesData } from "@/data/tourPackagesData";
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -29,21 +30,25 @@ const TourDetailBike = () => {
     // Refresh tours when component mounts
     refreshTours();
     
-    // Wait for tours to load
-    if (loading || tours.length === 0) return;
+    // Use either context tours or fallback to static data
+    const toursToUse = tours.length > 0 ? tours : tourPackagesData;
     
     // Find the bike tour (first one with transportType = bike)
-    const selectedTour = tours.find(tour => tour.transportType === 'bike');
+    const selectedTour = toursToUse.find(tour => 
+      tour.transportType === 'bike' || 
+      (tour.title && tour.title.toLowerCase().includes('bike'))
+    );
+    
     if (selectedTour) {
       setTour(selectedTour);
 
       // Get other tours for the "More Popular Tours" section
-      const others = tours.filter(t => t.id !== selectedTour.id).slice(0, 4);
+      const others = toursToUse.filter(t => t.id !== selectedTour.id).slice(0, 4);
       setOtherTours(others);
     }
   }, [tours, loading, refreshTours]);
 
-  if (loading) {
+  if (loading && !tour) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin h-10 w-10 border-4 border-spiti-blue border-t-transparent rounded-full"></div>
@@ -53,7 +58,14 @@ const TourDetailBike = () => {
   }
 
   if (!tour) {
-    return <div>Bike tour not found. Please check back later.</div>;
+    // Fallback to first bike tour in static data if no tour is found
+    const fallbackTour = tourPackagesData.find(t => t.transportType === 'bike');
+    if (!fallbackTour) {
+      return <div>Bike tour not found. Please check back later.</div>;
+    }
+    // Set the fallback tour before rendering
+    setTour(fallbackTour);
+    return null; // Will re-render with the fallback tour
   }
 
   const formatPrice = (price: number) => {

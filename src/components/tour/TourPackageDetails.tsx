@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Home, Check, X, MapPin } from 'lucide-react';
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface TourPackageDetailsProps {
@@ -9,6 +9,15 @@ interface TourPackageDetailsProps {
 }
 
 const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({ tour }) => {
+  // Make sure the tour object has all required properties
+  if (!tour || !tour.nightStays || !tour.inclusions) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow-sm">
+        <p className="text-red-500">Tour information is loading or unavailable.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">

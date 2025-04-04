@@ -6,6 +6,7 @@ import { TourPackageProps } from '@/data/types/tourTypes';
 import { Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import { useToursContext } from '@/context/ToursContext';
+import { tourPackagesData } from "@/data/tourPackagesData";
 
 // Import refactored components
 import TourHero from "@/components/tour/TourHero";
@@ -29,25 +30,33 @@ const TourDetailUnexplored = () => {
     // Refresh tours when component mounts
     refreshTours();
     
-    // Wait for tours to load
-    if (loading || tours.length === 0) return;
+    // Use either context tours or fallback to static data
+    const toursToUse = tours.length > 0 ? tours : tourPackagesData;
     
     // Find the Unexplored Spiti tour
-    const selectedTour = tours.find(tour => 
-      tour.title.toLowerCase().includes('unexplored') || 
-      tour.title.toLowerCase().includes('exploration')
+    const selectedTour = toursToUse.find(tour => 
+      (tour.title && tour.title.toLowerCase().includes('unexplored')) || 
+      (tour.title && tour.title.toLowerCase().includes('exploration'))
     );
     
     if (selectedTour) {
       setTour(selectedTour);
 
       // Get other tours for the "More Popular Tours" section
-      const others = tours.filter(t => t.id !== selectedTour.id).slice(0, 4);
+      const others = toursToUse.filter(t => t.id !== selectedTour.id).slice(0, 4);
       setOtherTours(others);
+    } else {
+      // Fallback to first car tour if no unexplored tour is found
+      const fallbackTour = toursToUse.find(t => t.transportType === 'car');
+      if (fallbackTour) {
+        setTour(fallbackTour);
+        const others = toursToUse.filter(t => t.id !== fallbackTour.id).slice(0, 4);
+        setOtherTours(others);
+      }
     }
   }, [tours, loading, refreshTours]);
 
-  if (loading) {
+  if (loading && !tour) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin h-10 w-10 border-4 border-spiti-blue border-t-transparent rounded-full"></div>
@@ -57,7 +66,14 @@ const TourDetailUnexplored = () => {
   }
 
   if (!tour) {
-    return <div>Unexplored tour not found. Please check back later.</div>;
+    // Last resort fallback to any available tour
+    const fallbackTour = tourPackagesData[0];
+    if (!fallbackTour) {
+      return <div>Unexplored tour not found. Please check back later.</div>;
+    }
+    // Set the fallback tour before rendering
+    setTour(fallbackTour);
+    return null; // Will re-render with the fallback tour
   }
 
   const formatPrice = (price: number) => {
