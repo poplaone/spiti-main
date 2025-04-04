@@ -31,7 +31,7 @@ const AdminLogin = () => {
       const { data: adminData, error: adminError } = await supabase
         .from('admin_users')
         .select('*')
-        .eq('id', data.user.id)
+        .eq('id', data?.user?.id)
         .single();
       
       if (adminError || !adminData) {

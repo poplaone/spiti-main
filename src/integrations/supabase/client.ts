@@ -13,162 +13,160 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
 
 export type Tables = Database['public']['Tables'];
 
-// Add custom types for our tables
-declare module '@supabase/supabase-js' {
-  export interface Database {
-    public: {
-      Tables: {
-        tour_packages: {
-          Row: {
-            id: string
-            title: string
-            image: string
-            original_price: number
-            discounted_price: number
-            discount: number
-            duration_nights: number
-            duration_days: number
-            transport_type: string
-            is_women_only: boolean
-            overview: string | null
-            created_at: string
-            updated_at: string
-          }
-          Insert: {
-            id?: string
-            title: string
-            image: string
-            original_price: number
-            discounted_price: number
-            discount: number
-            duration_nights: number
-            duration_days: number
-            transport_type: string
-            is_women_only?: boolean
-            overview?: string | null
-            created_at?: string
-            updated_at?: string
-          }
-          Update: {
-            id?: string
-            title?: string
-            image?: string
-            original_price?: number
-            discounted_price?: number
-            discount?: number
-            duration_nights?: number
-            duration_days?: number
-            transport_type?: string
-            is_women_only?: boolean
-            overview?: string | null
-            created_at?: string
-            updated_at?: string
-          }
+// Define database schema types
+export interface Database {
+  public: {
+    Tables: {
+      tour_packages: {
+        Row: {
+          id: string
+          title: string
+          image: string
+          original_price: number
+          discounted_price: number
+          discount: number
+          duration_nights: number
+          duration_days: number
+          transport_type: string
+          is_women_only: boolean
+          overview: string | null
+          created_at: string
+          updated_at: string
         }
-        night_stays: {
-          Row: {
-            id: string
-            tour_package_id: string
-            location: string
-            nights: number
-          }
-          Insert: {
-            id?: string
-            tour_package_id: string
-            location: string
-            nights: number
-          }
-          Update: {
-            id?: string
-            tour_package_id?: string
-            location?: string
-            nights?: number
-          }
+        Insert: {
+          id?: string
+          title: string
+          image: string
+          original_price: number
+          discounted_price: number
+          discount: number
+          duration_nights: number
+          duration_days: number
+          transport_type: string
+          is_women_only?: boolean
+          overview?: string | null
+          created_at?: string
+          updated_at?: string
         }
-        inclusions: {
-          Row: {
-            id: string
-            tour_package_id: string
-            description: string
-          }
-          Insert: {
-            id?: string
-            tour_package_id: string
-            description: string
-          }
-          Update: {
-            id?: string
-            tour_package_id?: string
-            description?: string
-          }
-        }
-        exclusions: {
-          Row: {
-            id: string
-            tour_package_id: string
-            description: string
-          }
-          Insert: {
-            id?: string
-            tour_package_id: string
-            description: string
-          }
-          Update: {
-            id?: string
-            tour_package_id?: string
-            description?: string
-          }
-        }
-        itinerary_days: {
-          Row: {
-            id: string
-            tour_package_id: string
-            day_number: number
-            title: string
-            description: string
-          }
-          Insert: {
-            id?: string
-            tour_package_id: string
-            day_number: number
-            title: string
-            description: string
-          }
-          Update: {
-            id?: string
-            tour_package_id?: string
-            day_number?: number
-            title?: string
-            description?: string
-          }
-        }
-        admin_users: {
-          Row: {
-            id: string
-            created_at: string
-          }
-          Insert: {
-            id: string
-            created_at?: string
-          }
-          Update: {
-            id?: string
-            created_at?: string
-          }
+        Update: {
+          id?: string
+          title?: string
+          image?: string
+          original_price?: number
+          discounted_price?: number
+          discount?: number
+          duration_nights?: number
+          duration_days?: number
+          transport_type?: string
+          is_women_only?: boolean
+          overview?: string | null
+          created_at?: string
+          updated_at?: string
         }
       }
-      Views: {
-        [_ in never]: never
+      night_stays: {
+        Row: {
+          id: string
+          tour_package_id: string
+          location: string
+          nights: number
+        }
+        Insert: {
+          id?: string
+          tour_package_id: string
+          location: string
+          nights: number
+        }
+        Update: {
+          id?: string
+          tour_package_id?: string
+          location?: string
+          nights?: number
+        }
       }
-      Functions: {
-        [_ in never]: never
+      inclusions: {
+        Row: {
+          id: string
+          tour_package_id: string
+          description: string
+        }
+        Insert: {
+          id?: string
+          tour_package_id: string
+          description: string
+        }
+        Update: {
+          id?: string
+          tour_package_id?: string
+          description?: string
+        }
       }
-      Enums: {
-        [_ in never]: never
+      exclusions: {
+        Row: {
+          id: string
+          tour_package_id: string
+          description: string
+        }
+        Insert: {
+          id?: string
+          tour_package_id: string
+          description: string
+        }
+        Update: {
+          id?: string
+          tour_package_id?: string
+          description?: string
+        }
       }
-      CompositeTypes: {
-        [_ in never]: never
+      itinerary_days: {
+        Row: {
+          id: string
+          tour_package_id: string
+          day_number: number
+          title: string
+          description: string
+        }
+        Insert: {
+          id?: string
+          tour_package_id: string
+          day_number: number
+          title: string
+          description: string
+        }
+        Update: {
+          id?: string
+          tour_package_id?: string
+          day_number?: number
+          title?: string
+          description?: string
+        }
       }
+      admin_users: {
+        Row: {
+          id: string
+          created_at: string
+        }
+        Insert: {
+          id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+        }
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }

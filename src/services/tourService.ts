@@ -102,5 +102,3 @@ export const getTourPackageById = async (id: string): Promise<TourPackageWithId 
   const tourPackage = await mapDbTourToFrontend(dbTour);
   return { ...tourPackage, id: dbTour.id };
 };
-
-// More methods can be added as needed for filtering, etc.

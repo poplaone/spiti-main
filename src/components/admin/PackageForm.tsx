@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -52,6 +51,22 @@ interface PackageFormProps {
   isEditing?: boolean;
 }
 
+interface PackageData {
+  id: string;
+  title: string;
+  image: string;
+  original_price: number;
+  discounted_price: number;
+  discount: number;
+  duration_nights: number;
+  duration_days: number;
+  transport_type: string;
+  is_women_only: boolean;
+  overview: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +74,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
   const [imagePreview, setImagePreview] = useState<string>('');
   const [activeTab, setActiveTab] = useState("basic");
   
-  // Form states
   const [title, setTitle] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [discountedPrice, setDiscountedPrice] = useState("");
@@ -69,13 +83,11 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
   const [overview, setOverview] = useState("");
   const [isWomenOnly, setIsWomenOnly] = useState(false);
   
-  // Nested data
   const [nightStays, setNightStays] = useState<NightStay[]>([]);
   const [inclusions, setInclusions] = useState<Inclusion[]>([]);
   const [exclusions, setExclusions] = useState<Exclusion[]>([]);
   const [itineraryDays, setItineraryDays] = useState<ItineraryDay[]>([]);
   
-  // Load data if editing
   useEffect(() => {
     if (isEditing && packageId) {
       fetchPackageData();
@@ -85,7 +97,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
   const fetchPackageData = async () => {
     setIsLoading(true);
     try {
-      // Fetch main package data
       const { data: packageData, error: packageError } = await supabase
         .from('tour_packages')
         .select('*')
@@ -94,7 +105,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       
       if (packageError) throw packageError;
       
-      // Set basic form fields - handle null safely
       if (packageData) {
         setTitle(packageData.title || '');
         setOriginalPrice(packageData.original_price?.toString() || '');
@@ -107,7 +117,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         setImagePreview(packageData.image || '');
       }
       
-      // Fetch night stays
       const { data: nightStaysData, error: nightStaysError } = await supabase
         .from('night_stays')
         .select('*')
@@ -118,7 +127,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         setNightStays(nightStaysData || []);
       }
       
-      // Fetch inclusions
       const { data: inclusionsData, error: inclusionsError } = await supabase
         .from('inclusions')
         .select('*')
@@ -129,7 +137,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         setInclusions(inclusionsData || []);
       }
       
-      // Fetch exclusions
       const { data: exclusionsData, error: exclusionsError } = await supabase
         .from('exclusions')
         .select('*')
@@ -140,7 +147,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         setExclusions(exclusionsData || []);
       }
       
-      // Fetch itinerary days
       const { data: itineraryData, error: itineraryError } = await supabase
         .from('itinerary_days')
         .select('*')
@@ -171,19 +177,16 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
   
   const uploadImage = async () => {
     if (!imageFile) {
-      // If we're editing and there's already an image, we can skip this
       if (isEditing && imagePreview) {
         return imagePreview;
       }
       throw new Error('Please select an image');
     }
     
-    // Generate a unique file name
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${uuidv4()}.${fileExt}`;
     const filePath = `${fileName}`;
     
-    // Upload the file
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('tour_images')
       .upload(filePath, imageFile);
@@ -192,7 +195,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       throw uploadError;
     }
     
-    // Get the public URL
     const { data: { publicUrl } } = supabase.storage
       .from('tour_images')
       .getPublicUrl(filePath);
@@ -205,7 +207,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
     setIsLoading(true);
     
     try {
-      // Field validations
       if (!title) throw new Error('Title is required');
       if (!originalPrice) throw new Error('Original price is required');
       if (!discountedPrice) throw new Error('Discounted price is required');
@@ -213,30 +214,24 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
       if (!durationDays) throw new Error('Duration days is required');
       if (!transportType) throw new Error('Transport type is required');
       
-      // Calculate discount percentage
       const origPrice = parseFloat(originalPrice);
       const discPrice = parseFloat(discountedPrice);
       const discount = Math.round(((origPrice - discPrice) / origPrice) * 100);
       
-      // Upload image if provided
       let imageUrl = '';
       try {
         imageUrl = await uploadImage();
       } catch (imageError: any) {
-        // Only throw error if we're creating a new package and have no image
         if (!isEditing || !imagePreview) {
           throw new Error(`Image upload failed: ${imageError.message}`);
         } else {
-          // Keep using the existing image
           imageUrl = imagePreview;
         }
       }
       
       let tourPackageId = packageId;
       
-      // Insert or update the main tour package
       if (isEditing && packageId) {
-        // Update existing package
         const { error: updateError } = await supabase
           .from('tour_packages')
           .update({
@@ -255,7 +250,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         
         if (updateError) throw updateError;
       } else {
-        // Insert new package
         const { data: newPackage, error: insertError } = await supabase
           .from('tour_packages')
           .insert({
@@ -279,22 +273,19 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         if (!tourPackageId) throw new Error('Failed to get tour package ID');
       }
       
-      // Handle night stays
       if (isEditing && tourPackageId) {
-        // Delete existing night stays
         await supabase
           .from('night_stays')
           .delete()
           .eq('tour_package_id', tourPackageId);
       }
       
-      // Insert night stays
       if (nightStays.length > 0 && tourPackageId) {
         const { error: nightStaysError } = await supabase
           .from('night_stays')
           .insert(
             nightStays.map(stay => ({
-              tour_package_id: tourPackageId,
+              tour_package_id: tourPackageId as string,
               location: stay.location,
               nights: stay.nights
             }))
@@ -303,7 +294,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         if (nightStaysError) throw nightStaysError;
       }
       
-      // Handle inclusions
       if (isEditing && tourPackageId) {
         await supabase
           .from('inclusions')
@@ -316,7 +306,7 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
           .from('inclusions')
           .insert(
             inclusions.map(item => ({
-              tour_package_id: tourPackageId,
+              tour_package_id: tourPackageId as string,
               description: item.description
             }))
           );
@@ -324,7 +314,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         if (inclusionsError) throw inclusionsError;
       }
       
-      // Handle exclusions
       if (isEditing && tourPackageId) {
         await supabase
           .from('exclusions')
@@ -337,7 +326,7 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
           .from('exclusions')
           .insert(
             exclusions.map(item => ({
-              tour_package_id: tourPackageId,
+              tour_package_id: tourPackageId as string,
               description: item.description
             }))
           );
@@ -345,7 +334,6 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         if (exclusionsError) throw exclusionsError;
       }
       
-      // Handle itinerary days
       if (isEditing && tourPackageId) {
         await supabase
           .from('itinerary_days')
@@ -358,7 +346,7 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
           .from('itinerary_days')
           .insert(
             itineraryDays.map(day => ({
-              tour_package_id: tourPackageId,
+              tour_package_id: tourPackageId as string,
               day_number: day.day_number,
               title: day.title,
               description: day.description

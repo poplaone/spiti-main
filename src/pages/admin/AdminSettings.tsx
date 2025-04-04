@@ -1,200 +1,203 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, UserPlus } from 'lucide-react';
-import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
+import useAdminAuth from '@/hooks/useAdminAuth';
 
 interface AdminUser {
   id: string;
-  email: string;
   created_at: string;
+  email?: string;
 }
 
-const AdminSettings = () => {
+const AdminSettings: React.FC = () => {
+  const { user } = useAdminAuth();
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [newAdminEmail, setNewAdminEmail] = useState('');
-  const [addingAdmin, setAddingAdmin] = useState(false);
+  const [newAdminId, setNewAdminId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
 
-  const fetchAdmins = async () => {
+  useEffect(() => {
+    fetchAdminUsers();
+  }, []);
+
+  const fetchAdminUsers = async () => {
     setLoading(true);
     try {
-      // This is a complex join query since we need to get admin users with their emails
+      // Get all admin users
       const { data: adminData, error: adminError } = await supabase
         .from('admin_users')
-        .select('id');
-
+        .select('*');
+      
       if (adminError) throw adminError;
       
-      // Now fetch the user data for each admin
-      const admins: AdminUser[] = [];
+      // Get user details from auth to match with admin IDs
+      const adminUsers: AdminUser[] = adminData || [];
       
-      // This is just for initial display - in a real app you'd use a stored function
-      // to avoid multiple round trips
-      for (const admin of adminData) {
-        const { data: userData, error: userError } = await supabase.auth.admin.getUserById(admin.id);
-        
-        if (!userError && userData) {
-          admins.push({
-            id: admin.id,
-            email: userData.user?.email || 'Unknown',
-            created_at: admin.created_at
-          });
+      // For display purposes, try to add email to each admin user
+      // Note: this is an admin interface, so we're authorized to see this data
+      for (const admin of adminUsers) {
+        const { data: userData } = await supabase.auth.admin.getUserById(admin.id);
+        if (userData?.user) {
+          admin.email = userData.user.email;
         }
       }
       
-      setAdminUsers(admins);
+      setAdminUsers(adminUsers);
     } catch (error: any) {
-      console.error('Error fetching admins:', error);
-      toast.error('Failed to load admin users');
+      toast.error(`Error fetching admin users: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchAdmins();
-  }, []);
-
   const handleAddAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newAdminEmail) return;
+    setAddLoading(true);
     
-    setAddingAdmin(true);
     try {
-      // Check if user exists
-      const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
-      
-      if (userError) throw userError;
-      
-      const user = userData?.users?.find(u => u.email?.toLowerCase() === newAdminEmail.toLowerCase());
-      
-      if (!user) {
-        toast.error('User not found. They must sign up first.');
+      if (!newAdminId) {
+        toast.error("Please enter a User ID");
         return;
       }
       
       // Check if already an admin
-      const { data: existingAdmin, error: checkError } = await supabase
+      const { data: existingAdmin } = await supabase
         .from('admin_users')
-        .select('id')
-        .eq('id', user.id)
-        .maybeSingle();
-        
-      if (checkError) throw checkError;
+        .select('*')
+        .eq('id', newAdminId)
+        .single();
       
       if (existingAdmin) {
-        toast.error('This user is already an admin');
+        toast.error("This user is already an admin");
         return;
       }
       
-      // Add as admin
-      const { error: insertError } = await supabase
+      // Add the new admin
+      const { error } = await supabase
         .from('admin_users')
-        .insert({ id: user.id });
-        
-      if (insertError) throw insertError;
+        .insert({ id: newAdminId });
       
-      toast.success(`${newAdminEmail} added as admin`);
-      setNewAdminEmail('');
-      fetchAdmins();
+      if (error) throw error;
+      
+      toast.success('Admin user added successfully');
+      setNewAdminId('');
+      fetchAdminUsers();
       
     } catch (error: any) {
-      console.error('Error adding admin:', error);
-      toast.error(error.message || 'Failed to add admin');
+      toast.error(error.message);
     } finally {
-      setAddingAdmin(false);
+      setAddLoading(false);
+    }
+  };
+  
+  const handleRemoveAdmin = async (adminId: string) => {
+    // Prevent removing yourself
+    if (adminId === user?.id) {
+      toast.error("You cannot remove yourself as an admin");
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('admin_users')
+        .delete()
+        .eq('id', adminId);
+      
+      if (error) throw error;
+      
+      toast.success('Admin user removed');
+      fetchAdminUsers();
+      
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8">Settings</h1>
+    <div className="space-y-8 p-6">
+      <h1 className="text-2xl font-bold">Admin Settings</h1>
       
-      <Card className="mb-8">
+      <Card>
         <CardHeader>
-          <CardTitle>Admin Users</CardTitle>
+          <CardTitle>Manage Administrators</CardTitle>
           <CardDescription>
-            Manage users who have administrative privileges
+            Add or remove admin access to the dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="mb-6">
-            <form onSubmit={handleAddAdmin} className="flex gap-4">
-              <div className="flex-grow">
-                <Input
-                  placeholder="Email address"
-                  value={newAdminEmail}
-                  onChange={(e) => setNewAdminEmail(e.target.value)}
-                  type="email"
-                  required
-                />
-              </div>
-              <Button 
-                type="submit" 
-                disabled={addingAdmin} 
-                className="bg-spiti-forest hover:bg-spiti-forest/90"
-              >
-                {addingAdmin ? (
-                  <>
-                    <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
-                    Adding...
-                  </>
-                ) : (
-                  <>
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Add Admin
-                  </>
-                )}
-              </Button>
-            </form>
-          </div>
-          
-          <div>
-            <h3 className="text-sm font-medium mb-3">Current Admins</h3>
-            {loading ? (
-              <div className="flex items-center justify-center h-20">
-                <div className="animate-spin h-5 w-5 border-2 border-spiti-forest border-t-transparent rounded-full"></div>
-                <span className="ml-2">Loading admins...</span>
-              </div>
-            ) : adminUsers.length === 0 ? (
-              <div className="text-center py-6 bg-gray-50 rounded-md">
-                <User className="h-10 w-10 text-gray-400 mx-auto" />
-                <p className="mt-2 text-gray-500">No admin users found</p>
-              </div>
-            ) : (
-              <div className="border rounded-md overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Email
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {adminUsers.map((admin) => (
-                      <tr key={admin.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {admin.email}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
-                          <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-800 hover:bg-red-50">
-                            Remove
-                          </Button>
-                        </td>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-lg font-semibold">Current Administrators</h2>
+              {loading ? (
+                <div className="animate-pulse h-20 bg-gray-100 rounded-md"></div>
+              ) : adminUsers.length === 0 ? (
+                <p className="text-sm text-gray-500">No admins found</p>
+              ) : (
+                <div className="border rounded-md overflow-hidden">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Added On</th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {adminUsers.map((admin) => (
+                        <tr key={admin.id}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{admin.id}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{admin.email || 'Unknown'}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(admin.created_at).toLocaleString()}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            {admin.id === user?.id ? (
+                              <span className="text-gray-400">Current User</span>
+                            ) : (
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="text-red-600 hover:text-red-900"
+                                onClick={() => handleRemoveAdmin(admin.id)}
+                              >
+                                Remove
+                              </Button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+            
+            <div className="pt-4 border-t">
+              <h2 className="text-lg font-semibold mb-2">Add New Administrator</h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Enter the User ID of the person you want to grant admin access to.
+                The user must have an account in the system first.
+              </p>
+              
+              <form onSubmit={handleAddAdmin} className="flex gap-2">
+                <Input
+                  placeholder="Enter User ID"
+                  value={newAdminId}
+                  onChange={(e) => setNewAdminId(e.target.value)}
+                  className="flex-1"
+                />
+                <Button 
+                  type="submit" 
+                  disabled={addLoading || !newAdminId}
+                  className="bg-spiti-forest hover:bg-spiti-forest/90"
+                >
+                  {addLoading ? 'Adding...' : 'Add Admin'}
+                </Button>
+              </form>
+            </div>
           </div>
         </CardContent>
       </Card>

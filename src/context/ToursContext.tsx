@@ -1,11 +1,10 @@
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { TourPackageProps } from '@/components/TourPackage';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getAllTourPackages } from '@/services/tourService';
-import { toast } from 'sonner';
+import { TourPackageWithId } from '@/data/types/tourTypes';
 
 interface ToursContextType {
-  tours: TourPackageProps[];
+  tours: TourPackageWithId[];
   loading: boolean;
   error: string | null;
   refreshTours: () => Promise<void>;
@@ -21,26 +20,21 @@ export const useToursContext = () => {
   return context;
 };
 
-interface ToursProviderProps {
-  children: ReactNode;
-}
-
-export const ToursProvider: React.FC<ToursProviderProps> = ({ children }) => {
-  const [tours, setTours] = useState<TourPackageProps[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+export const ToursProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [tours, setTours] = useState<TourPackageWithId[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchTours = async () => {
-    setLoading(true);
-    setError(null);
-    
     try {
-      const toursData = await getAllTourPackages();
-      setTours(toursData);
-    } catch (err: any) {
-      console.error('Error fetching tours:', err);
-      setError(err.message || 'Failed to load tours');
-      toast.error('Failed to load tour packages. Please try again later.');
+      setLoading(true);
+      setError(null);
+      
+      const tourData = await getAllTourPackages();
+      setTours(tourData);
+    } catch (error: any) {
+      console.error('Error fetching tours:', error);
+      setError(error.message || 'Failed to fetch tours');
     } finally {
       setLoading(false);
     }
@@ -54,16 +48,11 @@ export const ToursProvider: React.FC<ToursProviderProps> = ({ children }) => {
     await fetchTours();
   };
 
-  const value = {
-    tours,
-    loading,
-    error,
-    refreshTours
-  };
-
   return (
-    <ToursContext.Provider value={value}>
+    <ToursContext.Provider value={{ tours, loading, error, refreshTours }}>
       {children}
     </ToursContext.Provider>
   );
 };
+
+export default ToursProvider;

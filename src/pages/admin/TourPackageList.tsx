@@ -1,237 +1,255 @@
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Edit, Trash2, Plus, Search, Bike, Car, Image } from 'lucide-react';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose
+} from "@/components/ui/dialog";
+import { Edit, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface TourPackage {
   id: string;
   title: string;
+  image: string;
   original_price: number;
   discounted_price: number;
   discount: number;
-  duration_nights: number;
-  duration_days: number;
   transport_type: string;
-  image: string;
   is_women_only: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
-const TourPackageList = () => {
+const TourPackageList: React.FC = () => {
   const [packages, setPackages] = useState<TourPackage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const fetchTourPackages = async () => {
-    setLoading(true);
+  useEffect(() => {
+    fetchPackages();
+  }, []);
+
+  const fetchPackages = async () => {
     try {
-      let { data, error } = await supabase
+      setLoading(true);
+      const { data, error } = await supabase
         .from('tour_packages')
         .select('*')
         .order('title');
-        
-      if (error) throw error;
       
+      if (error) throw error;
       setPackages(data || []);
     } catch (error: any) {
-      toast.error(`Error fetching tour packages: ${error.message}`);
+      console.error('Error fetching packages:', error);
+      toast.error('Failed to load tour packages');
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchTourPackages();
-  }, []);
+  const confirmDelete = (id: string) => {
+    setDeleteId(id);
+  };
 
-  const handleDeletePackage = async (id: string) => {
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    
     try {
-      // First get the image URL to delete from storage
-      const { data: packageData, error: fetchError } = await supabase
-        .from('tour_packages')
-        .select('image')
-        .eq('id', id)
-        .single();
+      setDeleteLoading(true);
       
-      if (fetchError) throw fetchError;
+      // First delete related records to avoid foreign key constraint errors
+      // Delete night stays
+      await supabase
+        .from('night_stays')
+        .delete()
+        .eq('tour_package_id', deleteId);
       
-      // Delete the package (cascade will delete related records)
+      // Delete inclusions
+      await supabase
+        .from('inclusions')
+        .delete()
+        .eq('tour_package_id', deleteId);
+      
+      // Delete exclusions
+      await supabase
+        .from('exclusions')
+        .delete()
+        .eq('tour_package_id', deleteId);
+      
+      // Delete itinerary days
+      await supabase
+        .from('itinerary_days')
+        .delete()
+        .eq('tour_package_id', deleteId);
+      
+      // Finally delete the tour package
       const { error } = await supabase
         .from('tour_packages')
         .delete()
-        .eq('id', id);
+        .eq('id', deleteId);
       
       if (error) throw error;
       
-      // If there's an image URL that includes storage reference, delete it
-      if (packageData?.image && packageData.image.includes('storage')) {
-        try {
-          const imagePath = packageData.image.split('/').pop();
-          if (imagePath) {
-            await supabase.storage
-              .from('tour_images')
-              .remove([imagePath]);
-          }
-        } catch (storageError) {
-          console.error('Error deleting image:', storageError);
+      // Delete the tour image from storage
+      const packageData = packages.find(p => p.id === deleteId);
+      if (packageData?.image) {
+        const imagePath = packageData.image.split('/').pop();
+        if (imagePath) {
+          await supabase.storage
+            .from('tour_images')
+            .remove([imagePath]);
         }
       }
       
       toast.success('Tour package deleted successfully');
-      fetchTourPackages();
+      setPackages(packages.filter(p => p.id !== deleteId));
+      setDeleteId(null);
     } catch (error: any) {
-      toast.error(`Error deleting tour package: ${error.message}`);
+      console.error('Error deleting package:', error);
+      toast.error('Failed to delete tour package');
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
-  const filteredPackages = searchTerm
-    ? packages.filter(pkg => 
-        pkg.title.toLowerCase().includes(searchTerm.toLowerCase()))
-    : packages;
-
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Tour Packages</h1>
-        <Link to="/admin/tour-packages/create">
-          <Button className="bg-spiti-forest hover:bg-spiti-forest/90">
-            <Plus className="h-4 w-4 mr-2" />
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Tour Packages</h1>
+        <Button asChild className="bg-spiti-forest hover:bg-spiti-forest/90">
+          <Link to="/admin/tour-packages/create">
+            <Plus className="w-4 h-4 mr-2" />
             Add New Package
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
       
-      <div className="bg-white shadow rounded-md overflow-hidden">
-        <div className="p-4 border-b">
-          <div className="flex items-center">
-            <Search className="h-5 w-5 text-gray-400 mr-2" />
-            <Input
-              placeholder="Search tour packages..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border-none shadow-none focus-visible:ring-0 pl-0"
-            />
-          </div>
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-12">
+          <div className="animate-spin h-8 w-8 border-4 border-spiti-forest border-t-transparent rounded-full"></div>
+          <p className="mt-4 text-gray-600">Loading tour packages...</p>
         </div>
-        
-        {loading ? (
-          <div className="p-8 text-center">
-            <div className="animate-spin h-8 w-8 border-4 border-spiti-forest border-t-transparent rounded-full mx-auto"></div>
-            <p className="mt-2 text-gray-600">Loading tour packages...</p>
-          </div>
-        ) : filteredPackages.length === 0 ? (
-          <div className="p-8 text-center">
-            {searchTerm ? (
-              <p className="text-gray-500">No tour packages matching "{searchTerm}"</p>
-            ) : (
-              <div>
-                <p className="text-gray-500 mb-4">No tour packages found</p>
-                <Link to="/admin/tour-packages/create">
-                  <Button>Create your first package</Button>
-                </Link>
-              </div>
-            )}
-          </div>
-        ) : (
+      ) : packages.length === 0 ? (
+        <div className="bg-white rounded-lg p-8 text-center">
+          <h2 className="text-xl font-medium mb-2">No tour packages yet</h2>
+          <p className="text-gray-500 mb-6">
+            Create your first tour package to get started.
+          </p>
+          <Button asChild className="bg-spiti-forest hover:bg-spiti-forest/90">
+            <Link to="/admin/tour-packages/create">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Tour Package
+            </Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg shadow overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[50px]">Type</TableHead>
-                <TableHead>Image</TableHead>
+                <TableHead className="w-12">Image</TableHead>
                 <TableHead>Title</TableHead>
-                <TableHead className="text-right">Price</TableHead>
-                <TableHead>Duration</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>Transport</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredPackages.map((pkg) => (
+              {packages.map((pkg) => (
                 <TableRow key={pkg.id}>
                   <TableCell>
-                    {pkg.transport_type === 'bike' ? (
-                      <Bike className="h-5 w-5 text-orange-500" />
-                    ) : (
-                      <Car className="h-5 w-5 text-green-500" />
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="h-10 w-10 rounded overflow-hidden">
-                      {pkg.image ? (
-                        <img 
-                          src={pkg.image} 
-                          alt={pkg.title} 
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-gray-200 flex items-center justify-center">
-                          <Image className="h-5 w-5 text-gray-400" />
-                        </div>
-                      )}
+                    <div className="w-12 h-12 rounded overflow-hidden">
+                      <img 
+                        src={pkg.image} 
+                        alt={pkg.title}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </TableCell>
                   <TableCell className="font-medium">{pkg.title}</TableCell>
-                  <TableCell className="text-right">
-                    <div>₹{pkg.discounted_price.toLocaleString()}</div>
-                    <div className="text-sm text-gray-500 line-through">₹{pkg.original_price.toLocaleString()}</div>
-                  </TableCell>
                   <TableCell>
-                    {pkg.duration_nights} Nights / {pkg.duration_days} Days
+                    <div className="text-sm">
+                      <div className="font-semibold">₹{pkg.discounted_price.toLocaleString('en-IN')}</div>
+                      <div className="text-xs text-gray-500 line-through">₹{pkg.original_price.toLocaleString('en-IN')}</div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="capitalize">{pkg.transport_type}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center">
+                      <span className="inline-block h-2 w-2 rounded-full bg-green-500 mr-2"></span>
+                      Active
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end space-x-2">
-                      <Link to={`/admin/tour-packages/edit/${pkg.id}`}>
-                        <Button variant="outline" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                      </Link>
-                      
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="outline" size="sm" className="text-red-600 border-red-600 hover:bg-red-50">
-                            <Trash2 className="h-4 w-4" />
+                    <div className="flex justify-end gap-2">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        asChild
+                      >
+                        <Link to={`/admin/tour-packages/edit/${pkg.id}`}>
+                          <Edit className="w-4 h-4" />
+                        </Link>
+                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => confirmDelete(pkg.id)}
+                            className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
                           </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Delete Tour Package</AlertDialogTitle>
-                            <AlertDialogDescription>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Delete Tour Package</DialogTitle>
+                            <DialogDescription>
                               Are you sure you want to delete "{pkg.title}"? This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              className="bg-red-600 hover:bg-red-700"
-                              onClick={() => handleDeletePackage(pkg.id)}
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <DialogClose asChild>
+                              <Button variant="outline">Cancel</Button>
+                            </DialogClose>
+                            <Button 
+                              variant="destructive"
+                              onClick={handleDelete}
+                              disabled={deleteLoading}
                             >
-                              Delete
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                              {deleteLoading ? 'Deleting...' : 'Delete'}
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
