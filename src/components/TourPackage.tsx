@@ -79,7 +79,7 @@ const TourPackage: React.FC<TourPackageProps & {
           </div>
           
           <div className="text-right">
-            <p className="text-red-500 font-bold text-9xl">
+            <p className="text-red-500 text-lg font-semibold">
               {duration.nights} NIGHTS / {duration.days} DAYS
             </p>
           </div>
