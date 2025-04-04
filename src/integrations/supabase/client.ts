@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = "https://ttyhfrbubjpmzruwwihd.supabase.co";
@@ -144,6 +143,32 @@ export interface Database {
         Update: {
           id?: string
           created_at?: string
+        }
+      }
+      tour_departure_dates: {
+        Row: {
+          id: string
+          tour_package_id: string | null
+          start_date: string
+          end_date: string
+          status: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          tour_package_id?: string | null
+          start_date: string
+          end_date: string
+          status?: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          tour_package_id?: string | null
+          start_date?: string
+          end_date?: string
+          status?: string
+          created_at?: string | null
         }
       }
     }

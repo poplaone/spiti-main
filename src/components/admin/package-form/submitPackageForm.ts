@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { TourPackageFormData, NightStay, Inclusion, Exclusion, ItineraryDay } from "./types";
 import { uploadImage } from "./imageHandler";

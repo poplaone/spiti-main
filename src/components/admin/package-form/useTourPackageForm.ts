@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -136,13 +135,11 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
   };
 
   return {
-    // Form state
     isLoading,
     activeTab,
     setActiveTab,
     imagePreview,
     
-    // Basic info
     title,
     setTitle,
     overview,
@@ -164,7 +161,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     isCustomizable,
     setIsCustomizable,
     
-    // Overview details
     accommodation,
     setAccommodation,
     bestTime,
@@ -180,7 +176,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     availableTo,
     setAvailableTo,
     
-    // Details
     nightStays,
     setNightStays,
     inclusions,
@@ -188,14 +183,11 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     exclusions,
     setExclusions,
     
-    // Itinerary
     itineraryDays,
     setItineraryDays,
     
-    // Images
     handleImageChange,
     
-    // Form submission
     handleSubmit
   };
 };
