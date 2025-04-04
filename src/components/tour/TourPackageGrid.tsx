@@ -1,19 +1,17 @@
 
 import React from 'react';
-import TourPackage from '../TourPackage';
-import { TourPackageProps } from '../TourPackage';
+import { TourPackageWithId } from '@/data/types/tourTypes';
+import TourPackage from '@/components/TourPackage';
 
 interface TourPackageGridProps {
-  packages: TourPackageProps[];
+  packages: TourPackageWithId[];
 }
 
 const TourPackageGrid: React.FC<TourPackageGridProps> = ({ packages }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-      {packages.map((tour, index) => (
-        <div key={index} className="transform transition duration-300 hover:scale-102 hover:z-10 w-full">
-          <TourPackage key={index} {...tour} index={index} className="bg-white/80 backdrop-blur-sm w-full h-full" />
-        </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-8">
+      {packages.map((pkg) => (
+        <TourPackage key={pkg.id} {...pkg} />
       ))}
     </div>
   );

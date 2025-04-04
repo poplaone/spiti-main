@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { Plus } from "lucide-react";
+import InitialDataSeeder from '@/components/admin/InitialDataSeeder';
 
 const AdminDashboard: React.FC = () => {
   const [stats, setStats] = useState({
@@ -97,6 +98,10 @@ const AdminDashboard: React.FC = () => {
             </CardContent>
           </Card>
         </Link>
+      </div>
+      
+      <div className="mt-8">
+        <InitialDataSeeder />
       </div>
     </div>
   );

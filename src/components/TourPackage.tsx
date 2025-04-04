@@ -1,157 +1,103 @@
-import React from 'react';
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { MessageSquareMore, Send, CalendarCheck, Settings2 } from 'lucide-react';
-import { Link, useNavigate } from "react-router-dom";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import LeadForm from "@/components/LeadForm";
-interface NightStay {
-  location: string;
-  nights: number;
-}
-interface ItineraryDay {
-  day: number;
-  title: string;
-  description: string;
-}
-export interface TourPackageProps {
-  title: string;
-  image: string;
-  originalPrice: number;
-  discountedPrice: number;
-  discount: number;
-  duration: {
-    nights: number;
-    days: number;
-  };
-  nightStays: NightStay[];
-  inclusions: string[];
-  exclusions?: string[];
-  itinerary?: ItineraryDay[];
-  overview?: string;
-  transportType?: 'bike' | 'car' | 'innova';
-  isWomenOnly?: boolean;
-  index?: number;
-  className?: string;
-}
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('en-IN').format(price);
-};
-const getRouteMap = {
-  0: '/tour-bike',
-  1: '/tour-unexplored',
-  2: '/tour-buddhist',
-  3: '/tour-women',
-  4: '/tour-owncar',
-  5: '/tour-hiddenheaven'
-};
 
-// Function to highlight month names in a text string
-const highlightMonths = (text: string) => {
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  let result = text;
-  months.forEach(month => {
-    if (text.includes(month)) {
-      result = result.replace(month, `<span class="text-spiti-blue font-medium">${month}</span>`);
-    }
-  });
-  return <span dangerouslySetInnerHTML={{
-    __html: result
-  }} />;
-};
-const TourPackage: React.FC<TourPackageProps> = ({
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Bike, Car, Users } from 'lucide-react';
+import { TourPackageProps } from '@/data/types/tourTypes';
+
+const TourPackage: React.FC<TourPackageProps & { id?: string }> = ({
+  id,
   title,
   image,
   originalPrice,
   discountedPrice,
   discount,
   duration,
-  nightStays,
-  inclusions,
   transportType,
   isWomenOnly,
-  index,
-  className = ""
 }) => {
-  const navigate = useNavigate();
-  const getDetailRoute = () => {
-    if (typeof index !== 'number') return '/';
-    return getRouteMap[index as keyof typeof getRouteMap] || '/';
-  };
-  const handleCardClick = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest('.enquiry-btn')) {
-      return;
+  const getTransportIcon = () => {
+    switch (transportType.toLowerCase()) {
+      case 'bike':
+        return <Bike className="h-5 w-5" />;
+      default:
+        return <Car className="h-5 w-5" />;
     }
-    navigate(getDetailRoute());
   };
-  return <div className={`group h-full overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ${className} cursor-pointer`} onClick={handleCardClick}>
-      <div className="relative h-52 overflow-hidden">
-        <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
-        
-        <div className="absolute top-3 left-3 z-10">
-          <Badge className="text-white font-medium text-sm px-3 py-1 rounded-md bg-rose-500 border-none">
-            {discount}% OFF
-          </Badge>
+
+  // Determine the path to link to based on the title
+  const getLinkPath = () => {
+    if (title.includes("BIKE") || transportType.toLowerCase() === 'bike') {
+      return '/tour-bike';
+    }
+    if (title.includes("WOMEN")) {
+      return '/tour-women';
+    }
+    if (title.includes("OWN CAR") || title.includes("OWN VEHICLE")) {
+      return '/tour-owncar';
+    }
+    if (title.includes("BUDDHIST")) {
+      return '/tour-buddhist';
+    }
+    if (title.includes("HIDDEN HEAVEN")) {
+      return '/tour-hiddenheaven';
+    }
+    // Default to unexplored tour page
+    return '/tour-unexplored';
+  };
+
+  return (
+    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div className="relative">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-48 object-cover"
+        />
+        <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs font-bold">
+          {discount}% OFF
+        </div>
+        {isWomenOnly && (
+          <div className="absolute top-0 left-0 bg-pink-500 text-white px-2 py-1 text-xs font-bold">
+            Women Only
+          </div>
+        )}
+      </div>
+      <div className="p-4">
+        <h3 className="font-heading font-bold text-lg mb-2 line-clamp-2">{title}</h3>
+        <div className="flex justify-between items-center mb-2">
+          <div className="flex items-center text-sm text-gray-600">
+            <span className="font-medium">{duration.nights} Nights</span>
+            <span className="mx-1">•</span>
+            <span className="font-medium">{duration.days} Days</span>
+          </div>
+          <div className="flex items-center text-sm text-gray-600">
+            {getTransportIcon()}
+            <span className="ml-1 capitalize">{transportType}</span>
+          </div>
         </div>
 
-        {isWomenOnly && <div className="absolute top-3 right-3 z-10">
-            <Badge className="bg-pink-500 text-white font-medium text-sm px-3 py-1 rounded-md border-none">
-              Women Only
-            </Badge>
-          </div>}
-      </div>
-      
-      <div className="p-4">
-        <h3 className="font-heading text-xl text-spiti-forest font-bold mb-2 line-clamp-2">{title}</h3>
-        
-        <div className="flex flex-col space-y-1 mb-3">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center text-rose-500">
-              <CalendarCheck className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase py-[2px] px-px">Fixed Departures</span>
-            </div>
-            
-            <div className="flex items-center text-rose-500 px-[3px]">
-              <Settings2 className="w-4 h-4 mr-1 text-rose-500" />
-              <span className="text-xs font-medium uppercase text-left px-0">Customizable</span>
-            </div>
-          </div>
-          
-          <div className="text-sm text-gray-700 font-medium">
-            {highlightMonths("Available from June to October")}
-          </div>
-        </div>
-        
-        <div className="flex items-center justify-between mb-4 border-b pb-3">
+        <div className="flex justify-between items-end mt-4">
           <div>
-            <div className="text-lg font-bold text-spiti-forest">₹{formatPrice(discountedPrice)}</div>
-            <div className="text-sm text-gray-500 line-through">₹{formatPrice(originalPrice)}</div>
+            <p className="text-gray-500 line-through text-sm">₹{originalPrice.toLocaleString('en-IN')}</p>
+            <p className="text-spiti-forest font-bold text-xl">₹{discountedPrice.toLocaleString('en-IN')}</p>
           </div>
-          <div className="text-sm font-medium text-rose-500 uppercase">
-            {duration.nights} NIGHTS / {duration.days} DAYS
-          </div>
+          <Link
+            to={getLinkPath()}
+            className="bg-spiti-forest text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-spiti-forest/90 transition-colors"
+          >
+            View Details
+          </Link>
         </div>
-        
-        <div className="flex gap-2 w-full">
-          <Button variant="outline" className="flex-1 border-spiti-forest text-spiti-forest hover:bg-spiti-forest hover:text-white" asChild>
-            <Link to={getDetailRoute()}>
-              <MessageSquareMore className="mr-1 w-4 h-4" />
-              <span>Details</span>
-            </Link>
-          </Button>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="default" className="flex-1 bg-spiti-forest enquiry-btn">
-                <Send className="mr-1 w-4 h-4" />
-                <span>Enquiry</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <LeadForm />
-            </DialogContent>
-          </Dialog>
+
+        <div className="flex items-center mt-3 text-xs text-gray-500">
+          <Users className="w-3 h-3 mr-1" />
+          <span>2-10 people</span>
+          <span className="mx-1">•</span>
+          <span>Group Tour</span>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
-export default React.memo(TourPackage);
+
+export default TourPackage;

@@ -9,7 +9,182 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      admin_users: {
+        Row: {
+          created_at: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      exclusions: {
+        Row: {
+          description: string
+          id: string
+          tour_package_id: string
+        }
+        Insert: {
+          description: string
+          id?: string
+          tour_package_id: string
+        }
+        Update: {
+          description?: string
+          id?: string
+          tour_package_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exclusions_tour_package_id_fkey"
+            columns: ["tour_package_id"]
+            isOneToOne: false
+            referencedRelation: "tour_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inclusions: {
+        Row: {
+          description: string
+          id: string
+          tour_package_id: string
+        }
+        Insert: {
+          description: string
+          id?: string
+          tour_package_id: string
+        }
+        Update: {
+          description?: string
+          id?: string
+          tour_package_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inclusions_tour_package_id_fkey"
+            columns: ["tour_package_id"]
+            isOneToOne: false
+            referencedRelation: "tour_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      itinerary_days: {
+        Row: {
+          day_number: number
+          description: string
+          id: string
+          title: string
+          tour_package_id: string
+        }
+        Insert: {
+          day_number: number
+          description: string
+          id?: string
+          title: string
+          tour_package_id: string
+        }
+        Update: {
+          day_number?: number
+          description?: string
+          id?: string
+          title?: string
+          tour_package_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itinerary_days_tour_package_id_fkey"
+            columns: ["tour_package_id"]
+            isOneToOne: false
+            referencedRelation: "tour_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      night_stays: {
+        Row: {
+          id: string
+          location: string
+          nights: number
+          tour_package_id: string
+        }
+        Insert: {
+          id?: string
+          location: string
+          nights: number
+          tour_package_id: string
+        }
+        Update: {
+          id?: string
+          location?: string
+          nights?: number
+          tour_package_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "night_stays_tour_package_id_fkey"
+            columns: ["tour_package_id"]
+            isOneToOne: false
+            referencedRelation: "tour_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tour_packages: {
+        Row: {
+          created_at: string
+          discount: number
+          discounted_price: number
+          duration_days: number
+          duration_nights: number
+          id: string
+          image: string
+          is_women_only: boolean
+          original_price: number
+          overview: string | null
+          title: string
+          transport_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          discount: number
+          discounted_price: number
+          duration_days: number
+          duration_nights: number
+          id?: string
+          image: string
+          is_women_only?: boolean
+          original_price: number
+          overview?: string | null
+          title: string
+          transport_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          discount?: number
+          discounted_price?: number
+          duration_days?: number
+          duration_nights?: number
+          id?: string
+          image?: string
+          is_women_only?: boolean
+          original_price?: number
+          overview?: string | null
+          title?: string
+          transport_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

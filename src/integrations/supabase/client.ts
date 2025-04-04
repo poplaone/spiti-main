@@ -126,7 +126,7 @@ export interface Database {
         }
         Update: {
           id?: string
-          tour_package_id?: number
+          tour_package_id?: string
           day_number?: number
           title?: string
           description?: string

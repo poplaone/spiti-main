@@ -40,7 +40,7 @@ const TourPackages = () => {
             <p className="text-gray-600">No tour packages available at the moment.</p>
           </div>
         ) : (
-          <TourPackageGrid packages={tours as any} />
+          <TourPackageGrid packages={tours} />
         )}
       </div>
     </section>
