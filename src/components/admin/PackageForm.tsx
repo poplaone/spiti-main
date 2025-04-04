@@ -62,6 +62,8 @@ interface PackageData {
   duration_days: number;
   transport_type: string;
   is_women_only: boolean;
+  is_fixed_departure: boolean;
+  is_customizable: boolean;
   overview: string | null;
   created_at: string;
   updated_at: string;
@@ -82,6 +84,8 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
   const [durationDays, setDurationDays] = useState("");
   const [overview, setOverview] = useState("");
   const [isWomenOnly, setIsWomenOnly] = useState(false);
+  const [isFixedDeparture, setIsFixedDeparture] = useState(false);
+  const [isCustomizable, setIsCustomizable] = useState(true);
   
   const [nightStays, setNightStays] = useState<NightStay[]>([]);
   const [inclusions, setInclusions] = useState<Inclusion[]>([]);
@@ -114,6 +118,8 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
         setDurationDays(packageData.duration_days?.toString() || '');
         setOverview(packageData.overview || '');
         setIsWomenOnly(packageData.is_women_only || false);
+        setIsFixedDeparture(packageData.is_fixed_departure || false);
+        setIsCustomizable(packageData.is_customizable !== false);
         setImagePreview(packageData.image || '');
       }
       
@@ -244,6 +250,8 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
             duration_days: parseInt(durationDays),
             transport_type: transportType,
             is_women_only: isWomenOnly,
+            is_fixed_departure: isFixedDeparture,
+            is_customizable: isCustomizable,
             overview
           })
           .eq('id', packageId);
@@ -262,6 +270,8 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
             duration_days: parseInt(durationDays),
             transport_type: transportType,
             is_women_only: isWomenOnly,
+            is_fixed_departure: isFixedDeparture,
+            is_customizable: isCustomizable,
             overview
           })
           .select('id')
@@ -516,13 +526,33 @@ const PackageForm: React.FC<PackageFormProps> = ({ packageId, isEditing = false 
                   </Select>
                 </div>
                 
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="women-only" 
-                    checked={isWomenOnly} 
-                    onCheckedChange={setIsWomenOnly} 
-                  />
-                  <Label htmlFor="women-only">Women-Only Tour</Label>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch 
+                      id="women-only" 
+                      checked={isWomenOnly} 
+                      onCheckedChange={setIsWomenOnly} 
+                    />
+                    <Label htmlFor="women-only">Women-Only Tour</Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Switch 
+                      id="fixed-departure" 
+                      checked={isFixedDeparture} 
+                      onCheckedChange={setIsFixedDeparture} 
+                    />
+                    <Label htmlFor="fixed-departure">Fixed Departure Tour</Label>
+                  </div>
+                  
+                  <div className="flex items-center space-x-2">
+                    <Switch 
+                      id="customizable" 
+                      checked={isCustomizable} 
+                      onCheckedChange={setIsCustomizable} 
+                    />
+                    <Label htmlFor="customizable">Customizable Tour</Label>
+                  </div>
                 </div>
               </div>
             </CardContent>

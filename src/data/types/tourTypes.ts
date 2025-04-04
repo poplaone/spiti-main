@@ -23,6 +23,8 @@ export interface TourPackageProps {
   };
   transportType: string;  
   isWomenOnly: boolean;
+  isFixedDeparture?: boolean;
+  isCustomizable?: boolean;
   overview: string | null;
   nightStays: TourNightStay[];
   inclusions: string[];

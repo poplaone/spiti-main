@@ -14,12 +14,10 @@ const TourHeroContent: React.FC<TourHeroContentProps> = ({
   title,
   duration
 }) => {
-  const seoTitle = title?.toLowerCase().includes('spiti') ? title : `${title} - Spiti Valley Adventure`;
-
   return (
     <div className="max-w-3xl space-y-4 sm:space-y-6">
       <h1 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-white leading-tight">
-        {seoTitle}
+        {title}
       </h1>
       
       {/* Tour duration info */}

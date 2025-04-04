@@ -1,123 +1,110 @@
 
 import { useState, useEffect } from 'react';
-import { TourPackageProps } from '@/data/types/tourTypes';
 import { useToursContext } from '@/context/ToursContext';
-import { tourPackagesData } from "@/data/tourPackagesData";
+import { TourPackageProps } from '@/data/types/tourTypes';
 
-export const useTourData = (tourType: string, tourId?: string) => {
+interface UseTourDataResult {
+  tour: TourPackageProps | null;
+  otherTours: TourPackageProps[];
+  isLoading: boolean;
+}
+
+export const useTourData = (tourType: string, tourId?: string): UseTourDataResult => {
   const [tour, setTour] = useState<TourPackageProps | null>(null);
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { tours, loading: contextLoading, refreshTours } = useToursContext();
-  
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { tours, loading } = useToursContext();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-    
-    // Set initial loading state
-    setIsLoading(true);
-    
-    // Only refresh tours if needed (when tours array is empty)
+    if (loading) {
+      setIsLoading(true);
+      return;
+    }
+
     if (tours.length === 0) {
-      refreshTours();
+      setIsLoading(false);
+      return;
+    }
+
+    // If we have a specific tour ID, use that to find the tour
+    if (tourId) {
+      const foundTour = tours.find(t => t.id === tourId);
+      if (foundTour) {
+        setTour(foundTour);
+        
+        // Get other tours of the same type for related tours section
+        let relatedTours;
+        if (foundTour.transportType.toLowerCase() === 'bike') {
+          relatedTours = tours.filter(t => t.transportType.toLowerCase() === 'bike' && t.id !== tourId);
+        } else if (foundTour.isWomenOnly) {
+          relatedTours = tours.filter(t => t.isWomenOnly && t.id !== tourId);
+        } else {
+          relatedTours = tours.filter(t => 
+            t.transportType.toLowerCase() !== 'bike' && 
+            !t.isWomenOnly && 
+            t.id !== tourId
+          );
+        }
+        
+        // Limit to 3 related tours
+        setOtherTours(relatedTours.slice(0, 3));
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    // Filter tours based on tour type if no specific tourId is provided
+    let filteredTours: TourPackageProps[] = [];
+    
+    switch (tourType) {
+      case 'bike':
+        filteredTours = tours.filter(t => t.transportType.toLowerCase() === 'bike');
+        break;
+      case 'women':
+        filteredTours = tours.filter(t => t.isWomenOnly);
+        break;
+      case 'buddhist':
+        filteredTours = tours.filter(t => 
+          t.title.toLowerCase().includes('buddhist') || 
+          t.title.toLowerCase().includes('tribal')
+        );
+        break;
+      case 'owncar':
+        filteredTours = tours.filter(t => 
+          t.title.toLowerCase().includes('own car') || 
+          t.title.toLowerCase().includes('self drive')
+        );
+        break;
+      case 'hiddenheaven':
+        filteredTours = tours.filter(t => t.title.toLowerCase().includes('hidden'));
+        break;
+      case 'unexplored':
+      default:
+        filteredTours = tours.filter(t => 
+          t.transportType.toLowerCase() !== 'bike' && 
+          !t.isWomenOnly && 
+          !t.title.toLowerCase().includes('buddhist') && 
+          !t.title.toLowerCase().includes('tribal') && 
+          !t.title.toLowerCase().includes('own car') && 
+          !t.title.toLowerCase().includes('self drive') && 
+          !t.title.toLowerCase().includes('hidden')
+        );
+        break;
+    }
+
+    if (filteredTours.length > 0) {
+      setTour(filteredTours[0]);
+      
+      // Get other tours of the same type
+      setOtherTours(filteredTours.slice(1, 4));
+    } else {
+      // Fallback to first tour if no tours match the type
+      setTour(tours[0]);
+      setOtherTours(tours.slice(1, 4));
     }
     
-    // Debounced function to find tour by type or ID - helps prevent state flickering
-    const timeoutId = setTimeout(() => {
-      // Skip processing if context is still loading
-      if (contextLoading) return;
-      
-      const findTour = () => {
-        // Use either context tours or fallback to static data
-        const toursToUse = tours.length > 0 ? tours : tourPackagesData;
-        
-        let selectedTour = null;
-        
-        // First, check if we have a specific tour ID to look for
-        if (tourId) {
-          selectedTour = toursToUse.find(t => t.id === tourId);
-        }
-        
-        // If no tour found by ID (or no ID provided), find by tour type
-        if (!selectedTour) {
-          switch (tourType) {
-            case 'bike':
-              selectedTour = toursToUse.find(t => 
-                t.transportType.toLowerCase() === 'bike' || 
-                (t.title && t.title.toLowerCase().includes('bike'))
-              );
-              break;
-            case 'buddhist':
-              selectedTour = toursToUse.find(t => 
-                (t.title && t.title.toLowerCase().includes('buddhist')) ||
-                (t.title && t.title.toLowerCase().includes('tribal'))
-              );
-              break;
-            case 'women':
-              selectedTour = toursToUse.find(t => 
-                t.isWomenOnly === true ||
-                (t.title && t.title.toLowerCase().includes('women'))
-              );
-              break;
-            case 'owncar':
-              selectedTour = toursToUse.find(t => 
-                (t.title && t.title.toLowerCase().includes('own car')) ||
-                (t.title && t.title.toLowerCase().includes('self drive'))
-              );
-              break;
-            case 'unexplored':
-              selectedTour = toursToUse.find(t => 
-                (t.title && t.title.toLowerCase().includes('unexplored')) || 
-                (t.title && t.title.toLowerCase().includes('exploration'))
-              );
-              break;
-            case 'hiddenheaven':
-              selectedTour = toursToUse.find(t => 
-                (t.title && t.title.toLowerCase().includes('hidden heaven')) || 
-                (t.title && t.title.toLowerCase().includes('hidden'))
-              );
-              break;
-            default:
-              // Default to first tour if no matches
-              selectedTour = toursToUse[0];
-          }
-        }
-        
-        // Fallback to first tour of appropriate type if no specific match found
-        if (!selectedTour && toursToUse.length > 0) {
-          if (tourType === 'bike') {
-            selectedTour = toursToUse.find(t => t.transportType.toLowerCase() === 'bike');
-          } else {
-            selectedTour = toursToUse.find(t => t.transportType.toLowerCase() === 'car');
-          }
-          
-          // Last resort fallback
-          if (!selectedTour) {
-            selectedTour = toursToUse[0];
-          }
-        }
-        
-        if (selectedTour) {
-          setTour(selectedTour);
-          
-          // Get other tours for the "More Popular Tours" section
-          const others = toursToUse
-            .filter(t => t.id !== selectedTour.id)
-            .slice(0, 4);
-          
-          setOtherTours(others);
-        }
-        
-        // Set loading to false only after finding tour
-        setIsLoading(false);
-      };
-      
-      findTour();
-    }, 300); // Add a small delay to prevent rapid loading state changes
-    
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [tourType, tourId, tours, contextLoading, refreshTours]);
+    setIsLoading(false);
+  }, [tours, loading, tourType, tourId]);
 
   return { tour, otherTours, isLoading };
 };

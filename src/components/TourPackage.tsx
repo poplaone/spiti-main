@@ -18,7 +18,9 @@ const TourPackage: React.FC<TourPackageProps & {
   discount,
   duration,
   transportType,
-  isWomenOnly
+  isWomenOnly,
+  isFixedDeparture,
+  isCustomizable
 }) => {
   const getTransportIcon = () => {
     switch (transportType.toLowerCase()) {
@@ -44,13 +46,13 @@ const TourPackage: React.FC<TourPackageProps & {
         
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center">
-            <Calendar className="w-4 h-4 text-red-500 mr-1" />
-            <span className="text-red-500 font-medium text-sm">FIXED DEPARTURES</span>
+            <Calendar className="w-4 h-4 mr-1" style={{ color: isFixedDeparture ? '#EF4444' : '#6B7280' }} />
+            <span className="font-medium text-sm" style={{ color: isFixedDeparture ? '#EF4444' : '#6B7280' }}>FIXED DEPARTURES</span>
           </div>
           
           <div className="flex items-center">
-            <Sliders className="w-4 h-4 text-red-500 mr-1" />
-            <span className="text-red-500 font-medium text-sm">CUSTOMIZABLE</span>
+            <Sliders className="w-4 h-4 mr-1" style={{ color: isCustomizable ? '#EF4444' : '#6B7280' }} />
+            <span className="font-medium text-sm" style={{ color: isCustomizable ? '#EF4444' : '#6B7280' }}>CUSTOMIZABLE</span>
           </div>
         </div>
         
