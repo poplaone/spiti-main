@@ -15,7 +15,7 @@ const SpitiCircuitMap: React.FC = () => {
       
       <div className="p-1 md:p-2 rounded-lg overflow-hidden">
         <iframe 
-          src="https://www.google.com/maps/d/embed?mid=1ZN7D96VJC3vZOJVz2cHlDpvqR9y3xp8&ehbc=2E312F" 
+          src="https://www.google.com/maps/d/u/0/embed?mid=1zV5a5rlboYm_n8NduQFb5YwHfI71K70&ehbc=2E312F" 
           width="100%" 
           height="550" 
           style={{ border: 0 }} 
