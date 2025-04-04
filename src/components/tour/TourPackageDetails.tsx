@@ -13,18 +13,10 @@ const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 space-y-6">
       <h2 className="text-xl font-heading font-bold text-spiti-forest">
-        Package Details
+        Tour Options
       </h2>
 
       <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          {typeof getTransportIcon === 'function' ? getTransportIcon() : null}
-          <div>
-            <h3 className="font-medium">Transport Type</h3>
-            <p className="text-gray-600">{transportType.charAt(0).toUpperCase() + transportType.slice(1)}</p>
-          </div>
-        </div>
-
         {isWomenOnly && (
           <div className="flex items-center gap-3">
             <Users className="text-pink-500 w-6 h-6" />
@@ -36,7 +28,6 @@ const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({
         )}
 
         <div className="pt-4 border-t">
-          <h3 className="font-medium mb-3">Tour Options</h3>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <div className={`w-3 h-3 rounded-full ${isFixedDeparture ? 'bg-green-500' : 'bg-gray-300'}`}></div>
