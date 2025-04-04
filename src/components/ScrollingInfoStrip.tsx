@@ -17,9 +17,16 @@ const ScrollingInfoStrip = () => {
 
   // Initialize the plugin after component mount to avoid type errors
   useEffect(() => {
-    // Wait for component to mount before creating the plugin
-    // This helps avoid type conflicts between packages
-    setAutoplayPlugin(AutoplayPlugin({ delay: 3000, stopOnInteraction: false }));
+    // Using the AutoplayPlugin correctly with delay and stop options
+    const plugin = AutoplayPlugin({ delay: 3000, stopOnInteraction: false });
+    setAutoplayPlugin(plugin);
+    
+    // Cleanup function
+    return () => {
+      if (plugin && plugin.destroy) {
+        plugin.destroy();
+      }
+    };
   }, []);
 
   return (

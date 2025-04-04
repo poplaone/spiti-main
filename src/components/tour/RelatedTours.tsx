@@ -133,10 +133,10 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
           </div>
         </div>
 
-        {/* Mobile counter showing how many tours are available */}
-        <div className="text-center mt-4 md:hidden">
-          <span className="text-sm text-gray-600">
-            {filteredTours.length} tours available - scroll to see all
+        {/* Display total number of tours available */}
+        <div className="text-center mt-4">
+          <span className="text-sm text-gray-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">
+            {filteredTours.length} {filteredTours.length === 1 ? 'tour' : 'tours'} available
           </span>
         </div>
       </div>

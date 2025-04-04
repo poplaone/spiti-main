@@ -32,22 +32,10 @@ export const useTourData = (tourType: string, tourId?: string): UseTourDataResul
       if (foundTour) {
         setTour(foundTour);
         
-        // Get other tours of the same type for related tours section
-        let relatedTours;
-        if (foundTour.transportType.toLowerCase() === 'bike') {
-          relatedTours = tours.filter(t => t.transportType.toLowerCase() === 'bike' && t.id !== tourId);
-        } else if (foundTour.isWomenOnly) {
-          relatedTours = tours.filter(t => t.isWomenOnly && t.id !== tourId);
-        } else {
-          relatedTours = tours.filter(t => 
-            t.transportType.toLowerCase() !== 'bike' && 
-            !t.isWomenOnly && 
-            t.id !== tourId
-          );
-        }
-        
-        // Limit to 3 related tours
-        setOtherTours(relatedTours.slice(0, 3));
+        // Get ALL other tours except the current one for related tours section
+        // No longer limiting the related tours to just 3
+        const relatedTours = tours.filter(t => t.id !== tourId);
+        setOtherTours(relatedTours);
         setIsLoading(false);
         return;
       }
@@ -95,12 +83,13 @@ export const useTourData = (tourType: string, tourId?: string): UseTourDataResul
     if (filteredTours.length > 0) {
       setTour(filteredTours[0]);
       
-      // Get other tours of the same type
-      setOtherTours(filteredTours.slice(1, 4));
+      // Get ALL other tours of the same type, no longer limiting to 3
+      setOtherTours(filteredTours.slice(1));
     } else {
       // Fallback to first tour if no tours match the type
       setTour(tours[0]);
-      setOtherTours(tours.slice(1, 4));
+      // Get all other tours, not just 3
+      setOtherTours(tours.slice(1));
     }
     
     setIsLoading(false);
