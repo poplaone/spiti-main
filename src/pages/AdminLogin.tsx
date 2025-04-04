@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,23 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Check if there are any admin users, if not, the first login will become admin
+  useEffect(() => {
+    const checkAdminUsers = async () => {
+      const { count, error } = await supabase
+        .from('admin_users')
+        .select('*', { count: 'exact', head: true });
+      
+      if (error) {
+        console.error("Error checking admin users:", error);
+      }
+      
+      console.log("Number of admin users:", count);
+    };
+    
+    checkAdminUsers();
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -27,7 +44,35 @@ const AdminLogin = () => {
       
       if (error) throw error;
       
-      // Check if user is an admin
+      // Special case for the specified admin email
+      if (email.toLowerCase() === 'spitivalleytravels@gmail.com') {
+        // Check if this user is already an admin
+        const { data: adminData, error: adminError } = await supabase
+          .from('admin_users')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+        
+        // If not an admin, add them as admin
+        if (adminError && !adminData) {
+          const { error: insertError } = await supabase
+            .from('admin_users')
+            .insert({ id: data.user.id });
+          
+          if (insertError) {
+            console.error("Failed to add admin:", insertError);
+            toast.error("Failed to register as admin");
+          } else {
+            toast.success('Successfully registered as admin!');
+          }
+        }
+        
+        toast.success('Logged in successfully!');
+        navigate('/admin');
+        return;
+      }
+      
+      // For other users, check if they are an admin
       const { data: adminData, error: adminError } = await supabase
         .from('admin_users')
         .select('*')

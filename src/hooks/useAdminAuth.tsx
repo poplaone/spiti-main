@@ -21,7 +21,7 @@ export const useAdminAuth = () => {
           setUser(currentSession?.user ?? null);
           
           if (currentSession?.user) {
-            checkAdminStatus(currentSession.user.id);
+            checkAdminStatus(currentSession.user.id, currentSession.user.email);
           } else {
             setIsAdmin(false);
           }
@@ -34,7 +34,7 @@ export const useAdminAuth = () => {
       setUser(currentSession?.user ?? null);
       
       if (currentSession?.user) {
-        checkAdminStatus(currentSession.user.id);
+        checkAdminStatus(currentSession.user.id, currentSession.user.email);
       } else {
         setIsAdmin(false);
         setLoading(false);
@@ -46,8 +46,34 @@ export const useAdminAuth = () => {
     setupAuth();
   }, []);
 
-  const checkAdminStatus = async (userId: string) => {
+  const checkAdminStatus = async (userId: string, email?: string | undefined) => {
     try {
+      // Special case for the designated admin email
+      if (email && email.toLowerCase() === 'spitivalleytravels@gmail.com') {
+        // Check if this user is already an admin
+        const { data, error } = await supabase
+          .from('admin_users')
+          .select('*')
+          .eq('id', userId)
+          .single();
+        
+        // If not an admin, add them as admin
+        if (error && !data) {
+          const { error: insertError } = await supabase
+            .from('admin_users')
+            .insert({ id: userId });
+          
+          if (!insertError) {
+            setIsAdmin(true);
+            return;
+          }
+        } else if (data) {
+          setIsAdmin(true);
+          return;
+        }
+      }
+      
+      // For all other cases, check admin status normally
       const { data, error } = await supabase
         .from('admin_users')
         .select('*')
