@@ -1,9 +1,11 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, MapPin, Mail, Phone, ChevronRight } from 'lucide-react';
 
 const Footer = () => {
+  const navigate = useNavigate();
+  
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -12,6 +14,11 @@ const Footer = () => {
         behavior: 'smooth'
       });
     }
+  };
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    navigate(path);
   };
 
   return (
