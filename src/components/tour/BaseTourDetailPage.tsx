@@ -29,98 +29,109 @@ const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroI
   const [otherTours, setOtherTours] = useState<TourPackageProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<string>("June");
   const [isLoading, setIsLoading] = useState(true);
-  const { tours, loading, refreshTours } = useToursContext();
+  const { tours, loading: contextLoading, refreshTours } = useToursContext();
   
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    // Refresh tours when component mounts
-    refreshTours();
+    // Set initial loading state
+    setIsLoading(true);
     
-    const findTourByType = () => {
-      setIsLoading(true);
+    // Only refresh tours if needed (when tours array is empty)
+    if (tours.length === 0) {
+      refreshTours();
+    }
+    
+    // Debounced function to find tour by type - helps prevent state flickering
+    const timeoutId = setTimeout(() => {
+      // Skip processing if context is still loading
+      if (contextLoading) return;
       
-      // Use either context tours or fallback to static data
-      const toursToUse = tours.length > 0 ? tours : tourPackagesData;
-      
-      let selectedTour = null;
-      
-      // Find the tour based on tourType
-      switch (tourType) {
-        case 'bike':
-          selectedTour = toursToUse.find(t => 
-            t.transportType.toLowerCase() === 'bike' || 
-            (t.title && t.title.toLowerCase().includes('bike'))
-          );
-          break;
-        case 'buddhist':
-          selectedTour = toursToUse.find(t => 
-            (t.title && t.title.toLowerCase().includes('buddhist')) ||
-            (t.title && t.title.toLowerCase().includes('tribal'))
-          );
-          break;
-        case 'women':
-          selectedTour = toursToUse.find(t => 
-            t.isWomenOnly === true ||
-            (t.title && t.title.toLowerCase().includes('women'))
-          );
-          break;
-        case 'owncar':
-          selectedTour = toursToUse.find(t => 
-            (t.title && t.title.toLowerCase().includes('own car')) ||
-            (t.title && t.title.toLowerCase().includes('self drive'))
-          );
-          break;
-        case 'unexplored':
-          selectedTour = toursToUse.find(t => 
-            (t.title && t.title.toLowerCase().includes('unexplored')) || 
-            (t.title && t.title.toLowerCase().includes('exploration'))
-          );
-          break;
-        case 'hiddenheaven':
-          selectedTour = toursToUse.find(t => 
-            (t.title && t.title.toLowerCase().includes('hidden heaven')) || 
-            (t.title && t.title.toLowerCase().includes('hidden'))
-          );
-          break;
-        default:
-          // Default to first tour if no matches
-          selectedTour = toursToUse[0];
-      }
-      
-      // Fallback to first tour of appropriate type if no specific match found
-      if (!selectedTour && toursToUse.length > 0) {
-        if (tourType === 'bike') {
-          selectedTour = toursToUse.find(t => t.transportType.toLowerCase() === 'bike');
-        } else {
-          selectedTour = toursToUse.find(t => t.transportType.toLowerCase() === 'car');
+      const findTourByType = () => {
+        // Use either context tours or fallback to static data
+        const toursToUse = tours.length > 0 ? tours : tourPackagesData;
+        
+        let selectedTour = null;
+        
+        // Find the tour based on tourType
+        switch (tourType) {
+          case 'bike':
+            selectedTour = toursToUse.find(t => 
+              t.transportType.toLowerCase() === 'bike' || 
+              (t.title && t.title.toLowerCase().includes('bike'))
+            );
+            break;
+          case 'buddhist':
+            selectedTour = toursToUse.find(t => 
+              (t.title && t.title.toLowerCase().includes('buddhist')) ||
+              (t.title && t.title.toLowerCase().includes('tribal'))
+            );
+            break;
+          case 'women':
+            selectedTour = toursToUse.find(t => 
+              t.isWomenOnly === true ||
+              (t.title && t.title.toLowerCase().includes('women'))
+            );
+            break;
+          case 'owncar':
+            selectedTour = toursToUse.find(t => 
+              (t.title && t.title.toLowerCase().includes('own car')) ||
+              (t.title && t.title.toLowerCase().includes('self drive'))
+            );
+            break;
+          case 'unexplored':
+            selectedTour = toursToUse.find(t => 
+              (t.title && t.title.toLowerCase().includes('unexplored')) || 
+              (t.title && t.title.toLowerCase().includes('exploration'))
+            );
+            break;
+          case 'hiddenheaven':
+            selectedTour = toursToUse.find(t => 
+              (t.title && t.title.toLowerCase().includes('hidden heaven')) || 
+              (t.title && t.title.toLowerCase().includes('hidden'))
+            );
+            break;
+          default:
+            // Default to first tour if no matches
+            selectedTour = toursToUse[0];
         }
         
-        // Last resort fallback
-        if (!selectedTour) {
-          selectedTour = toursToUse[0];
+        // Fallback to first tour of appropriate type if no specific match found
+        if (!selectedTour && toursToUse.length > 0) {
+          if (tourType === 'bike') {
+            selectedTour = toursToUse.find(t => t.transportType.toLowerCase() === 'bike');
+          } else {
+            selectedTour = toursToUse.find(t => t.transportType.toLowerCase() === 'car');
+          }
+          
+          // Last resort fallback
+          if (!selectedTour) {
+            selectedTour = toursToUse[0];
+          }
         }
-      }
-      
-      if (selectedTour) {
-        setTour(selectedTour);
         
-        // Get other tours for the "More Popular Tours" section
-        const others = toursToUse
-          .filter(t => t.id !== selectedTour.id)
-          .slice(0, 4);
+        if (selectedTour) {
+          setTour(selectedTour);
+          
+          // Get other tours for the "More Popular Tours" section
+          const others = toursToUse
+            .filter(t => t.id !== selectedTour.id)
+            .slice(0, 4);
+          
+          setOtherTours(others);
+        }
         
-        setOtherTours(others);
-      }
-      
-      // Set loading to false after finding tour
-      setTimeout(() => {
+        // Set loading to false only after finding tour
         setIsLoading(false);
-      }, 300); // Small timeout to ensure UI updates consistently
-    };
+      };
+      
+      findTourByType();
+    }, 300); // Add a small delay to prevent rapid loading state changes
     
-    findTourByType();
-  }, [tourType, tours, loading, refreshTours]);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [tourType, tours, contextLoading, refreshTours]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN').format(price);
@@ -182,6 +193,7 @@ const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroI
     );
   }
 
+  // Only render content when we have data and are not loading
   return (
     <div className="min-h-screen" style={{
       backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=80&w=1920&auto=format&fit=crop')`,
@@ -198,7 +210,7 @@ const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroI
         setSelectedMonth={setSelectedMonth} 
         formatPrice={formatPrice}
         heroImage={heroImage}
-        isLoading={isLoading}
+        isLoading={false} // Always false here since we're already past the loading check
       />
 
       {/* Package Details Section */}
@@ -220,7 +232,7 @@ const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroI
               </div>
               
               <TourItinerary tour={tour} />
-              <TourPackageDetails tour={tour} isLoading={isLoading} />
+              <TourPackageDetails tour={tour} isLoading={false} />
             </div>
             
             {/* Right column - Booking info */}
