@@ -84,9 +84,12 @@ const TourContent: React.FC<TourContentProps> = ({
             formatPrice={formatPrice}
           />
           
-          {/* Only show departure dates if this is a fixed departure tour */}
-          {tour.isFixedDeparture && (
-            <DepartureDatesCard tourId={tour.id} />
+          {/* Only show departure dates in sidebar if this is a fixed departure tour 
+              AND we're not already showing them in the main content area */}
+          {tour.isFixedDeparture && !showPackageDetails ? null : (
+            tour.isFixedDeparture && (
+              <DepartureDatesCard tourId={tour.id} />
+            )
           )}
         </div>
       </div>
