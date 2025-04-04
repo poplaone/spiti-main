@@ -8,7 +8,7 @@ const TourPackageHeader: React.FC<TourPackageHeaderProps> = ({
   description
 }) => {
   return <div className="text-center mb-6">
-      <h2 className="text-2xl md:text-3xl font-bold mb-2 text-spiti-dark py-[4px] mx-[24px] px-px my-[5px]">
+      <h2 className="text-2xl md:text-3xl font-bold mb-2 text-spiti-dark">
         {title}
       </h2>
             
