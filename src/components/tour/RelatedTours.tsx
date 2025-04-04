@@ -1,13 +1,13 @@
 
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import TourPackage from "@/components/TourPackage";
 import { TourPackageProps } from "@/data/types/tourTypes";
 import { 
   Carousel, 
   CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
 } from "@/components/ui/carousel";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,12 +38,12 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
           journeys, find the perfect package for your next mountain getaway.
         </p>
         
-        {/* Carousel indicators to show it's horizontally scrollable */}
+        {/* Swipe indicator for mobile */}
         <div className="flex justify-center items-center mb-4 md:hidden">
-          <div className="flex items-center gap-2">
-            <ArrowLeft className="h-5 w-5 text-spiti-forest" />
-            <span className="text-sm text-spiti-forest font-medium">Swipe to see more</span>
-            <ArrowRight className="h-5 w-5 text-spiti-forest" />
+          <div className="flex items-center gap-2 bg-white/80 px-3 py-1 rounded-full shadow-sm">
+            <ArrowLeft className="h-4 w-4 text-spiti-forest animate-pulse" />
+            <span className="text-sm text-spiti-forest font-medium">Swipe to explore</span>
+            <ArrowRight className="h-4 w-4 text-spiti-forest animate-pulse" />
           </div>
         </div>
 
@@ -68,12 +68,51 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
               ))}
             </CarouselContent>
   
-            {/* Custom navigation controls that are more visible */}
+            {/* Custom navigation controls for desktop */}
+            <div className="hidden md:block">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
+                aria-label="Previous slide"
+                onClick={() => {
+                  const prevButton = document.querySelector('[data-carousel-prev="true"]') as HTMLButtonElement;
+                  if (prevButton) prevButton.click();
+                }}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
+                aria-label="Next slide"
+                onClick={() => {
+                  const nextButton = document.querySelector('[data-carousel-next="true"]') as HTMLButtonElement;
+                  if (nextButton) nextButton.click();
+                }}
+              >
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </div>
+  
+            {/* Standard carousel controls - hidden but functional */}
+            <CarouselPrevious className="hidden" />
+            <CarouselNext className="hidden" />
+          </Carousel>
+  
+          {/* Mobile custom navigation arrows - made more visible */}
+          <div className="flex justify-between md:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 px-2 z-10">
             <Button 
               variant="outline" 
               size="icon" 
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full hidden md:flex"
+              className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
               aria-label="Previous slide"
+              onClick={() => {
+                const prevButton = document.querySelector('[data-carousel-prev="true"]') as HTMLButtonElement;
+                if (prevButton) prevButton.click();
+              }}
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -81,47 +120,14 @@ const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => 
             <Button 
               variant="outline" 
               size="icon" 
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full hidden md:flex"
-              aria-label="Next slide"
-            >
-              <ArrowRight className="h-5 w-5" />
-            </Button>
-  
-            {/* Standard carousel controls (hidden but functional) */}
-            <div>
-              <CarouselPrevious className="hidden" />
-              <CarouselNext className="hidden" />
-            </div>
-          </Carousel>
-  
-          {/* Mobile custom navigation arrows (more visible) */}
-          <div className="flex justify-between md:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 px-1 z-10 pointer-events-none">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="bg-white/80 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-8 w-8 rounded-full pointer-events-auto"
-              aria-label="Previous slide"
-              onClick={() => {
-                // Using event to navigate the carousel
-                const prevButton = document.querySelector('[data-carousel-prev="true"]') as HTMLButtonElement;
-                if (prevButton) prevButton.click();
-              }}
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="bg-white/80 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-8 w-8 rounded-full pointer-events-auto"
+              className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
               aria-label="Next slide"
               onClick={() => {
-                // Using event to navigate the carousel
                 const nextButton = document.querySelector('[data-carousel-next="true"]') as HTMLButtonElement;
                 if (nextButton) nextButton.click();
               }}
             >
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-5 w-5" />
             </Button>
           </div>
         </div>

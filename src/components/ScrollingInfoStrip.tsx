@@ -1,8 +1,8 @@
 
-import React, { useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { useIsMobile } from "@/hooks/use-mobile";
-import Autoplay from 'embla-carousel-autoplay';
+import AutoplayPlugin from 'embla-carousel-autoplay';
 
 const ScrollingInfoStrip = () => {
   const infoItems = [
@@ -13,11 +13,13 @@ const ScrollingInfoStrip = () => {
   ];
 
   const isMobile = useIsMobile();
-  
-  // Fix the plugin type issue by ensuring we're using it properly
-  const autoplayPlugin = useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: false })
-  );
+  const [plugin, setPlugin] = useState<any>(null);
+
+  // Initialize the plugin after component mount to avoid type errors
+  useEffect(() => {
+    // Create the autoplay plugin once the component mounts
+    setPlugin(AutoplayPlugin({ delay: 3000, stopOnInteraction: false }));
+  }, []);
 
   return (
     <div className="bg-spiti-forest text-white py-1 overflow-hidden">
@@ -35,7 +37,7 @@ const ScrollingInfoStrip = () => {
         <div className="md:hidden">
           <Carousel 
             className="w-full"
-            plugins={[autoplayPlugin.current]}
+            plugins={plugin ? [plugin] : undefined}
             opts={{
               align: "start",
               loop: true,
