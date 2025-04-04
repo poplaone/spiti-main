@@ -105,9 +105,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Call to Action Section */}
+      {/* Call to Action Section - Updated with new background image */}
       <section className="py-10 md:py-12 relative" style={{
-      backgroundImage: `linear-gradient(to bottom, rgba(45, 58, 58, 0.9), rgba(45, 58, 58, 0.95)), url(https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=70)`,
+      backgroundImage: `linear-gradient(to bottom, rgba(45, 58, 58, 0.9), rgba(45, 58, 58, 0.95)), url(/lovable-uploads/5c95bfe8-17b0-4eb9-8806-fa70b0257b9e.png)`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     }}>
