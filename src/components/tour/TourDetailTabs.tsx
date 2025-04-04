@@ -1,19 +1,16 @@
-
 import React, { useState } from 'react';
 import { TourPackageProps } from "@/data/types/tourTypes";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bed, Check, X, Home } from "lucide-react";
 import TourAccommodation from './TourAccommodation';
-
 interface TourDetailTabsProps {
   tour: TourPackageProps;
 }
-
-const TourDetailTabs: React.FC<TourDetailTabsProps> = ({ tour }) => {
+const TourDetailTabs: React.FC<TourDetailTabsProps> = ({
+  tour
+}) => {
   const [activeTab, setActiveTab] = useState<string>("accommodations");
-
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+  return <div className="bg-white p-6 rounded-lg shadow-sm">
       <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">
         <Home className="text-spiti-forest w-6 h-6 mr-2" />
         Package Details
@@ -21,7 +18,7 @@ const TourDetailTabs: React.FC<TourDetailTabsProps> = ({ tour }) => {
 
       <Tabs defaultValue="accommodations" className="w-full" onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="accommodations">Accommodations</TabsTrigger>
+          <TabsTrigger value="accommodations" className="make accomodations fit here use short form nstead and make the backgriund darkr so the toogle selection white colour looks more visible\n">Accommodations</TabsTrigger>
           <TabsTrigger value="inclusions">Inclusions</TabsTrigger>
           <TabsTrigger value="exclusions">Exclusions</TabsTrigger>
         </TabsList>
@@ -37,40 +34,30 @@ const TourDetailTabs: React.FC<TourDetailTabsProps> = ({ tour }) => {
             Our all-inclusive Spiti Valley package ensures you have everything you need for a comfortable and memorable journey:
           </p>
           <ul className="space-y-2">
-            {tour.inclusions && tour.inclusions.map((inclusion, index) => (
-              <li key={index} className="flex items-start">
+            {tour.inclusions && tour.inclusions.map((inclusion, index) => <li key={index} className="flex items-start">
                 <Check className="text-green-500 w-5 h-5 mr-2 mt-1 flex-shrink-0" />
                 <span>{inclusion}</span>
-              </li>
-            ))}
+              </li>)}
           </ul>
         </TabsContent>
         
         {/* Exclusions Tab */}
         <TabsContent value="exclusions" className="pt-4">
-          {tour.exclusions ? (
-            <>
+          {tour.exclusions ? <>
               <p className="text-gray-600 mb-4">
                 The following items are not included in the package price:
               </p>
               <ul className="space-y-2">
-                {tour.exclusions.map((exclusion, index) => (
-                  <li key={index} className="flex items-start">
+                {tour.exclusions.map((exclusion, index) => <li key={index} className="flex items-start">
                     <X className="text-red-500 w-5 h-5 mr-2 mt-1 flex-shrink-0" />
                     <span>{exclusion}</span>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-            </>
-          ) : (
-            <p className="text-gray-600">
+            </> : <p className="text-gray-600">
               Please contact us for detailed information about exclusions.
-            </p>
-          )}
+            </p>}
         </TabsContent>
       </Tabs>
-    </div>
-  );
+    </div>;
 };
-
 export default TourDetailTabs;
