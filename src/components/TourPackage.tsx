@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Bike, Car, Users } from 'lucide-react';
+import { Bike, Car, Users, Calendar, Sliders } from 'lucide-react';
 import { TourPackageProps } from '@/data/types/tourTypes';
+import { Badge } from './ui/badge';
+import { Card, CardContent } from './ui/card';
 
 const TourPackage: React.FC<TourPackageProps & { id?: string }> = ({
   id,
@@ -46,57 +48,49 @@ const TourPackage: React.FC<TourPackageProps & { id?: string }> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+    <Card className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 bg-white">
       <div className="relative">
         <img
           src={image}
           alt={title}
-          className="w-full h-48 object-cover"
+          className="w-full h-[350px] object-cover"
         />
-        <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs font-bold">
+        <div className="absolute top-6 left-6 bg-red-500 text-white px-6 py-3 text-xl font-bold rounded-full">
           {discount}% OFF
         </div>
-        {isWomenOnly && (
-          <div className="absolute top-0 left-0 bg-pink-500 text-white px-2 py-1 text-xs font-bold">
-            Women Only
-          </div>
-        )}
       </div>
-      <div className="p-4">
-        <h3 className="font-heading font-bold text-lg mb-2 line-clamp-2">{title}</h3>
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center text-sm text-gray-600">
-            <span className="font-medium">{duration.nights} Nights</span>
-            <span className="mx-1">•</span>
-            <span className="font-medium">{duration.days} Days</span>
+      
+      <CardContent className="p-6">
+        <h3 className="font-heading font-bold text-2xl mb-4 text-gray-800">{title}</h3>
+        
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center">
+            <Calendar className="w-5 h-5 text-red-500 mr-2" />
+            <span className="text-red-500 font-medium">FIXED DEPARTURES</span>
           </div>
-          <div className="flex items-center text-sm text-gray-600">
-            {getTransportIcon()}
-            <span className="ml-1 capitalize">{transportType}</span>
+          
+          <div className="flex items-center">
+            <Sliders className="w-5 h-5 text-red-500 mr-2" />
+            <span className="text-red-500 font-medium">CUSTOMIZABLE</span>
           </div>
         </div>
+        
+        <p className="text-xl text-gray-700 mb-6">Available from June to October</p>
 
-        <div className="flex justify-between items-end mt-4">
+        <div className="flex justify-between items-center">
           <div>
-            <p className="text-gray-500 line-through text-sm">₹{originalPrice.toLocaleString('en-IN')}</p>
-            <p className="text-spiti-forest font-bold text-xl">₹{discountedPrice.toLocaleString('en-IN')}</p>
+            <p className="text-gray-500 line-through text-lg">₹{originalPrice.toLocaleString('en-IN')}</p>
+            <p className="text-gray-800 font-bold text-4xl">₹{discountedPrice.toLocaleString('en-IN')}</p>
           </div>
-          <Link
-            to={getLinkPath()}
-            className="bg-spiti-forest text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-spiti-forest/90 transition-colors"
-          >
-            View Details
-          </Link>
+          
+          <div className="text-right">
+            <p className="text-red-500 text-2xl font-bold">
+              {duration.nights} NIGHTS / {duration.days} DAYS
+            </p>
+          </div>
         </div>
-
-        <div className="flex items-center mt-3 text-xs text-gray-500">
-          <Users className="w-3 h-3 mr-1" />
-          <span>2-10 people</span>
-          <span className="mx-1">•</span>
-          <span>Group Tour</span>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -9,7 +9,7 @@ const TourPackages = () => {
   const { tours, loading, error } = useToursContext();
 
   return (
-    <section id="discover-spiti-valley" className="py-6 md:py-10 relative bg-cover bg-center bg-no-repeat" 
+    <section id="discover-spiti-valley" className="py-8 md:py-12 relative bg-cover bg-center bg-no-repeat" 
       style={{ 
         backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/lovable-uploads/a811740d-73fd-4b4e-b9d5-a993a272be04.png')`,
         backgroundAttachment: 'fixed'
@@ -40,7 +40,9 @@ const TourPackages = () => {
             <p className="text-gray-600">No tour packages available at the moment.</p>
           </div>
         ) : (
-          <TourPackageGrid packages={tours} />
+          <div className="mt-8">
+            <TourPackageGrid packages={tours} />
+          </div>
         )}
       </div>
     </section>
