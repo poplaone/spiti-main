@@ -10,7 +10,10 @@ import FallbackItinerary from './itinerary/FallbackItinerary';
 const TourItinerary: React.FC<TourItineraryProps> = ({ itinerary, nightStays, duration }) => {
   return (
     <div className="bg-white/90 p-6 rounded-lg shadow-sm tour-itinerary">
-      <ItineraryHeader />
+      <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">
+        <Calendar className="text-spiti-forest w-6 h-6 mr-2" />
+        Itinerary
+      </h2>
       
       {itinerary && itinerary.length > 0 ? (
         <Accordion type="single" collapsible className="w-full">

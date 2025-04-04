@@ -5,11 +5,7 @@ import { TourAccommodationProps } from "@/data/types/tourTypes";
 
 const TourAccommodation: React.FC<TourAccommodationProps> = ({ nightStays }) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
-      <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">
-        <Home className="text-spiti-forest w-6 h-6 mr-2" />
-        Accommodations
-      </h2>
+    <div>
       <p className="text-gray-700 mb-6">
         Relax and unwind in carefully chosen accommodations that enhance your experience with comfort and local hospitality.
       </p>
