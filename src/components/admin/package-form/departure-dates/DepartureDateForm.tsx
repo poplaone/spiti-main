@@ -57,7 +57,14 @@ const DepartureDateForm: React.FC<DepartureDateFormProps> = ({ tourId, onDateAdd
         .select('id')
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+      
+      if (!data || !data.id) {
+        throw new Error("Failed to get ID from inserted record");
+      }
       
       // Pass the new date up to the parent component
       onDateAdded({
@@ -74,6 +81,7 @@ const DepartureDateForm: React.FC<DepartureDateFormProps> = ({ tourId, onDateAdd
       
       toast.success("Departure date added successfully");
     } catch (error: any) {
+      console.error("Full error details:", error);
       toast.error(`Error adding departure date: ${error.message}`);
     } finally {
       setSaving(false);

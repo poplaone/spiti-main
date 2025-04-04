@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -139,6 +140,9 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     activeTab,
     setActiveTab,
     imagePreview,
+    
+    // Make sure packageId is exposed in the return
+    packageId, 
     
     title,
     setTitle,

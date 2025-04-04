@@ -39,7 +39,18 @@ const DepartureDatesTab: React.FC<DepartureDatesTabProps> = ({
         .eq('tour_package_id', tourId)
         .order('start_date');
       
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching dates:", error);
+        throw error;
+      }
+      
+      if (!data) {
+        console.warn("No data returned when fetching departure dates");
+        setDepartureDates([]);
+        return;
+      }
+      
+      console.log("Fetched departure dates:", data);
       
       const formattedDates = data.map(date => ({
         id: date.id,
@@ -50,6 +61,7 @@ const DepartureDatesTab: React.FC<DepartureDatesTabProps> = ({
       
       setDepartureDates(formattedDates);
     } catch (error: any) {
+      console.error("Full error details:", error);
       toast.error(`Error loading departure dates: ${error.message}`);
     } finally {
       setLoading(false);
@@ -57,7 +69,8 @@ const DepartureDatesTab: React.FC<DepartureDatesTabProps> = ({
   };
   
   const handleDateAdded = (newDate: DepartureDateProps) => {
-    setDepartureDates([...departureDates, newDate]);
+    console.log("New date added:", newDate);
+    setDepartureDates(prevDates => [...prevDates, newDate]);
   };
   
   const updateDateStatus = async (id: string, status: 'Available' | 'Limited' | 'Full') => {

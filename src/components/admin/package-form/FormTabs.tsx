@@ -87,7 +87,7 @@ const FormTabs: React.FC<FormTabsProps> = ({
       
       <TabsContent value="dates">
         <DepartureDatesTab 
-          tourId={formProps.packageId}
+          tourId={formProps.packageId || formProps.tourId}
           isFixedDeparture={formProps.isFixedDeparture}
         />
       </TabsContent>
