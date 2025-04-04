@@ -105,7 +105,7 @@ const TourDetailBike = () => {
       </section>
 
       {/* More Popular Tours Section */}
-      <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
+      <RelatedTours tours={otherTours} />
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 

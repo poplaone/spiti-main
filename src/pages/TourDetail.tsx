@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
 import { tourPackagesData } from "@/data/tourPackagesData";
 import { Bike, Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
@@ -128,7 +127,7 @@ const TourDetail = () => {
       </section>
 
       {/* More Popular Tours Section */}
-      <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
+      <RelatedTours tours={otherTours} />
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 

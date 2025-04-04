@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from '@/data/types/tourTypes';
 import { tourPackagesData } from "@/data/tourPackagesData";
 import { Car } from "lucide-react";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
@@ -105,7 +105,7 @@ const TourDetailOwnCar = () => {
       </section>
 
       {/* More Popular Tours Section */}
-      <RelatedTours tours={otherTours} tourPackagesData={tourPackagesData} />
+      <RelatedTours tours={otherTours} />
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 
