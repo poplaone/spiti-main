@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BasicInfoTab from './BasicInfoTab';
 import DetailsTab from './DetailsTab';
 import ItineraryTab from './ItineraryTab';
 import ImageTab from './ImageTab';
-import DepartureDatesTab from './DepartureDatesTab';
+import DepartureDatesTab from './departure-dates';
 
 interface FormTabsProps {
   activeTab: string;
