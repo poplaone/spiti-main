@@ -28,8 +28,8 @@ const TourPackageDetails: React.FC<TourPackageDetailsProps> = ({ tour, isLoading
       </div>
     );
   }
-  
-  // Make sure the tour object has all required properties
+
+  // Make sure we have a valid tour object with required properties
   if (!tour || !tour.nightStays || !tour.inclusions) {
     return (
       <div className="bg-white p-6 rounded-lg shadow-sm">
