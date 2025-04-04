@@ -1,13 +1,9 @@
 
 import React from 'react';
 import { Home, MapPin } from 'lucide-react';
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourAccommodationProps } from "@/data/types/tourTypes";
 
-interface TourAccommodationProps {
-  tour: TourPackageProps;
-}
-
-const TourAccommodation: React.FC<TourAccommodationProps> = ({ tour }) => {
+const TourAccommodation: React.FC<TourAccommodationProps> = ({ nightStays }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-4 flex items-center">
@@ -19,7 +15,7 @@ const TourAccommodation: React.FC<TourAccommodationProps> = ({ tour }) => {
       </p>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {tour.nightStays.map((stay, index) => (
+        {nightStays.map((stay, index) => (
           <div key={index} className="border border-gray-200 rounded-md p-4 bg-gray-50 hover:shadow-md transition-shadow">
             <div className="flex items-start">
               <MapPin className="text-spiti-blue w-5 h-5 mr-2 mt-1 flex-shrink-0" />

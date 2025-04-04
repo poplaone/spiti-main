@@ -45,6 +45,11 @@ export interface TourOverviewProps {
 
 export interface TourItineraryProps {
   itinerary: TourItineraryDay[];
+  nightStays: TourNightStay[];
+  duration: {
+    nights: number;
+    days: number;
+  };
 }
 
 export interface TourInclusionsProps {

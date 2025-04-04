@@ -13,7 +13,7 @@ import ContactBar from './ContactBar';
 
 interface TourContentProps {
   tour: TourPackageProps;
-  getTransportIcon: () => React.ReactNode;
+  getTransportIcon: () => JSX.Element;
   formatPrice: (price: number) => string;
 }
 
@@ -42,12 +42,15 @@ const TourContent: React.FC<TourContentProps> = ({
               <TourOverview 
                 tour={tour} 
                 getTransportIcon={getTransportIcon} 
+                overview={tour.overview}
               />
             </TabsContent>
             
             <TabsContent value="itinerary" className="focus:outline-none tour-itinerary">
               <TourItinerary 
-                itinerary={tour.itinerary} 
+                itinerary={tour.itinerary}
+                nightStays={tour.nightStays}
+                duration={tour.duration}
               />
             </TabsContent>
             
