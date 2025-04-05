@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface DatePickerInputProps {
   date: Date | undefined;
@@ -23,8 +23,15 @@ interface DatePickerInputProps {
 const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }: DatePickerInputProps) => {
   // Create date object for today
   const today = new Date();
-  const [currentMonth, setCurrentMonth] = useState(date || today);
+  const [currentMonth, setCurrentMonth] = useState<Date>(date || today);
   const calendarRef = useRef<HTMLDivElement>(null);
+  
+  // Update currentMonth when date changes from parent
+  useEffect(() => {
+    if (date) {
+      setCurrentMonth(date);
+    }
+  }, [date]);
   
   const handlePreviousMonth = () => {
     setCurrentMonth(prev => {
@@ -69,6 +76,7 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
           <button 
             className="p-1 rounded-sm hover:bg-accent hover:text-accent-foreground"
             onClick={handlePreviousMonth}
+            type="button"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -78,11 +86,12 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
           <button 
             className="p-1 rounded-sm hover:bg-accent hover:text-accent-foreground"
             onClick={handleNextMonth}
+            type="button"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>
-        <ScrollArea className="max-h-[230px]">
+        <ScrollArea className="max-h-[200px]">
           <div ref={calendarRef}>
             <Calendar
               mode="single"
@@ -92,7 +101,7 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
               initialFocus
               month={currentMonth}
               onMonthChange={setCurrentMonth}
-              className={cn("p-2 pointer-events-auto")}
+              className={cn("p-1 pointer-events-auto")}
               showOutsideDays={true}
               captionLayout="buttons"
               classNames={{
@@ -100,9 +109,9 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
                 head_row: "flex mb-1",
                 head_cell: "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
                 row: "flex w-full mt-1",
-                cell: "h-8 w-8 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                cell: "h-7 w-7 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
                 day: cn(
-                  "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
+                  "h-7 w-7 p-0 font-normal aria-selected:opacity-100"
                 ),
               }}
             />
