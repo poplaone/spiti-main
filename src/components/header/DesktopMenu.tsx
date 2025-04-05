@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -20,7 +21,8 @@ import {
   Mail, 
   HelpCircle, 
   FileText,
-  MessageSquare 
+  MessageSquare,
+  ArrowRight
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -56,10 +58,12 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                 <div className="p-4 border-b border-gray-700">
                   <Link 
                     to="/road-trips" 
-                    className="flex items-center justify-between text-white hover:text-spiti-green font-medium transition-colors"
+                    className="flex items-center justify-between"
                   >
-                    View All Road Trips
-                    <ChevronRight size={16} />
+                    <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+                      View All Road Trips
+                      <ArrowRight size={16} />
+                    </Button>
                   </Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
@@ -96,10 +100,12 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                 <div className="p-4 border-b border-gray-700">
                   <Link 
                     to="/fixed-departures" 
-                    className="flex items-center justify-between text-white hover:text-spiti-green font-medium transition-colors"
+                    className="flex items-center justify-between"
                   >
-                    View All Fixed Departures
-                    <ChevronRight size={16} />
+                    <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+                      View All Fixed Departures
+                      <ArrowRight size={16} />
+                    </Button>
                   </Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
@@ -136,10 +142,12 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                 <div className="p-4 border-b border-gray-700">
                   <Link 
                     to="/customizable-tours" 
-                    className="flex items-center justify-between text-white hover:text-spiti-green font-medium transition-colors"
+                    className="flex items-center justify-between"
                   >
-                    View All Customizable Tours
-                    <ChevronRight size={16} />
+                    <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+                      View All Customizable Tours
+                      <ArrowRight size={16} />
+                    </Button>
                   </Link>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
