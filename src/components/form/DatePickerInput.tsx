@@ -1,4 +1,3 @@
-
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -72,7 +71,10 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
             initialFocus
             className={cn("p-3 pointer-events-auto")}
             showOutsideDays={true}
-            captionLayout="buttons-hide"
+            captionLayout="buttons"
+            classNames={{
+              caption: "hidden", // Hide the default caption completely
+            }}
           />
         </ScrollArea>
       </PopoverContent>
