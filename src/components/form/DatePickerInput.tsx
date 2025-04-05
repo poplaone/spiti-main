@@ -10,6 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface DatePickerInputProps {
   date: Date | undefined;
@@ -38,21 +39,23 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="w-auto p-0 max-h-[350px] overflow-auto" 
+        className="w-auto p-0 max-h-[350px]" 
         align="start"
         side="bottom"
         sideOffset={5}
         alignOffset={0}
         avoidCollisions={true}
       >
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          disabled={(date) => date < today}
-          initialFocus
-          className={cn("p-3 pointer-events-auto")}
-        />
+        <ScrollArea className="h-full max-h-[350px]">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            disabled={(date) => date < today}
+            initialFocus
+            className={cn("p-3 pointer-events-auto")}
+          />
+        </ScrollArea>
       </PopoverContent>
     </Popover>
   );
