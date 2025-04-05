@@ -48,6 +48,7 @@ const TourContent: React.FC<TourContentProps> = ({
               <DepartureDatesCard 
                 className="p-0 bg-transparent shadow-none" 
                 tourId={tour.id}
+                hideTitle={true} // Pass a prop to hide the title in the DepartureDatesCard
               />
             </div>
           )}

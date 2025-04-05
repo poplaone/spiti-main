@@ -13,11 +13,13 @@ interface DepartureDateProps {
 interface DepartureDatesCardProps {
   className?: string;
   tourId?: string;
+  hideTitle?: boolean; // New prop to conditionally hide the title
 }
 
 const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
   className = "",
-  tourId
+  tourId,
+  hideTitle = false // Default to showing the title
 }) => {
   const [loading, setLoading] = useState(false);
   const [departureDatesByMonth, setDepartureDatesByMonth] = useState<Record<string, DepartureDateProps[]>>({});
@@ -141,9 +143,12 @@ const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
   
   return (
     <div className={`bg-white p-6 rounded-lg shadow-sm ${className}`}>
-      <h2 className="text-xl font-heading font-bold text-spiti-forest mb-4">
-        Departure dates
-      </h2>
+      {/* Only show the title if hideTitle is false */}
+      {!hideTitle && (
+        <h2 className="text-xl font-heading font-bold text-spiti-forest mb-4">
+          Departure dates
+        </h2>
+      )}
       
       {loading ? (
         <div className="flex items-center justify-center py-4">
