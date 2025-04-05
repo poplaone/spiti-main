@@ -60,9 +60,12 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                     to="/road-trips" 
                     className="flex items-center justify-between"
                   >
-                    <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-white border-white/40 bg-white/10 hover:bg-white/20 hover:text-white justify-between group"
+                    >
                       View All Road Trips
-                      <ArrowRight size={16} />
+                      <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                     </Button>
                   </Link>
                 </div>
@@ -102,9 +105,12 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                     to="/fixed-departures" 
                     className="flex items-center justify-between"
                   >
-                    <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-white border-white/40 bg-white/10 hover:bg-white/20 hover:text-white justify-between group"
+                    >
                       View All Fixed Departures
-                      <ArrowRight size={16} />
+                      <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                     </Button>
                   </Link>
                 </div>
@@ -144,9 +150,12 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                     to="/customizable-tours" 
                     className="flex items-center justify-between"
                   >
-                    <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-white border-white/40 bg-white/10 hover:bg-white/20 hover:text-white justify-between group"
+                    >
                       View All Customizable Tours
-                      <ArrowRight size={16} />
+                      <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                     </Button>
                   </Link>
                 </div>

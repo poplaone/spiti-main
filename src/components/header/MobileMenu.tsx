@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
@@ -39,9 +40,12 @@ const MobileMenu = ({
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
           <div className="border-b border-gray-700 pb-3 mb-3">
             <Link to="/road-trips" className="block" onClick={onClose}>
-              <Button variant="outline" className="w-full border-white/20 hover:bg-white/10 justify-between text-slate-50">
+              <Button 
+                variant="outline" 
+                className="w-full border-white/40 bg-white/10 hover:bg-white/20 text-white hover:text-white justify-between group"
+              >
                 View All Road Trips
-                <ArrowRight size={16} />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
           </div>
@@ -72,9 +76,12 @@ const MobileMenu = ({
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
           <div className="border-b border-gray-700 pb-3 mb-3">
             <Link to="/fixed-departures" className="block" onClick={onClose}>
-              <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+              <Button 
+                variant="outline" 
+                className="w-full border-white/40 bg-white/10 hover:bg-white/20 text-white hover:text-white justify-between group"
+              >
                 View All Fixed Departures
-                <ArrowRight size={16} />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
           </div>
@@ -105,9 +112,12 @@ const MobileMenu = ({
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
           <div className="border-b border-gray-700 pb-3 mb-3">
             <Link to="/customizable-tours" className="block" onClick={onClose}>
-              <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+              <Button 
+                variant="outline" 
+                className="w-full border-white/40 bg-white/10 hover:bg-white/20 text-white hover:text-white justify-between group"
+              >
                 View All Customizable Tours
-                <ArrowRight size={16} />
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
           </div>
