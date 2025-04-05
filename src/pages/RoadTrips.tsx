@@ -22,11 +22,12 @@ const RoadTrips = () => {
   }, []);
   
   return (
-    <div className="min-h-screen bg-cover bg-fixed bg-center" 
-      style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(19, 38, 64, 0.7), rgba(19, 38, 64, 0.5)), url('/lovable-uploads/ad2ff006c0d5.png')`,
-      }}
-    >
+    <div className="min-h-screen" style={{
+      backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop')`,
+      backgroundAttachment: 'fixed',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
       <Header />
       
       {/* Hero Section */}
