@@ -38,7 +38,7 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="w-auto p-0" 
+        className="w-auto p-0 max-h-[350px] overflow-auto" 
         align="start"
         side="bottom"
         sideOffset={5}
