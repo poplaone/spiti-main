@@ -22,7 +22,7 @@ const RoadTrips = () => {
   }, []);
   
   return <div className="min-h-screen" style={{
-    backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1642586760642-649ee043d6f4?q=80&w=1920&auto=format&fit=crop')`,
+    backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('/lovable-uploads/cd0eaa24-c91b-4cd2-8ac9-ad2ff006c0d5.png')`,
     backgroundAttachment: 'fixed',
     backgroundSize: 'cover',
     backgroundPosition: 'center'
