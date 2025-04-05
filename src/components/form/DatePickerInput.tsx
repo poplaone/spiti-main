@@ -39,14 +39,31 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="w-auto p-0 max-h-[350px]" 
+        className="w-auto p-0" 
         align="start"
         side="bottom"
         sideOffset={5}
         alignOffset={0}
         avoidCollisions={true}
       >
-        <ScrollArea className="h-full max-h-[350px]">
+        <div className="sticky top-0 bg-popover z-10 px-3 py-2 border-b flex items-center justify-between">
+          <button 
+            className="p-1 rounded-sm hover:bg-accent hover:text-accent-foreground"
+            onClick={() => document.querySelector('.rdp-nav_button_previous')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <span className="text-sm font-medium">
+            {date ? format(date, "MMMM yyyy") : format(today, "MMMM yyyy")}
+          </span>
+          <button 
+            className="p-1 rounded-sm hover:bg-accent hover:text-accent-foreground"
+            onClick={() => document.querySelector('.rdp-nav_button_next')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+        <ScrollArea className="max-h-[250px]">
           <Calendar
             mode="single"
             selected={date}
@@ -54,6 +71,8 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
             disabled={(date) => date < today}
             initialFocus
             className={cn("p-3 pointer-events-auto")}
+            showOutsideDays={true}
+            captionLayout="buttons-hide"
           />
         </ScrollArea>
       </PopoverContent>
