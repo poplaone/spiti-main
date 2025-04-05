@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight } from 'lucide-react';
@@ -56,7 +55,7 @@ const MobileMenu = ({
           <div className="grid grid-cols-1 gap-4">
             {roadTripsTours.map((tour) => (
               <Link 
-                key={tour.title} 
+                key={tour.id || tour.title} 
                 to={getTourRoute(tour)}
                 className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 onClick={onClose}
@@ -98,7 +97,7 @@ const MobileMenu = ({
           <div className="grid grid-cols-1 gap-4">
             {fixedDepartureTours.map((tour) => (
               <Link 
-                key={tour.title} 
+                key={tour.id || tour.title} 
                 to={getTourRoute(tour)}
                 className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 onClick={onClose}
@@ -140,7 +139,7 @@ const MobileMenu = ({
           <div className="grid grid-cols-1 gap-4">
             {customizableTours.map((tour) => (
               <Link 
-                key={tour.title} 
+                key={tour.id || tour.title} 
                 to={getTourRoute(tour)}
                 className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                 onClick={onClose}

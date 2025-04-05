@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -66,7 +65,7 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
                   {roadTripsTours.map((tour) => (
                     <Link 
-                      key={tour.title} 
+                      key={tour.id || tour.title} 
                       to={getTourRoute(tour)} 
                       className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                     >
@@ -106,7 +105,7 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
                   {fixedDepartureTours.map((tour) => (
                     <Link 
-                      key={tour.title} 
+                      key={tour.id || tour.title} 
                       to={getTourRoute(tour)} 
                       className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                     >
@@ -146,7 +145,7 @@ const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 max-h-[70vh] overflow-y-auto">
                   {customizableTours.map((tour) => (
                     <Link 
-                      key={tour.title} 
+                      key={tour.id || tour.title} 
                       to={getTourRoute(tour)} 
                       className="block p-2 rounded-lg hover:bg-white/10 transition-colors"
                     >

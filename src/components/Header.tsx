@@ -2,13 +2,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-import { tourPackagesData } from '@/data/tourPackagesData';
-import { useTourFilters } from '@/hooks/useTourFilters';
 import Logo from './header/Logo';
 import DesktopMenu from './header/DesktopMenu';
 import MobileMenu from './header/MobileMenu';
 import WeatherDisplay from './weather/WeatherDisplay';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToursContext } from '@/context/ToursContext';
+import { useTourFilters } from '@/hooks/useTourFilters';
 
 interface HeaderProps {
   scrollToPackages?: () => void;
@@ -24,8 +24,11 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
   const isTourPage = location.pathname.includes('tour-');
   const isMobile = useIsMobile();
   
+  // Get tours from context instead of using static data
+  const { tours } = useToursContext();
+  
   // Using our custom hook to filter tours
-  const { roadTripsTours, fixedDepartureTours, customizableTours } = useTourFilters(tourPackagesData);
+  const { roadTripsTours, fixedDepartureTours, customizableTours } = useTourFilters(tours);
 
   useEffect(() => {
     const handleScroll = () => {

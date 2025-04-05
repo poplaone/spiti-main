@@ -19,12 +19,14 @@ const processedTours = [
   // Ensure these properties exist with default values if not specified
   isFixedDeparture: tour.isFixedDeparture !== undefined ? tour.isFixedDeparture : false,
   isCustomizable: tour.isCustomizable !== undefined ? tour.isCustomizable : true,
+  // Generate id for static data if not present
+  id: tour.id || `static-${tour.title.replace(/\s+/g, '-').toLowerCase()}`
 }));
 
 // Set some tours as fixed departures for demonstration
 // This is for testing only - in real app, the admin would set these values
 const toursWithFixedDepartures = processedTours.map(tour => {
-  // Make some bike tours and car tours fixed departures for demonstration
+  // Make bike tours and car tours with "UNEXPLORED" in the title fixed departures for demonstration
   if (tour.transportType === 'bike' || 
      (tour.transportType === 'car' && tour.title.includes("UNEXPLORED"))) {
     return {
