@@ -92,7 +92,7 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
                 <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                 </DialogClose>
-                <Button variant="destructive" onClick={handleDeleteConfirm} disabled={deleteLoading} className="make sure this button work as well so that package will get deleted \n">
+                <Button variant="destructive" onClick={handleDeleteConfirm} disabled={deleteLoading} className="">
                   {deleteLoading ? 'Deleting...' : 'Delete'}
                 </Button>
               </DialogFooter>
