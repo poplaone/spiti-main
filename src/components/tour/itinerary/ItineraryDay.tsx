@@ -19,19 +19,6 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({
     return icons[day % icons.length];
   };
 
-  // Function to safely render HTML content
-  const renderDescription = () => {
-    // Simple sanitization to allow only basic HTML tags
-    const sanitizedContent = day.description
-      // Replace HTML tags with their React-safe versions
-      .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
-      .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>');
-    
-    return {
-      __html: sanitizedContent
-    };
-  };
-
   // Format lines starting with bullet points into proper markup
   const formatBulletPoints = (text: string) => {
     if (!text) return { __html: '' };
@@ -46,14 +33,15 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({
       .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
       .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
       .replace(/<u>(.*?)<\/u>/g, '<span style="text-decoration: underline">$1</span>')
-      // Convert back the newlines
-      .replace(/§§/g, '\n');
+      // Convert back the newlines to <br> tags for proper HTML rendering
+      .replace(/§§/g, '<br>');
 
     // If we have list items, wrap them in a ul
     if (formattedHtml.includes('<li>')) {
       return { __html: `<ul class="list-disc ml-5 space-y-1">${formattedHtml}</ul>` };
     }
 
+    // If no bullet points, ensure line breaks are still preserved
     return { __html: formattedHtml };
   };
 

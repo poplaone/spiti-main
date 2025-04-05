@@ -39,6 +39,7 @@ const ItineraryTab: React.FC<ItineraryTabProps> = ({
               <li>Add bullet points with the list icon or Ctrl+L</li>
               <li>Or start a line with "• " (bullet + space)</li>
               <li>Each bullet point should be on its own line</li>
+              <li>Line breaks will be preserved in the published view</li>
             </ul>
           </div>
         </CardDescription>
