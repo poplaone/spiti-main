@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Bold, Italic, Underline, List } from "lucide-react";
 
 interface ItineraryDay {
   id?: string;
@@ -59,6 +59,80 @@ const ItineraryEditor: React.FC<ItineraryEditorProps> = ({
     setItineraryDays(renumberedDays);
   };
 
+  // Handle text formatting
+  const applyFormatting = (index: number, format: string) => {
+    const textArea = document.getElementById(`day-${index}-description`) as HTMLTextAreaElement;
+    if (!textArea) return;
+
+    const start = textArea.selectionStart;
+    const end = textArea.selectionEnd;
+    const selectedText = textArea.value.substring(start, end);
+    
+    if (selectedText.length === 0) return;
+    
+    let formattedText = '';
+    switch (format) {
+      case 'bold':
+        formattedText = `<b>${selectedText}</b>`;
+        break;
+      case 'italic':
+        formattedText = `<i>${selectedText}</i>`;
+        break;
+      case 'underline':
+        formattedText = `<u>${selectedText}</u>`;
+        break;
+      case 'bullet':
+        // Check if already in a list item
+        if (selectedText.trim().startsWith('• ')) {
+          formattedText = selectedText;
+        } else {
+          formattedText = `• ${selectedText}`;
+        }
+        break;
+      default:
+        formattedText = selectedText;
+    }
+    
+    const newValue = textArea.value.substring(0, start) + formattedText + textArea.value.substring(end);
+    updateDay(index, 'description', newValue);
+    
+    // Set cursor position after the operation
+    setTimeout(() => {
+      textArea.focus();
+      textArea.setSelectionRange(start + formattedText.length, start + formattedText.length);
+    }, 0);
+  };
+
+  // Add a bullet point at the current cursor position or start of line
+  const addBulletPoint = (index: number) => {
+    const textArea = document.getElementById(`day-${index}-description`) as HTMLTextAreaElement;
+    if (!textArea) return;
+    
+    const cursorPos = textArea.selectionStart;
+    const text = textArea.value;
+    
+    // Find the start of the current line
+    let lineStart = cursorPos;
+    while (lineStart > 0 && text[lineStart - 1] !== '\n') {
+      lineStart--;
+    }
+    
+    // Check if line already has a bullet point
+    if (text.substring(lineStart, lineStart + 2) === '• ') {
+      return;
+    }
+    
+    // Insert bullet point at the beginning of the line
+    const newText = text.substring(0, lineStart) + '• ' + text.substring(lineStart);
+    updateDay(index, 'description', newText);
+    
+    // Set cursor position after the bullet point
+    setTimeout(() => {
+      textArea.focus();
+      textArea.setSelectionRange(lineStart + 2, lineStart + 2);
+    }, 0);
+  };
+
   // Sort days by day_number
   const sortedDays = [...itineraryDays].sort((a, b) => a.day_number - b.day_number);
 
@@ -97,12 +171,55 @@ const ItineraryEditor: React.FC<ItineraryEditorProps> = ({
             
             <div>
               <label className="text-sm font-medium mb-1 block">Description</label>
+              <div className="mb-2 flex space-x-1">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="icon"
+                  title="Bold"
+                  onClick={() => applyFormatting(index, 'bold')}
+                >
+                  <Bold className="h-4 w-4" />
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="icon"
+                  title="Italic"
+                  onClick={() => applyFormatting(index, 'italic')}
+                >
+                  <Italic className="h-4 w-4" />
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="icon"
+                  title="Underline"
+                  onClick={() => applyFormatting(index, 'underline')}
+                >
+                  <Underline className="h-4 w-4" />
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="icon"
+                  title="Add Bullet Point"
+                  onClick={() => addBulletPoint(index)}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
               <Textarea
-                placeholder="Describe the day's activities and experiences"
+                id={`day-${index}-description`}
+                placeholder="Describe the day's activities and experiences. Use formatting buttons for rich text. Add bullet points with the list button."
                 value={day.description}
                 onChange={(e) => updateDay(index, 'description', e.target.value)}
-                rows={4}
+                rows={6}
+                className="font-mono text-sm"
               />
+              <div className="mt-2 text-xs text-gray-500">
+                Tip: Select text and use formatting buttons, or start a line with "• " for bullet points.
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -122,3 +239,4 @@ const ItineraryEditor: React.FC<ItineraryEditorProps> = ({
 };
 
 export default ItineraryEditor;
+

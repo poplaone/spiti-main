@@ -1,11 +1,14 @@
+
 import React from 'react';
 import { TourItineraryDay } from "@/data/types/tourTypes";
 import { MapPin, Calendar, Mountain, Compass, Sun, Route, Flag } from 'lucide-react';
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
 interface ItineraryDayProps {
   day: TourItineraryDay;
   location: string;
 }
+
 const ItineraryDay: React.FC<ItineraryDayProps> = ({
   day,
   location
@@ -15,7 +18,47 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({
     const icons = [<Flag className="text-spiti-blue w-5 h-5" />, <MapPin className="text-spiti-blue w-5 h-5" />, <Compass className="text-spiti-blue w-5 h-5" />, <Mountain className="text-spiti-blue w-5 h-5" />, <Route className="text-spiti-blue w-5 h-5" />, <Sun className="text-spiti-blue w-5 h-5" />];
     return icons[day % icons.length];
   };
-  return <AccordionItem key={day.day} value={`day-${day.day}`} className="border-b border-gray-200">
+
+  // Function to safely render HTML content
+  const renderDescription = () => {
+    // Simple sanitization to allow only basic HTML tags
+    const sanitizedContent = day.description
+      // Replace HTML tags with their React-safe versions
+      .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
+      .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>');
+    
+    return {
+      __html: sanitizedContent
+    };
+  };
+
+  // Format lines starting with bullet points into proper markup
+  const formatBulletPoints = (text: string) => {
+    if (!text) return { __html: '' };
+
+    // Look for lines starting with '• ' and wrap them in list items
+    const formattedHtml = text
+      // First, convert newlines to temporary placeholders to prevent interference
+      .replace(/\n/g, '§§')
+      // Handle explicitly marked bullet points
+      .replace(/• (.*?)(?=§§|$)/g, '<li>$1</li>')
+      // Convert HTML tags
+      .replace(/<b>(.*?)<\/b>/g, '<strong>$1</strong>')
+      .replace(/<i>(.*?)<\/i>/g, '<em>$1</em>')
+      .replace(/<u>(.*?)<\/u>/g, '<span style="text-decoration: underline">$1</span>')
+      // Convert back the newlines
+      .replace(/§§/g, '\n');
+
+    // If we have list items, wrap them in a ul
+    if (formattedHtml.includes('<li>')) {
+      return { __html: `<ul class="list-disc ml-5 space-y-1">${formattedHtml}</ul>` };
+    }
+
+    return { __html: formattedHtml };
+  };
+
+  return (
+    <AccordionItem key={day.day} value={`day-${day.day}`} className="border-b border-gray-200">
       <AccordionTrigger className="py-4 hover:no-underline">
         <div className="flex items-center text-left">
           <span className="inline-flex items-center justify-center w-8 h-8 bg-spiti-forest text-white rounded-full mr-3 flex-shrink-0">
@@ -23,7 +66,6 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({
           </span>
           <div>
             <h3 className="text-lg font-bold text-spiti-forest">{day.title}</h3>
-            
           </div>
         </div>
       </AccordionTrigger>
@@ -33,10 +75,12 @@ const ItineraryDay: React.FC<ItineraryDayProps> = ({
             {getDayIcon(day.day)}
           </div>
           <div className="prose prose-sm max-w-none text-gray-600">
-            {day.description}
+            <div dangerouslySetInnerHTML={formatBulletPoints(day.description)} />
           </div>
         </div>
       </AccordionContent>
-    </AccordionItem>;
+    </AccordionItem>
+  );
 };
+
 export default ItineraryDay;
