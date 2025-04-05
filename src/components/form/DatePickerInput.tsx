@@ -51,7 +51,7 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
           onSelect={setDate}
           disabled={(date) => date < today}
           initialFocus
-          className={cn("p-3 pointer-events-auto")}
+          className={cn("p-2 pointer-events-auto")}
         />
       </PopoverContent>
     </Popover>
