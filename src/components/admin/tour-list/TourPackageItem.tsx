@@ -1,9 +1,20 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Edit, Eye, EyeOff, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
+
 interface TourPackage {
   id: string;
   title: string;
@@ -17,6 +28,7 @@ interface TourPackage {
   created_at: string;
   updated_at: string;
 }
+
 interface TourPackageItemProps {
   pkg: TourPackage;
   onDelete: (id: string) => void;
@@ -24,12 +36,13 @@ interface TourPackageItemProps {
   deleteLoading: boolean;
   updatingVisibility: string | null;
 }
+
 const TourPackageItem: React.FC<TourPackageItemProps> = ({
   pkg,
   onDelete,
   onToggleVisibility,
   deleteLoading,
-  updatingVisibility
+  updatingVisibility,
 }) => {
   // Track if the delete dialog is open
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
@@ -38,10 +51,16 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
   const handleDeleteConfirm = () => {
     onDelete(pkg.id);
   };
-  return <TableRow key={pkg.id} className={!pkg.is_visible ? "opacity-60" : ""}>
+
+  return (
+    <TableRow key={pkg.id} className={!pkg.is_visible ? "opacity-60" : ""}>
       <TableCell>
         <div className="w-12 h-12 rounded overflow-hidden">
-          <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover" />
+          <img 
+            src={pkg.image} 
+            alt={pkg.title}
+            className="w-full h-full object-cover"
+          />
         </div>
       </TableCell>
       <TableCell className="font-medium">{pkg.title}</TableCell>
@@ -60,8 +79,20 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
       </TableCell>
       <TableCell>
         <div className="flex items-center">
-          <Button variant="ghost" size="sm" onClick={() => onToggleVisibility(pkg.id, pkg.is_visible)} disabled={updatingVisibility === pkg.id} className="text-gray-600 hover:text-gray-900">
-            {updatingVisibility === pkg.id ? <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full"></div> : pkg.is_visible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onToggleVisibility(pkg.id, pkg.is_visible)}
+            disabled={updatingVisibility === pkg.id}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            {updatingVisibility === pkg.id ? (
+              <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full"></div>
+            ) : pkg.is_visible ? (
+              <Eye className="w-4 h-4" />
+            ) : (
+              <EyeOff className="w-4 h-4" />
+            )}
           </Button>
           <span className="ml-2 text-sm">
             {pkg.is_visible ? 'Visible' : 'Hidden'}
@@ -70,14 +101,22 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
       </TableCell>
       <TableCell className="text-right">
         <div className="flex justify-end gap-2">
-          <Button variant="ghost" size="sm" asChild>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            asChild
+          >
             <Link to={`/admin/tour-packages/edit/${pkg.id}`}>
               <Edit className="w-4 h-4" />
             </Link>
           </Button>
           <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-800 hover:bg-red-50">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="text-red-600 hover:text-red-800 hover:bg-red-50"
+              >
                 <Trash2 className="w-4 h-4" />
               </Button>
             </DialogTrigger>
@@ -92,7 +131,11 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
                 <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                 </DialogClose>
-                <Button variant="destructive" onClick={handleDeleteConfirm} disabled={deleteLoading} className="">
+                <Button 
+                  variant="destructive"
+                  onClick={handleDeleteConfirm}
+                  disabled={deleteLoading}
+                >
                   {deleteLoading ? 'Deleting...' : 'Delete'}
                 </Button>
               </DialogFooter>
@@ -100,6 +143,8 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
           </Dialog>
         </div>
       </TableCell>
-    </TableRow>;
+    </TableRow>
+  );
 };
+
 export default TourPackageItem;
