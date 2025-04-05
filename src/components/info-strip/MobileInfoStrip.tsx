@@ -9,25 +9,36 @@ interface MobileInfoStripProps {
 
 const MobileInfoStrip = ({ items }: MobileInfoStripProps) => {
   // Use a ref to store the autoplay plugin instance
-  const autoplayRef = useRef<ReturnType<typeof AutoplayPlugin> | null>(null);
+  const autoplayRef = useRef<any>(null);
   
-  // Create the autoplay plugin with options
+  // Create the autoplay plugin with options, safely handling initialization
   useEffect(() => {
-    // Only create the plugin once when the component mounts
     try {
-      autoplayRef.current = AutoplayPlugin({ 
+      // Create the plugin instance but don't assign to ref yet
+      const plugin = AutoplayPlugin({ 
         delay: 3000, 
         stopOnInteraction: false,
         stopOnMouseEnter: false, // Continue even when hovering for better UX
       });
+      
+      // Now assign to ref
+      autoplayRef.current = plugin;
     } catch (error) {
       console.error('Error creating autoplay plugin:', error);
+      autoplayRef.current = null;
     }
     
-    // Clean up plugin on unmount
+    // Clean up plugin on unmount - with proper null checking
     return () => {
-      if (autoplayRef.current && typeof autoplayRef.current.destroy === 'function') {
-        autoplayRef.current.destroy();
+      if (autoplayRef.current && 
+          typeof autoplayRef.current === 'object' && 
+          autoplayRef.current.destroy && 
+          typeof autoplayRef.current.destroy === 'function') {
+        try {
+          autoplayRef.current.destroy();
+        } catch (error) {
+          console.error('Error destroying autoplay plugin:', error);
+        }
         autoplayRef.current = null;
       }
     };
