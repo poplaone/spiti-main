@@ -84,6 +84,7 @@ const TourHero: React.FC<TourHeroProps> = ({
             discountedPrice={tour.discountedPrice}
             originalPrice={tour.originalPrice}
             discount={tour.discount}
+            isWomenOnly={tour.isWomenOnly}
             formatPrice={formatPrice}
           />
         </div>

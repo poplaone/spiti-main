@@ -1,7 +1,7 @@
 
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Bike, Car, Calendar, Sliders } from 'lucide-react';
+import { Bike, Car, Calendar, Sliders, UserRound } from 'lucide-react';
 import { TourPackageProps } from '@/data/types/tourTypes';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
@@ -43,6 +43,13 @@ const TourPackage: React.FC<TourPackageProps & {
         <div className="absolute top-1 left-1 bg-red-500 text-white text-xs sm:text-sm md:text-base font-bold py-0.5 px-1.5 rounded-sm">
           {discount}% OFF
         </div>
+        
+        {isWomenOnly && (
+          <div className="absolute top-1 right-1 bg-pink-500 text-white text-xs sm:text-sm md:text-base font-bold py-0.5 px-1.5 rounded-sm flex items-center">
+            <UserRound className="w-3 h-3 mr-1" />
+            <span>Women Only</span>
+          </div>
+        )}
       </div>
       
       <CardContent className="p-4 sm:p-6 mx-[3px] my-0 py-[12px] px-[6px]">
