@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Trash2, Bold, Italic, Underline, List } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ItineraryDay {
   id?: string;
@@ -133,6 +134,40 @@ const ItineraryEditor: React.FC<ItineraryEditorProps> = ({
     }, 0);
   };
 
+  // Keyboard shortcuts for formatting
+  useEffect(() => {
+    const handleKeyboardShortcut = (event: KeyboardEvent) => {
+      if (!event.target || !(event.target as HTMLElement).id) return;
+      
+      const targetId = (event.target as HTMLElement).id;
+      if (!targetId.includes('day-') || !targetId.includes('-description')) return;
+      
+      const index = parseInt(targetId.split('-')[1]);
+      
+      // Check if Ctrl or Command key is pressed
+      if (event.ctrlKey || event.metaKey) {
+        if (event.key === 'b') {
+          event.preventDefault();
+          applyFormatting(index, 'bold');
+        } else if (event.key === 'i') {
+          event.preventDefault();
+          applyFormatting(index, 'italic');
+        } else if (event.key === 'u') {
+          event.preventDefault();
+          applyFormatting(index, 'underline');
+        } else if (event.key === 'l') {
+          event.preventDefault();
+          addBulletPoint(index);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyboardShortcut);
+    return () => {
+      document.removeEventListener('keydown', handleKeyboardShortcut);
+    };
+  }, [itineraryDays]);
+
   // Sort days by day_number
   const sortedDays = [...itineraryDays].sort((a, b) => a.day_number - b.day_number);
 
@@ -172,42 +207,81 @@ const ItineraryEditor: React.FC<ItineraryEditorProps> = ({
             <div>
               <label className="text-sm font-medium mb-1 block">Description</label>
               <div className="mb-2 flex space-x-1">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="icon"
-                  title="Bold"
-                  onClick={() => applyFormatting(index, 'bold')}
-                >
-                  <Bold className="h-4 w-4" />
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="icon"
-                  title="Italic"
-                  onClick={() => applyFormatting(index, 'italic')}
-                >
-                  <Italic className="h-4 w-4" />
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="icon"
-                  title="Underline"
-                  onClick={() => applyFormatting(index, 'underline')}
-                >
-                  <Underline className="h-4 w-4" />
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="icon"
-                  title="Add Bullet Point"
-                  onClick={() => addBulletPoint(index)}
-                >
-                  <List className="h-4 w-4" />
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="icon"
+                        title="Bold (Ctrl+B)"
+                        onClick={() => applyFormatting(index, 'bold')}
+                      >
+                        <Bold className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Bold (Ctrl+B)</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="icon"
+                        title="Italic (Ctrl+I)"
+                        onClick={() => applyFormatting(index, 'italic')}
+                      >
+                        <Italic className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Italic (Ctrl+I)</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="icon"
+                        title="Underline (Ctrl+U)"
+                        onClick={() => applyFormatting(index, 'underline')}
+                      >
+                        <Underline className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Underline (Ctrl+U)</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="icon"
+                        title="Add Bullet Point (Ctrl+L)"
+                        onClick={() => addBulletPoint(index)}
+                      >
+                        <List className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Add Bullet Point (Ctrl+L)</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               <Textarea
                 id={`day-${index}-description`}
@@ -218,7 +292,7 @@ const ItineraryEditor: React.FC<ItineraryEditorProps> = ({
                 className="font-mono text-sm"
               />
               <div className="mt-2 text-xs text-gray-500">
-                Tip: Select text and use formatting buttons, or start a line with "• " for bullet points.
+                Tip: Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+U for underline, and Ctrl+L for bullet points. Or select text and use formatting buttons.
               </div>
             </div>
           </CardContent>
@@ -239,4 +313,3 @@ const ItineraryEditor: React.FC<ItineraryEditorProps> = ({
 };
 
 export default ItineraryEditor;
-
