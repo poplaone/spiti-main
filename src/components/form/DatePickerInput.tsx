@@ -19,13 +19,9 @@ interface DatePickerInputProps {
 }
 
 const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }: DatePickerInputProps) => {
-  // Create date objects for today and calculate the start of the current month
+  // Create date object for today
   const today = new Date();
-  const currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   
-  // Calculate the end of next month
-  const nextMonthEnd = new Date(today.getFullYear(), today.getMonth() + 2, 0);
-
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -46,7 +42,7 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
           mode="single"
           selected={date}
           onSelect={setDate}
-          disabled={(date) => date < currentMonth || date > nextMonthEnd}
+          disabled={(date) => date < today}
           initialFocus
           className={cn("p-3 pointer-events-auto")}
         />
