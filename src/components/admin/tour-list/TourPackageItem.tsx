@@ -50,6 +50,7 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
   // Function to handle delete confirmation
   const handleDeleteConfirm = () => {
     onDelete(pkg.id);
+    setDeleteDialogOpen(false);
   };
 
   return (

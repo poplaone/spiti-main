@@ -20,7 +20,6 @@ interface TourPackage {
 export const useTourPackages = () => {
   const [packages, setPackages] = useState<TourPackage[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [updatingVisibility, setUpdatingVisibility] = useState<string | null>(null);
 
@@ -46,13 +45,7 @@ export const useTourPackages = () => {
     }
   };
 
-  const confirmDelete = (id: string) => {
-    setDeleteId(id);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteId) return;
-    
+  const confirmDelete = async (id: string) => {
     try {
       setDeleteLoading(true);
       
@@ -61,36 +54,42 @@ export const useTourPackages = () => {
       await supabase
         .from('night_stays')
         .delete()
-        .eq('tour_package_id', deleteId);
+        .eq('tour_package_id', id);
       
       // Delete inclusions
       await supabase
         .from('inclusions')
         .delete()
-        .eq('tour_package_id', deleteId);
+        .eq('tour_package_id', id);
       
       // Delete exclusions
       await supabase
         .from('exclusions')
         .delete()
-        .eq('tour_package_id', deleteId);
+        .eq('tour_package_id', id);
       
       // Delete itinerary days
       await supabase
         .from('itinerary_days')
         .delete()
-        .eq('tour_package_id', deleteId);
+        .eq('tour_package_id', id);
+
+      // Delete departure dates
+      await supabase
+        .from('tour_departure_dates')
+        .delete()
+        .eq('tour_package_id', id);
       
       // Finally delete the tour package
       const { error } = await supabase
         .from('tour_packages')
         .delete()
-        .eq('id', deleteId);
+        .eq('id', id);
       
       if (error) throw error;
       
       // Delete the tour image from storage
-      const packageData = packages.find(p => p.id === deleteId);
+      const packageData = packages.find(p => p.id === id);
       if (packageData?.image) {
         const imagePath = packageData.image.split('/').pop();
         if (imagePath) {
@@ -101,8 +100,7 @@ export const useTourPackages = () => {
       }
       
       toast.success('Tour package deleted successfully');
-      setPackages(packages.filter(p => p.id !== deleteId));
-      setDeleteId(null);
+      setPackages(packages.filter(p => p.id !== id));
     } catch (error: any) {
       console.error('Error deleting package:', error);
       toast.error('Failed to delete tour package');
@@ -139,12 +137,10 @@ export const useTourPackages = () => {
   return {
     packages,
     loading,
-    deleteId,
     deleteLoading,
     updatingVisibility,
     fetchPackages,
     confirmDelete,
-    handleDelete,
     toggleVisibility
   };
 };
