@@ -37,7 +37,14 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
           {date ? format(date, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent 
+        className="w-auto p-0" 
+        align="start"
+        side="bottom"
+        sideOffset={5}
+        alignOffset={0}
+        avoidCollisions={true}
+      >
         <Calendar
           mode="single"
           selected={date}
