@@ -44,6 +44,14 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
   deleteLoading,
   updatingVisibility,
 }) => {
+  // Track if the delete dialog is open
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
+  // Function to handle delete confirmation
+  const handleDeleteConfirm = () => {
+    onDelete(pkg.id);
+  };
+
   return (
     <TableRow key={pkg.id} className={!pkg.is_visible ? "opacity-60" : ""}>
       <TableCell>
@@ -102,12 +110,11 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
               <Edit className="w-4 h-4" />
             </Link>
           </Button>
-          <Dialog>
+          <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
             <DialogTrigger asChild>
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={() => onDelete(pkg.id)}
                 className="text-red-600 hover:text-red-800 hover:bg-red-50"
               >
                 <Trash2 className="w-4 h-4" />
@@ -126,7 +133,7 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
                 </DialogClose>
                 <Button 
                   variant="destructive"
-                  onClick={() => onDelete(pkg.id)}
+                  onClick={handleDeleteConfirm}
                   disabled={deleteLoading}
                 >
                   {deleteLoading ? 'Deleting...' : 'Delete'}
