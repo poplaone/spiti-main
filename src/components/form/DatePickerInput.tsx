@@ -1,6 +1,6 @@
 
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, LucideIcon } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useRef, useState } from "react";
 
 interface DatePickerInputProps {
   date: Date | undefined;
@@ -22,6 +23,24 @@ interface DatePickerInputProps {
 const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }: DatePickerInputProps) => {
   // Create date object for today
   const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(date || today);
+  const calendarRef = useRef<HTMLDivElement>(null);
+  
+  const handlePreviousMonth = () => {
+    setCurrentMonth(prev => {
+      const newDate = new Date(prev);
+      newDate.setMonth(newDate.getMonth() - 1);
+      return newDate;
+    });
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(prev => {
+      const newDate = new Date(prev);
+      newDate.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
+  };
   
   return (
     <Popover>
@@ -46,37 +65,48 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
         alignOffset={0}
         avoidCollisions={true}
       >
-        <div className="sticky top-0 bg-popover z-10 px-3 py-2 border-b flex items-center justify-between">
+        <div className="sticky top-0 bg-popover z-10 px-3 py-1 border-b flex items-center justify-between">
           <button 
             className="p-1 rounded-sm hover:bg-accent hover:text-accent-foreground"
-            onClick={() => document.querySelector('.rdp-nav_button_previous')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+            onClick={handlePreviousMonth}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+            <ChevronLeft className="h-4 w-4" />
           </button>
           <span className="text-sm font-medium">
-            {date ? format(date, "MMMM yyyy") : format(today, "MMMM yyyy")}
+            {format(currentMonth, "MMMM yyyy")}
           </span>
           <button 
             className="p-1 rounded-sm hover:bg-accent hover:text-accent-foreground"
-            onClick={() => document.querySelector('.rdp-nav_button_next')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))}
+            onClick={handleNextMonth}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
-        <ScrollArea className="max-h-[250px]">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            disabled={(date) => date < today}
-            initialFocus
-            className={cn("p-3 pointer-events-auto")}
-            showOutsideDays={true}
-            captionLayout="buttons"
-            classNames={{
-              caption: "hidden", // Hide the default caption completely
-            }}
-          />
+        <ScrollArea className="max-h-[230px]">
+          <div ref={calendarRef}>
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              disabled={(date) => date < today}
+              initialFocus
+              month={currentMonth}
+              onMonthChange={setCurrentMonth}
+              className={cn("p-2 pointer-events-auto")}
+              showOutsideDays={true}
+              captionLayout="buttons"
+              classNames={{
+                caption: "hidden",
+                head_row: "flex mb-1",
+                head_cell: "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
+                row: "flex w-full mt-1",
+                cell: "h-8 w-8 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                day: cn(
+                  "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
+                ),
+              }}
+            />
+          </div>
         </ScrollArea>
       </PopoverContent>
     </Popover>
