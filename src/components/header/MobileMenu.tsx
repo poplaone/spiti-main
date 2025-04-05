@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
@@ -6,7 +5,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TourPackageProps } from "@/components/TourPackage";
-
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,16 +12,14 @@ interface MobileMenuProps {
   fixedDepartureTours: TourPackageProps[];
   customizableTours?: TourPackageProps[];
 }
-
-const MobileMenu = ({ 
-  isOpen, 
+const MobileMenu = ({
+  isOpen,
   onClose,
   roadTripsTours,
   fixedDepartureTours,
   customizableTours = []
 }: MobileMenuProps) => {
   if (!isOpen) return null;
-
   const getTourRoute = (tour: TourPackageProps) => {
     // Map tour types to route names
     if (tour.transportType === 'bike') return '/tour-bike';
@@ -33,9 +29,7 @@ const MobileMenu = ({
     if (tour.title.includes('OWN CAR')) return '/tour-owncar';
     return '/tour-unexplored';
   };
-
-  return (
-    <div className="md:hidden absolute top-16 left-0 right-0 bg-spiti-forest/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
+  return <div className="md:hidden absolute top-16 left-0 right-0 bg-spiti-forest/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
       <Popover>
         <PopoverTrigger asChild>
           <button className="w-full flex justify-between items-center text-white hover:text-spiti-green transition-colors">
@@ -44,25 +38,15 @@ const MobileMenu = ({
         </PopoverTrigger>
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
           <div className="border-b border-gray-700 pb-3 mb-3">
-            <Link 
-              to="/road-trips" 
-              className="block"
-              onClick={onClose}
-            >
-              <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
+            <Link to="/road-trips" className="block" onClick={onClose}>
+              <Button variant="outline" className="w-full border-white/20 hover:bg-white/10 justify-between text-slate-50">
                 View All Road Trips
                 <ArrowRight size={16} />
               </Button>
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-4">
-            {roadTripsTours.map((tour) => (
-              <Link 
-                key={tour.id || tour.title} 
-                to={getTourRoute(tour)}
-                className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
-                onClick={onClose}
-              >
+            {roadTripsTours.map(tour => <Link key={tour.id || tour.title} to={getTourRoute(tour)} className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer" onClick={onClose}>
                 <div className="flex items-center space-x-3">
                   <div className="h-14 w-14 rounded overflow-hidden flex-shrink-0">
                     <img src={tour.image} alt={tour.title} className="w-full h-full object-cover" />
@@ -74,8 +58,7 @@ const MobileMenu = ({
                     </p>
                   </div>
                 </div>
-              </Link>
-            ))}
+              </Link>)}
           </div>
         </PopoverContent>
       </Popover>
@@ -88,11 +71,7 @@ const MobileMenu = ({
         </PopoverTrigger>
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
           <div className="border-b border-gray-700 pb-3 mb-3">
-            <Link 
-              to="/fixed-departures" 
-              className="block"
-              onClick={onClose}
-            >
+            <Link to="/fixed-departures" className="block" onClick={onClose}>
               <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
                 View All Fixed Departures
                 <ArrowRight size={16} />
@@ -100,13 +79,7 @@ const MobileMenu = ({
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-4">
-            {fixedDepartureTours.map((tour) => (
-              <Link 
-                key={tour.id || tour.title} 
-                to={getTourRoute(tour)}
-                className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
-                onClick={onClose}
-              >
+            {fixedDepartureTours.map(tour => <Link key={tour.id || tour.title} to={getTourRoute(tour)} className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer" onClick={onClose}>
                 <div className="flex items-center space-x-3">
                   <div className="h-14 w-14 rounded overflow-hidden flex-shrink-0">
                     <img src={tour.image} alt={tour.title} className="w-full h-full object-cover" />
@@ -118,8 +91,7 @@ const MobileMenu = ({
                     </p>
                   </div>
                 </div>
-              </Link>
-            ))}
+              </Link>)}
           </div>
         </PopoverContent>
       </Popover>
@@ -132,11 +104,7 @@ const MobileMenu = ({
         </PopoverTrigger>
         <PopoverContent className="w-screen max-h-[70vh] overflow-y-auto bg-spiti-forest/95 backdrop-blur-lg border-0 text-white p-4">
           <div className="border-b border-gray-700 pb-3 mb-3">
-            <Link 
-              to="/customizable-tours" 
-              className="block"
-              onClick={onClose}
-            >
+            <Link to="/customizable-tours" className="block" onClick={onClose}>
               <Button variant="outline" className="w-full text-white hover:text-white border-white/20 hover:bg-white/10 justify-between">
                 View All Customizable Tours
                 <ArrowRight size={16} />
@@ -144,13 +112,7 @@ const MobileMenu = ({
             </Link>
           </div>
           <div className="grid grid-cols-1 gap-4">
-            {customizableTours.map((tour) => (
-              <Link 
-                key={tour.id || tour.title} 
-                to={getTourRoute(tour)}
-                className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
-                onClick={onClose}
-              >
+            {customizableTours.map(tour => <Link key={tour.id || tour.title} to={getTourRoute(tour)} className="block p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer" onClick={onClose}>
                 <div className="flex items-center space-x-3">
                   <div className="h-14 w-14 rounded overflow-hidden flex-shrink-0">
                     <img src={tour.image} alt={tour.title} className="w-full h-full object-cover" />
@@ -162,8 +124,7 @@ const MobileMenu = ({
                     </p>
                   </div>
                 </div>
-              </Link>
-            ))}
+              </Link>)}
           </div>
         </PopoverContent>
       </Popover>
@@ -194,8 +155,6 @@ const MobileMenu = ({
           <LeadForm />
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>;
 };
-
 export default MobileMenu;
