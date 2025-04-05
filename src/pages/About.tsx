@@ -101,12 +101,11 @@ const About = () => {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-1 text-center">Vaibhav Reekhan</h3>
                 <p className="text-spiti-green mb-3 text-center">Founder</p>
-                <p className="text-white/80 text-sm">
-                  Vaibhav is the founder of SpitiValleyTravels and HimalayanFootslog. With over nine years of experience in the travel industry, he is a passionate traveler at heart. A true nature lover, Vaibhav has always been drawn to the mountains and trekking.
-                </p>
-                <p className="text-white/80 text-sm mt-2">
-                  His expertise lies in organizing and leading large road trips, as well as managing low-budget group tours for students while maintaining high-quality services. He also runs a small homestay at Chirgaon (Shimla).
-                </p>
+                <p className="text-white/80 text-sm text-left">Vaibhav is the Co-Founder of SpitiValleyTravels and HimalayanFootslog. With over nine years of experience in the travel industry, he is a passionate traveler at heart. A true nature lover, Vaibhav has always been drawn to the mountains and trekking. After undergoing two surgeries for varicose veins and hernia, his focus shifted towards road trips, which he now leads with great enthusiasm.
+Working with his dedicated local team, Vaibhav is making an exceptional impact in the travel industry. His expertise lies in organizing and leading large road trips, as well as managing low-budget group tours for students while maintaining high-quality Services. To better understand his clients’ needs and preferences, he also runs a small homestay at Chirgaon (Shimla).</p>
+                <p className="text-white/80 text-sm mt-2">Vaibhav dislikes mis-selling and places honesty at the core of his work.
+People often say that Vaibhav talks less, but they enjoy his company. His deep interest in local traditions, culture, architecture, and history allows him to connect with people on a meaningful level, creating memorable experiences. With a strong sense of itineraries, places, and people, his intuitive nature helps his team make the best decisions every time.
+              </p>
               </CardContent>
             </Card>
             
