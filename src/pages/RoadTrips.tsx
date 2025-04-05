@@ -21,12 +21,12 @@ const RoadTrips = () => {
     window.scrollTo(0, 0);
   }, []);
   
-  return <div className="min-h-screen" style={{
-    backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('/lovable-uploads/cd0eaa24-c91b-4cd2-8ac9-ad2ff006c0d5.png')`,
-    backgroundAttachment: 'fixed',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
-  }}>
+  return (
+    <div className="min-h-screen bg-cover bg-fixed bg-center" 
+      style={{
+        backgroundImage: `linear-gradient(to bottom, rgba(19, 38, 64, 0.7), rgba(19, 38, 64, 0.5)), url('/lovable-uploads/ad2ff006c0d5.png')`,
+      }}
+    >
       <Header />
       
       {/* Hero Section */}
@@ -67,7 +67,8 @@ const RoadTrips = () => {
 
       <FloatingWhatsAppButton />
       <Footer />
-    </div>;
+    </div>
+  );
 };
 
 export default RoadTrips;
