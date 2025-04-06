@@ -137,9 +137,9 @@ People often say that Vaibhav talks less, but they enjoy his company. His deep i
                 <h3 className="text-xl font-bold text-white mb-1 text-center">Monika</h3>
                 <p className="text-spiti-green mb-3 text-center">Sales Executive</p>
                 <p className="text-white/80 text-sm">My colleagues call me Monu, and I absolutely love this nickname. Life has been full of ups and downs, but even in my lowest moments, my mind pushes me to focus on the positive, helping me grow and handle challenges.</p>
-                <p className="text-white/80 text-sm mt-2">
-                  With 5 years of experience as a Sales Executive, she is passionate about her work and always strives to give her best. Outside of work, her favorite hobby is simple yet priceless—she loves sleeping!
-                </p>
+                <p className="text-white/80 text-sm mt-2">With 5 years of experience as a Sales Executive, I am passionate about my work and always strive to give my best. Outside of work, my favorite hobby is simple yet priceless—I love sleeping!
+Because no matter what, I believe in moving forward with a strong mindset and a well-rested soul!
+              </p>
               </CardContent>
             </Card>
 
