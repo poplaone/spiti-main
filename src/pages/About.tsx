@@ -153,9 +153,10 @@ Because no matter what, I believe in moving forward with a strong mindset and a 
                 </div>
                 <h3 className="text-xl font-bold text-white mb-1 text-center">Jayesh Chauhan</h3>
                 <p className="text-spiti-green mb-3 text-center">Sales & Travel Director</p>
-                <p className="text-white/80 text-sm">
-                  Son to an apple grower and a true movies and sports enthusiast working as a salesperson. Leaving his comfort zone and taking on challenges is his thing. He loves to guide people on their journey and considers himself an actor with the world as his stage.
-                </p>
+                <p className="text-white/80 text-sm">I belong to the mountains. Son to an apple grower and a true movies and sports enthusiast working as a sales person quite strange Nah. This is quite obvious for people who know me because leaving my comfort zone and taking on challenges is my thing.
+I am here to take one! Let me guide you to one of yours.
+Taking on a challenge is a lot like riding a horse, isn’t it? If you’re comfortable while you’re doing it, you’re probably doing it wrong.” 
+              </p>
                 <p className="text-white/80 text-sm mt-2">
                   As a travel director, he's dedicated to turning vacation dreams into blockbuster experiences, delivering "paisa wasool" experiences with full entertainment, drama, and adventure!
                 </p>
