@@ -157,9 +157,9 @@ Because no matter what, I believe in moving forward with a strong mindset and a 
 I am here to take one! Let me guide you to one of yours.
 Taking on a challenge is a lot like riding a horse, isn’t it? If you’re comfortable while you’re doing it, you’re probably doing it wrong.” 
               </p>
-                <p className="text-white/80 text-sm mt-2">
-                  As a travel director, he's dedicated to turning vacation dreams into blockbuster experiences, delivering "paisa wasool" experiences with full entertainment, drama, and adventure!
-                </p>
+                <p className="text-white/80 text-sm mt-2">My name is Jayesh Chauhan I know my name is not as filmy as my personality. I consider myself an actor and this world is my stage. I love to guide people on their journey.Imagine you on a journey full of thrilling adventures and You can be the lead role of an unforgettable journey! Where I am Jayesh Chauhan will be your travel director, and I am here to turn your vacation dreams into blockbuster experiences.Because I don't just sell trips - I deliver &quot;paisa wasool&quot; experiences with full on entertainment, drama and adventure! 
+So better to be ready to begin your travel story with me.
+              </p>
               </CardContent>
             </Card>
 
