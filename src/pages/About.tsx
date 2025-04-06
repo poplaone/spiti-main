@@ -122,9 +122,7 @@ People often say that Vaibhav talks less, but they enjoy his company. His deep i
                 <p className="text-white/80 text-sm">
                   A hardworking and spiritual person who believes in simplicity yet dreams big. Sales and marketing are her passion, and she takes pride in supporting teammates, which is why they call her Sheetla Didi. She embraces challenges with dedication and never backs down.
                 </p>
-                <p className="text-white/80 text-sm mt-2">
-                  Beyond work, she finds joy in shopping, makeup, cooking, and driving. As a business development professional, she is committed to driving growth and creating new opportunities.
-                </p>
+                <p className="text-white/80 text-sm mt-2">Beyond work, I find joy in shopping, makeup, cooking, and driving. As a business development professional, I am committed to driving growth and creating new opportunities. For me, success is built on hard work, faith, and perseverance—because failure is never an option.</p>
               </CardContent>
             </Card>
             
