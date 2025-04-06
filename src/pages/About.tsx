@@ -136,9 +136,7 @@ People often say that Vaibhav talks less, but they enjoy his company. His deep i
                 </div>
                 <h3 className="text-xl font-bold text-white mb-1 text-center">Monika</h3>
                 <p className="text-spiti-green mb-3 text-center">Sales Executive</p>
-                <p className="text-white/80 text-sm">
-                  Colleagues call her Monu, a nickname she loves. Life has been full of ups and downs, but even in her lowest moments, her mind pushes her to focus on the positive, helping her grow and handle challenges.
-                </p>
+                <p className="text-white/80 text-sm">My colleagues call me Monu, and I absolutely love this nickname. Life has been full of ups and downs, but even in my lowest moments, my mind pushes me to focus on the positive, helping me grow and handle challenges.</p>
                 <p className="text-white/80 text-sm mt-2">
                   With 5 years of experience as a Sales Executive, she is passionate about her work and always strives to give her best. Outside of work, her favorite hobby is simple yet priceless—she loves sleeping!
                 </p>
