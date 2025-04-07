@@ -123,7 +123,7 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
     `.trim();
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappURL = `https://wa.me/918353040008?text=${encodedMessage}`;
+    const whatsappURL = `https://wa.me/918894216348?text=${encodedMessage}`;
     window.open(whatsappURL, '_blank');
   };
 

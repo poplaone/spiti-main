@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -87,7 +88,7 @@ const FloatingWhatsAppButton = () => {
 
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent("Hi, I'm interested in your Spiti Valley tours. Can you provide more information?");
-    window.open(`https://wa.me/918626888979?text=${message}`, '_blank');
+    window.open(`https://wa.me/918894216348?text=${message}`, '_blank');
   };
 
   return (
