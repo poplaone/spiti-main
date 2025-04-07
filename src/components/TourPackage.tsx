@@ -98,21 +98,25 @@ const TourPackage: React.FC<TourPackageProps & {
 
           {/* We need to stop event propagation on buttons to prevent triggering the parent Link */}
           <div className="flex gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
-            <Link to={detailsUrl} className="flex-1">
-              <Button variant="default" className="w-full bg-spiti-forest h-10">
-                Details
-              </Button>
-            </Link>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="w-full border-red-500 text-red-500 hover:bg-red-50 h-10">
-                  Enquiry
+            <div className="w-1/2">
+              <Link to={detailsUrl} className="block w-full">
+                <Button variant="default" className="w-full bg-spiti-forest h-10">
+                  Details
                 </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <LeadForm />
-              </DialogContent>
-            </Dialog>
+              </Link>
+            </div>
+            <div className="w-1/2">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full border-red-500 text-red-500 hover:bg-red-50 h-10">
+                    Enquiry
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <LeadForm />
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
         </CardContent>
       </Card>
