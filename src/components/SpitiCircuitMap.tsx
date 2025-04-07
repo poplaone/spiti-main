@@ -1,3 +1,4 @@
+
 import React from 'react';
 const SpitiCircuitMap: React.FC = () => {
   return <div className="my-6 md:my-8 py-6 md:py-8 bg-white rounded-lg shadow-md">
@@ -19,24 +20,32 @@ const SpitiCircuitMap: React.FC = () => {
       <div className="mt-4 px-4 text-center">
         <h4 className="font-semibold text-spiti-forest mb-2">Key Destinations on the Spiti Circuit:</h4>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 text-sm text-gray-700">
-          <div>Manali</div>
-          <div>Atal Tunnel</div>
-          <div>Chandratal</div>
-          <div>Kunzum La</div>
+          <div>Shimla</div>
+          <div>Narkanda</div>
+          <div>Sarahan</div>
+          <div>Sangla</div>
+          <div>Rakchham</div>
+          <div>Chitkul</div>
+          <div>Khab Sangam</div>
+          <div>Kalpa</div>
+          <div>Nako</div>
+          <div>Gue Mummy</div>
+          <div>Tabo Village</div>
+          <div>Pin Valley</div>
+          <div>Dhankhar</div>
+          <div>Lalung</div>
           <div>Kaza</div>
-          <div>Key Monastery</div>
-          <div>Kibber</div>
           <div>Langza</div>
           <div>Hikkim</div>
           <div>Komic</div>
-          <div>Dhankar</div>
-          <div>Tabo</div>
-          <div>Nako</div>
-          <div>Khab</div>
-          <div>Sangla</div>
-          <div>Chitkul</div>
-          <div>Rampur</div>
-          <div>Shimla</div>
+          <div>Key Monastery</div>
+          <div>Kibber Village</div>
+          <div>Chicham Bridge</div>
+          <div>Losar</div>
+          <div>Kunzum La</div>
+          <div>Chandratal Lake</div>
+          <div>Batal - Gramphu</div>
+          <div>Manali</div>
         </div>
         <p className="mt-3 text-sm text-gray-500">
           The Spiti Valley circuit is a complete loop through the Himalayan high-altitude desert, connecting the lush green valleys of Kullu-Manali with the historic town of Shimla, passing through some of the most remote and stunning landscapes in India.
