@@ -99,13 +99,13 @@ const TourPackage: React.FC<TourPackageProps & {
           {/* We need to stop event propagation on buttons to prevent triggering the parent Link */}
           <div className="flex gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
             <Link to={detailsUrl} className="flex-1">
-              <Button variant="default" className="w-full bg-spiti-forest">
+              <Button variant="default" className="w-full bg-spiti-forest h-10">
                 Details
               </Button>
             </Link>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline" className="w-full border-red-500 text-red-500 hover:bg-red-50">
+                <Button variant="outline" className="w-full border-red-500 text-red-500 hover:bg-red-50 h-10">
                   Enquiry
                 </Button>
               </DialogTrigger>
