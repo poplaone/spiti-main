@@ -1,5 +1,8 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "npm:resend@2.0.0";
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -37,10 +40,11 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Format email content
-    const emailSubject = `New Tour Inquiry from Website - ${formData.name}`;
-    const emailContent = `
-      <h2>New Tour Inquiry</h2>
+    console.log("Processing lead form submission for:", formData.name);
+    
+    // 1. Send notification email to business owner
+    const adminEmailHtml = `
+      <h2>New Tour Inquiry from Website</h2>
       <p><strong>Name:</strong> ${formData.name}</p>
       <p><strong>Email:</strong> ${formData.email}</p>
       <p><strong>Phone:</strong> ${formData.phone}</p>
@@ -49,65 +53,56 @@ const handler = async (req: Request): Promise<Response> => {
       <p><strong>Number of Guests:</strong> ${formData.guests}</p>
       <p><strong>Tour Type:</strong> ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ? 'Fixed Departure' : ''}</p>
     `;
-
-    // For better debugging
-    console.log("Preparing to send email with data:", {
+    
+    console.log("Sending admin notification email to: spitivalleytravels@gmail.com");
+    
+    const adminEmailResponse = await resend.emails.send({
+      from: "Spiti Valley Travels <onboarding@resend.dev>",
       to: "spitivalleytravels@gmail.com",
-      subject: emailSubject,
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone
+      subject: `New Tour Inquiry - ${formData.name}`,
+      html: adminEmailHtml,
+      reply_to: formData.email
     });
     
-    const emailJsEndpoint = "https://api.emailjs.com/api/v1.0/email/send";
-    const emailJsData = {
-      service_id: Deno.env.get("EMAILJS_SERVICE_ID"),
-      template_id: Deno.env.get("EMAILJS_TEMPLATE_ID"),
-      user_id: Deno.env.get("EMAILJS_USER_ID"),
-      template_params: {
-        to_email: "spitivalleytravels@gmail.com",
-        subject: emailSubject,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        travel_date: formData.travelDate || "Not specified",
-        duration: formData.duration || "Not specified",
-        guests: formData.guests,
-        tour_type: `${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ? 'Fixed Departure' : ''}`,
-        message_html: emailContent
-      }
-    };
+    console.log("Admin email response:", adminEmailResponse);
     
-    // Log the EmailJS configuration (with sensitive data redacted)
-    console.log("EmailJS configuration:", {
-      service_id: Deno.env.get("EMAILJS_SERVICE_ID") ? "[CONFIGURED]" : "[MISSING]",
-      template_id: Deno.env.get("EMAILJS_TEMPLATE_ID") ? "[CONFIGURED]" : "[MISSING]",
-      user_id: Deno.env.get("EMAILJS_USER_ID") ? "[CONFIGURED]" : "[MISSING]"
+    // 2. Send thank you email to the customer
+    const customerEmailHtml = `
+      <h2>Thank You for Your Interest in Spiti Valley Tours!</h2>
+      <p>Dear ${formData.name},</p>
+      <p>Thank you for reaching out to us about your upcoming trip to Spiti Valley. We've received your inquiry and are excited to help you plan your adventure.</p>
+      <p><strong>Your Request Details:</strong></p>
+      <ul>
+        <li><strong>Travel Date:</strong> ${formData.travelDate || "Not specified"}</li>
+        <li><strong>Duration:</strong> ${formData.duration || "Not specified"}</li>
+        <li><strong>Number of Guests:</strong> ${formData.guests}</li>
+        <li><strong>Tour Type:</strong> ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ? 'Fixed Departure' : ''}</li>
+      </ul>
+      <p>One of our travel experts will contact you shortly to discuss your tour preferences and create a personalized itinerary for you.</p>
+      <p>If you have any immediate questions, feel free to reply to this email or contact us directly at spitivalleytravels@gmail.com.</p>
+      <p>Best regards,<br/>The Spiti Valley Travels Team</p>
+    `;
+    
+    console.log("Sending thank you email to customer:", formData.email);
+    
+    const customerEmailResponse = await resend.emails.send({
+      from: "Spiti Valley Travels <onboarding@resend.dev>",
+      to: formData.email,
+      subject: "Thank You for Your Spiti Valley Tour Inquiry",
+      html: customerEmailHtml,
+      reply_to: "spitivalleytravels@gmail.com"
     });
     
-    const emailResponse = await fetch(emailJsEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(emailJsData)
-    });
-    
-    // Detailed logging for response
-    console.log("EmailJS response status:", emailResponse.status);
-    const responseBody = await emailResponse.text();
-    console.log("EmailJS response body:", responseBody);
-    
-    if (!emailResponse.ok) {
-      console.error("EmailJS service error:", responseBody);
-      throw new Error(`Email service responded with ${emailResponse.status}: ${responseBody}`);
-    }
-
-    console.log("Email sent successfully to spitivalleytravels@gmail.com");
+    console.log("Customer email response:", customerEmailResponse);
 
     // Return success response
     return new Response(
-      JSON.stringify({ success: true, message: "Lead form submitted successfully" }),
+      JSON.stringify({ 
+        success: true, 
+        message: "Lead form submitted successfully",
+        adminEmail: adminEmailResponse,
+        customerEmail: customerEmailResponse
+      }),
       { 
         status: 200, 
         headers: { ...corsHeaders, "Content-Type": "application/json" } 

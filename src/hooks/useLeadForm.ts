@@ -101,7 +101,7 @@ export const useLeadForm = () => {
     toast.dismiss(toastId);
 
     if (success) {
-      toast.success("Your request has been submitted! We'll contact you soon.");
+      toast.success("Your request has been submitted! We've sent you a confirmation email.");
       
       // Navigate to thank you page with form data
       navigate('/thank-you', { 
