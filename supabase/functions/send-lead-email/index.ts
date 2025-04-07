@@ -86,7 +86,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (primaryKeyAvailable) {
       try {
         const adminEmailResponse = await resend.emails.send({
-          from: "Spiti Valley Travels <spitivalleytravels@gmail.com>",
+          from: "Spiti Valley Travels <admin@spitivalleytravels.com>",
           to: "spitivalleytravels@gmail.com",
           subject: `New Tour Inquiry - ${formData.name}`,
           html: adminEmailHtml,
@@ -112,7 +112,7 @@ const handler = async (req: Request): Promise<Response> => {
       try {
         console.log("Attempting to send admin email with alternate API key");
         const alternateAdminEmailResponse = await resendAlternate.emails.send({
-          from: "Spiti Valley Travels <spitivalleytravels@gmail.com>",
+          from: "Spiti Valley Travels <admin@spitivalleytravels.com>",
           to: "spitivalleytravels@gmail.com",
           subject: `New Tour Inquiry - ${formData.name}`,
           html: adminEmailHtml,
@@ -159,7 +159,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (primaryKeyAvailable) {
       try {
         const customerEmailResponse = await resend.emails.send({
-          from: "Spiti Valley Travels <spitivalleytravels@gmail.com>",
+          from: "Spiti Valley Travels <admin@spitivalleytravels.com>",
           to: formData.email,
           subject: "Thank You for Your Spiti Valley Tour Inquiry",
           html: customerEmailHtml,
@@ -185,7 +185,7 @@ const handler = async (req: Request): Promise<Response> => {
       try {
         console.log("Attempting to send customer email with alternate API key");
         const alternateCustomerEmailResponse = await resendAlternate.emails.send({
-          from: "Spiti Valley Travels <spitivalleytravels@gmail.com>",
+          from: "Spiti Valley Travels <admin@spitivalleytravels.com>",
           to: formData.email,
           subject: "Thank You for Your Spiti Valley Tour Inquiry",
           html: customerEmailHtml,
