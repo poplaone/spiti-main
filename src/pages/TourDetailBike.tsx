@@ -6,7 +6,7 @@ const TourDetailBike = () => {
   return (
     <BaseTourDetailPage 
       tourType="bike"
-      heroImage="/lovable-uploads/96c75803-78e2-4f53-a67c-b14d8e80d30f.png"
+      heroImage="/lovable-uploads/5b82c4c3-e5f4-4752-8825-2aaa8634642a.png"
     />
   );
 };

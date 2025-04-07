@@ -1,4 +1,3 @@
-
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useEffect, useState } from 'react';
 import CarouselImage from './CarouselImage';
@@ -14,7 +13,7 @@ const desktopImages = [
 const mobileImages = [
   "/lovable-uploads/fa13766a-c062-495a-bbe3-ba96893628e0.png", // Snowy temple/monastery
   "/lovable-uploads/fe95c61b-1c4d-48be-9e18-1d3b19b7c41e.png", // River valley
-  "/lovable-uploads/adad2c0d-065d-4ed9-a5f6-70262700ac90.png"  // Motorcycles on mountain road
+  "/lovable-uploads/5b82c4c3-e5f4-4752-8825-2aaa8634642a.png"  // Person looking at Chandrataal lake (replacing motorcycles)
 ];
 
 interface CarouselImagesProps {
