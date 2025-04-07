@@ -1,9 +1,10 @@
-
 import React from 'react';
 import { Home, MapPin } from 'lucide-react';
 import { TourAccommodationProps } from "@/data/types/tourTypes";
 
 const TourAccommodation: React.FC<TourAccommodationProps> = ({ nightStays }) => {
+  // We're keeping the night stays in their original order
+  // No need to sort or manipulate the order as they come from the database
   return (
     <div>
       <p className="text-gray-700 mb-6">
