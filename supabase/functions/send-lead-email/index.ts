@@ -5,10 +5,13 @@ import { corsHeaders, validateRequest, createEmailTemplates } from "./utils.ts";
 import { sendAdminEmail, sendCustomerEmail } from "./emailService.ts";
 import { LeadFormRequest } from "./types.ts";
 
-// Initialize primary Resend client
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
-// Initialize alternate Resend client as fallback
-const resendAlternate = new Resend(Deno.env.get("RESEND_API_KEY_ALTERNATE"));
+// Initialize API keys from environment variables
+const resendApiKey = Deno.env.get("RESEND_API_KEY");
+const resendApiKeyAlternate = Deno.env.get("RESEND_API_KEY_ALTERNATE");
+
+// Initialize Resend clients if API keys are available
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
+const resendAlternate = resendApiKeyAlternate ? new Resend(resendApiKeyAlternate) : null;
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -17,6 +20,20 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Check if any API keys are available
+    if (!resend && !resendAlternate) {
+      console.error("No Resend API keys are configured!");
+      return new Response(
+        JSON.stringify({ 
+          error: "Email service is not configured. Please set RESEND_API_KEY or RESEND_API_KEY_ALTERNATE in your environment." 
+        }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
+
     // Parse and validate the request
     const formData: LeadFormRequest = await req.json();
     const validationError = validateRequest(formData);
@@ -28,27 +45,16 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Form data received:", JSON.stringify(formData));
     
     // Verify that API keys are available
-    const primaryKeyAvailable = !!Deno.env.get("RESEND_API_KEY");
-    const alternateKeyAvailable = !!Deno.env.get("RESEND_API_KEY_ALTERNATE");
+    const primaryKeyAvailable = !!resendApiKey;
+    const alternateKeyAvailable = !!resendApiKeyAlternate;
     
     console.log("API Key Status - Primary:", primaryKeyAvailable ? "Available" : "Missing");
     console.log("API Key Status - Alternate:", alternateKeyAvailable ? "Available" : "Missing");
     
-    if (!primaryKeyAvailable && !alternateKeyAvailable) {
-      console.error("No Resend API keys are available!");
-      return new Response(
-        JSON.stringify({ error: "Email service configuration error" }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
-      );
-    }
-    
     // Create email templates
     const { adminEmailHtml, customerEmailHtml } = createEmailTemplates(formData);
     
-    // Send the emails
+    // Send the emails using the available Resend clients
     const adminEmailResult = await sendAdminEmail(
       formData,
       adminEmailHtml,

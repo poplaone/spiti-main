@@ -5,8 +5,8 @@ import { LeadFormRequest, EmailResult } from "./types.ts";
 export async function sendAdminEmail(
   formData: LeadFormRequest,
   adminEmailHtml: string,
-  resend: Resend,
-  resendAlternate: Resend,
+  resend: Resend | null,
+  resendAlternate: Resend | null,
   primaryKeyAvailable: boolean,
   alternateKeyAvailable: boolean
 ): Promise<EmailResult> {
@@ -16,7 +16,7 @@ export async function sendAdminEmail(
   let adminEmailError = null;
   
   // Try primary API key first
-  if (primaryKeyAvailable) {
+  if (primaryKeyAvailable && resend) {
     try {
       const adminEmailResponse = await resend.emails.send({
         from: "Spiti Valley Travels <admin@spitivalleytravels.com>",
@@ -41,7 +41,7 @@ export async function sendAdminEmail(
   }
   
   // Try with alternate API key if primary failed
-  if (!adminEmailSent && alternateKeyAvailable) {
+  if (!adminEmailSent && alternateKeyAvailable && resendAlternate) {
     try {
       console.log("Attempting to send admin email with alternate API key");
       const alternateAdminEmailResponse = await resendAlternate.emails.send({
@@ -75,8 +75,8 @@ export async function sendAdminEmail(
 export async function sendCustomerEmail(
   formData: LeadFormRequest,
   customerEmailHtml: string,
-  resend: Resend,
-  resendAlternate: Resend,
+  resend: Resend | null,
+  resendAlternate: Resend | null,
   primaryKeyAvailable: boolean,
   alternateKeyAvailable: boolean
 ): Promise<EmailResult> {
@@ -86,7 +86,7 @@ export async function sendCustomerEmail(
   let customerEmailError = null;
   
   // Try primary API key first
-  if (primaryKeyAvailable) {
+  if (primaryKeyAvailable && resend) {
     try {
       const customerEmailResponse = await resend.emails.send({
         from: "Spiti Valley Travels <admin@spitivalleytravels.com>",
@@ -111,7 +111,7 @@ export async function sendCustomerEmail(
   }
   
   // Try with alternate API key if primary failed
-  if (!customerEmailSent && alternateKeyAvailable) {
+  if (!customerEmailSent && alternateKeyAvailable && resendAlternate) {
     try {
       console.log("Attempting to send customer email with alternate API key");
       const alternateCustomerEmailResponse = await resendAlternate.emails.send({
