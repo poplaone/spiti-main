@@ -1,13 +1,14 @@
 
 import { Button } from "@/components/ui/button";
-import { Send, MessageSquare } from "lucide-react";
+import { Send, MessageSquare, Loader2 } from "lucide-react";
 
 interface FormActionsProps {
   onSubmit: () => void;
   onWhatsApp: () => void;
+  isSubmitting?: boolean;
 }
 
-const FormActions = ({ onSubmit, onWhatsApp }: FormActionsProps) => {
+const FormActions = ({ onSubmit, onWhatsApp, isSubmitting = false }: FormActionsProps) => {
   return (
     <div className="grid grid-cols-2 gap-4 pt-4">
       <Button 
@@ -17,8 +18,13 @@ const FormActions = ({ onSubmit, onWhatsApp }: FormActionsProps) => {
           e.preventDefault();
           onSubmit();
         }}
+        disabled={isSubmitting}
       >
-        <Send className="h-4 w-4" />
+        {isSubmitting ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <Send className="h-4 w-4" />
+        )}
         Submit Request
       </Button>
       
@@ -26,6 +32,7 @@ const FormActions = ({ onSubmit, onWhatsApp }: FormActionsProps) => {
         type="button" 
         onClick={onWhatsApp} 
         className="h-12 bg-green-600 hover:bg-green-700 flex items-center justify-center gap-2"
+        disabled={isSubmitting}
       >
         <MessageSquare className="h-4 w-4" />
         WhatsApp

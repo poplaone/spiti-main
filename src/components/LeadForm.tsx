@@ -11,6 +11,7 @@ const LeadForm = () => {
     date,
     setDate,
     formData,
+    isSubmitting,
     handleInputChange,
     handleSelectChange,
     handleCheckboxChange,
@@ -49,6 +50,7 @@ const LeadForm = () => {
             <FormActions 
               onSubmit={handleSubmit}
               onWhatsApp={sendWhatsApp}
+              isSubmitting={isSubmitting}
             />
           </div>
         </form>

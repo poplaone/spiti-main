@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
 import { useFormValidation, FormData } from './useFormValidation';
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 interface FormState extends FormData {
   duration: string;
@@ -15,6 +16,7 @@ interface FormState extends FormData {
 
 export const useLeadForm = () => {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [date, setDate] = useState<Date>();
   const [formData, setFormData] = useState<FormState>({
     name: '',
@@ -49,65 +51,70 @@ export const useLeadForm = () => {
     setFormData(prev => ({ ...prev, [id]: checked }));
   };
 
-  const handleSubmit = () => {
-    if (!formData.name.trim()) {
-      toast.error("Please enter your name");
+  const submitLeadForm = async (leadData: any) => {
+    try {
+      setIsSubmitting(true);
+      
+      // Call the Supabase Edge Function to send the email
+      const { data, error } = await supabase.functions.invoke('send-lead-email', {
+        body: leadData
+      });
+
+      if (error) {
+        console.error("Error sending lead form:", error);
+        toast.error("Failed to send your request. Please try again later.");
+        return false;
+      }
+
+      console.log("Lead form submitted successfully:", data);
+      return true;
+    } catch (err) {
+      console.error("Exception sending lead form:", err);
+      toast.error("Failed to send your request. Please try again later.");
+      return false;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm(formData)) {
       return;
     }
-    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-    if (!formData.phone.trim()) {
-      toast.error("Please enter your phone number");
-      return;
-    }
+
+    // Prepare data for submission
+    const leadData = {
+      ...formData,
+      travelDate: date ? format(date, "PPP") : undefined
+    };
 
     // In a real application, you would send this data to a server
-    console.log("Form submission:", {
-      ...formData,
-      date: date ? format(date, "PPP") : undefined
-    });
+    console.log("Form submission:", leadData);
 
-    // Email submission details (would be handled by a backend)
-    const emailDetails = {
-      to: ["Spitivalleytravels@gmail.com", "Himalayanfootslog@gmail.com"],
-      subject: "New Tour Inquiry from Website",
-      body: `
-        Name: ${formData.name}
-        Email: ${formData.email}
-        Phone: ${formData.phone}
-        Duration: ${formData.duration}
-        Travel Date: ${date ? format(date, "PPP") : "Not specified"}
-        Guests: ${formData.guests}
-        Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ? 'Fixed Departure' : ''}
-      `
-    };
+    toast.loading("Submitting your request...");
     
-    console.log("Email would be sent to:", emailDetails);
+    // Send email via our edge function
+    const success = await submitLeadForm(leadData);
     
-    // Instead of showing dialog, navigate to thank you page with form data
-    navigate('/thank-you', { 
-      state: { 
-        formData: {
-          ...formData,
-          date: date ? format(date, "PPP") : "Not specified"
-        } 
-      }
-    });
+    toast.dismiss();
+
+    if (success) {
+      toast.success("Your request has been submitted!");
+      
+      // Navigate to thank you page with form data
+      navigate('/thank-you', { 
+        state: { 
+          formData: {
+            ...formData,
+            date: date ? format(date, "PPP") : "Not specified"
+          } 
+        }
+      });
+    }
   };
 
   const sendWhatsApp = () => {
-    if (!formData.name.trim()) {
-      toast.error("Please enter your name");
-      return;
-    }
-    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-    if (!formData.phone.trim()) {
-      toast.error("Please enter your phone number");
+    if (!validateForm(formData)) {
       return;
     }
 
@@ -131,6 +138,7 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
     date,
     setDate,
     formData,
+    isSubmitting,
     handleInputChange,
     handleSelectChange,
     handleCheckboxChange,
