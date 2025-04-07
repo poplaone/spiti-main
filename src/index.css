@@ -133,11 +133,11 @@
 
 /* Menu position transitions */
 .menu-centered {
-  @apply absolute left-1/2 transform -translate-x-1/2 transition-all duration-500;
+  @apply absolute left-1/2 transform -translate-x-1/2 transition-all duration-700 ease-in-out;
 }
 
 .menu-right {
-  @apply transition-all duration-500;
+  @apply transition-all duration-700 ease-in-out;
 }
 
 /* Marquee animation for scrolling info strip */
