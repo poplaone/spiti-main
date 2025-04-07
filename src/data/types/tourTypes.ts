@@ -1,7 +1,7 @@
-
 export interface TourNightStay {
   location: string;
   nights: number;
+  order?: number;
 }
 
 export interface TourItineraryDay {
