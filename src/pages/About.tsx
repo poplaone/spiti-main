@@ -168,7 +168,7 @@ Because no matter what, I believe in moving forward with a strong mindset and a 
                     <AvatarFallback>JC</AvatarFallback>
                   </Avatar>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-1 text-center">Jayesh Chauhan</h3>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Sales Executive</h3>
                 <p className="text-spiti-green mb-3 text-center">Sales & Travel Director</p>
                 <p className="text-white/80 text-sm">I belong to the mountains. Son to an apple grower and a true movies and sports enthusiast working as a sales person quite strange Nah. This is quite obvious for people who know me because leaving my comfort zone and taking on challenges is my thing.
 I am here to take one! Let me guide you to one of yours.
