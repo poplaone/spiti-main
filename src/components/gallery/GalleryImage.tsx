@@ -39,6 +39,7 @@ const GalleryImage = memo(({
         height={photo.height} 
         decoding={priority ? "sync" : "async"} 
         onLoad={() => onLoad(index)} 
+        fetchPriority={priority ? "high" : "auto"}
       />
       {photo.location}
     </div>
