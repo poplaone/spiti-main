@@ -50,11 +50,15 @@ const handler = async (req: Request): Promise<Response> => {
       <p><strong>Tour Type:</strong> ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ? 'Fixed Departure' : ''}</p>
     `;
 
-    // Send email using a service like EmailJS or Resend
-    // This is a simplified example - in a real implementation, you would
-    // use an email service API like Resend, SendGrid, or EmailJS
+    // For better debugging
+    console.log("Preparing to send email with data:", {
+      to: "spitivalleytravels@gmail.com",
+      subject: emailSubject,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone
+    });
     
-    // For now, we'll use the Email API from emailjs.com as a basic example
     const emailJsEndpoint = "https://api.emailjs.com/api/v1.0/email/send";
     const emailJsData = {
       service_id: Deno.env.get("EMAILJS_SERVICE_ID"),
@@ -74,6 +78,13 @@ const handler = async (req: Request): Promise<Response> => {
       }
     };
     
+    // Log the EmailJS configuration (with sensitive data redacted)
+    console.log("EmailJS configuration:", {
+      service_id: Deno.env.get("EMAILJS_SERVICE_ID") ? "[CONFIGURED]" : "[MISSING]",
+      template_id: Deno.env.get("EMAILJS_TEMPLATE_ID") ? "[CONFIGURED]" : "[MISSING]",
+      user_id: Deno.env.get("EMAILJS_USER_ID") ? "[CONFIGURED]" : "[MISSING]"
+    });
+    
     const emailResponse = await fetch(emailJsEndpoint, {
       method: "POST",
       headers: {
@@ -82,13 +93,17 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify(emailJsData)
     });
     
+    // Detailed logging for response
+    console.log("EmailJS response status:", emailResponse.status);
+    const responseBody = await emailResponse.text();
+    console.log("EmailJS response body:", responseBody);
+    
     if (!emailResponse.ok) {
-      const errorData = await emailResponse.text();
-      console.error("Email service error:", errorData);
-      throw new Error(`Email service responded with ${emailResponse.status}: ${errorData}`);
+      console.error("EmailJS service error:", responseBody);
+      throw new Error(`Email service responded with ${emailResponse.status}: ${responseBody}`);
     }
 
-    console.log("Email sent successfully");
+    console.log("Email sent successfully to spitivalleytravels@gmail.com");
 
     // Return success response
     return new Response(

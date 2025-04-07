@@ -25,7 +25,7 @@ const FormActions = ({ onSubmit, onWhatsApp, isSubmitting = false }: FormActions
         ) : (
           <Send className="h-4 w-4" />
         )}
-        Submit Request
+        {isSubmitting ? "Sending..." : "Submit Request"}
       </Button>
       
       <Button 

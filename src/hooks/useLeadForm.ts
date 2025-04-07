@@ -55,6 +55,8 @@ export const useLeadForm = () => {
     try {
       setIsSubmitting(true);
       
+      console.log("Submitting lead form to edge function:", leadData);
+      
       // Call the Supabase Edge Function to send the email
       const { data, error } = await supabase.functions.invoke('send-lead-email', {
         body: leadData
@@ -91,15 +93,15 @@ export const useLeadForm = () => {
     // In a real application, you would send this data to a server
     console.log("Form submission:", leadData);
 
-    toast.loading("Submitting your request...");
+    const toastId = toast.loading("Submitting your request...");
     
     // Send email via our edge function
     const success = await submitLeadForm(leadData);
     
-    toast.dismiss();
+    toast.dismiss(toastId);
 
     if (success) {
-      toast.success("Your request has been submitted!");
+      toast.success("Your request has been submitted! We'll contact you soon.");
       
       // Navigate to thank you page with form data
       navigate('/thank-you', { 
