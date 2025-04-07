@@ -1,23 +1,118 @@
-import React from 'react';
+
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter, Send, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
 const Contact = () => {
-  const {
-    toast
-  } = useToast();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you as soon as possible."
-    });
+  const navigate = useNavigate();
+  const { toast: uiToast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
-  return <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
+
+  const submitContactForm = async (data: any) => {
+    try {
+      setIsSubmitting(true);
+      
+      console.log("Submitting contact form to edge function:", data);
+      
+      // Call the Supabase Edge Function to send the email
+      const { data: responseData, error } = await supabase.functions.invoke('send-lead-email', {
+        body: {
+          ...data,
+          // Add these required fields for the edge function
+          duration: "Contact Form",
+          guests: "N/A",
+          isCustomized: false,
+          isFixedDeparture: false
+        }
+      });
+
+      if (error) {
+        console.error("Error sending contact form:", error);
+        toast.error("Failed to send your message. Please try again later.");
+        return false;
+      }
+
+      if (!responseData || !responseData.success) {
+        console.error("Contact form submission failed:", responseData);
+        toast.error("Failed to send your message. Please try again later.");
+        return false;
+      }
+
+      console.log("Contact form submitted successfully:", responseData);
+      return true;
+    } catch (err) {
+      console.error("Exception sending contact form:", err);
+      toast.error("Failed to send your message. Please try again later.");
+      return false;
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name.trim()) {
+      toast.error("Please enter your name");
+      return;
+    }
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    if (!formData.subject.trim()) {
+      toast.error("Please enter a subject");
+      return;
+    }
+    if (!formData.message.trim()) {
+      toast.error("Please enter your message");
+      return;
+    }
+
+    const toastId = toast.loading("Sending your message...");
+    
+    // Send email via our edge function
+    const success = await submitContactForm(formData);
+    
+    toast.dismiss(toastId);
+
+    if (success) {
+      toast.success("Your message has been sent successfully!");
+      
+      // Navigate to thank you page with form data
+      navigate('/thank-you', { 
+        state: { 
+          formData: {
+            ...formData
+          } 
+        }
+      });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
       <Header />
       
       {/* Hero Section */}
@@ -116,8 +211,6 @@ const Contact = () => {
                     <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-white/20 transition-colors p-3 rounded-full">
                       <Instagram className="text-white h-5 w-5" />
                     </a>
-                    
-                    
                   </div>
                 </div>
               </div>
@@ -132,32 +225,80 @@ const Contact = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="name" className="block text-white font-medium mb-2">Your Name</label>
-                      <Input id="name" placeholder="John Doe" required className="bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                      <Input 
+                        id="name" 
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="John Doe" 
+                        required 
+                        className="bg-white/5 border-white/20 text-white placeholder:text-white/50" 
+                      />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-white font-medium mb-2">Email Address</label>
-                      <Input id="email" type="email" placeholder="john@example.com" required className="bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                      <Input 
+                        id="email" 
+                        type="email" 
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="john@example.com" 
+                        required 
+                        className="bg-white/5 border-white/20 text-white placeholder:text-white/50" 
+                      />
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="phone" className="block text-white font-medium mb-2">Phone Number</label>
-                      <Input id="phone" placeholder="+91 98765 43210" className="bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                      <Input 
+                        id="phone" 
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="+91 98765 43210" 
+                        className="bg-white/5 border-white/20 text-white placeholder:text-white/50" 
+                      />
                     </div>
                     <div>
                       <label htmlFor="subject" className="block text-white font-medium mb-2">Subject</label>
-                      <Input id="subject" placeholder="Booking Inquiry" required className="bg-white/5 border-white/20 text-white placeholder:text-white/50" />
+                      <Input 
+                        id="subject" 
+                        value={formData.subject}
+                        onChange={handleChange}
+                        placeholder="Booking Inquiry" 
+                        required 
+                        className="bg-white/5 border-white/20 text-white placeholder:text-white/50" 
+                      />
                     </div>
                   </div>
                   
                   <div>
                     <label htmlFor="message" className="block text-white font-medium mb-2">Your Message</label>
-                    <Textarea id="message" placeholder="I'm interested in booking a tour for..." rows={6} required className="bg-white/5 border-white/20 text-white placeholder:text-white/50 resize-none" />
+                    <Textarea 
+                      id="message" 
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="I'm interested in booking a tour for..." 
+                      rows={6} 
+                      required 
+                      className="bg-white/5 border-white/20 text-white placeholder:text-white/50 resize-none" 
+                    />
                   </div>
                   
-                  <Button type="submit" className="bg-gradient-to-r from-spiti-green to-spiti-blue hover:opacity-90">
-                    <Send className="mr-2 h-4 w-4" /> Send Message
+                  <Button 
+                    type="submit" 
+                    className="bg-gradient-to-r from-spiti-green to-spiti-blue hover:opacity-90"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" /> Send Message
+                      </>
+                    )}
                   </Button>
                 </form>
               </div>
@@ -178,6 +319,7 @@ const Contact = () => {
       </section>
       
       <Footer />
-    </div>;
+    </div>
+  );
 };
 export default Contact;
