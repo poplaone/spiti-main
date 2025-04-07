@@ -7,7 +7,7 @@ import {
   CardDescription, 
   CardContent 
 } from "@/components/ui/card";
-import ItineraryEditor from "../ItineraryEditor";
+import ItineraryEditor from "../itinerary-editor";
 
 interface ItineraryDay {
   id?: string;
