@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import GoogleRatingBadge from './GoogleRatingBadge';
 import WeatherDisplay from '../weather/WeatherDisplay';
 import { useIsMobile } from "@/hooks/use-mobile";
+import LogoMountain from "./LogoMountain";
+import { useState, useEffect } from "react";
 
 interface HeroContentProps {
   scrollToDiscoverSection: () => void;
@@ -10,14 +12,39 @@ interface HeroContentProps {
 
 const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
   const isMobile = useIsMobile();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 10);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-[-100px] md:mt-0">
+      {/* Mountain logo for desktop that will animate */}
+      <div className="relative">
+        <LogoMountain isScrolled={isScrolled} />
+      </div>
+      
+      {/* Mobile logo image */}
       <img 
         alt="Spiti Valley Travels Logo" 
-        className="w-32 h-32 mb-1 md:w-40 md:h-40 md:mb-4 mt-[-70px] md:mt-0 object-contain" 
+        className="md:hidden w-32 h-32 mb-1 md:w-40 md:h-40 md:mb-4 mt-[-70px] md:mt-0 object-contain" 
         src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
       />
+      
+      {/* Desktop logo text */}
+      <div className="hidden md:flex flex-col items-center">
+        <div className="text-[#F8B133] font-extrabold text-5xl mb-2 mt-10">
+          SPITI VALLEY
+          <span className="block text-[#E41E26] text-4xl font-bold leading-none">TRAVELS</span>
+        </div>
+      </div>
       
       {/* Google Ratings Badge */}
       <GoogleRatingBadge />

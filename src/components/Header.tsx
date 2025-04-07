@@ -58,6 +58,7 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
             isVisible={logoVisible} 
             isTourPage={isTourPage} 
             isHomePage={isHomePage}
+            isScrolled={isScrolled}
           />
 
           {/* Weather Display for Mobile */}
