@@ -134,7 +134,7 @@ People often say that Vaibhav talks less, but they enjoy his company. His deep i
                     <AvatarFallback>SD</AvatarFallback>
                   </Avatar>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-1 text-center">Sheetla</h3>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Operational Head</h3>
                 <p className="text-spiti-green mb-3 text-center">Business Development</p>
                 <p className="text-white/80 text-sm">
                   A hardworking and spiritual person who believes in simplicity yet dreams big. Sales and marketing are her passion, and she takes pride in supporting teammates, which is why they call her Sheetla Didi. She embraces challenges with dedication and never backs down.
