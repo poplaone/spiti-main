@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 import Header from "@/components/Header";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -12,6 +11,7 @@ import Footer from "@/components/Footer";
 import { Phone, MessageSquare, PhoneCall } from 'lucide-react';
 import ScrollingInfoStrip from "@/components/ScrollingInfoStrip";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+
 const Index = () => {
   const packagesSectionRef = useRef<HTMLElement>(null);
   const scrollToPackages = () => {
@@ -149,7 +149,7 @@ const Index = () => {
             </DialogContent>
           </Dialog>
           
-          <a href="tel:+918626888979" className="flex-1 flex items-center justify-center h-14 bg-green-600 hover:bg-green-700 text-white">
+          <a href="tel:+918353040008" className="flex-1 flex items-center justify-center h-14 bg-green-600 hover:bg-green-700 text-white">
             <PhoneCall className="mr-2 h-5 w-5" />
             Call Now
           </a>
