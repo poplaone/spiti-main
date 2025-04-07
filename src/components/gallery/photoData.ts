@@ -1,35 +1,40 @@
 
 // Photo data with optimized dimensions for mobile and desktop
 export const galleryPhotos = [{
-  url: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=600&q=80",
-  mobileUrl: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&q=70",
-  alt: "Spiti Valley Landscape",
+  url: "public/lovable-uploads/c8752240-9e88-439d-940e-ec659fe4ff17.png",
+  mobileUrl: "public/lovable-uploads/c8752240-9e88-439d-940e-ec659fe4ff17.png",
+  alt: "Chandra Taal - Person walking along path by the lake with mountains in background",
   width: 600,
-  height: 400
+  height: 600,
+  location: "Chandra Taal"
 }, {
-  url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=600&q=80",
-  mobileUrl: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=400&q=70",
-  alt: "Mountain River",
+  url: "public/lovable-uploads/33bd2684-f305-45c4-a696-a0c111768a8b.png",
+  mobileUrl: "public/lovable-uploads/33bd2684-f305-45c4-a696-a0c111768a8b.png",
+  alt: "Kalpa - Colorful houses and buildings with snow-capped mountains in background",
   width: 600,
-  height: 400
+  height: 600,
+  location: "Kalpa"
 }, {
-  url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80",
-  mobileUrl: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400&q=70",
-  alt: "Mountain Sunrise",
+  url: "public/lovable-uploads/db2a0f70-958a-4da1-9742-08a43e42318c.png",
+  mobileUrl: "public/lovable-uploads/db2a0f70-958a-4da1-9742-08a43e42318c.png",
+  alt: "Key Monastery - Aerial view of the monastery perched on hillside with mountains in background",
   width: 600,
-  height: 400
+  height: 600,
+  location: "Key Monastery"
 }, {
-  url: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
-  mobileUrl: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=70",
-  alt: "Aerial Mountain View",
+  url: "public/lovable-uploads/55f4dc8a-2500-460b-a498-14dc050728e1.png",
+  mobileUrl: "public/lovable-uploads/55f4dc8a-2500-460b-a498-14dc050728e1.png",
+  alt: "Dhankar Lake - Turquoise blue lake with mountains in background",
   width: 600,
-  height: 400
+  height: 600,
+  location: "Dhankar Lake"
 }, {
-  url: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=600&q=80",
-  mobileUrl: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=400&q=70",
-  alt: "Rocky Mountains",
+  url: "public/lovable-uploads/8cd215c9-4d2b-4262-beb4-2e3409d3b53e.png",
+  mobileUrl: "public/lovable-uploads/8cd215c9-4d2b-4262-beb4-2e3409d3b53e.png",
+  alt: "Chandra Taal - Stone pathway alongside a reflective lake with mountains and green meadows",
   width: 600,
-  height: 400
+  height: 600,
+  location: "Chandra Taal"
 }];
 
 export type GalleryPhoto = typeof galleryPhotos[0];
