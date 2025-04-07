@@ -31,6 +31,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     // Validate required fields
     if (!formData.name || !formData.email || !formData.phone) {
+      console.error("Missing required fields in form data:", formData);
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         { 
@@ -41,6 +42,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     console.log("Processing lead form submission for:", formData.name);
+    console.log("Form data received:", JSON.stringify(formData));
     
     // 1. Send notification email to business owner
     const adminEmailHtml = `
@@ -56,15 +58,20 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log("Sending admin notification email to: spitivalleytravels@gmail.com");
     
-    const adminEmailResponse = await resend.emails.send({
-      from: "Spiti Valley Travels <onboarding@resend.dev>",
-      to: "spitivalleytravels@gmail.com",
-      subject: `New Tour Inquiry - ${formData.name}`,
-      html: adminEmailHtml,
-      reply_to: formData.email
-    });
-    
-    console.log("Admin email response:", adminEmailResponse);
+    try {
+      const adminEmailResponse = await resend.emails.send({
+        from: "Spiti Valley Travels <onboarding@resend.dev>",
+        to: "spitivalleytravels@gmail.com",
+        subject: `New Tour Inquiry - ${formData.name}`,
+        html: adminEmailHtml,
+        reply_to: formData.email
+      });
+      
+      console.log("Admin email response:", JSON.stringify(adminEmailResponse));
+    } catch (emailError) {
+      console.error("Error sending admin email:", emailError);
+      // Continue to customer email even if admin email fails
+    }
     
     // 2. Send thank you email to the customer
     const customerEmailHtml = `
@@ -85,23 +92,25 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log("Sending thank you email to customer:", formData.email);
     
-    const customerEmailResponse = await resend.emails.send({
-      from: "Spiti Valley Travels <onboarding@resend.dev>",
-      to: formData.email,
-      subject: "Thank You for Your Spiti Valley Tour Inquiry",
-      html: customerEmailHtml,
-      reply_to: "spitivalleytravels@gmail.com"
-    });
-    
-    console.log("Customer email response:", customerEmailResponse);
+    try {
+      const customerEmailResponse = await resend.emails.send({
+        from: "Spiti Valley Travels <onboarding@resend.dev>",
+        to: formData.email,
+        subject: "Thank You for Your Spiti Valley Tour Inquiry",
+        html: customerEmailHtml,
+        reply_to: "spitivalleytravels@gmail.com"
+      });
+      
+      console.log("Customer email response:", JSON.stringify(customerEmailResponse));
+    } catch (emailError) {
+      console.error("Error sending customer email:", emailError);
+    }
 
     // Return success response
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: "Lead form submitted successfully",
-        adminEmail: adminEmailResponse,
-        customerEmail: customerEmailResponse
+        message: "Lead form submitted successfully"
       }),
       { 
         status: 200, 

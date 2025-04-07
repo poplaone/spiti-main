@@ -68,6 +68,12 @@ export const useLeadForm = () => {
         return false;
       }
 
+      if (!data || !data.success) {
+        console.error("Lead form submission failed:", data);
+        toast.error("Failed to send your request. Please try again later.");
+        return false;
+      }
+
       console.log("Lead form submitted successfully:", data);
       return true;
     } catch (err) {
