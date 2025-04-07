@@ -61,7 +61,7 @@ const handler = async (req: Request): Promise<Response> => {
       template_id: Deno.env.get("EMAILJS_TEMPLATE_ID"),
       user_id: Deno.env.get("EMAILJS_USER_ID"),
       template_params: {
-        to_email: "spitivalleytravels@gmail.com,himalayanfootslog@gmail.com",
+        to_email: "spitivalleytravels@gmail.com",
         subject: emailSubject,
         name: formData.name,
         email: formData.email,
