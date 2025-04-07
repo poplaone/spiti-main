@@ -113,18 +113,21 @@ export type Database = {
           id: string
           location: string
           nights: number
+          order: number | null
           tour_package_id: string
         }
         Insert: {
           id?: string
           location: string
           nights: number
+          order?: number | null
           tour_package_id: string
         }
         Update: {
           id?: string
           location?: string
           nights?: number
+          order?: number | null
           tour_package_id?: string
         }
         Relationships: [

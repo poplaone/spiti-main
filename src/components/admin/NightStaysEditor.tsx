@@ -19,14 +19,16 @@ interface NightStaysEditorProps {
 const NightStaysEditor: React.FC<NightStaysEditorProps> = ({ nightStays, setNightStays }) => {
   const addNightStay = () => {
     // Get the highest order value and add 1, or start with 1
-    const nextOrder = nightStays.length > 0 
+    const nextOrder = Array.isArray(nightStays) && nightStays.length > 0
       ? Math.max(...nightStays.map(stay => stay.order || 0)) + 1 
       : 1;
       
-    setNightStays([...nightStays, { location: '', nights: 1, order: nextOrder }]);
+    setNightStays(prevStays => [...(Array.isArray(prevStays) ? prevStays : []), { location: '', nights: 1, order: nextOrder }]);
   };
 
   const updateNightStay = (index: number, field: keyof NightStay, value: string | number) => {
+    if (!Array.isArray(nightStays)) return;
+    
     const updatedStays = [...nightStays];
     updatedStays[index] = { 
       ...updatedStays[index], 
@@ -36,12 +38,16 @@ const NightStaysEditor: React.FC<NightStaysEditorProps> = ({ nightStays, setNigh
   };
 
   const removeNightStay = (index: number) => {
+    if (!Array.isArray(nightStays)) return;
+    
     const updatedStays = [...nightStays];
     updatedStays.splice(index, 1);
     setNightStays(updatedStays);
   };
 
   const moveNightStay = (index: number, direction: 'up' | 'down') => {
+    if (!Array.isArray(nightStays)) return;
+    
     if ((direction === 'up' && index === 0) || 
         (direction === 'down' && index === nightStays.length - 1)) {
       return;
@@ -63,8 +69,9 @@ const NightStaysEditor: React.FC<NightStaysEditorProps> = ({ nightStays, setNigh
     setNightStays(updatedStays);
   };
 
-  // Sort night stays by order
-  const sortedNightStays = [...nightStays].sort((a, b) => {
+  // Ensure nightStays is an array and sort by order
+  const safeNightStays = Array.isArray(nightStays) ? nightStays : [];
+  const sortedNightStays = [...safeNightStays].sort((a, b) => {
     const orderA = a.order !== undefined ? a.order : 999;
     const orderB = b.order !== undefined ? b.order : 999;
     return orderA - orderB;

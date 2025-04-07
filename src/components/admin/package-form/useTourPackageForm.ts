@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -75,10 +74,10 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
         setAvailableTo(data.availableTo);
         
         // Set related data
-        setNightStays(data.nightStays);
-        setInclusions(data.inclusions);
-        setExclusions(data.exclusions);
-        setItineraryDays(data.itineraryDays);
+        setNightStays(Array.isArray(data.nightStays) ? data.nightStays : []);
+        setInclusions(Array.isArray(data.inclusions) ? data.inclusions : []);
+        setExclusions(Array.isArray(data.exclusions) ? data.exclusions : []);
+        setItineraryDays(Array.isArray(data.itineraryDays) ? data.itineraryDays : []);
       }
     } catch (error) {
       console.error("Error loading package data:", error);
@@ -141,7 +140,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     setActiveTab,
     imagePreview,
     
-    // Make sure packageId is exposed in the return
     packageId, 
     
     title,

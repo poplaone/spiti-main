@@ -14,6 +14,7 @@ interface NightStay {
   id?: string;
   location: string;
   nights: number;
+  order?: number;
 }
 
 interface Item {
@@ -31,11 +32,11 @@ interface DetailsTabProps {
 }
 
 const DetailsTab: React.FC<DetailsTabProps> = ({
-  nightStays,
+  nightStays = [],
   setNightStays,
-  inclusions,
+  inclusions = [],
   setInclusions,
-  exclusions,
+  exclusions = [],
   setExclusions
 }) => {
   return (
@@ -51,7 +52,7 @@ const DetailsTab: React.FC<DetailsTabProps> = ({
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Night Stays</h3>
             <NightStaysEditor
-              nightStays={nightStays}
+              nightStays={nightStays || []}
               setNightStays={setNightStays}
             />
           </div>
@@ -60,14 +61,14 @@ const DetailsTab: React.FC<DetailsTabProps> = ({
             <h3 className="text-lg font-medium">Inclusions & Exclusions</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <InclusionsEditor
-                items={inclusions}
+                items={inclusions || []}
                 setItems={setInclusions}
                 title="Inclusions"
                 placeholder="Add what's included in the package"
               />
               
               <InclusionsEditor
-                items={exclusions}
+                items={exclusions || []}
                 setItems={setExclusions}
                 title="Exclusions"
                 placeholder="Add what's not included in the package"
