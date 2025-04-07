@@ -127,15 +127,17 @@ const saveRelatedData = async (
   }
   
   if (formData.nightStays.length > 0) {
+    // Ensure night stays have order values
+    const nightStaysWithOrder = formData.nightStays.map((stay, index) => ({
+      tour_package_id: tourPackageId,
+      location: stay.location,
+      nights: stay.nights,
+      order: stay.order || index + 1 // Use existing order or fallback to index-based order
+    }));
+    
     const { error: nightStaysError } = await supabase
       .from('night_stays')
-      .insert(
-        formData.nightStays.map(stay => ({
-          tour_package_id: tourPackageId,
-          location: stay.location,
-          nights: stay.nights
-        }))
-      );
+      .insert(nightStaysWithOrder);
     
     if (nightStaysError) throw nightStaysError;
   }

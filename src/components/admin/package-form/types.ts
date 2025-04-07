@@ -3,6 +3,7 @@ export interface NightStay {
   id?: string;
   location: string;
   nights: number;
+  order?: number;
 }
 
 export interface Inclusion {

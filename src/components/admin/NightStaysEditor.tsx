@@ -2,12 +2,13 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, MoveUp, MoveDown } from "lucide-react";
 
 interface NightStay {
   id?: string;
   location: string;
   nights: number;
+  order?: number;
 }
 
 interface NightStaysEditorProps {
@@ -17,7 +18,12 @@ interface NightStaysEditorProps {
 
 const NightStaysEditor: React.FC<NightStaysEditorProps> = ({ nightStays, setNightStays }) => {
   const addNightStay = () => {
-    setNightStays([...nightStays, { location: '', nights: 1 }]);
+    // Get the highest order value and add 1, or start with 1
+    const nextOrder = nightStays.length > 0 
+      ? Math.max(...nightStays.map(stay => stay.order || 0)) + 1 
+      : 1;
+      
+    setNightStays([...nightStays, { location: '', nights: 1, order: nextOrder }]);
   };
 
   const updateNightStay = (index: number, field: keyof NightStay, value: string | number) => {
@@ -35,10 +41,61 @@ const NightStaysEditor: React.FC<NightStaysEditorProps> = ({ nightStays, setNigh
     setNightStays(updatedStays);
   };
 
+  const moveNightStay = (index: number, direction: 'up' | 'down') => {
+    if ((direction === 'up' && index === 0) || 
+        (direction === 'down' && index === nightStays.length - 1)) {
+      return;
+    }
+
+    const updatedStays = [...nightStays];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    
+    // Swap order values
+    const currentOrder = updatedStays[index].order || index + 1;
+    const targetOrder = updatedStays[targetIndex].order || targetIndex + 1;
+    
+    updatedStays[index].order = targetOrder;
+    updatedStays[targetIndex].order = currentOrder;
+    
+    // Swap positions in array
+    [updatedStays[index], updatedStays[targetIndex]] = [updatedStays[targetIndex], updatedStays[index]];
+    
+    setNightStays(updatedStays);
+  };
+
+  // Sort night stays by order
+  const sortedNightStays = [...nightStays].sort((a, b) => {
+    const orderA = a.order !== undefined ? a.order : 999;
+    const orderB = b.order !== undefined ? b.order : 999;
+    return orderA - orderB;
+  });
+
   return (
     <div className="space-y-4">
-      {nightStays.map((stay, index) => (
+      {sortedNightStays.map((stay, index) => (
         <div key={index} className="flex items-center gap-3">
+          <div className="flex flex-col space-y-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => moveNightStay(index, 'up')}
+              disabled={index === 0}
+              className="h-8 w-8"
+            >
+              <MoveUp className="h-4 w-4" />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => moveNightStay(index, 'down')}
+              disabled={index === sortedNightStays.length - 1}
+              className="h-8 w-8"
+            >
+              <MoveDown className="h-4 w-4" />
+            </Button>
+          </div>
           <Input
             placeholder="Location (e.g., Kaza)"
             value={stay.location}

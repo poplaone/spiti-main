@@ -55,7 +55,7 @@ export const fetchPackageData = async (packageId: string): Promise<TourPackageFo
       .from('night_stays')
       .select('*')
       .eq('tour_package_id', packageId)
-      .order('id');
+      .order('order', { ascending: true });
     
     if (!nightStaysError) {
       formData.nightStays = nightStaysData || [];

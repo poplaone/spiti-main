@@ -3,8 +3,14 @@ import { Home, MapPin } from 'lucide-react';
 import { TourAccommodationProps } from "@/data/types/tourTypes";
 
 const TourAccommodation: React.FC<TourAccommodationProps> = ({ nightStays }) => {
-  // We're keeping the night stays in their original order
-  // No need to sort or manipulate the order as they come from the database
+  // Sort night stays by order if it exists, otherwise keep original order
+  const sortedStays = [...nightStays].sort((a, b) => {
+    if (a.order !== undefined && b.order !== undefined) {
+      return a.order - b.order;
+    }
+    return 0; // Keep original order if no order property
+  });
+  
   return (
     <div>
       <p className="text-gray-700 mb-6">
@@ -12,7 +18,7 @@ const TourAccommodation: React.FC<TourAccommodationProps> = ({ nightStays }) => 
       </p>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {nightStays.map((stay, index) => (
+        {sortedStays.map((stay, index) => (
           <div key={index} className="border border-gray-200 rounded-md p-4 bg-gray-50 hover:shadow-md transition-shadow">
             <div className="flex items-start">
               <MapPin className="text-spiti-blue w-5 h-5 mr-2 mt-1 flex-shrink-0" />

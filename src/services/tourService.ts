@@ -9,11 +9,12 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
     .from('night_stays')
     .select('*')
     .eq('tour_package_id', dbTour.id)
-    .order('id');
+    .order('order', { ascending: true });
   
   const nightStays: TourNightStay[] = (nightStaysData || []).map((stay: any) => ({
     location: stay.location,
-    nights: stay.nights
+    nights: stay.nights,
+    order: stay.order
   }));
   
   // Get inclusions
