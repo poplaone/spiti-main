@@ -63,11 +63,13 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
           {/* Weather Display for Mobile */}
           {isMobile && <WeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />}
 
-          <DesktopMenu 
-            roadTripsTours={roadTripsTours} 
-            fixedDepartureTours={fixedDepartureTours}
-            customizableTours={customizableTours}
-          />
+          <div className={`hidden md:block ${isHomePage && !logoVisible ? 'menu-centered' : 'menu-right'}`}>
+            <DesktopMenu 
+              roadTripsTours={roadTripsTours} 
+              fixedDepartureTours={fixedDepartureTours}
+              customizableTours={customizableTours}
+            />
+          </div>
 
           {/* Mobile Menu Button */}
           <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>

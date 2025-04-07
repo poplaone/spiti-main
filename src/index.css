@@ -131,6 +131,15 @@
   }
 }
 
+/* Menu position transitions */
+.menu-centered {
+  @apply absolute left-1/2 transform -translate-x-1/2 transition-all duration-500;
+}
+
+.menu-right {
+  @apply transition-all duration-500;
+}
+
 /* Marquee animation for scrolling info strip */
 @keyframes marquee {
   0% {
@@ -176,4 +185,3 @@
   @apply absolute w-[15px] h-[15px] md:w-[20px] md:h-[20px] bg-spiti-green
   rounded-full -translate-x-1/2 -translate-y-1/2 z-[2] shadow;
 }
-
