@@ -131,29 +131,6 @@
   }
 }
 
-/* Logo animation keyframes */
-@keyframes float-up {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-100px);
-    opacity: 0;
-  }
-}
-
-@keyframes float-down {
-  0% {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 /* Marquee animation for scrolling info strip */
 @keyframes marquee {
   0% {
@@ -168,14 +145,6 @@
   display: inline-block;
   white-space: nowrap;
   animation: marquee 20s linear infinite;
-}
-
-.animate-float-up {
-  animation: float-up 0.5s ease-out forwards;
-}
-
-.animate-float-down {
-  animation: float-down 0.5s ease-out forwards;
 }
 
 /* Spiti Circuit Map Styles */
@@ -207,3 +176,4 @@
   @apply absolute w-[15px] h-[15px] md:w-[20px] md:h-[20px] bg-spiti-green
   rounded-full -translate-x-1/2 -translate-y-1/2 z-[2] shadow;
 }
+
