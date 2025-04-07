@@ -39,7 +39,7 @@ const About = () => {
               </p>
             </div>
             <div className="rounded-lg overflow-hidden shadow-xl">
-              <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80" alt="Spiti Valley Landscape" className="w-full h-full object-cover" />
+              <img alt="Spiti Valley Landscape" className="w-full h-full object-cover" src="/lovable-uploads/819d630c-bd6f-4e85-a643-082e67338f02.jpg" />
             </div>
           </div>
         </div>
