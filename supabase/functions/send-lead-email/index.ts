@@ -2,7 +2,10 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
+// Initialize primary Resend client
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+// Initialize alternate Resend client as fallback
+const resendAlternate = new Resend(Deno.env.get("RESEND_API_KEY_ALTERNATE"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -58,6 +61,9 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log("Sending admin notification email to: spitivalleytravels@gmail.com");
     
+    let adminEmailSent = false;
+    
+    // Try primary API key first
     try {
       const adminEmailResponse = await resend.emails.send({
         from: "Spiti Valley Travels <onboarding@resend.dev>",
@@ -67,10 +73,28 @@ const handler = async (req: Request): Promise<Response> => {
         reply_to: formData.email
       });
       
-      console.log("Admin email response:", JSON.stringify(adminEmailResponse));
-    } catch (emailError) {
-      console.error("Error sending admin email:", emailError);
-      // Continue to customer email even if admin email fails
+      console.log("Admin email response (primary):", JSON.stringify(adminEmailResponse));
+      adminEmailSent = true;
+    } catch (primaryEmailError) {
+      console.error("Error sending admin email with primary key:", primaryEmailError);
+      
+      // Try with alternate API key
+      try {
+        console.log("Attempting to send admin email with alternate API key");
+        const alternateAdminEmailResponse = await resendAlternate.emails.send({
+          from: "Spiti Valley Travels <onboarding@resend.dev>",
+          to: "spitivalleytravels@gmail.com",
+          subject: `New Tour Inquiry - ${formData.name}`,
+          html: adminEmailHtml,
+          reply_to: formData.email
+        });
+        
+        console.log("Admin email response (alternate):", JSON.stringify(alternateAdminEmailResponse));
+        adminEmailSent = true;
+      } catch (alternateEmailError) {
+        console.error("Error sending admin email with alternate key:", alternateEmailError);
+        // Both attempts failed, continue to customer email
+      }
     }
     
     // 2. Send thank you email to the customer
@@ -92,6 +116,9 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log("Sending thank you email to customer:", formData.email);
     
+    let customerEmailSent = false;
+    
+    // Try primary API key first
     try {
       const customerEmailResponse = await resend.emails.send({
         from: "Spiti Valley Travels <onboarding@resend.dev>",
@@ -101,16 +128,36 @@ const handler = async (req: Request): Promise<Response> => {
         reply_to: "spitivalleytravels@gmail.com"
       });
       
-      console.log("Customer email response:", JSON.stringify(customerEmailResponse));
-    } catch (emailError) {
-      console.error("Error sending customer email:", emailError);
+      console.log("Customer email response (primary):", JSON.stringify(customerEmailResponse));
+      customerEmailSent = true;
+    } catch (primaryEmailError) {
+      console.error("Error sending customer email with primary key:", primaryEmailError);
+      
+      // Try with alternate API key
+      try {
+        console.log("Attempting to send customer email with alternate API key");
+        const alternateCustomerEmailResponse = await resendAlternate.emails.send({
+          from: "Spiti Valley Travels <onboarding@resend.dev>",
+          to: formData.email,
+          subject: "Thank You for Your Spiti Valley Tour Inquiry",
+          html: customerEmailHtml,
+          reply_to: "spitivalleytravels@gmail.com"
+        });
+        
+        console.log("Customer email response (alternate):", JSON.stringify(alternateCustomerEmailResponse));
+        customerEmailSent = true;
+      } catch (alternateEmailError) {
+        console.error("Error sending customer email with alternate key:", alternateEmailError);
+      }
     }
 
-    // Return success response
+    // Return success response with information about email delivery status
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: "Lead form submitted successfully"
+        message: "Lead form submitted successfully",
+        adminEmailSent,
+        customerEmailSent
       }),
       { 
         status: 200, 
