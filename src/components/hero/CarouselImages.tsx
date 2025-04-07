@@ -1,5 +1,6 @@
+
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import CarouselImage from './CarouselImage';
 
 // Different sets of images for mobile and desktop
@@ -35,10 +36,10 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
     }
   }, [isMobile]);
 
-  // Track image loading state
-  const handleImageLoad = (index: number) => {
+  // Memoize the image load handler to prevent unnecessary re-renders
+  const handleImageLoad = useCallback((index: number) => {
     setLoadedImages(prev => ({...prev, [index]: true}));
-  };
+  }, []);
 
   // Preload the next image when current changes
   useEffect(() => {
@@ -52,7 +53,7 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
         img.onload = () => handleImageLoad(nextIdx);
       }
     }
-  }, [current, imagesToShow, loadedImages]);
+  }, [current, imagesToShow, loadedImages, handleImageLoad]);
 
   // Don't render anything until we know which device type we're on
   if (!isLoaded) {

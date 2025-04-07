@@ -1,3 +1,4 @@
+
 import { memo } from 'react';
 interface GalleryImageProps {
   photo: {
@@ -27,10 +28,22 @@ const GalleryImage = memo(({
   }
   const imageUrl = isMobile ? photo.mobileUrl : photo.url;
   const priority = index <= 1;
-  return <div className="relative w-full h-full">
-      <img src={imageUrl} alt={photo.alt} className="w-full h-full object-cover" loading={priority ? "eager" : "lazy"} width={photo.width} height={photo.height} decoding={priority ? "sync" : "async"} onLoad={() => onLoad(index)} />
+  return (
+    <div className="relative w-full h-full">
+      <img 
+        src={imageUrl} 
+        alt={photo.alt} 
+        className="w-full h-full object-cover" 
+        loading={priority ? "eager" : "lazy"} 
+        width={photo.width} 
+        height={photo.height} 
+        decoding={priority ? "sync" : "async"} 
+        onLoad={() => onLoad(index)} 
+      />
       {photo.location}
-    </div>;
+    </div>
+  );
 });
+
 GalleryImage.displayName = 'GalleryImage';
 export default GalleryImage;
