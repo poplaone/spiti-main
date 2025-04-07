@@ -7,7 +7,7 @@ const SpitiCircuitMap: React.FC = () => {
           Spiti Valley Complete Circuit Tour
         </h3>
         <p className="text-gray-600 max-w-3xl mx-auto">
-          Explore the stunning journey through the complete Spiti Valley circuit. This interactive map highlights all the key destinations including Manali, Atal Tunnel, Chandratal, Kaza, Key Monastery, Kibber, Tabo, Nako, Chitkul, Sangla, Shimla and more.
+          Explore the stunning journey through the complete Spiti Valley circuit. This interactive map highlights all the key destinations including Shimla, Sangla, Chitkul, Nako, Tabo, Kaza, Komic, Key Monastery, Kibber, Chandratal, Manali and many more.
         </p>
       </div>
       
