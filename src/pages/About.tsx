@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -91,6 +92,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-white mb-12 text-center">Our Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Co-Founders Section - Grouped together */}
             <Card className="bg-white/10 backdrop-blur-sm border-0">
               <CardContent className="p-6">
                 <div className="mb-4 flex justify-center">
@@ -102,10 +104,26 @@ const About = () => {
                 <h3 className="text-xl font-bold text-white mb-1 text-center">Vaibhav Reekhan</h3>
                 <p className="text-spiti-green mb-3 text-center">Co-Founder</p>
                 <p className="text-white/80 text-sm text-left">Vaibhav is the Co-Founder of SpitiValleyTravels and HimalayanFootslog. With over nine years of experience in the travel industry, he is a passionate traveler at heart. A true nature lover, Vaibhav has always been drawn to the mountains and trekking. After undergoing two surgeries for varicose veins and hernia, his focus shifted towards road trips, which he now leads with great enthusiasm.
-Working with his dedicated local team, Vaibhav is making an exceptional impact in the travel industry. His expertise lies in organizing and leading large road trips, as well as managing low-budget group tours for students while maintaining high-quality Services. To better understand his clients’ needs and preferences, he also runs a small homestay at Chirgaon (Shimla).</p>
+Working with his dedicated local team, Vaibhav is making an exceptional impact in the travel industry. His expertise lies in organizing and leading large road trips, as well as managing low-budget group tours for students while maintaining high-quality Services. To better understand his clients' needs and preferences, he also runs a small homestay at Chirgaon (Shimla).</p>
                 <p className="text-white/80 text-sm mt-2">Vaibhav dislikes mis-selling and places honesty at the core of his work.
 People often say that Vaibhav talks less, but they enjoy his company. His deep interest in local traditions, culture, architecture, and history allows him to connect with people on a meaningful level, creating memorable experiences. With a strong sense of itineraries, places, and people, his intuitive nature helps his team make the best decisions every time.
               </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-white/10 backdrop-blur-sm border-0">
+              <CardContent className="p-6">
+                <div className="mb-4 flex justify-center">
+                  <Avatar className="h-32 w-32 border-2 border-spiti-green">
+                    <AvatarImage alt="Ankit Dutta" src="/lovable-uploads/16f47c96-3b47-4fe1-8925-73762dc613cc.png" />
+                    <AvatarFallback>AD</AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1 text-center">Ankit Dutta</h3>
+                <p className="text-spiti-green mb-3 text-center">Co-Founder</p>
+                <p className="text-white/80 text-sm text-left">Ankit Dutta is a passionate traveler with a deep-rooted love for exploration. Holding both a Bachelor's and Master's degree in Tourism Administration, Ankit has spent years honing his expertise in the tourism and hospitality industries. Having worked with some of the biggest MNCs in the travel sector, he brings a wealth of knowledge and experience to the team.</p>
+                <p className="text-white/80 text-sm mt-2">As the Co-Founder and Chief Experience Officer of "SpitiValleyTravels", Ankit is dedicated to curating exceptional travel experiences. His keen eye for discovering hidden gems and his love for outdoor adventures drive the company's mission to help travelers experience the world in meaningful ways.</p>
+                <p className="text-white/80 text-sm mt-2">When he's not working, Ankit is often trekking through new destinations, engaging in outdoor activities, and connecting with nature. His passion for travel is reflected in his goal to share authentic insights and help others create unforgettable adventures.</p>
               </CardContent>
             </Card>
             
@@ -155,7 +173,7 @@ Because no matter what, I believe in moving forward with a strong mindset and a 
                 <p className="text-spiti-green mb-3 text-center">Sales & Travel Director</p>
                 <p className="text-white/80 text-sm">I belong to the mountains. Son to an apple grower and a true movies and sports enthusiast working as a sales person quite strange Nah. This is quite obvious for people who know me because leaving my comfort zone and taking on challenges is my thing.
 I am here to take one! Let me guide you to one of yours.
-Taking on a challenge is a lot like riding a horse, isn’t it? If you’re comfortable while you’re doing it, you’re probably doing it wrong.” 
+Taking on a challenge is a lot like riding a horse, isn't it? If you're comfortable while you're doing it, you're probably doing it wrong." 
               </p>
                 <p className="text-white/80 text-sm mt-2">My name is Jayesh Chauhan I know my name is not as filmy as my personality. I consider myself an actor and this world is my stage. I love to guide people on their journey.Imagine you on a journey full of thrilling adventures and You can be the lead role of an unforgettable journey! Where I am Jayesh Chauhan will be your travel director, and I am here to turn your vacation dreams into blockbuster experiences.Because I don't just sell trips - I deliver &quot;paisa wasool&quot; experiences with full on entertainment, drama and adventure! 
 So better to be ready to begin your travel story with me.
