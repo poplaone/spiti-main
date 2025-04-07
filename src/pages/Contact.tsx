@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
@@ -34,11 +33,9 @@ const Contact = () => {
       
       console.log("Submitting contact form to edge function:", data);
       
-      // Call the Supabase Edge Function to send the email
       const { data: responseData, error } = await supabase.functions.invoke('send-lead-email', {
         body: {
           ...data,
-          // Add these required fields for the edge function
           duration: "Contact Form",
           guests: "N/A",
           isCustomized: false,
@@ -72,7 +69,6 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    // Basic validation
     if (!formData.name.trim()) {
       toast.error("Please enter your name");
       return;
@@ -92,7 +88,6 @@ const Contact = () => {
 
     const toastId = toast.loading("Sending your message...");
     
-    // Send email via our edge function
     const success = await submitContactForm(formData);
     
     toast.dismiss(toastId);
@@ -100,7 +95,6 @@ const Contact = () => {
     if (success) {
       toast.success("Your message has been sent successfully!");
       
-      // Navigate to thank you page with form data
       navigate('/thank-you', { 
         state: { 
           formData: {
@@ -115,10 +109,13 @@ const Contact = () => {
     <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
       <Header />
       
-      {/* Hero Section */}
       <section className="relative pt-20 lg:pt-28">
         <div className="h-[40vh] md:h-[50vh] relative overflow-hidden">
-          <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600&q=80" alt="Spiti Valley Road" className="absolute inset-0 w-full h-full object-cover" />
+          <img 
+            src="/lovable-uploads/ca833426-3806-4da0-b1eb-d94155df1935.png" 
+            alt="Spiti Valley in Winter with Prayer Flags" 
+            className="absolute inset-0 w-full h-full object-cover" 
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-spiti-forest/80 to-transparent"></div>
           <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Contact Us</h1>
@@ -129,12 +126,10 @@ const Contact = () => {
         </div>
       </section>
       
-      {/* Contact Information & Form */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            {/* Contact Information */}
             <div className="lg:col-span-1">
               <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg h-full">
                 <h2 className="text-2xl font-bold text-white mb-6">Get In Touch</h2>
@@ -216,7 +211,6 @@ const Contact = () => {
               </div>
             </div>
             
-            {/* Contact Form */}
             <div className="lg:col-span-2">
               <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg">
                 <h2 className="text-2xl font-bold text-white mb-6">Send Us a Message</h2>
@@ -307,7 +301,6 @@ const Contact = () => {
         </div>
       </section>
       
-      {/* Map Section */}
       <section className="py-8 pb-16">
         <div className="container mx-auto px-4">
           <div className="bg-white/10 backdrop-blur-sm p-1 rounded-lg overflow-hidden">
