@@ -18,7 +18,6 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [logoVisible, setLogoVisible] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -36,36 +35,20 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
       const scrollPosition = window.scrollY;
       setIsScrolled(scrollPosition > 10);
 
-      // Calculate scroll progress for smooth transitions
-      const scrollThreshold = window.innerHeight * 0.6;
-      const progress = Math.min(1, scrollPosition / scrollThreshold);
-      setScrollProgress(progress);
-
       // Show logo in header when scrolled down enough (past the hero section) if on homepage
       // For other pages, always show the logo
       if (isHomePage) {
-        setLogoVisible(scrollPosition > scrollThreshold * 0.9);
+        setLogoVisible(scrollPosition > window.innerHeight * 0.6);
       } else {
         setLogoVisible(true);
       }
     };
-    
     window.addEventListener('scroll', handleScroll);
 
     // Initial check (especially important for non-homepage)
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHomePage]);
-
-  // Calculate menu positioning style based on scroll progress
-  const menuStyle = isHomePage && !logoVisible
-    ? { 
-        opacity: 1,
-        transform: scrollProgress > 0.5 
-          ? `translateX(${(scrollProgress - 0.5) * 2 * 50}%)` 
-          : 'translateX(0)' 
-      }
-    : {};
 
   return (
     <header ref={headerRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
@@ -80,10 +63,7 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
           {/* Weather Display for Mobile */}
           {isMobile && <WeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />}
 
-          <div 
-            className={`hidden md:block ${isHomePage && !logoVisible ? 'menu-centered' : 'menu-right'}`}
-            style={menuStyle}
-          >
+          <div className={`hidden md:block ${isHomePage && !logoVisible ? 'menu-centered' : 'menu-right'}`}>
             <DesktopMenu 
               roadTripsTours={roadTripsTours} 
               fixedDepartureTours={fixedDepartureTours}
