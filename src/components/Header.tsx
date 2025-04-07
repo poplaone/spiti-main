@@ -17,7 +17,7 @@ interface HeaderProps {
 const Header = ({ scrollToPackages }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logoVisible, setLogoVisible] = useState(true); // Always visible now
+  const [logoVisible, setLogoVisible] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -34,13 +34,21 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       setIsScrolled(scrollPosition > 10);
+
+      // Show logo in header when scrolled down enough (past the hero section) if on homepage
+      // For other pages, always show the logo
+      if (isHomePage) {
+        setLogoVisible(scrollPosition > window.innerHeight * 0.6);
+      } else {
+        setLogoVisible(true);
+      }
     };
     window.addEventListener('scroll', handleScroll);
 
-    // Initial check
+    // Initial check (especially important for non-homepage)
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   return (
     <header ref={headerRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>

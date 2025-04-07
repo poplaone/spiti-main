@@ -18,6 +18,9 @@ const Logo = ({
   // For mobile, we keep the original logo behavior
   const showMobileLogo = isVisible || !isHomePage || isTourPage;
   
+  // For desktop, we'll show the combined logo when scrolled
+  const showCombinedLogo = isScrolled && isHomePage && !isTourPage;
+
   return (
     <Link to="/" className="font-display font-bold text-xl text-white flex items-center relative">
       {/* Mobile logo - original behavior */}
@@ -31,9 +34,9 @@ const Logo = ({
         }
       </div>
       
-      {/* Desktop - show text logo when at top, combined logo when scrolled */}
+      {/* Desktop - combined logo when scrolled */}
       <div className="hidden md:flex items-center">
-        {isScrolled ? (
+        {showCombinedLogo ? (
           <div className="flex items-center">
             <img 
               src="/lovable-uploads/08844cbc-49d4-4c1e-876c-66f7764e727d.png" 
@@ -43,7 +46,12 @@ const Logo = ({
             <LogoText />
           </div>
         ) : (
-          <LogoText />
+          <>
+            {/* Show only text logo when not on homepage */}
+            {(!isHomePage || isTourPage) && <LogoText />}
+            
+            {/* Show nothing when on homepage and not scrolled - the mountain logo will be in hero */}
+          </>
         )}
       </div>
     </Link>
