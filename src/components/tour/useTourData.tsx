@@ -25,9 +25,13 @@ export const useTourData = (tourType: string, tourId?: string): UseTourDataResul
     if (id) {
       console.log("Looking for tour with ID:", id);
       const foundTour = allTours.find(t => t.id === id);
-      console.log("Found tour by ID:", foundTour?.title);
       
-      if (foundTour) {
+      // If we didn't find a tour by ID, log this and proceed to other matching methods
+      if (!foundTour) {
+        console.log("No tour found with ID:", id);
+        console.log("Will try to match by other criteria...");
+      } else {
+        console.log("Found tour by ID:", foundTour?.title);
         // Get ALL other tours except the current one for related tours section
         const relatedTours = allTours.filter(t => t.id !== id);
         return { selectedTour: foundTour, relatedTours };

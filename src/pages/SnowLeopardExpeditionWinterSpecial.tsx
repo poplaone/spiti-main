@@ -7,16 +7,19 @@ const SnowLeopardExpeditionWinterSpecial = () => {
   const { tours } = useToursContext();
   
   // Look for the tour with the exact title or with variations of the name
+  // Find the exact tour by ID or by exact title match with proper spacing
   const tour = tours.find(t => 
+    t.id === "6c7a433e-5860-4f91-8ffd-6649b01581c0" || // First try to match by ID
     t.title === "SNOW LEOPARD EXPEDITION (WINTER SPECIAL)" ||
+    t.title === "SNOW LEOPARD EXPEDITION (WINTER SPECIAL) " || // With space at end
     t.title === "SNOW LEOPARD EXPEDITION WINTER SPECIAL"
   );
   
   // Debug logging to see what's happening
   useEffect(() => {
     if (tours.length > 0) {
-      console.log("Available tours:", tours.map(t => ({ id: t.id, title: t.title })));
-      console.log("Found Snow Leopard tour:", tour);
+      console.log("SNOW LEOPARD PAGE: Available tours:", tours.map(t => ({ id: t.id, title: t.title })));
+      console.log("SNOW LEOPARD PAGE: Found Snow Leopard tour:", tour);
     }
   }, [tours, tour]);
   

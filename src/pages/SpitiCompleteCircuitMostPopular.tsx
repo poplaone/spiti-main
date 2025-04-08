@@ -7,7 +7,9 @@ const SpitiCompleteCircuitMostPopular = () => {
   const { tours } = useToursContext();
   
   // Look for the tour with the exact title or with variations of the name
+  // Find the exact tour by ID or by exact title match
   const tour = tours.find(t => 
+    t.id === "86ee2362-f5dd-4aed-90d2-856fed8c91af" || // First try to match by ID
     t.title === "SPITI COMPLETE CIRCUIT(MOST POPULAR)" ||
     t.title === "SPITI COMPLETE CIRCUIT (MOST POPULAR)"
   );
@@ -15,8 +17,8 @@ const SpitiCompleteCircuitMostPopular = () => {
   // Debug logging to see what's happening
   useEffect(() => {
     if (tours.length > 0) {
-      console.log("Available tours:", tours.map(t => ({ id: t.id, title: t.title })));
-      console.log("Found Spiti Complete Circuit tour:", tour);
+      console.log("COMPLETE CIRCUIT PAGE: Available tours:", tours.map(t => ({ id: t.id, title: t.title })));
+      console.log("COMPLETE CIRCUIT PAGE: Found Spiti Complete Circuit tour:", tour);
     }
   }, [tours, tour]);
   
