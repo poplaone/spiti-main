@@ -1,5 +1,6 @@
+
 import { useToursContext } from '@/context/ToursContext';
-import { useIsMobile } from '@/hooks/useIsMobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export function useTourData(tourType: string, tourId?: string) {
   const { tours, loading, error } = useToursContext();
