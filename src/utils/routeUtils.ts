@@ -3,7 +3,7 @@ import { TourPackageProps } from "@/data/types/tourTypes";
 
 // Map to convert tour titles to URL-friendly slugs
 export const tourTitleToSlug: Record<string, string> = {
-  "BUDDHIST AND TRIBAL CIRCUIT–SPITI": "/BUDDHIST-AND-TRIBAL-CIRCUIT-SPITI",
+  "BUDDHIST AND TRIBAL CIRCUIT–SPITI": "/BUDDHIST-AND-TRIBAL-CIRCUIT–SPITI",
   "INTO THE HEART OF SPITI": "/INTO-THE-HEART-OF-SPITI",
   "KINNAUR VALLEY EXPLORATION": "/KINNAUR-VALLEY-EXPLORATION",
   "LAHAUL SPITI - BIKE TOUR": "/LAHAUL-SPITI-BIKE-TOUR",
