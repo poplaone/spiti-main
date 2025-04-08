@@ -11,8 +11,8 @@ const TourDetail = () => {
   const [heroImage, setHeroImage] = useState<string>('');
   const { tours } = useToursContext();
   
-  // Get the actual ID, whether from the slug or directly from URL
-  const actualId = params.id;
+  // Get the actual ID, whether from the slug parameter or directly from URL
+  const actualId = params.id ? extractIdFromSlug(params.id) : null;
   
   useEffect(() => {
     if (actualId && tours.length > 0) {
@@ -49,7 +49,7 @@ const TourDetail = () => {
 
   return (
     <BaseTourDetailPage 
-      tourId={actualId}
+      tourId={actualId || ''}
       tourType={tourType}
       heroImage={heroImage}
     />

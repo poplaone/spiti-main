@@ -6,35 +6,16 @@ export function useTourData(tourType: string, tourId?: string) {
   const { tours, loading, error } = useToursContext();
   const isMobile = useIsMobile();
   
-  // Extract the actual ID from the tourId (which might include a slug)
-  const extractActualId = (id: string) => {
-    // If ID contains a dash, assume it's a slug-id format and get the last part
-    if (id.includes('-')) {
-      const parts = id.split('-');
-      return parts[parts.length - 1];
-    }
-    // Otherwise just return the ID as is
-    return id;
-  };
-  
   // Find the tour by ID if available
   const getTourById = (id?: string) => {
     if (!id || !tours.length) return null;
     
-    // Clean the ID if it's in the slug-id format
-    const actualId = extractActualId(id);
-    
-    // First try to find by exact ID
+    // Try to find by exact ID
     let foundTour = tours.find(tour => tour.id === id);
     
-    // If not found and we have an actualId from slug, try that
-    if (!foundTour && actualId !== id) {
-      foundTour = tours.find(tour => tour.id?.includes(actualId));
-    }
-    
-    // If still not found, check if any ID starts with the actualId
+    // If not found, try partial match (for backward compatibility)
     if (!foundTour) {
-      foundTour = tours.find(tour => tour.id?.startsWith(actualId));
+      foundTour = tours.find(tour => tour.id?.includes(id) || id.includes(tour.id || ''));
     }
     
     return foundTour || null;
