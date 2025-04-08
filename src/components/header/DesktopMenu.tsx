@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -10,7 +11,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
 import { 
   ChevronRight, 
   Home, 

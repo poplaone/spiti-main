@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
-import { TourPackageProps } from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Menu, Home, Map, Calendar, Settings, Mail, HelpCircle, FileText, ChevronDown, ChevronRight } from 'lucide-react';
@@ -12,14 +12,14 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { tourTitleToSlug } from '@/utils/routeUtils';
 
 interface MobileMenuProps {
+  isOpen: boolean;
+  onClose: () => void;
   roadTripsTours: TourPackageProps[];
   fixedDepartureTours: TourPackageProps[];
   customizableTours?: TourPackageProps[];
 }
 
-const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [] }: MobileMenuProps) => {
-  const [open, setOpen] = useState(false);
-  
+const MobileMenu = ({ isOpen, onClose, roadTripsTours, fixedDepartureTours, customizableTours = [] }: MobileMenuProps) => {
   const getTourRoute = (tour: TourPackageProps) => {
     // Use custom URL path if available
     return tourTitleToSlug[tour.title] || `/tour/${tour.id}`;
@@ -27,12 +27,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
   
   return (
     <div className="block md:hidden">
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button variant="ghost" className="text-white p-2">
-            <Menu />
-          </Button>
-        </SheetTrigger>
+      <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent side="left" className="bg-spiti-forest text-white overflow-y-auto max-h-screen">
           <div className="flex flex-col h-full">
             <div className="flex-1 py-4">
@@ -48,7 +43,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <Link to="/road-trips" className="flex items-center justify-between py-2 hover:bg-white/10 rounded px-2" onClick={() => setOpen(false)}>
+                    <Link to="/road-trips" className="flex items-center justify-between py-2 hover:bg-white/10 rounded px-2" onClick={onClose}>
                       <span>View All Road Trips</span>
                       <ChevronRight className="h-4 w-4" />
                     </Link>
@@ -58,7 +53,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                         key={tour.id || tour.title}
                         to={getTourRoute(tour)} 
                         className="block py-2 hover:bg-white/10 rounded px-2 text-sm truncate"
-                        onClick={() => setOpen(false)}
+                        onClick={onClose}
                       >
                         {tour.title}
                       </Link>
@@ -74,7 +69,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <Link to="/fixed-departures" className="flex items-center justify-between py-2 hover:bg-white/10 rounded px-2" onClick={() => setOpen(false)}>
+                    <Link to="/fixed-departures" className="flex items-center justify-between py-2 hover:bg-white/10 rounded px-2" onClick={onClose}>
                       <span>View All Fixed Departures</span>
                       <ChevronRight className="h-4 w-4" />
                     </Link>
@@ -84,7 +79,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                         key={tour.id || tour.title}
                         to={getTourRoute(tour)} 
                         className="block py-2 hover:bg-white/10 rounded px-2 text-sm truncate"
-                        onClick={() => setOpen(false)}
+                        onClick={onClose}
                       >
                         {tour.title}
                       </Link>
@@ -100,7 +95,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <Link to="/customizable-tours" className="flex items-center justify-between py-2 hover:bg-white/10 rounded px-2" onClick={() => setOpen(false)}>
+                    <Link to="/customizable-tours" className="flex items-center justify-between py-2 hover:bg-white/10 rounded px-2" onClick={onClose}>
                       <span>View All Customizable Tours</span>
                       <ChevronRight className="h-4 w-4" />
                     </Link>
@@ -110,7 +105,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                         key={tour.id || tour.title}
                         to={getTourRoute(tour)} 
                         className="block py-2 hover:bg-white/10 rounded px-2 text-sm truncate"
-                        onClick={() => setOpen(false)}
+                        onClick={onClose}
                       >
                         {tour.title}
                       </Link>
@@ -125,7 +120,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                 <Link 
                   to="/" 
                   className="flex items-center py-2 px-2 hover:bg-white/10 rounded font-medium"
-                  onClick={() => setOpen(false)}
+                  onClick={onClose}
                 >
                   <Home className="mr-2 h-5 w-5" />
                   Home
@@ -133,7 +128,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                 <Link 
                   to="/about" 
                   className="flex items-center py-2 px-2 hover:bg-white/10 rounded font-medium"
-                  onClick={() => setOpen(false)}
+                  onClick={onClose}
                 >
                   <Home className="mr-2 h-5 w-5" />
                   About
@@ -141,7 +136,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                 <Link 
                   to="/blog" 
                   className="flex items-center py-2 px-2 hover:bg-white/10 rounded font-medium"
-                  onClick={() => setOpen(false)}
+                  onClick={onClose}
                 >
                   <FileText className="mr-2 h-5 w-5" />
                   Blog
@@ -149,7 +144,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                 <Link 
                   to="/faq" 
                   className="flex items-center py-2 px-2 hover:bg-white/10 rounded font-medium"
-                  onClick={() => setOpen(false)}
+                  onClick={onClose}
                 >
                   <HelpCircle className="mr-2 h-5 w-5" />
                   FAQ
@@ -157,7 +152,7 @@ const MobileMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [
                 <Link 
                   to="/contact" 
                   className="flex items-center py-2 px-2 hover:bg-white/10 rounded font-medium"
-                  onClick={() => setOpen(false)}
+                  onClick={onClose}
                 >
                   <Mail className="mr-2 h-5 w-5" />
                   Contact
