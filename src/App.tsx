@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,12 +27,6 @@ import SpitiValleyOwnCar from "./pages/SpitiValleyOwnCar";
 import SpitiValleyWomenOnlyTour from "./pages/SpitiValleyWomenOnlyTour";
 import UnexploredSpiti from "./pages/UnexploredSpiti";
 import WinterWhiteSpiti from "./pages/WinterWhiteSpiti";
-
-// Import new tour detail pages
-import RoyalSpitiValleyWholeCircuit from "./pages/RoyalSpitiValleyWholeCircuit";
-import SnowLeopardExpedition from "./pages/SnowLeopardExpedition";
-import SoulfulSpitiGateway from "./pages/SoulfulSpitiGateway";
-import SpitiCompleteCircuit from "./pages/SpitiCompleteCircuit";
 
 // Import TourDetailBySlug for handling slug-based URLs
 import TourDetailBySlug from "./pages/TourDetailBySlug";
@@ -82,7 +75,7 @@ const App = () => {
             <Route path="/fixed-departures" element={<FixedDepartures />} />
             <Route path="/customizable-tours" element={<CustomizableTours />} />
             
-            {/* Custom tour detail pages with clean URLs */}
+            {/* Custom tour detail pages with clean URLs - only keeping the ones not to be removed */}
             <Route path="/BUDDHIST-AND-TRIBAL-CIRCUIT–SPITI" element={<BuddhistAndTribalCircuit />} />
             <Route path="/INTO-THE-HEART-OF-SPITI" element={<IntoTheHeartOfSpiti />} />
             <Route path="/KINNAUR-VALLEY-EXPLORATION" element={<KinnaurValleyExploration />} />
@@ -91,12 +84,6 @@ const App = () => {
             <Route path="/SPITI-VALLEY-WOMEN-ONLY-TOUR" element={<SpitiValleyWomenOnlyTour />} />
             <Route path="/UNEXPLORED-SPITI" element={<UnexploredSpiti />} />
             <Route path="/WINTER-WHITE-SPITI" element={<WinterWhiteSpiti />} />
-            
-            {/* New custom tour detail pages */}
-            <Route path="/ROYAL-SPITI-VALLEY-WHOLE-CIRCUIT" element={<RoyalSpitiValleyWholeCircuit />} />
-            <Route path="/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL" element={<SnowLeopardExpedition />} />
-            <Route path="/SOULFUL-SPITI-GATEWAY" element={<SoulfulSpitiGateway />} />
-            <Route path="/SPITI-COMPLETE-CIRCUIT-MOST-POPULAR" element={<SpitiCompleteCircuit />} />
             
             {/* Dynamic tour detail page route */}
             <Route path="/tour/:id" element={<TourDetail />} />
