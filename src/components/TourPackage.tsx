@@ -3,54 +3,9 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { BiCycling, BiTransfer } from "react-icons/bi";
-import { IoFemale } from "react-icons/io5";
+import { Bike, ArrowLeftRight, User } from "lucide-react";
 import { tourTitleToSlug } from '@/utils/routeUtils';
-
-export interface TourPackageProps {
-  id?: string;
-  title: string;
-  image: string;
-  originalPrice: number;
-  discountedPrice: number;
-  discount: number;
-  duration: {
-    nights: number;
-    days: number;
-  };
-  nightStays?: TourNightStay[];
-  transportType: string;
-  isWomenOnly: boolean;
-  overview?: string;
-  itinerary?: TourItineraryDay[];
-  inclusions?: string[];
-  exclusions?: string[];
-  isFixedDeparture?: boolean;
-  isCustomizable?: boolean;
-  isVisible?: boolean;
-  overviewDetails?: TourOverviewDetails;
-}
-
-export interface TourNightStay {
-  location: string;
-  nights: number;
-  order?: number;
-}
-
-export interface TourItineraryDay {
-  day: number;
-  title: string;
-  description: string;
-}
-
-export interface TourOverviewDetails {
-  pickup?: string;
-  drop?: string;
-  difficulty?: string;
-  bestSeason?: string;
-  altitude?: string;
-  meals?: string;
-}
+import { TourPackageProps } from '@/data/types/tourTypes';
 
 // Format price with thousands separator
 const formatCurrency = (amount: number) => {
@@ -101,8 +56,8 @@ const TourPackage: React.FC<TourPackageProps> = ({
           {badgeText && (
             <div className="absolute top-3 left-3">
               <Badge className="bg-spiti-blue hover:bg-spiti-blue">
-                {transportType.toLowerCase() === 'bike' && <BiCycling className="mr-1" />}
-                {isWomenOnly && <IoFemale className="mr-1" />}
+                {transportType.toLowerCase() === 'bike' && <Bike className="mr-1" size={16} />}
+                {isWomenOnly && <User className="mr-1" size={16} />}
                 {badgeText}
               </Badge>
             </div>
@@ -124,7 +79,7 @@ const TourPackage: React.FC<TourPackageProps> = ({
           <div className="flex justify-between text-sm text-gray-600">
             <div className="flex items-center">
               <span className="inline-flex items-center">
-                <BiTransfer className="mr-1" />
+                <ArrowLeftRight className="mr-1" size={16} />
                 {duration.nights} Nights
               </span>
             </div>
