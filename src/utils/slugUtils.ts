@@ -29,12 +29,7 @@ export const extractIdFromSlug = (slug: string): string | null => {
     return parts[parts.length - 1]; // Return the last part after slash
   }
   
-  // Check if the slug is in the format "/tour/id"
-  if (slug.startsWith('/tour/')) {
-    return slug.replace('/tour/', '');
-  }
-  
-  // If no slash found, this is an old-style URL or direct ID
+  // If no slash found, this is likely a direct ID
   return slug;
 };
 
@@ -45,6 +40,8 @@ export const extractIdFromSlug = (slug: string): string | null => {
  * @returns The full URL slug
  */
 export const createTourUrl = (title: string, id: string): string => {
+  if (!title || !id) return '/';
+  
   const slug = createSlug(title);
   return `/tour/${slug}/${id}`;
 };

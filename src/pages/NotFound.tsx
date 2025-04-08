@@ -7,15 +7,17 @@ import { createSlug } from "@/utils/slugUtils";
 const NotFound = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { tours } = useToursContext();
+  const { tours, loading } = useToursContext();
 
   useEffect(() => {
+    // Wait for tours to load
+    if (loading) return;
+    
     // Handle redirects for old tour detail URLs
     const path = location.pathname;
     
-    // Check if this is an old-style direct ID URL without a slug
-    if (path.startsWith('/tour/') && !path.includes('/') && !path.includes('-')) {
-      // This might be a direct ID link without a slug
+    // Check if this is an old-style direct ID URL
+    if (path.startsWith('/tour/') && path.split('/').length === 3) {
       const id = path.replace('/tour/', '');
       
       // Find the tour with this ID
@@ -24,7 +26,6 @@ const NotFound = () => {
       if (tour) {
         // Redirect to the new slug format
         const slug = createSlug(tour.title);
-        console.log(`Redirecting from ${path} to /tour/${slug}/${id}`);
         navigate(`/tour/${slug}/${id}`, { replace: true });
         return;
       }
@@ -58,7 +59,6 @@ const NotFound = () => {
         
         // Generate slug from title and redirect to the new URL format
         const slug = createSlug(targetTour.title);
-        console.log(`Redirecting from ${path} to /tour/${slug}/${targetTour.id}`);
         navigate(`/tour/${slug}/${targetTour.id}`, { replace: true });
       } else {
         // If no tours are available yet, redirect to home
@@ -71,7 +71,7 @@ const NotFound = () => {
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
-  }, [location.pathname, navigate, tours]);
+  }, [location.pathname, navigate, tours, loading]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

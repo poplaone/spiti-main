@@ -7,7 +7,7 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import LeadForm from "./LeadForm";
-import { createSlug } from '@/utils/slugUtils';
+import { createTourUrl } from '@/utils/slugUtils';
 
 // Memoized TourPackage component to prevent unnecessary re-renders
 const TourPackage: React.FC<TourPackageProps & {
@@ -30,12 +30,8 @@ const TourPackage: React.FC<TourPackageProps & {
   const availableFrom = overviewDetails?.availableFrom || 'June';
   const availableTo = overviewDetails?.availableTo || 'October';
 
-  // Generate user-friendly URL with slug if we have an ID and title
-  let detailsUrl = "#";
-  if (id && title) {
-    const slug = createSlug(title);
-    detailsUrl = `/tour/${slug}/${id}`;
-  }
+  // Generate user-friendly URL with slug
+  const detailsUrl = id && title ? createTourUrl(title, id) : "#";
 
   return (
     <div className="block h-full w-full">
@@ -47,7 +43,6 @@ const TourPackage: React.FC<TourPackageProps & {
               alt={title} 
               className="w-full h-[200px] object-cover" 
               loading="lazy"
-              decoding="async"
               width="400"
               height="200"
             />

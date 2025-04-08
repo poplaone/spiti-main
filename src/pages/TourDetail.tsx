@@ -8,14 +8,17 @@ import { extractIdFromSlug, createSlug } from '@/utils/slugUtils';
 const TourDetail = () => {
   const params = useParams<{ id: string; slug?: string }>();
   const navigate = useNavigate();
-  const [tourType, setTourType] = useState<string>('');
-  const [heroImage, setHeroImage] = useState<string>('');
-  const { tours } = useToursContext();
+  const [tourType, setTourType] = useState<string>('unexplored');
+  const [heroImage, setHeroImage] = useState<string>('/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png');
+  const { tours, loading } = useToursContext();
   
-  // Get the actual ID, whether from the slug parameter or directly from URL
+  // Get the actual ID from the slug parameter
   const actualId = params.id ? extractIdFromSlug(params.id) : null;
   
   useEffect(() => {
+    // Wait for tours to load before processing
+    if (loading) return;
+    
     if (actualId && tours.length > 0) {
       const tour = tours.find(t => t.id === actualId);
       
@@ -31,7 +34,7 @@ const TourDetail = () => {
           return;
         }
         
-        // Always use the exact same image that was uploaded by admin
+        // Set hero image and tour type
         setHeroImage(tour.image);
         
         // Set tour type based on characteristics
@@ -48,16 +51,9 @@ const TourDetail = () => {
         } else {
           setTourType('unexplored');
         }
-      } else {
-        setTourType('unexplored');
-        // Use a fallback image if tour not found
-        setHeroImage("/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png");
       }
-    } else {
-      setTourType('unexplored');
-      setHeroImage("/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png");
     }
-  }, [actualId, tours, navigate]);
+  }, [actualId, tours, navigate, loading]);
 
   return (
     <BaseTourDetailPage 
