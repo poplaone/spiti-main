@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -34,13 +33,21 @@ interface DesktopMenuProps {
 
 const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [] }: DesktopMenuProps) => {
   const getTourRoute = (tour: TourPackageProps) => {
-    // Map tour types to route names
-    if (tour.transportType === 'bike') return '/tour-bike';
-    if (tour.title === 'HIDDEN HEAVEN - SPITI VALLEY') return '/tour-hiddenheaven';
-    if (tour.title.includes('BUDDHIST')) return '/tour-buddhist';
-    if (tour.title.includes('WOMEN')) return '/tour-women';
-    if (tour.title.includes('OWN CAR')) return '/tour-owncar';
-    return '/tour-unexplored';
+    const title = tour.title.toLowerCase();
+    
+    if (title.includes('spiti bike expedition')) return '/spiti-bike-expedition';
+    if (title.includes('manali-leh expedition')) return '/manali-leh-expedition';
+    if (title.includes('unexplored spiti')) return '/unexplored-spiti';
+    if (title.includes('unexplored kinnaur')) return '/unexplored-kinnaur';
+    if (title.includes('buddhist & tribal')) return '/buddhist-tribal-circuit';
+    if (title.includes('women explore spiti')) return '/women-explore-spiti';
+    if (title.includes('women explore ladakh')) return '/women-explore-ladakh';
+    if (title.includes('own car') || title.includes('self drive')) return '/own-car-self-drive';
+    if (title.includes('hidden heaven')) return '/hidden-heaven-spiti-valley';
+    if (title.includes('unexplored lahaul & spiti')) return '/unexplored-lahaul-spiti';
+    if (title.includes('leh ladakh car tour')) return '/leh-ladakh-car-tour';
+    
+    return `/tour/${tour.id}`;
   };
 
   const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;

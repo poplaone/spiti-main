@@ -8,6 +8,26 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import LeadForm from "./LeadForm";
 
+// Helper function to generate SEO-friendly URLs from tour titles
+const getTourSlug = (tour: TourPackageProps): string => {
+  const title = tour.title.toLowerCase();
+  
+  if (title.includes('spiti bike expedition')) return '/spiti-bike-expedition';
+  if (title.includes('manali-leh expedition')) return '/manali-leh-expedition';
+  if (title.includes('unexplored spiti')) return '/unexplored-spiti';
+  if (title.includes('unexplored kinnaur')) return '/unexplored-kinnaur';
+  if (title.includes('buddhist & tribal')) return '/buddhist-tribal-circuit';
+  if (title.includes('women explore spiti')) return '/women-explore-spiti';
+  if (title.includes('women explore ladakh')) return '/women-explore-ladakh';
+  if (title.includes('own car') || title.includes('self drive')) return '/own-car-self-drive';
+  if (title.includes('hidden heaven')) return '/hidden-heaven-spiti-valley';
+  if (title.includes('unexplored lahaul & spiti')) return '/unexplored-lahaul-spiti';
+  if (title.includes('leh ladakh car tour')) return '/leh-ladakh-car-tour';
+  
+  // Fallback to the dynamic route if no specific route is defined
+  return `/tour/${tour.id}`;
+};
+
 // Memoized TourPackage component to prevent unnecessary re-renders
 const TourPackage: React.FC<TourPackageProps & {
   id?: string;
@@ -23,13 +43,16 @@ const TourPackage: React.FC<TourPackageProps & {
   isWomenOnly,
   isFixedDeparture = false,
   isCustomizable = true,
-  overviewDetails
+  overviewDetails,
+  ...rest
 }) => {
   // Get availability dates with fallbacks
   const availableFrom = overviewDetails?.availableFrom || 'June';
   const availableTo = overviewDetails?.availableTo || 'October';
 
-  const detailsUrl = id ? `/tour/${id}` : "#";
+  // Create a tour object to pass to the slug generator
+  const tour = { id, title, transportType, isWomenOnly };
+  const detailsUrl = getTourSlug(tour as TourPackageProps);
 
   return (
     <div className="block h-full w-full">
