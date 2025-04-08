@@ -12,10 +12,16 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react({
-      // Using a more stable configuration for the SWC plugin
-      plugins: mode === 'production' ? [] : [
-        ['@swc/plugin-emotion', {}]
-      ]
+      // Add SWC optimization options
+      swcOptions: {
+        jsc: {
+          target: 'es2020',
+          minify: {
+            compress: true,
+            mangle: true
+          }
+        }
+      }
     }),
     mode === 'development' &&
     componentTagger(),
@@ -37,10 +43,14 @@ export default defineConfig(({ mode }) => ({
     force: true, // Force dependencies optimization to resolve lockfile issues
   },
   build: {
-    // Optimize build for stability over optimization
-    minify: mode === 'production' ? 'esbuild' : false, // Use esbuild instead of terser for better stability
+    // Add build configuration to handle lockfile-related issues
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+    // Minimize output file sizes
     cssCodeSplit: true,
     sourcemap: false,
+    // Optimize chunk distribution
     rollupOptions: {
       output: {
         manualChunks: {
@@ -69,6 +79,14 @@ export default defineConfig(({ mode }) => ({
       }
     },
     chunkSizeWarningLimit: 1000,
+    // Enable additional minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
   },
   // Optimize preview
   preview: {
