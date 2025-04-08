@@ -1,17 +1,7 @@
-
-import React, { useCallback, useRef } from 'react';
-import TourPackage from "@/components/TourPackage";
-import { TourPackageProps } from "@/data/types/tourTypes";
-import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
-} from "@/components/ui/carousel";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
+import React from 'react';
+import { TourPackageProps } from '@/data/types/tourTypes';
+import { useIsMobile } from '@/hooks/use-mobile';
+import TourPackage from '@/components/TourPackage';
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
@@ -19,130 +9,42 @@ interface RelatedToursProps {
 }
 
 const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => {
-  // Filter out the current tour if currentTourId is provided
-  const filteredTours = currentTourId 
-    ? tours.filter(tour => tour.id !== currentTourId) 
-    : tours;
-  
+  // Always call hooks at the top level before any conditional logic
   const isMobile = useIsMobile();
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  // If no related tours available after filtering current tour
+  
+  // Filter out the current tour if it exists
+  const filteredTours = tours.filter(tour => 
+    currentTourId ? tour.id !== currentTourId : true
+  );
+  
+  // If there are no related tours, render nothing but still keep the hook calls above
   if (filteredTours.length === 0) {
     return null;
   }
 
-  // Memoized navigation handler
-  const handleNavigation = useCallback((direction: 'prev' | 'next') => {
-    const button = document.querySelector(
-      `[data-carousel-${direction === 'prev' ? 'prev' : 'next'}="true"]`
-    ) as HTMLButtonElement;
-    
-    if (button) button.click();
-  }, []);
-
   return (
-    <section className="py-8 md:py-16 bg-spiti-stone">
+    <section className="py-8 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-heading font-bold text-center mb-4 md:mb-6 text-spiti-forest">More Popular Spiti Valley Tours</h2>
-        <p className="text-center text-gray-700 mb-6 md:mb-8 max-w-3xl mx-auto">
-          Discover our other handcrafted Spiti Valley adventures, each offering unique experiences through 
-          this mesmerizing Himalayan region. From bike tours and women-only expeditions to family-friendly 
-          journeys, find the perfect package for your next mountain getaway.
-        </p>
+        <h2 className="text-2xl font-heading font-bold text-spiti-forest mb-6">
+          Similar Experiences You Might Like
+        </h2>
         
-        {/* Swipe indicator for mobile */}
-        {isMobile && (
-          <div className="flex justify-center items-center mb-4 md:hidden">
-            <div className="flex items-center gap-2 bg-white/80 px-3 py-1 rounded-full shadow-sm">
-              <ArrowLeft className="h-4 w-4 text-spiti-forest animate-pulse" />
-              <span className="text-sm text-spiti-forest font-medium">Swipe to explore all {filteredTours.length} tours</span>
-              <ArrowRight className="h-4 w-4 text-spiti-forest animate-pulse" />
-            </div>
+        <div className="overflow-x-auto pb-4 hide-scrollbar">
+          <div className={`flex space-x-4 ${!isMobile ? 'flex-wrap -mx-2' : ''}`} style={{
+            minWidth: isMobile ? 'max-content' : 'auto'
+          }}>
+            {filteredTours.slice(0, 4).map((tour, index) => (
+              <div 
+                key={tour.id || `related-tour-${index}`}
+                className={isMobile ? "w-72 flex-shrink-0" : "w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"}
+              >
+                <TourPackage 
+                  {...tour} 
+                  id={tour.id}
+                />
+              </div>
+            ))}
           </div>
-        )}
-
-        <div className="relative" ref={carouselRef}>
-          <Carousel 
-            className="w-full" 
-            opts={{ 
-              align: "start",
-              loop: filteredTours.length > 2,
-              dragFree: true
-            }}
-          >
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {filteredTours.map((tour, index) => (
-                <CarouselItem 
-                  key={`related-tour-${tour.id || index}`} 
-                  className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-                >
-                  <div className="h-full">
-                    <TourPackage {...tour} id={tour.id || `tour-${index}`} />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-  
-            {/* Custom navigation controls for desktop */}
-            <div className="hidden md:block">
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
-                aria-label="Previous slide"
-                onClick={() => handleNavigation('prev')}
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
-                aria-label="Next slide"
-                onClick={() => handleNavigation('next')}
-              >
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </div>
-  
-            {/* Standard carousel controls - hidden but functional */}
-            <CarouselPrevious className="hidden" />
-            <CarouselNext className="hidden" />
-          </Carousel>
-  
-          {/* Mobile custom navigation arrows - made more visible */}
-          {isMobile && (
-            <div className="flex justify-between md:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 px-2 z-10">
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
-                aria-label="Previous slide"
-                onClick={() => handleNavigation('prev')}
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
-                aria-label="Next slide"
-                onClick={() => handleNavigation('next')}
-              >
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </div>
-          )}
-        </div>
-
-        {/* Display total number of tours available */}
-        <div className="text-center mt-4">
-          <span className="text-sm text-gray-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">
-            {filteredTours.length} {filteredTours.length === 1 ? 'tour' : 'tours'} available
-          </span>
         </div>
       </div>
     </section>
