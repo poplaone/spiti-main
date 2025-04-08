@@ -108,8 +108,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/UNEXPLORED-SPITI" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
+                <Link to="/ROYAL-SPITI-VALLEY-WHOLE-CIRCUIT" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Royal Spiti Valley Circuit
                 </Link>
               </li>
             </ul>
