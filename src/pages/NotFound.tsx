@@ -1,15 +1,34 @@
-import { useLocation } from "react-router-dom";
+
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Handle redirects for old tour detail URLs
+    const path = location.pathname;
+    
+    // If the path matches any of the old tour detail URLs, redirect to the tours page
+    if (
+      path === "/tour-bike" || 
+      path === "/tour-women" || 
+      path === "/tour-owncar" || 
+      path === "/tour-buddhist" || 
+      path === "/tour-unexplored" || 
+      path === "/tour-hiddenheaven"
+    ) {
+      // Redirect to the tours listing page
+      navigate("/", { replace: true });
+      return;
+    }
+    
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
-  }, [location.pathname]);
+  }, [location.pathname, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

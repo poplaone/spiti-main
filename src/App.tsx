@@ -16,16 +16,8 @@ import ThankYou from "./pages/ThankYou";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
-// Import the new dynamic TourDetail page
+// Import the dynamic TourDetail page
 import TourDetail from "./pages/TourDetail";
-
-// Import individual tour detail pages
-import TourDetailBike from "./pages/TourDetailBike";
-import TourDetailUnexplored from "./pages/TourDetailUnexplored";
-import TourDetailBuddhist from "./pages/TourDetailBuddhist";
-import TourDetailWomen from "./pages/TourDetailWomen";
-import TourDetailOwnCar from "./pages/TourDetailOwnCar";
-import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
 
 // Import new pages for road trips and fixed departures
 import RoadTrips from "./pages/RoadTrips";
@@ -71,16 +63,8 @@ const App = () => {
             <Route path="/fixed-departures" element={<FixedDepartures />} />
             <Route path="/customizable-tours" element={<CustomizableTours />} />
             
-            {/* Dynamic tour detail page route */}
+            {/* Dynamic tour detail page route - this is all we need now */}
             <Route path="/tour/:id" element={<TourDetail />} />
-            
-            {/* Tour detail pages with clean routes - all 6 tour types */}
-            <Route path="/tour-bike" element={<TourDetailBike />} />
-            <Route path="/tour-unexplored" element={<TourDetailUnexplored />} />
-            <Route path="/tour-buddhist" element={<TourDetailBuddhist />} />
-            <Route path="/tour-women" element={<TourDetailWomen />} />
-            <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
-            <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
             
             {/* Admin routes */}
             <Route path="/admin-login" element={<AdminLogin />} />

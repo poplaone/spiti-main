@@ -8,33 +8,7 @@ const Footer = () => {
   const navigate = useNavigate();
   const { tours } = useToursContext();
   
-  // Group tours by type for footer display
-  const groupedTours = React.useMemo(() => {
-    const grouped = {
-      bike: tours.filter(tour => tour.transportType?.toLowerCase() === 'bike'),
-      women: tours.filter(tour => tour.isWomenOnly),
-      buddhist: tours.filter(tour => 
-        tour.title?.toLowerCase().includes('buddhist') || 
-        tour.title?.toLowerCase().includes('tribal')
-      ),
-      ownCar: tours.filter(tour => 
-        tour.title?.toLowerCase().includes('own car') || 
-        tour.title?.toLowerCase().includes('self drive')
-      ),
-      hidden: tours.filter(tour => tour.title?.toLowerCase().includes('hidden')),
-      // Any remaining tours go into the unexplored category
-      unexplored: tours.filter(tour => 
-        tour.transportType?.toLowerCase() !== 'bike' && 
-        !tour.isWomenOnly && 
-        !tour.title?.toLowerCase().includes('buddhist') && 
-        !tour.title?.toLowerCase().includes('tribal') && 
-        !tour.title?.toLowerCase().includes('own car') && 
-        !tour.title?.toLowerCase().includes('self drive') && 
-        !tour.title?.toLowerCase().includes('hidden')
-      )
-    };
-    return grouped;
-  }, [tours]);
+  // We no longer need the grouped tours since we're just showing direct links to tours
 
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -158,4 +132,5 @@ const Footer = () => {
       </div>
     </footer>;
 };
+
 export default Footer;
