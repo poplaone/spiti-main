@@ -12,7 +12,7 @@ const RoyalSpitiValleyWholeCircuit = () => {
     <BaseTourDetailPage 
       tourId={tour?.id}
       tourType="unexplored"
-      heroImage={tour?.image}
+      heroImage={tour?.image || "/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png"}
     />
   );
 };
