@@ -13,8 +13,8 @@ const NotFound = () => {
     // Handle redirects for old tour detail URLs
     const path = location.pathname;
     
-    // Check if this is an old-style direct ID URL
-    if (path.startsWith('/tour/') && !path.includes('-')) {
+    // Check if this is an old-style direct ID URL without a slug
+    if (path.startsWith('/tour/') && !path.includes('/') && !path.includes('-')) {
       // This might be a direct ID link without a slug
       const id = path.replace('/tour/', '');
       
@@ -24,12 +24,13 @@ const NotFound = () => {
       if (tour) {
         // Redirect to the new slug format
         const slug = createSlug(tour.title);
+        console.log(`Redirecting from ${path} to /tour/${slug}/${id}`);
         navigate(`/tour/${slug}/${id}`, { replace: true });
         return;
       }
     }
     
-    // If the path matches any of the old tour detail URLs, redirect to the home page
+    // Handle redirects for old tour type URLs
     if (
       path === "/tour-bike" || 
       path === "/tour-women" || 
@@ -57,6 +58,7 @@ const NotFound = () => {
         
         // Generate slug from title and redirect to the new URL format
         const slug = createSlug(targetTour.title);
+        console.log(`Redirecting from ${path} to /tour/${slug}/${targetTour.id}`);
         navigate(`/tour/${slug}/${targetTour.id}`, { replace: true });
       } else {
         // If no tours are available yet, redirect to home

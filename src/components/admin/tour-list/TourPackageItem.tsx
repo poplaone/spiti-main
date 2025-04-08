@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Edit, Eye, EyeOff, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { createSlug } from '@/utils/slugUtils';
 import {
   Dialog,
   DialogContent,
@@ -52,6 +52,10 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
     onDelete(pkg.id);
     setDeleteDialogOpen(false);
   };
+  
+  // Generate slug for preview link
+  const tourSlug = createSlug(pkg.title);
+  const previewUrl = `/tour/${tourSlug}/${pkg.id}`;
 
   return (
     <TableRow key={pkg.id} className={!pkg.is_visible ? "opacity-60" : ""}>
@@ -64,7 +68,19 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
           />
         </div>
       </TableCell>
-      <TableCell className="font-medium">{pkg.title}</TableCell>
+      <TableCell className="font-medium">
+        {pkg.title}
+        <div>
+          <a 
+            href={previewUrl}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-xs text-blue-500 hover:underline"
+          >
+            View Tour
+          </a>
+        </div>
+      </TableCell>
       <TableCell>
         <div className="text-sm">
           <div className="font-semibold">₹{pkg.discounted_price.toLocaleString('en-IN')}</div>

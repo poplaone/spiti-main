@@ -1,12 +1,13 @@
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
-import { extractIdFromSlug } from '@/utils/slugUtils';
+import { extractIdFromSlug, createSlug } from '@/utils/slugUtils';
 
 const TourDetail = () => {
   const params = useParams<{ id: string; slug?: string }>();
+  const navigate = useNavigate();
   const [tourType, setTourType] = useState<string>('');
   const [heroImage, setHeroImage] = useState<string>('');
   const { tours } = useToursContext();
@@ -19,6 +20,17 @@ const TourDetail = () => {
       const tour = tours.find(t => t.id === actualId);
       
       if (tour) {
+        // Check if we need to redirect to the correct URL format with slug
+        const currentPath = window.location.pathname;
+        const correctSlug = createSlug(tour.title);
+        const correctPath = `/tour/${correctSlug}/${actualId}`;
+        
+        // If current URL doesn't match the correct format, redirect
+        if (currentPath !== correctPath && !currentPath.includes(`/${correctSlug}/`)) {
+          navigate(correctPath, { replace: true });
+          return;
+        }
+        
         // Always use the exact same image that was uploaded by admin
         setHeroImage(tour.image);
         
@@ -45,7 +57,7 @@ const TourDetail = () => {
       setTourType('unexplored');
       setHeroImage("/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png");
     }
-  }, [actualId, tours]);
+  }, [actualId, tours, navigate]);
 
   return (
     <BaseTourDetailPage 
