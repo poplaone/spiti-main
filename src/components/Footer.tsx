@@ -1,8 +1,41 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, MapPin, Mail, Phone, ChevronRight } from 'lucide-react';
+import { useToursContext } from '@/context/ToursContext';
+
 const Footer = () => {
   const navigate = useNavigate();
+  const { tours } = useToursContext();
+  
+  // Group tours by type for footer display
+  const groupedTours = React.useMemo(() => {
+    const grouped = {
+      bike: tours.filter(tour => tour.transportType?.toLowerCase() === 'bike'),
+      women: tours.filter(tour => tour.isWomenOnly),
+      buddhist: tours.filter(tour => 
+        tour.title?.toLowerCase().includes('buddhist') || 
+        tour.title?.toLowerCase().includes('tribal')
+      ),
+      ownCar: tours.filter(tour => 
+        tour.title?.toLowerCase().includes('own car') || 
+        tour.title?.toLowerCase().includes('self drive')
+      ),
+      hidden: tours.filter(tour => tour.title?.toLowerCase().includes('hidden')),
+      // Any remaining tours go into the unexplored category
+      unexplored: tours.filter(tour => 
+        tour.transportType?.toLowerCase() !== 'bike' && 
+        !tour.isWomenOnly && 
+        !tour.title?.toLowerCase().includes('buddhist') && 
+        !tour.title?.toLowerCase().includes('tribal') && 
+        !tour.title?.toLowerCase().includes('own car') && 
+        !tour.title?.toLowerCase().includes('self drive') && 
+        !tour.title?.toLowerCase().includes('hidden')
+      )
+    };
+    return grouped;
+  }, [tours]);
+
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -12,10 +45,12 @@ const Footer = () => {
       });
     }
   };
+  
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     e.preventDefault();
     navigate(path);
   };
+  
   return <footer className="text-white py-12 bg-neutral-950">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -72,40 +107,24 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Popular Tours */}
+          {/* Popular Tours - Dynamically generated from admin tour packages */}
           <div>
             <h3 className="text-xl font-bold mb-4 text-sky-500">Popular Tours</h3>
             <ul className="space-y-2">
-              <li>
-                <Link to="/tour-bike" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Spiti Valley Bike Tour
-                </Link>
-              </li>
-              <li>
-                <Link to="/tour-unexplored" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
-                </Link>
-              </li>
-              <li>
-                <Link to="/tour-buddhist" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Buddhist and Tribal Circuit
-                </Link>
-              </li>
-              <li>
-                <Link to="/tour-women" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Women Only Tour
-                </Link>
-              </li>
-              <li>
-                <Link to="/tour-owncar" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Own Car Tour
-                </Link>
-              </li>
-              <li>
-                <Link to="/tour-hiddenheaven" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Hidden Heaven Tour
-                </Link>
-              </li>
+              {tours.length > 0 ? (
+                tours.slice(0, 6).map((tour) => (
+                  <li key={tour.id}>
+                    <Link 
+                      to={`/tour/${tour.id}`} 
+                      className="hover:text-spiti-green transition-colors flex items-center"
+                    >
+                      <ChevronRight size={16} className="mr-1" /> {tour.title}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li>Loading tours...</li>
+              )}
             </ul>
           </div>
 
