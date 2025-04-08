@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,6 +20,10 @@ const ThankYou = () => {
   const formData = location.state?.formData || {};
   
   useEffect(() => {
+    // Output debug info about GTM availability
+    console.log("ThankYou page loaded - GTM dataLayer available:", !!window.dataLayer);
+    console.log("Form data available:", !!location.state?.formData);
+    
     // If someone tries to access the thank you page directly without form data
     // redirect them to the homepage after 5 seconds
     if (!location.state?.formData) {
@@ -46,7 +51,7 @@ const ThankYou = () => {
         }
       });
       
-      console.log("Thank you page conversion event tracked");
+      console.log("Thank you page conversion event tracked and pushed to dataLayer");
     }
     
     console.log("Thank you page viewed with form data:", formData);

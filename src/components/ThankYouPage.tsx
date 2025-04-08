@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,11 +17,13 @@ const ThankYouPage = ({ onClose }: ThankYouPageProps) => {
     }, 300);
     
     // Track modal thank you page view with GTM
+    console.log("ThankYouPage component mounted - GTM dataLayer available:", !!window.dataLayer);
     if (window.dataLayer) {
       window.dataLayer.push({
         'event': 'modalThankYouView',
         'formType': 'tourInquiry'
       });
+      console.log("Modal thank you page view event pushed to dataLayer");
     }
     
     return () => clearTimeout(timer);
@@ -28,10 +31,12 @@ const ThankYouPage = ({ onClose }: ThankYouPageProps) => {
 
   const handleContinueClick = () => {
     // Track continue exploring clicks
+    console.log("Continue exploring button clicked - GTM dataLayer available:", !!window.dataLayer);
     if (window.dataLayer) {
       window.dataLayer.push({
         'event': 'thankYouContinue'
       });
+      console.log("Thank you continue button click event pushed to dataLayer");
     }
     onClose();
   };
