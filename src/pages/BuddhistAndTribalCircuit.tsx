@@ -12,7 +12,7 @@ const BuddhistAndTribalCircuit = () => {
     <BaseTourDetailPage 
       tourId={tour?.id}
       tourType="buddhist"
-      heroImage={tour?.image || "/lovable-uploads/f8e55e6b-8b70-4f27-a84d-ee09e7e3550c.png"}
+      heroImage={tour?.image}
     />
   );
 };
