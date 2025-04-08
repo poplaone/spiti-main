@@ -188,6 +188,7 @@ export type Database = {
           is_fixed_departure: boolean | null
           is_visible: boolean
           is_women_only: boolean
+          meta: Json | null
           original_price: number
           overview: string | null
           overview_details: Json | null
@@ -207,6 +208,7 @@ export type Database = {
           is_fixed_departure?: boolean | null
           is_visible?: boolean
           is_women_only?: boolean
+          meta?: Json | null
           original_price: number
           overview?: string | null
           overview_details?: Json | null
@@ -226,6 +228,7 @@ export type Database = {
           is_fixed_departure?: boolean | null
           is_visible?: boolean
           is_women_only?: boolean
+          meta?: Json | null
           original_price?: number
           overview?: string | null
           overview_details?: Json | null
