@@ -12,16 +12,10 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react({
-      // Add SWC optimization options
-      swcOptions: {
-        jsc: {
-          target: 'es2020',
-          minify: {
-            compress: true,
-            mangle: true
-          }
-        }
-      }
+      // Using swcReactRefresh options instead of swcOptions
+      plugins: [
+        ['@swc/plugin-emotion', {}]
+      ]
     }),
     mode === 'development' &&
     componentTagger(),
