@@ -1,94 +1,20 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { TourPackageFormData } from "./types";
-import { createSlug } from "@/utils/slugUtils";
+import { toast } from "sonner";
+import { NightStay, Inclusion, Exclusion, ItineraryDay, TourPackageFormData } from "./types";
 
 export const fetchPackageData = async (packageId: string): Promise<TourPackageFormData | null> => {
   try {
-    // Fetch the main package data
     const { data: packageData, error: packageError } = await supabase
       .from('tour_packages')
       .select('*')
       .eq('id', packageId)
       .single();
-      
+    
     if (packageError) throw packageError;
-    if (!packageData) return null;
     
-    // Fetch night stays
-    const { data: nightStaysData, error: nightStaysError } = await supabase
-      .from('tour_night_stays')
-      .select('*')
-      .eq('tour_id', packageId)
-      .order('order', { ascending: true });
-      
-    if (nightStaysError) throw nightStaysError;
-    
-    // Fetch inclusions
-    const { data: inclusionsData, error: inclusionsError } = await supabase
-      .from('tour_inclusions')
-      .select('*')
-      .eq('tour_id', packageId);
-      
-    if (inclusionsError) throw inclusionsError;
-    
-    // Fetch exclusions
-    const { data: exclusionsData, error: exclusionsError } = await supabase
-      .from('tour_exclusions')
-      .select('*')
-      .eq('tour_id', packageId);
-      
-    if (exclusionsError) throw exclusionsError;
-    
-    // Fetch itinerary days
-    const { data: itineraryData, error: itineraryError } = await supabase
-      .from('tour_itinerary')
-      .select('*')
-      .eq('tour_id', packageId)
-      .order('day_number', { ascending: true });
-      
-    if (itineraryError) throw itineraryError;
-    
-    // Parse overview details
-    let overviewDetails = {};
-    try {
-      if (packageData.overview_details) {
-        overviewDetails = JSON.parse(packageData.overview_details);
-      }
-    } catch (e) {
-      console.error('Error parsing overview details:', e);
-    }
-    
-    // Parse meta for custom slug
-    let customSlug = '';
-    try {
-      if (packageData.meta) {
-        if (typeof packageData.meta === 'string') {
-          const metaObj = JSON.parse(packageData.meta);
-          customSlug = metaObj.custom_slug || '';
-        } else if (typeof packageData.meta === 'object') {
-          customSlug = packageData.meta.custom_slug || '';
-        }
-      }
-    } catch (e) {
-      console.error('Error parsing meta field:', e);
-    }
-    
-    // Default values for overview details if not present
-    const overviewDetailsWithDefaults = {
-      accommodation: '',
-      bestTime: '',
-      groupSize: '',
-      terrain: '',
-      elevation: '',
-      availableFrom: '',
-      availableTo: '',
-      ...overviewDetails
-    };
-    
-    return {
+    let formData: Partial<TourPackageFormData> = {
       title: packageData.title || '',
-      customSlug,
       originalPrice: packageData.original_price?.toString() || '',
       discountedPrice: packageData.discounted_price?.toString() || '',
       transportType: packageData.transport_type || 'car',
@@ -97,47 +23,80 @@ export const fetchPackageData = async (packageId: string): Promise<TourPackageFo
       overview: packageData.overview || '',
       isWomenOnly: packageData.is_women_only || false,
       isFixedDeparture: packageData.is_fixed_departure || false,
-      isCustomizable: packageData.is_customizable !== false, // default to true if not set
-      
-      // Use the overviewDetails with defaults
-      accommodation: overviewDetailsWithDefaults.accommodation,
-      bestTime: overviewDetailsWithDefaults.bestTime,
-      groupSize: overviewDetailsWithDefaults.groupSize,
-      terrain: overviewDetailsWithDefaults.terrain,
-      elevation: overviewDetailsWithDefaults.elevation,
-      availableFrom: overviewDetailsWithDefaults.availableFrom,
-      availableTo: overviewDetailsWithDefaults.availableTo,
-      
-      // Format related data
-      nightStays: (nightStaysData || []).map(ns => ({
-        id: ns.id,
-        location: ns.location || '',
-        nights: ns.nights || 0,
-        order: ns.order || 0
-      })),
-      
-      inclusions: (inclusionsData || []).map(inc => ({
-        id: inc.id,
-        description: inc.description || ''
-      })),
-      
-      exclusions: (exclusionsData || []).map(exc => ({
-        id: exc.id,
-        description: exc.description || ''
-      })),
-      
-      itineraryDays: (itineraryData || []).map(day => ({
-        id: day.id,
-        day_number: day.day_number || 0,
-        title: day.title || '',
-        description: day.description || ''
-      })),
-      
-      imageFile: null,
-      imagePreview: packageData.image || ''
+      isCustomizable: packageData.is_customizable !== false,
+      imagePreview: packageData.image || '',
+      accommodation: 'Hotels & Homestays',
+      bestTime: 'June to September',
+      groupSize: '2-10 People',
+      terrain: 'Himalayan Mountain Passes',
+      elevation: '2,000 - 4,550 meters',
+      availableFrom: 'June',
+      availableTo: 'October'
     };
-  } catch (error) {
-    console.error('Error fetching package data:', error);
+    
+    // Load overview details if available
+    if (packageData.overview_details) {
+      try {
+        const details = JSON.parse(packageData.overview_details);
+        formData.accommodation = details.accommodation || 'Hotels & Homestays';
+        formData.bestTime = details.bestTime || 'June to September';
+        formData.groupSize = details.groupSize || '2-10 People';
+        formData.terrain = details.terrain || 'Himalayan Mountain Passes';
+        formData.elevation = details.elevation || '2,000 - 4,550 meters';
+        formData.availableFrom = details.availableFrom || 'June';
+        formData.availableTo = details.availableTo || 'October';
+      } catch (e) {
+        console.error("Error parsing overview details:", e);
+      }
+    }
+    
+    // Get night stays
+    const { data: nightStaysData, error: nightStaysError } = await supabase
+      .from('night_stays')
+      .select('*')
+      .eq('tour_package_id', packageId)
+      .order('order', { ascending: true });
+    
+    if (!nightStaysError) {
+      formData.nightStays = nightStaysData || [];
+    }
+    
+    // Get inclusions
+    const { data: inclusionsData, error: inclusionsError } = await supabase
+      .from('inclusions')
+      .select('*')
+      .eq('tour_package_id', packageId)
+      .order('id');
+    
+    if (!inclusionsError) {
+      formData.inclusions = inclusionsData || [];
+    }
+    
+    // Get exclusions
+    const { data: exclusionsData, error: exclusionsError } = await supabase
+      .from('exclusions')
+      .select('*')
+      .eq('tour_package_id', packageId)
+      .order('id');
+    
+    if (!exclusionsError) {
+      formData.exclusions = exclusionsData || [];
+    }
+    
+    // Get itinerary
+    const { data: itineraryData, error: itineraryError } = await supabase
+      .from('itinerary_days')
+      .select('*')
+      .eq('tour_package_id', packageId)
+      .order('day_number');
+    
+    if (!itineraryError) {
+      formData.itineraryDays = itineraryData || [];
+    }
+
+    return formData as TourPackageFormData;
+  } catch (error: any) {
+    toast.error(`Error loading tour package: ${error.message}`);
     return null;
   }
 };

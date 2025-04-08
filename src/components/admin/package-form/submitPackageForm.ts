@@ -48,8 +48,7 @@ export const submitPackageForm = async (
       
       console.log(`Updated tour package with ID ${packageId}:`, {
         isFixedDeparture: formData.isFixedDeparture,
-        isCustomizable: formData.isCustomizable,
-        customSlug: formData.customSlug
+        isCustomizable: formData.isCustomizable
       });
     } else {
       const { data: newPackage, error: insertError } = await supabase
@@ -63,8 +62,7 @@ export const submitPackageForm = async (
       
       console.log(`Created new tour package with ID ${tourPackageId}:`, {
         isFixedDeparture: formData.isFixedDeparture,
-        isCustomizable: formData.isCustomizable,
-        customSlug: formData.customSlug
+        isCustomizable: formData.isCustomizable
       });
       
       if (!tourPackageId) throw new Error('Failed to get tour package ID');

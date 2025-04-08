@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Edit, Eye, EyeOff, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { createTourUrl } from '@/utils/slugUtils';
 import {
   Dialog,
   DialogContent,
@@ -28,7 +27,6 @@ interface TourPackage {
   is_visible: boolean;
   created_at: string;
   updated_at: string;
-  meta?: any;
 }
 
 interface TourPackageItemProps {
@@ -54,22 +52,6 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
     onDelete(pkg.id);
     setDeleteDialogOpen(false);
   };
-  
-  // Get custom slug from meta if available
-  let customSlug = '';
-  try {
-    if (pkg.meta && typeof pkg.meta === 'object') {
-      customSlug = pkg.meta.custom_slug || '';
-    } else if (typeof pkg.meta === 'string' && pkg.meta) {
-      const metaObj = JSON.parse(pkg.meta);
-      customSlug = metaObj.custom_slug || '';
-    }
-  } catch (e) {
-    console.error("Error parsing meta field:", e);
-  }
-  
-  // Generate the proper tour URL for preview
-  const previewUrl = createTourUrl(pkg.title, pkg.id, customSlug);
 
   return (
     <TableRow key={pkg.id} className={!pkg.is_visible ? "opacity-60" : ""}>
@@ -82,19 +64,7 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
           />
         </div>
       </TableCell>
-      <TableCell className="font-medium">
-        {pkg.title}
-        <div>
-          <a 
-            href={previewUrl}
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-xs text-blue-500 hover:underline"
-          >
-            View Tour
-          </a>
-        </div>
-      </TableCell>
+      <TableCell className="font-medium">{pkg.title}</TableCell>
       <TableCell>
         <div className="text-sm">
           <div className="font-semibold">₹{pkg.discounted_price.toLocaleString('en-IN')}</div>

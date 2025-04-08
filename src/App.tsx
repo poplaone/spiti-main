@@ -63,9 +63,8 @@ const App = () => {
             <Route path="/fixed-departures" element={<FixedDepartures />} />
             <Route path="/customizable-tours" element={<CustomizableTours />} />
             
-            {/* Dynamic tour detail page routes - now support both ID-only and slug formats */}
+            {/* Dynamic tour detail page route - this is all we need now */}
             <Route path="/tour/:id" element={<TourDetail />} />
-            <Route path="/tour/:slug/:id" element={<TourDetail />} />
             
             {/* Admin routes */}
             <Route path="/admin-login" element={<AdminLogin />} />

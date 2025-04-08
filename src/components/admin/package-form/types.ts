@@ -35,7 +35,6 @@ export interface OverviewDetails {
 
 export interface TourPackageFormData {
   title: string;
-  customSlug?: string; // New field for custom slug
   originalPrice: string;
   discountedPrice: string;
   transportType: string;

@@ -18,11 +18,6 @@ export const prepareTourPackageData = (
   imageUrl: string, 
   discount: number
 ) => {
-  // Prepare meta field to include custom slug
-  const meta = JSON.stringify({
-    custom_slug: formData.customSlug || ''
-  });
-
   return {
     title: formData.title,
     image: imageUrl,
@@ -36,7 +31,6 @@ export const prepareTourPackageData = (
     is_fixed_departure: formData.isFixedDeparture,
     is_customizable: formData.isCustomizable,
     overview: formData.overview,
-    overview_details: prepareOverviewDetails(formData),
-    meta // Add meta field with custom slug
+    overview_details: prepareOverviewDetails(formData)
   };
 };

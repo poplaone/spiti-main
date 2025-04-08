@@ -7,12 +7,10 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import LeadForm from "./LeadForm";
-import { createTourUrl } from '@/utils/slugUtils';
 
 // Memoized TourPackage component to prevent unnecessary re-renders
 const TourPackage: React.FC<TourPackageProps & {
   id?: string;
-  meta?: any;
 }> = memo(({
   id,
   title,
@@ -25,28 +23,13 @@ const TourPackage: React.FC<TourPackageProps & {
   isWomenOnly,
   isFixedDeparture = false,
   isCustomizable = true,
-  overviewDetails,
-  meta
+  overviewDetails
 }) => {
   // Get availability dates with fallbacks
   const availableFrom = overviewDetails?.availableFrom || 'June';
   const availableTo = overviewDetails?.availableTo || 'October';
 
-  // Get custom slug from meta if available
-  let customSlug = '';
-  try {
-    if (meta && typeof meta === 'object') {
-      customSlug = meta.custom_slug || '';
-    } else if (typeof meta === 'string' && meta) {
-      const metaObj = JSON.parse(meta);
-      customSlug = metaObj.custom_slug || '';
-    }
-  } catch (e) {
-    console.error("Error parsing meta field:", e);
-  }
-
-  // Generate user-friendly URL with slug
-  const detailsUrl = id && title ? createTourUrl(title, id, customSlug) : "#";
+  const detailsUrl = id ? `/tour/${id}` : "#";
 
   return (
     <div className="block h-full w-full">
@@ -58,6 +41,7 @@ const TourPackage: React.FC<TourPackageProps & {
               alt={title} 
               className="w-full h-[200px] object-cover" 
               loading="lazy"
+              decoding="async"
               width="400"
               height="200"
             />

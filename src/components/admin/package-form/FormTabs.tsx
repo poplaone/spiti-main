@@ -32,8 +32,6 @@ const FormTabs: React.FC<FormTabsProps> = ({
         <BasicInfoTab 
           title={formProps.title}
           setTitle={formProps.setTitle}
-          customSlug={formProps.customSlug}
-          setCustomSlug={formProps.setCustomSlug}
           overview={formProps.overview}
           setOverview={formProps.setOverview}
           originalPrice={formProps.originalPrice}
@@ -66,7 +64,6 @@ const FormTabs: React.FC<FormTabsProps> = ({
           setAvailableFrom={formProps.setAvailableFrom}
           availableTo={formProps.availableTo}
           setAvailableTo={formProps.setAvailableTo}
-          packageId={formProps.packageId}
         />
       </TabsContent>
       

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -6,7 +5,6 @@ import { TourPackageFormData, NightStay, Inclusion, Exclusion, ItineraryDay } fr
 import { fetchPackageData } from "./fetchPackageData";
 import { handleImageChange as imageHandler } from "./imageHandler";
 import { submitPackageForm } from "./submitPackageForm";
-import { createSlug } from "@/utils/slugUtils";
 
 export const useTourPackageForm = (packageId?: string, isEditing: boolean = false) => {
   const navigate = useNavigate();
@@ -16,7 +14,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
   
   // Form state
   const [title, setTitle] = useState("");
-  const [customSlug, setCustomSlug] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [discountedPrice, setDiscountedPrice] = useState("");
   const [transportType, setTransportType] = useState("car");
@@ -49,13 +46,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     }
   }, [isEditing, packageId]);
 
-  // Set initial custom slug when title changes (only if customSlug is empty)
-  useEffect(() => {
-    if (title && !customSlug) {
-      setCustomSlug(createSlug(title));
-    }
-  }, [title, customSlug]);
-
   const loadPackageData = async () => {
     setIsLoading(true);
     try {
@@ -63,7 +53,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
       if (data) {
         // Set basic info
         setTitle(data.title);
-        setCustomSlug(data.customSlug || createSlug(data.title));
         setOriginalPrice(data.originalPrice);
         setDiscountedPrice(data.discountedPrice);
         setTransportType(data.transportType);
@@ -108,7 +97,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     try {
       const formData: TourPackageFormData = {
         title,
-        customSlug,
         originalPrice,
         discountedPrice,
         transportType,
@@ -156,8 +144,6 @@ export const useTourPackageForm = (packageId?: string, isEditing: boolean = fals
     
     title,
     setTitle,
-    customSlug,
-    setCustomSlug,
     overview,
     setOverview,
     originalPrice,
