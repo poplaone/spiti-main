@@ -23,15 +23,19 @@ const NotFound = () => {
     ) {
       // Get the first tour from the admin-created tours if available
       if (tours.length > 0) {
-        // Find a matching tour by type for better redirection
+        // Find a matching tour by characteristics for better redirection
         let targetTour = tours[0]; // Default to first tour
         
-        if (path === "/tour-bike" && tours.some(t => t.tourType?.includes("Bike"))) {
-          targetTour = tours.find(t => t.tourType?.includes("Bike")) || targetTour;
-        } else if (path === "/tour-women" && tours.some(t => t.tourType?.includes("Women"))) {
-          targetTour = tours.find(t => t.tourType?.includes("Women")) || targetTour;
-        } else if (path === "/tour-buddhist" && tours.some(t => t.tourType?.includes("Buddhist"))) {
-          targetTour = tours.find(t => t.tourType?.includes("Buddhist")) || targetTour;
+        if (path === "/tour-bike" && tours.some(t => t.transportType.toLowerCase() === "bike")) {
+          targetTour = tours.find(t => t.transportType.toLowerCase() === "bike") || targetTour;
+        } else if (path === "/tour-women" && tours.some(t => t.isWomenOnly)) {
+          targetTour = tours.find(t => t.isWomenOnly) || targetTour;
+        } else if (path === "/tour-buddhist" && tours.some(t => t.title.toLowerCase().includes("buddhist"))) {
+          targetTour = tours.find(t => t.title.toLowerCase().includes("buddhist")) || targetTour;
+        } else if (path === "/tour-owncar" && tours.some(t => t.title.toLowerCase().includes("own car") || t.title.toLowerCase().includes("self drive"))) {
+          targetTour = tours.find(t => t.title.toLowerCase().includes("own car") || t.title.toLowerCase().includes("self drive")) || targetTour;
+        } else if (path === "/tour-hiddenheaven" && tours.some(t => t.title.toLowerCase().includes("hidden"))) {
+          targetTour = tours.find(t => t.title.toLowerCase().includes("hidden")) || targetTour;
         }
         
         // Redirect to the specific tour page
