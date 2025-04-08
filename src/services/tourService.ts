@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { TourPackageProps, TourNightStay, TourItineraryDay, TourPackageWithId, TourOverviewDetails } from "@/data/types/tourTypes";
 
@@ -76,7 +77,8 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
     inclusions,
     exclusions,
     itinerary,
-    overviewDetails
+    overviewDetails,
+    meta: dbTour.meta // Make sure to include the meta field
   };
 };
 
