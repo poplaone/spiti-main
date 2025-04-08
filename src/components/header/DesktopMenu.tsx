@@ -34,13 +34,11 @@ interface DesktopMenuProps {
 
 const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [] }: DesktopMenuProps) => {
   const getTourRoute = (tour: TourPackageProps) => {
-    // Map tour types to route names
-    if (tour.transportType === 'bike') return '/tour-bike';
-    if (tour.title === 'HIDDEN HEAVEN - SPITI VALLEY') return '/tour-hiddenheaven';
-    if (tour.title.includes('BUDDHIST')) return '/tour-buddhist';
-    if (tour.title.includes('WOMEN')) return '/tour-women';
-    if (tour.title.includes('OWN CAR')) return '/tour-owncar';
-    return '/tour-unexplored';
+    // Map to custom detail pages or tour/id routes
+    if (tour.id) {
+      return `/tour/${tour.id}`;
+    }
+    return "#";
   };
 
   const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;

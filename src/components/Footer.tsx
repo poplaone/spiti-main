@@ -1,8 +1,11 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, MapPin, Mail, Phone, ChevronRight } from 'lucide-react';
+
 const Footer = () => {
   const navigate = useNavigate();
+  
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -12,11 +15,14 @@ const Footer = () => {
       });
     }
   };
+  
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     e.preventDefault();
     navigate(path);
   };
-  return <footer className="text-white py-12 bg-neutral-950">
+  
+  return (
+    <footer className="text-white py-12 bg-neutral-950">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -77,33 +83,33 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4 text-sky-500">Popular Tours</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/tour-bike" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Spiti Valley Bike Tour
+                <Link to="/LAHAUL-SPITI-BIKE-TOUR" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Lahaul Spiti Bike Tour
                 </Link>
               </li>
               <li>
-                <Link to="/tour-unexplored" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
+                <Link to="/INTO-THE-HEART-OF-SPITI" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Into The Heart Of Spiti
                 </Link>
               </li>
               <li>
-                <Link to="/tour-buddhist" className="hover:text-spiti-green transition-colors flex items-center">
+                <Link to="/BUDDHIST-AND-TRIBAL-CIRCUIT–SPITI" className="hover:text-spiti-green transition-colors flex items-center">
                   <ChevronRight size={16} className="mr-1" /> Buddhist and Tribal Circuit
                 </Link>
               </li>
               <li>
-                <Link to="/tour-women" className="hover:text-spiti-green transition-colors flex items-center">
+                <Link to="/SPITI-VALLEY-WOMEN-ONLY-TOUR" className="hover:text-spiti-green transition-colors flex items-center">
                   <ChevronRight size={16} className="mr-1" /> Women Only Tour
                 </Link>
               </li>
               <li>
-                <Link to="/tour-owncar" className="hover:text-spiti-green transition-colors flex items-center">
+                <Link to="/SPITI-VALLEY-TOUR-IN-YOUR-OWN-CAR" className="hover:text-spiti-green transition-colors flex items-center">
                   <ChevronRight size={16} className="mr-1" /> Own Car Tour
                 </Link>
               </li>
               <li>
-                <Link to="/tour-hiddenheaven" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Hidden Heaven Tour
+                <Link to="/UNEXPLORED-SPITI" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
                 </Link>
               </li>
             </ul>
@@ -137,6 +143,8 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;
