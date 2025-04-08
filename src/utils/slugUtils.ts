@@ -19,7 +19,12 @@ export const createSlug = (str: string): string => {
  * @returns The extracted ID
  */
 export const extractIdFromSlug = (slug: string): string | null => {
-  // For the new URL format /tour/slug/id, just return the slug itself
-  // as it's directly the ID and doesn't need extraction
+  // Check if slug contains a slash (new format: slug/id)
+  if (slug.includes('/')) {
+    const parts = slug.split('/');
+    return parts[parts.length - 1]; // Return the last part after slash
+  }
+  
+  // If no slash found, this is an old-style URL or direct ID
   return slug;
 };
