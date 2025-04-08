@@ -4,16 +4,20 @@ import { useParams } from 'react-router-dom';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
 import { TourPackageProps } from '@/data/types/tourTypes';
+import { extractIdFromSlug } from '@/utils/slugUtils';
 
 const TourDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id: string; slug?: string }>();
   const [tourType, setTourType] = useState<string>('');
   const [heroImage, setHeroImage] = useState<string>('');
   const { tours } = useToursContext();
   
+  // Get the actual ID, whether from the slug or directly from URL
+  const actualId = params.id;
+  
   useEffect(() => {
-    if (id && tours.length > 0) {
-      const tour = tours.find(t => t.id === id);
+    if (actualId && tours.length > 0) {
+      const tour = tours.find(t => t.id === actualId);
       
       if (tour) {
         // Always use the exact same image that was uploaded by admin
@@ -42,11 +46,11 @@ const TourDetail = () => {
       setTourType('unexplored');
       setHeroImage("/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png");
     }
-  }, [id, tours]);
+  }, [actualId, tours]);
 
   return (
     <BaseTourDetailPage 
-      tourId={id}
+      tourId={actualId}
       tourType={tourType}
       heroImage={heroImage}
     />

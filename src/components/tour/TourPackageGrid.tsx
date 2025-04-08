@@ -2,6 +2,7 @@
 import React from 'react';
 import TourPackage from '@/components/TourPackage';
 import { TourPackageProps } from '@/data/types/tourTypes';
+import { createSlug } from '@/utils/slugUtils';
 
 interface TourPackageGridProps {
   packages: TourPackageProps[];
@@ -15,14 +16,19 @@ const TourPackageGrid: React.FC<TourPackageGridProps> = ({ packages }) => {
           <p className="text-lg text-gray-600">No tour packages available at the moment.</p>
         </div>
       ) : (
-        packages.map((pkg, index) => (
-          <div 
-            key={`tour-${pkg.id || index}`} 
-            className="h-full backdrop-blur-sm bg-white/10 rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-102 hover:-translate-y-1"
-          >
-            <TourPackage {...pkg} id={pkg.id || `tour-${index}`} />
-          </div>
-        ))
+        packages.map((pkg, index) => {
+          // Generate a consistent ID for each package
+          const packageId = pkg.id || `tour-${index}`;
+          
+          return (
+            <div 
+              key={`tour-${packageId}`} 
+              className="h-full backdrop-blur-sm bg-white/10 rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-102 hover:-translate-y-1"
+            >
+              <TourPackage {...pkg} id={packageId} />
+            </div>
+          );
+        })
       )}
     </div>
   );
