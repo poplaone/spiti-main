@@ -98,18 +98,18 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/SPITI-VALLEY-WOMEN-ONLY-TOUR" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Women Only Tour
+                <Link to="/ROYAL-SPITI-VALLEY-WHOLE-CIRCUIT" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Royal Spiti Valley Circuit
                 </Link>
               </li>
               <li>
-                <Link to="/SPITI-VALLEY-TOUR-IN-YOUR-OWN-CAR" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Own Car Tour
+                <Link to="/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Snow Leopard Expedition
                 </Link>
               </li>
               <li>
-                <Link to="/UNEXPLORED-SPITI" className="hover:text-spiti-green transition-colors flex items-center">
-                  <ChevronRight size={16} className="mr-1" /> Unexplored Spiti
+                <Link to="/SOULFUL-SPITI-GATEWAY" className="hover:text-spiti-green transition-colors flex items-center">
+                  <ChevronRight size={16} className="mr-1" /> Soulful Spiti Gateway
                 </Link>
               </li>
             </ul>
