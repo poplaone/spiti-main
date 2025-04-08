@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
-import { TourPackageProps } from '@/data/types/tourTypes';
 import { extractIdFromSlug } from '@/utils/slugUtils';
 
 const TourDetail = () => {

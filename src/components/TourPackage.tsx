@@ -1,4 +1,3 @@
-
 import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Bike, Car, Calendar, Sliders, UserRound } from 'lucide-react';
@@ -34,8 +33,7 @@ const TourPackage: React.FC<TourPackageProps & {
   let detailsUrl = "#";
   if (id && title) {
     const slug = createSlug(title);
-    const titleId = id.split('-')[0]; // Take first part of UUID for brevity in URL
-    detailsUrl = `/tour/${slug}-${titleId}`;
+    detailsUrl = `/tour/${slug}/${id}`;
   }
 
   return (

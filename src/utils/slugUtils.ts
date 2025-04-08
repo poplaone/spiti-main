@@ -20,18 +20,20 @@ export const createSlug = (str: string): string => {
  */
 export const extractIdFromSlug = (slug: string): string | null => {
   const parts = slug.split('-');
-  // Check if we have enough parts and the last part is a valid UUID
+  // Check if we have enough parts
   if (parts.length <= 1) {
     return null;
   }
   
-  // UUID pattern check - this is approximate and can be refined if needed
+  // The ID should be the last part or the whole slug
+  // We'll handle both formats: "slug-id" and just "id"
   const lastPart = parts[parts.length - 1];
-  if (/^[0-9a-f]{8}$/i.test(lastPart)) {
+  
+  // If it looks like a UUID fragment (8 or more alphanumeric chars), assume it's the ID
+  if (/^[0-9a-f]{8,}$/i.test(lastPart)) {
     return lastPart;
   }
   
-  // If no UUID pattern at the end, return the whole slug
-  // The backend will need to handle this appropriately
+  // If no ID found in slug format, return the whole slug
   return slug;
 };
