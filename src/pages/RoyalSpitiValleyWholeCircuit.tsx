@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
 
@@ -7,6 +7,14 @@ const RoyalSpitiValleyWholeCircuit = () => {
   const { tours } = useToursContext();
   const tourTitle = "ROYAL SPITI VALLEY WHOLE CIRCUIT";
   const tour = tours.find(t => t.title === tourTitle);
+  
+  // Debug logging to see what's happening
+  useEffect(() => {
+    if (tours.length > 0) {
+      console.log("All tour titles:", tours.map(t => t.title));
+      console.log("Found tour:", tour);
+    }
+  }, [tours, tour]);
   
   return (
     <BaseTourDetailPage 

@@ -17,9 +17,16 @@ export const useTourData = (tourType: string, tourId?: string): UseTourDataResul
 
   // Memoized filter function to avoid recalculating on every render
   const filterTours = useCallback((allTours: TourPackageProps[], type: string, id?: string) => {
+    // Add debug log to see what's happening
+    console.log("useTourData filterTours called with:", { type, id });
+    console.log("Available tour IDs:", allTours.map(t => ({ id: t.id, title: t.title })));
+    
     // If we have a specific tour ID, use that to find the tour
     if (id) {
+      console.log("Looking for tour with ID:", id);
       const foundTour = allTours.find(t => t.id === id);
+      console.log("Found tour by ID:", foundTour?.title);
+      
       if (foundTour) {
         // Get ALL other tours except the current one for related tours section
         const relatedTours = allTours.filter(t => t.id !== id);
@@ -67,12 +74,15 @@ export const useTourData = (tourType: string, tourId?: string): UseTourDataResul
     }
 
     if (filteredTours.length > 0) {
+      console.log(`Found ${filteredTours.length} tours of type ${type}:`, 
+        filteredTours.map(t => t.title));
       return { 
         selectedTour: filteredTours[0], 
         relatedTours: filteredTours.slice(1)
       };
     } else {
       // Fallback to first tour if no tours match the type
+      console.log("No tours match type, falling back to first tour");
       return { 
         selectedTour: allTours[0], 
         relatedTours: allTours.slice(1)
