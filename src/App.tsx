@@ -16,10 +16,9 @@ import ThankYou from "./pages/ThankYou";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
-// Import the new dynamic TourDetail page
+// Import the tour detail pages
 import TourDetail from "./pages/TourDetail";
-
-// Import individual tour detail pages
+import TourDetailBySlug from "./pages/TourDetailBySlug";
 import TourDetailBike from "./pages/TourDetailBike";
 import TourDetailUnexplored from "./pages/TourDetailUnexplored";
 import TourDetailBuddhist from "./pages/TourDetailBuddhist";
@@ -71,7 +70,7 @@ const App = () => {
             <Route path="/fixed-departures" element={<FixedDepartures />} />
             <Route path="/customizable-tours" element={<CustomizableTours />} />
             
-            {/* Dynamic tour detail page route */}
+            {/* Dynamic tour detail page route with ID */}
             <Route path="/tour/:id" element={<TourDetail />} />
             
             {/* Tour detail pages with clean routes - all 6 tour types */}
@@ -81,6 +80,9 @@ const App = () => {
             <Route path="/tour-women" element={<TourDetailWomen />} />
             <Route path="/tour-owncar" element={<TourDetailOwnCar />} />
             <Route path="/tour-hiddenheaven" element={<TourDetailHiddenHeaven />} />
+            
+            {/* Custom URL routes for each tour package */}
+            <Route path="/:slug" element={<TourDetailBySlug />} />
             
             {/* Admin routes */}
             <Route path="/admin-login" element={<AdminLogin />} />

@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -25,6 +24,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { tourTitleToSlug } from '@/utils/routeUtils';
 
 interface DesktopMenuProps {
   roadTripsTours: TourPackageProps[];
@@ -34,13 +34,7 @@ interface DesktopMenuProps {
 
 const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [] }: DesktopMenuProps) => {
   const getTourRoute = (tour: TourPackageProps) => {
-    // Map tour types to route names
-    if (tour.transportType === 'bike') return '/tour-bike';
-    if (tour.title === 'HIDDEN HEAVEN - SPITI VALLEY') return '/tour-hiddenheaven';
-    if (tour.title.includes('BUDDHIST')) return '/tour-buddhist';
-    if (tour.title.includes('WOMEN')) return '/tour-women';
-    if (tour.title.includes('OWN CAR')) return '/tour-owncar';
-    return '/tour-unexplored';
+    return tourTitleToSlug[tour.title] || `/tour/${tour.id}`;
   };
 
   const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
