@@ -57,6 +57,14 @@ export const useLeadForm = () => {
       
       console.log("Submitting lead form to edge function:", leadData);
       
+      // Track form submission start in GTM
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'formSubmissionAttempt',
+          'formType': 'tourInquiry'
+        });
+      }
+      
       // Call the Supabase Edge Function to send the email
       const { data, error } = await supabase.functions.invoke('send-lead-email', {
         body: leadData
@@ -65,20 +73,55 @@ export const useLeadForm = () => {
       if (error) {
         console.error("Error sending lead form:", error);
         toast.error("Failed to send your request. Please try again later.");
+        
+        // Track form submission failure
+        if (window.dataLayer) {
+          window.dataLayer.push({
+            'event': 'formSubmissionError',
+            'formType': 'tourInquiry',
+            'errorMessage': error.message || 'Unknown error'
+          });
+        }
         return false;
       }
 
       if (!data || !data.success) {
         console.error("Lead form submission failed:", data);
         toast.error("Failed to send your request. Please try again later.");
+        
+        // Track form submission failure
+        if (window.dataLayer) {
+          window.dataLayer.push({
+            'event': 'formSubmissionError',
+            'formType': 'tourInquiry',
+            'errorMessage': 'API returned unsuccessful response'
+          });
+        }
         return false;
       }
 
+      // Track successful form submission
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'formSubmissionSuccess',
+          'formType': 'tourInquiry'
+        });
+      }
+      
       console.log("Lead form submitted successfully:", data);
       return true;
     } catch (err) {
       console.error("Exception sending lead form:", err);
       toast.error("Failed to send your request. Please try again later.");
+      
+      // Track form submission exception
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'formSubmissionError',
+          'formType': 'tourInquiry',
+          'errorMessage': err instanceof Error ? err.message : 'Unknown exception'
+        });
+      }
       return false;
     } finally {
       setIsSubmitting(false);
@@ -87,6 +130,13 @@ export const useLeadForm = () => {
 
   const handleSubmit = async () => {
     if (!validateForm(formData)) {
+      // Track validation failure
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'formValidationError',
+          'formType': 'tourInquiry'
+        });
+      }
       return;
     }
 
@@ -126,6 +176,14 @@ export const useLeadForm = () => {
       return;
     }
 
+    // Track WhatsApp contact method
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'whatsAppContact',
+        'formType': 'tourInquiry'
+      });
+    }
+
     const message = `
 *New Tour Inquiry*
 Name: ${formData.name}
@@ -154,3 +212,4 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
     sendWhatsApp
   };
 };
+

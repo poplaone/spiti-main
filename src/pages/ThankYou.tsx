@@ -30,7 +30,26 @@ const ThankYou = () => {
       return () => clearTimeout(timer);
     }
 
-    // Google Analytics or other tracking code would go here
+    // Google Tag Manager event trigger for conversion tracking
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'formSubmission',
+        'formType': 'tourInquiry',
+        'formData': {
+          'name': formData.name || 'Not provided',
+          'email': formData.email || 'Not provided',
+          'phone': formData.phone || 'Not provided',
+          'duration': formData.duration || 'Not specified',
+          'travelDate': formData.date || 'Not specified',
+          'guests': formData.guests || '1',
+          'isCustomized': formData.isCustomized || false,
+          'isFixedDeparture': formData.isFixedDeparture || false
+        }
+      });
+      
+      console.log("Thank you page conversion event tracked");
+    }
+    
     console.log("Thank you page viewed with form data:", formData);
   }, [navigate, location.state, formData]);
 
@@ -136,3 +155,4 @@ const ThankYou = () => {
 };
 
 export default ThankYou;
+

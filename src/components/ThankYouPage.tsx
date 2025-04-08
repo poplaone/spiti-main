@@ -16,8 +16,26 @@ const ThankYouPage = ({ onClose }: ThankYouPageProps) => {
       setShowElements(true);
     }, 300);
     
+    // Track modal thank you page view with GTM
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'modalThankYouView',
+        'formType': 'tourInquiry'
+      });
+    }
+    
     return () => clearTimeout(timer);
   }, []);
+
+  const handleContinueClick = () => {
+    // Track continue exploring clicks
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'thankYouContinue'
+      });
+    }
+    onClose();
+  };
 
   return (
     <div className="w-full h-full min-h-[500px] md:min-h-[600px] relative overflow-hidden rounded-2xl">
@@ -62,7 +80,7 @@ const ThankYouPage = ({ onClose }: ThankYouPageProps) => {
           
           <Button 
             className="bg-spiti-blue hover:bg-spiti-blue/80 text-white animate-fade-in-up"
-            onClick={onClose}
+            onClick={handleContinueClick}
             style={{animationDelay: '0.4s'}}
           >
             Continue Exploring
@@ -118,3 +136,4 @@ const ThankYouPage = ({ onClose }: ThankYouPageProps) => {
 };
 
 export default ThankYouPage;
+
