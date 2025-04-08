@@ -29,6 +29,9 @@ import SpitiValleyWomenOnlyTour from "./pages/SpitiValleyWomenOnlyTour";
 import UnexploredSpiti from "./pages/UnexploredSpiti";
 import WinterWhiteSpiti from "./pages/WinterWhiteSpiti";
 import RoyalSpitiValleyWholeCircuit from "./pages/RoyalSpitiValleyWholeCircuit";
+import SnowLeopardExpeditionWinterSpecial from "./pages/SnowLeopardExpeditionWinterSpecial";
+import SoulfulSpitiGateway from "./pages/SoulfulSpitiGateway";
+import SpitiCompleteCircuitMostPopular from "./pages/SpitiCompleteCircuitMostPopular";
 
 // Import TourDetailBySlug for handling slug-based URLs
 import TourDetailBySlug from "./pages/TourDetailBySlug";
@@ -87,6 +90,9 @@ const App = () => {
             <Route path="/UNEXPLORED-SPITI" element={<UnexploredSpiti />} />
             <Route path="/WINTER-WHITE-SPITI" element={<WinterWhiteSpiti />} />
             <Route path="/ROYAL-SPITI-VALLEY-WHOLE-CIRCUIT" element={<RoyalSpitiValleyWholeCircuit />} />
+            <Route path="/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL" element={<SnowLeopardExpeditionWinterSpecial />} />
+            <Route path="/SOULFUL-SPITI-GATEWAY" element={<SoulfulSpitiGateway />} />
+            <Route path="/SPITI-COMPLETE-CIRCUIT-MOST-POPULAR" element={<SpitiCompleteCircuitMostPopular />} />
             
             {/* Dynamic tour detail page route */}
             <Route path="/tour/:id" element={<TourDetail />} />
