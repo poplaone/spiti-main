@@ -5,14 +5,18 @@ import { useToursContext } from '@/context/ToursContext';
 
 const RoyalSpitiValleyWholeCircuit = () => {
   const { tours } = useToursContext();
-  const tourTitle = "ROYAL SPITI VALLEY WHOLE CIRCUIT";
-  const tour = tours.find(t => t.title === tourTitle);
+  
+  // Look for the tour with the exact title or with variations of the name
+  const tour = tours.find(t => 
+    t.title === "ROYAL SPITI VALLEY WHOLE CIRCUIT" || 
+    t.title === "ROYAL SPITI VALLEY (WHOLE CIRCUIT)"
+  );
   
   // Debug logging to see what's happening
   useEffect(() => {
     if (tours.length > 0) {
-      console.log("All tour titles:", tours.map(t => t.title));
-      console.log("Found tour:", tour);
+      console.log("Available tours:", tours.map(t => ({ id: t.id, title: t.title })));
+      console.log("Found Royal Spiti Valley tour:", tour);
     }
   }, [tours, tour]);
   

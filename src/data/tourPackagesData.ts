@@ -10,7 +10,7 @@ import { buddhistTours } from './tours/buddhistTours';
 // and add it if it doesn't exist
 const royalSpitiTour: TourPackageProps = {
   id: 'royal-spiti-valley-whole-circuit',
-  title: "ROYAL SPITI VALLEY WHOLE CIRCUIT",
+  title: "ROYAL SPITI VALLEY (WHOLE CIRCUIT)",
   image: "/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png",
   originalPrice: 22500,
   discountedPrice: 19999,
@@ -110,7 +110,10 @@ const processedTours = [
   ...womenOnlyTours,
   ...ownCarTours,
   // Add the Royal Spiti Valley tour if it's not already in one of the collections
-  ...(unexploredTours.some(tour => tour.title === "ROYAL SPITI VALLEY WHOLE CIRCUIT") ? [] : [royalSpitiTour]),
+  ...(!unexploredTours.some(tour => 
+      tour.title === "ROYAL SPITI VALLEY (WHOLE CIRCUIT)" || 
+      tour.title === "ROYAL SPITI VALLEY WHOLE CIRCUIT"
+    ) ? [royalSpitiTour] : []),
   ...unexploredTours.filter(tour => tour.title === "HIDDEN HEAVEN - SPITI VALLEY")
 ].map(tour => ({
   ...tour,
@@ -127,6 +130,7 @@ const toursWithFixedDepartures = processedTours.map(tour => {
   // Make bike tours and car tours with "UNEXPLORED" in the title fixed departures for demonstration
   if (tour.transportType === 'bike' || 
      (tour.transportType === 'car' && tour.title.includes("UNEXPLORED")) ||
+     tour.title === "ROYAL SPITI VALLEY (WHOLE CIRCUIT)" ||
      tour.title === "ROYAL SPITI VALLEY WHOLE CIRCUIT") {
     return {
       ...tour,
