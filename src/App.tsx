@@ -16,8 +16,22 @@ import ThankYou from "./pages/ThankYou";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
-// Import the new dynamic TourDetail page
+// Import the dynamic TourDetail page
 import TourDetail from "./pages/TourDetail";
+
+// Import specific tour detail pages with custom URLs
+import BuddhistAndTribalCircuit from "./pages/BuddhistAndTribalCircuit";
+import IntoTheHeartOfSpiti from "./pages/IntoTheHeartOfSpiti";
+import KinnaurValleyExploration from "./pages/KinnaurValleyExploration";
+import LahaulSpitiBikeTour from "./pages/LahaulSpitiBikeTour";
+import RoyalSpitiValleyWholeCircuit from "./pages/RoyalSpitiValleyWholeCircuit";
+import SnowLeopardExpedition from "./pages/SnowLeopardExpedition";
+import SoulfulSpitiGateway from "./pages/SoulfulSpitiGateway";
+import SpitiCompleteCircuit from "./pages/SpitiCompleteCircuit";
+import SpitiValleyOwnCar from "./pages/SpitiValleyOwnCar";
+import SpitiValleyWomenOnlyTour from "./pages/SpitiValleyWomenOnlyTour";
+import UnexploredSpiti from "./pages/UnexploredSpiti";
+import WinterWhiteSpiti from "./pages/WinterWhiteSpiti";
 
 // Import individual tour detail pages
 import TourDetailBike from "./pages/TourDetailBike";
@@ -26,6 +40,9 @@ import TourDetailBuddhist from "./pages/TourDetailBuddhist";
 import TourDetailWomen from "./pages/TourDetailWomen";
 import TourDetailOwnCar from "./pages/TourDetailOwnCar";
 import TourDetailHiddenHeaven from "./pages/TourDetailHiddenHeaven";
+
+// Import TourDetailBySlug for handling slug-based URLs
+import TourDetailBySlug from "./pages/TourDetailBySlug";
 
 // Import new pages for road trips and fixed departures
 import RoadTrips from "./pages/RoadTrips";
@@ -71,8 +88,25 @@ const App = () => {
             <Route path="/fixed-departures" element={<FixedDepartures />} />
             <Route path="/customizable-tours" element={<CustomizableTours />} />
             
+            {/* Custom tour detail pages with clean URLs */}
+            <Route path="/BUDDHIST-AND-TRIBAL-CIRCUIT–SPITI" element={<BuddhistAndTribalCircuit />} />
+            <Route path="/INTO-THE-HEART-OF-SPITI" element={<IntoTheHeartOfSpiti />} />
+            <Route path="/KINNAUR-VALLEY-EXPLORATION" element={<KinnaurValleyExploration />} />
+            <Route path="/LAHAUL-SPITI-BIKE-TOUR" element={<LahaulSpitiBikeTour />} />
+            <Route path="/ROYAL-SPITI-VALLEY-WHOLE-CIRCUIT" element={<RoyalSpitiValleyWholeCircuit />} />
+            <Route path="/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL" element={<SnowLeopardExpedition />} />
+            <Route path="/SOULFUL-SPITI-GATEWAY" element={<SoulfulSpitiGateway />} />
+            <Route path="/SPITI-COMPLETE-CIRCUIT-MOST-POPULAR" element={<SpitiCompleteCircuit />} />
+            <Route path="/SPITI-VALLEY-TOUR-IN-YOUR-OWN-CAR" element={<SpitiValleyOwnCar />} />
+            <Route path="/SPITI-VALLEY-WOMEN-ONLY-TOUR" element={<SpitiValleyWomenOnlyTour />} />
+            <Route path="/UNEXPLORED-SPITI" element={<UnexploredSpiti />} />
+            <Route path="/WINTER-WHITE-SPITI" element={<WinterWhiteSpiti />} />
+            
             {/* Dynamic tour detail page route */}
             <Route path="/tour/:id" element={<TourDetail />} />
+            
+            {/* Slug-based tour detail route */}
+            <Route path="/tour-package/:slug" element={<TourDetailBySlug />} />
             
             {/* Tour detail pages with clean routes - all 6 tour types */}
             <Route path="/tour-bike" element={<TourDetailBike />} />
