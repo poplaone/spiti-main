@@ -1,55 +1,29 @@
-import { useState } from 'react';
+
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
-import { useFormValidation, FormData } from './useFormValidation';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { FormState } from "./types";
 
-interface FormState extends FormData {
-  duration: string;
-  guests: string;
-  isCustomized: boolean;
-  isFixedDeparture: boolean;
-  [key: string]: string | boolean | number;
-}
-
-export const useLeadForm = () => {
+export const useFormSubmission = (
+  formData: FormState, 
+  date: Date | undefined,
+  setIsSubmitting: (value: boolean) => void
+) => {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [date, setDate] = useState<Date>();
-  const [formData, setFormData] = useState<FormState>({
-    name: '',
-    email: '',
-    phone: '',
-    duration: '',
-    guests: '1',
-    isCustomized: false,
-    isFixedDeparture: false
-  });
-  const { validateForm } = useFormValidation();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    
-    // Add specific validation for phone field - only allow numbers, +, (, and )
-    if (id === 'phone') {
-      const validPhoneRegex = /^[+()0-9]*$/;
-      if (value && !validPhoneRegex.test(value)) {
-        return; // Reject invalid input
-      }
+  const trackFormEvent = (eventName: string, extraData?: Record<string, any>) => {
+    console.log(`Tracking GTM event: ${eventName} - GTM dataLayer available:`, !!window.dataLayer);
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': eventName,
+        'formType': 'tourInquiry',
+        ...extraData
+      });
+      console.log(`Event ${eventName} pushed to dataLayer`);
     }
-    
-    setFormData(prev => ({ ...prev, [id]: value }));
   };
-
-  const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, duration: value }));
-  };
-
-  const handleCheckboxChange = (id: string, checked: boolean) => {
-    setFormData(prev => ({ ...prev, [id]: checked }));
-  };
-
+  
   const submitLeadForm = async (leadData: any) => {
     try {
       setIsSubmitting(true);
@@ -57,12 +31,7 @@ export const useLeadForm = () => {
       console.log("Submitting lead form to edge function:", leadData);
       
       // Track form submission start in GTM
-      if (window.dataLayer) {
-        window.dataLayer.push({
-          'event': 'formSubmissionAttempt',
-          'formType': 'tourInquiry'
-        });
-      }
+      trackFormEvent('formSubmissionAttempt');
       
       // Call the Supabase Edge Function to send the email
       const { data, error } = await supabase.functions.invoke('send-lead-email', {
@@ -74,13 +43,9 @@ export const useLeadForm = () => {
         toast.error("Failed to send your request. Please try again later.");
         
         // Track form submission failure
-        if (window.dataLayer) {
-          window.dataLayer.push({
-            'event': 'formSubmissionError',
-            'formType': 'tourInquiry',
-            'errorMessage': error.message || 'Unknown error'
-          });
-        }
+        trackFormEvent('formSubmissionError', {
+          'errorMessage': error.message || 'Unknown error'
+        });
         return false;
       }
 
@@ -89,23 +54,14 @@ export const useLeadForm = () => {
         toast.error("Failed to send your request. Please try again later.");
         
         // Track form submission failure
-        if (window.dataLayer) {
-          window.dataLayer.push({
-            'event': 'formSubmissionError',
-            'formType': 'tourInquiry',
-            'errorMessage': 'API returned unsuccessful response'
-          });
-        }
+        trackFormEvent('formSubmissionError', {
+          'errorMessage': 'API returned unsuccessful response'
+        });
         return false;
       }
 
       // Track successful form submission
-      if (window.dataLayer) {
-        window.dataLayer.push({
-          'event': 'formSubmissionSuccess',
-          'formType': 'tourInquiry'
-        });
-      }
+      trackFormEvent('formSubmissionSuccess');
       
       console.log("Lead form submitted successfully:", data);
       return true;
@@ -114,28 +70,19 @@ export const useLeadForm = () => {
       toast.error("Failed to send your request. Please try again later.");
       
       // Track form submission exception
-      if (window.dataLayer) {
-        window.dataLayer.push({
-          'event': 'formSubmissionError',
-          'formType': 'tourInquiry',
-          'errorMessage': err instanceof Error ? err.message : 'Unknown exception'
-        });
-      }
+      trackFormEvent('formSubmissionError', {
+        'errorMessage': err instanceof Error ? err.message : 'Unknown exception'
+      });
       return false;
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleFormSubmit = async (validateForm: (data: FormState) => boolean) => {
     if (!validateForm(formData)) {
       // Track validation failure
-      if (window.dataLayer) {
-        window.dataLayer.push({
-          'event': 'formValidationError',
-          'formType': 'tourInquiry'
-        });
-      }
+      trackFormEvent('formValidationError');
       return;
     }
 
@@ -170,18 +117,13 @@ export const useLeadForm = () => {
     }
   };
 
-  const sendWhatsApp = () => {
+  const sendWhatsAppMessage = (validateForm: (data: FormState) => boolean) => {
     if (!validateForm(formData)) {
       return;
     }
 
     // Track WhatsApp contact method
-    if (window.dataLayer) {
-      window.dataLayer.push({
-        'event': 'whatsAppContact',
-        'formType': 'tourInquiry'
-      });
-    }
+    trackFormEvent('whatsAppContact');
 
     const message = `
 *New Tour Inquiry*
@@ -200,14 +142,7 @@ Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ?
   };
 
   return {
-    date,
-    setDate,
-    formData,
-    isSubmitting,
-    handleInputChange,
-    handleSelectChange,
-    handleCheckboxChange,
-    handleSubmit,
-    sendWhatsApp
+    handleFormSubmit,
+    sendWhatsAppMessage
   };
 };

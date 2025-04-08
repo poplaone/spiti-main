@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ContactForm from './form/ContactForm';
 import TourPreferences from './form/TourPreferences';
 import FormActions from './form/FormActions';
-import { useLeadForm } from '@/hooks/useLeadForm';
+import { useLeadForm } from '@/hooks/lead-form';
 
 const LeadForm = () => {
   const {
