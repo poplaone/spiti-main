@@ -1,5 +1,5 @@
 
-import { TourPackageProps } from '@/data/types/tourTypes';
+import { TourPackageProps } from '@/components/TourPackage';
 
 export const womenOnlyTours: TourPackageProps[] = [
   {

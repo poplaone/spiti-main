@@ -1,85 +1,151 @@
 
-import React from 'react';
-import { Card } from "@/components/ui/card";
-import { Link } from "react-router-dom";
-import { TourPackageProps } from '@/data/types/tourTypes';
-import { tourTitleToSlug } from '@/utils/routeUtils';
+import React, { useCallback, useRef } from 'react';
+import TourPackage from "@/components/TourPackage";
+import { TourPackageProps } from "@/data/types/tourTypes";
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface RelatedToursProps {
   tours: TourPackageProps[];
   currentTourId?: string;
 }
 
-// Format price with thousands separator
-const formatCurrency = (amount: number) => {
-  return amount.toLocaleString('en-IN');
-};
-
 const RelatedTours: React.FC<RelatedToursProps> = ({ tours, currentTourId }) => {
   // Filter out the current tour if currentTourId is provided
   const filteredTours = currentTourId 
-    ? tours.filter(tour => tour.id !== currentTourId)
+    ? tours.filter(tour => tour.id !== currentTourId) 
     : tours;
   
-  // Show a maximum of 6 related tours
-  const relatedTours = filteredTours.slice(0, 6);
-  
-  if (relatedTours.length === 0) {
+  const isMobile = useIsMobile();
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  // If no related tours available after filtering current tour
+  if (filteredTours.length === 0) {
     return null;
   }
-  
+
+  // Memoized navigation handler
+  const handleNavigation = useCallback((direction: 'prev' | 'next') => {
+    const button = document.querySelector(
+      `[data-carousel-${direction === 'prev' ? 'prev' : 'next'}="true"]`
+    ) as HTMLButtonElement;
+    
+    if (button) button.click();
+  }, []);
+
   return (
-    <div className="container mx-auto px-4 py-8 bg-slate-50">
-      <h2 className="text-2xl font-bold text-spiti-forest mb-6">More Tours You Might Like</h2>
-      
-      <div className="overflow-x-auto pb-4">
-        <div className="flex gap-4 w-max md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:w-auto">
-          {relatedTours.map((tour) => {
-            // Get the custom URL for this tour
-            const tourUrl = tourTitleToSlug[tour.title] || `/tour/${tour.id}`;
-            
-            return (
-              <Link 
-                key={tour.id || tour.title} 
-                to={tourUrl}
-                className="min-w-[280px] max-w-[300px] md:min-w-0 md:max-w-none transition-transform hover:-translate-y-1"
+    <section className="py-8 md:py-16 bg-spiti-stone">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-heading font-bold text-center mb-4 md:mb-6 text-spiti-forest">More Popular Spiti Valley Tours</h2>
+        <p className="text-center text-gray-700 mb-6 md:mb-8 max-w-3xl mx-auto">
+          Discover our other handcrafted Spiti Valley adventures, each offering unique experiences through 
+          this mesmerizing Himalayan region. From bike tours and women-only expeditions to family-friendly 
+          journeys, find the perfect package for your next mountain getaway.
+        </p>
+        
+        {/* Swipe indicator for mobile */}
+        {isMobile && (
+          <div className="flex justify-center items-center mb-4 md:hidden">
+            <div className="flex items-center gap-2 bg-white/80 px-3 py-1 rounded-full shadow-sm">
+              <ArrowLeft className="h-4 w-4 text-spiti-forest animate-pulse" />
+              <span className="text-sm text-spiti-forest font-medium">Swipe to explore all {filteredTours.length} tours</span>
+              <ArrowRight className="h-4 w-4 text-spiti-forest animate-pulse" />
+            </div>
+          </div>
+        )}
+
+        <div className="relative" ref={carouselRef}>
+          <Carousel 
+            className="w-full" 
+            opts={{ 
+              align: "start",
+              loop: filteredTours.length > 2,
+              dragFree: true
+            }}
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {filteredTours.map((tour, index) => (
+                <CarouselItem 
+                  key={`related-tour-${tour.id || index}`} 
+                  className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                >
+                  <div className="h-full">
+                    <TourPackage {...tour} id={tour.id || `tour-${index}`} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+  
+            {/* Custom navigation controls for desktop */}
+            <div className="hidden md:block">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
+                aria-label="Previous slide"
+                onClick={() => handleNavigation('prev')}
               >
-                <Card className="overflow-hidden shadow-sm hover:shadow bg-white border">
-                  <div className="relative">
-                    <img 
-                      src={tour.image} 
-                      alt={tour.title} 
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-3 right-3 bg-white rounded-full px-3 py-1 text-sm font-medium text-spiti-forest shadow">
-                      ₹{formatCurrency(tour.discountedPrice)}
-                    </div>
-                    {tour.discount > 0 && (
-                      <div className="absolute top-3 right-3 bg-spiti-green text-white px-2 py-1 rounded-sm text-xs font-bold">
-                        {tour.discount}% OFF
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-base mb-2 line-clamp-2 text-spiti-forest">
-                      {tour.title}
-                    </h3>
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>{tour.duration.nights} Nights</span>
-                      {tour.originalPrice > tour.discountedPrice && (
-                        <span className="line-through text-gray-400 mr-2">
-                          ₹{formatCurrency(tour.originalPrice)}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </Card>
-              </Link>
-            );
-          })}
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-10 bg-white/80 border-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-10 w-10 rounded-full"
+                aria-label="Next slide"
+                onClick={() => handleNavigation('next')}
+              >
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </div>
+  
+            {/* Standard carousel controls - hidden but functional */}
+            <CarouselPrevious className="hidden" />
+            <CarouselNext className="hidden" />
+          </Carousel>
+  
+          {/* Mobile custom navigation arrows - made more visible */}
+          {isMobile && (
+            <div className="flex justify-between md:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 px-2 z-10">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
+                aria-label="Previous slide"
+                onClick={() => handleNavigation('prev')}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="bg-white/90 border-spiti-blue text-spiti-blue hover:bg-spiti-blue hover:text-white shadow-md h-9 w-9 rounded-full"
+                aria-label="Next slide"
+                onClick={() => handleNavigation('next')}
+              >
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* Display total number of tours available */}
+        <div className="text-center mt-4">
+          <span className="text-sm text-gray-600 bg-white/80 px-3 py-1 rounded-full shadow-sm">
+            {filteredTours.length} {filteredTours.length === 1 ? 'tour' : 'tours'} available
+          </span>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
