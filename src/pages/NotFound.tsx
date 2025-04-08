@@ -1,57 +1,15 @@
-
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useToursContext } from "@/context/ToursContext";
 
 const NotFound = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { tours } = useToursContext();
 
   useEffect(() => {
-    // Handle redirects for old tour detail URLs
-    const path = location.pathname;
-    
-    // If the path matches any of the old tour detail URLs, redirect to the home page
-    if (
-      path === "/tour-bike" || 
-      path === "/tour-women" || 
-      path === "/tour-owncar" || 
-      path === "/tour-buddhist" || 
-      path === "/tour-unexplored" || 
-      path === "/tour-hiddenheaven"
-    ) {
-      // Get the first tour from the admin-created tours if available
-      if (tours.length > 0) {
-        // Find a matching tour by characteristics for better redirection
-        let targetTour = tours[0]; // Default to first tour
-        
-        if (path === "/tour-bike" && tours.some(t => t.transportType.toLowerCase() === "bike")) {
-          targetTour = tours.find(t => t.transportType.toLowerCase() === "bike") || targetTour;
-        } else if (path === "/tour-women" && tours.some(t => t.isWomenOnly)) {
-          targetTour = tours.find(t => t.isWomenOnly) || targetTour;
-        } else if (path === "/tour-buddhist" && tours.some(t => t.title.toLowerCase().includes("buddhist"))) {
-          targetTour = tours.find(t => t.title.toLowerCase().includes("buddhist")) || targetTour;
-        } else if (path === "/tour-owncar" && tours.some(t => t.title.toLowerCase().includes("own car") || t.title.toLowerCase().includes("self drive"))) {
-          targetTour = tours.find(t => t.title.toLowerCase().includes("own car") || t.title.toLowerCase().includes("self drive")) || targetTour;
-        } else if (path === "/tour-hiddenheaven" && tours.some(t => t.title.toLowerCase().includes("hidden"))) {
-          targetTour = tours.find(t => t.title.toLowerCase().includes("hidden")) || targetTour;
-        }
-        
-        // Redirect to the specific tour page
-        navigate(`/tour/${targetTour.id}`, { replace: true });
-      } else {
-        // If no tours are available yet, redirect to home
-        navigate("/", { replace: true });
-      }
-      return;
-    }
-    
     console.error(
       "404 Error: User attempted to access non-existent route:",
       location.pathname
     );
-  }, [location.pathname, navigate, tours]);
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

@@ -11,18 +11,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [
-    react({
-      // Add SWC optimization options
-      swcOptions: {
-        jsc: {
-          target: 'es2020',
-          minify: {
-            compress: true,
-            mangle: true
-          }
-        }
-      }
-    }),
+    react(),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
@@ -34,12 +23,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: [
-      'embla-carousel', 
-      'lucide-react', 
-      '@radix-ui/react-dialog', 
-      '@radix-ui/react-toast'
-    ],
+    include: ['embla-carousel'],
     force: true, // Force dependencies optimization to resolve lockfile issues
   },
   build: {
@@ -47,10 +31,6 @@ export default defineConfig(({ mode }) => ({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
-    // Minimize output file sizes
-    cssCodeSplit: true,
-    sourcemap: false,
-    // Optimize chunk distribution
     rollupOptions: {
       output: {
         manualChunks: {
@@ -66,31 +46,10 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-popover',
             '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
-          ],
-          icons: [
-            'lucide-react'
-          ],
-          carousel: [
-            'embla-carousel',
-            'embla-carousel-react',
-            'embla-carousel-autoplay'
           ]
         }
       }
     },
     chunkSizeWarningLimit: 1000,
-    // Enable additional minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    }
   },
-  // Optimize preview
-  preview: {
-    port: 8080,
-    host: true,
-  }
 }));

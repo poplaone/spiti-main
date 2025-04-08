@@ -1,7 +1,8 @@
 
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sun, Cloud, CloudRain, Snowflake, Thermometer, Wind } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 
 interface WeatherData {
@@ -13,7 +14,7 @@ interface WeatherData {
   feelsLike?: number;
 }
 
-const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
+const WeatherDisplay = ({ className = "" }: { className?: string }) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,13 +26,12 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
   const lat = 32.6192;
   const lon = 77.3784;
   
-  const fetchWeather = useCallback(async () => {
+  const fetchWeather = async () => {
     try {
       setLoading(true);
       // Using OpenWeatherMap free API
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04`,
-        { cache: 'force-cache' }
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04`
       );
       
       if (!response.ok) {
@@ -39,6 +39,7 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
       }
       
       const data = await response.json();
+      console.log('Weather data:', data); // Verify coordinates in log
       
       setWeather({
         temp: Math.round(data.main.temp),
@@ -56,19 +57,19 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
       setError('Could not load weather');
       setLoading(false);
     }
-  }, []);
+  };
   
   useEffect(() => {
     // Initial fetch
     fetchWeather();
     
-    // Refresh weather data every 60 minutes (reduced from 30 min)
-    const intervalId = setInterval(fetchWeather, 60 * 60 * 1000);
+    // Refresh weather data every 30 minutes
+    const intervalId = setInterval(fetchWeather, 30 * 60 * 1000);
     
     return () => clearInterval(intervalId);
-  }, [fetchWeather]);
+  }, []);
   
-  const getWeatherIcon = useCallback(() => {
+  const getWeatherIcon = () => {
     if (!weather) return <Sun className="w-5 h-5 text-yellow-300" />;
     
     const iconCode = weather.icon;
@@ -84,7 +85,7 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
     } else {
       return <Thermometer className="w-5 h-5 text-red-400" />;
     }
-  }, [weather]);
+  };
   
   if (error) {
     return null; // Don't show anything if there's an error
@@ -95,6 +96,7 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
       <div className={`flex items-center justify-center ${className}`}>
         <div className="w-8 h-8 relative animate-spin">
           <div className="absolute inset-0 rounded-full border-2 border-t-transparent border-white/30 border-b-white/70"></div>
+          <div className="absolute inset-2 rounded-full border-1 border-l-transparent border-white/50"></div>
         </div>
       </div>
     );
@@ -126,7 +128,7 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
     );
   }
   
-  // For desktop, show a more interactive and detailed display
+  // For desktop, show a more interactive and detailed display with more transparency
   return (
     <div 
       onClick={handleRefresh}
@@ -152,12 +154,16 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
                 <span>{weather?.windSpeed} m/s</span>
               </div>
             </div>
+            {lastUpdated && (
+              <div className="text-[10px] text-white/40 mt-0.5 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                Updated: {lastUpdated.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-});
+};
 
-WeatherDisplay.displayName = 'WeatherDisplay';
 export default WeatherDisplay;
