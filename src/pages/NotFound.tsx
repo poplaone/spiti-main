@@ -2,6 +2,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useToursContext } from "@/context/ToursContext";
+import { createSlug } from "@/utils/slugUtils";
 
 const NotFound = () => {
   const location = useLocation();
@@ -11,6 +12,22 @@ const NotFound = () => {
   useEffect(() => {
     // Handle redirects for old tour detail URLs
     const path = location.pathname;
+    
+    // Check if this is an old-style direct ID URL
+    if (path.startsWith('/tour/') && !path.includes('-')) {
+      // This might be a direct ID link without a slug
+      const id = path.replace('/tour/', '');
+      
+      // Find the tour with this ID
+      const tour = tours.find(t => t.id === id);
+      
+      if (tour) {
+        // Redirect to the new slug format
+        const slug = createSlug(tour.title);
+        navigate(`/tour/${slug}/${id}`, { replace: true });
+        return;
+      }
+    }
     
     // If the path matches any of the old tour detail URLs, redirect to the home page
     if (
@@ -38,8 +55,9 @@ const NotFound = () => {
           targetTour = tours.find(t => t.title.toLowerCase().includes("hidden")) || targetTour;
         }
         
-        // Redirect to the specific tour page
-        navigate(`/tour/${targetTour.id}`, { replace: true });
+        // Generate slug from title and redirect to the new URL format
+        const slug = createSlug(targetTour.title);
+        navigate(`/tour/${slug}/${targetTour.id}`, { replace: true });
       } else {
         // If no tours are available yet, redirect to home
         navigate("/", { replace: true });
