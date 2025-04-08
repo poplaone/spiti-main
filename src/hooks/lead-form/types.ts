@@ -1,5 +1,5 @@
 
-import { Date } from "date-fns";
+import { Dispatch, SetStateAction } from 'react';
 
 export interface FormState {
   name: string;
@@ -14,7 +14,7 @@ export interface FormState {
 
 export interface UseLeadFormReturn {
   date: Date | undefined;
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setDate: Dispatch<SetStateAction<Date | undefined>>;
   formData: FormState;
   isSubmitting: boolean;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
