@@ -39,19 +39,16 @@ const PhotoGallery = () => {
         if (entry.isIntersecting) {
           const index = parseInt(entry.target.getAttribute('data-index') || '0');
           
-          // Update visible range to include this image and the next two
+          // Update visible range to include this image and the next one
           setVisibleRange(prev => ({
             start: Math.min(prev.start, Math.max(0, index - 1)),
-            end: Math.max(prev.end, Math.min(galleryPhotos.length - 1, index + 2))
+            end: Math.max(prev.end, Math.min(galleryPhotos.length - 1, index + 1))
           }));
-          
-          // Once the image is in view, we can stop observing it
-          observerRef.current?.unobserve(entry.target);
         }
       });
     }, {
       root: null,
-      rootMargin: '100px',
+      rootMargin: '200px',
       threshold: 0.1
     });
     
@@ -72,7 +69,7 @@ const PhotoGallery = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setImagesLoaded(true);
-    }, 300);
+    }, 100);
     
     return () => clearTimeout(timer);
   }, []);

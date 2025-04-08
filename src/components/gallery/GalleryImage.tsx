@@ -24,10 +24,12 @@ const GalleryImage = memo(({
   onLoad
 }: GalleryImageProps) => {
   if (!isVisible) {
-    return <div className="w-full h-full bg-gray-200 animate-pulse" />;
+    return <div className="w-full h-full bg-gray-200 animate-pulse" aria-hidden="true" />;
   }
+  
   const imageUrl = isMobile ? photo.mobileUrl : photo.url;
   const priority = index <= 1;
+  
   return (
     <div className="relative w-full h-full">
       <img 
@@ -41,7 +43,11 @@ const GalleryImage = memo(({
         onLoad={() => onLoad(index)} 
         fetchPriority={priority ? "high" : "auto"}
       />
-      {photo.location}
+      {photo.location && (
+        <span className="absolute bottom-2 right-2 bg-black/60 text-white px-2 py-1 text-xs rounded">
+          {photo.location}
+        </span>
+      )}
     </div>
   );
 });

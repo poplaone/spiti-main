@@ -1,6 +1,6 @@
 
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import CarouselImage from './CarouselImage';
 
 // Different sets of images for mobile and desktop
@@ -23,15 +23,16 @@ interface CarouselImagesProps {
 
 const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
-  const [imagesToShow, setImagesToShow] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({0: false});
+  const preloadedImages = useRef<Record<number, boolean>>({});
   
-  // Wait for the isMobile value to be determined before showing any images
+  // Only load the appropriate images based on device type
+  const imagesToShow = isMobile !== undefined ? (isMobile ? mobileImages : desktopImages) : [];
+  
+  // Set loaded state once we know which device we're on
   useEffect(() => {
     if (isMobile !== undefined) {
-      const appropriateImages = isMobile ? mobileImages : desktopImages;
-      setImagesToShow(appropriateImages);
       setIsLoaded(true);
     }
   }, [isMobile]);
@@ -41,23 +42,26 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
     setLoadedImages(prev => ({...prev, [index]: true}));
   }, []);
 
-  // Preload the next image when current changes
+  // Pre-load only the next image to reduce initial load time
   useEffect(() => {
-    if (imagesToShow.length > 0) {
-      // Preload the next image (circular)
+    if (imagesToShow.length > 0 && current !== undefined) {
+      // Only preload the next image (circular)
       const nextIdx = (current + 1) % imagesToShow.length;
       
-      if (!loadedImages[nextIdx]) {
+      if (!preloadedImages.current[nextIdx]) {
         const img = new Image();
         img.src = imagesToShow[nextIdx];
-        img.onload = () => handleImageLoad(nextIdx);
+        img.onload = () => {
+          preloadedImages.current[nextIdx] = true;
+          handleImageLoad(nextIdx);
+        };
       }
     }
-  }, [current, imagesToShow, loadedImages, handleImageLoad]);
+  }, [current, imagesToShow, handleImageLoad]);
 
   // Don't render anything until we know which device type we're on
   if (!isLoaded) {
-    return <div className="absolute inset-0 bg-gray-900"></div>; // Placeholder while loading
+    return <div className="absolute inset-0 bg-gray-900" aria-hidden="true"></div>;
   }
 
   return (
