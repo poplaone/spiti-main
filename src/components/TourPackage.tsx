@@ -8,36 +8,6 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import LeadForm from "./LeadForm";
 
-// Helper function to generate SEO-friendly URLs from tour titles
-const getTourSlug = (tour: TourPackageProps): string => {
-  const title = tour.title.toLowerCase();
-  
-  // Original mappings
-  if (title.includes('spiti bike expedition')) return '/spiti-bike-expedition';
-  if (title.includes('manali-leh expedition')) return '/manali-leh-expedition';
-  if (title.includes('women explore ladakh')) return '/women-explore-ladakh';
-  if (title.includes('hidden heaven')) return '/hidden-heaven-spiti-valley';
-  if (title.includes('unexplored lahaul & spiti')) return '/unexplored-lahaul-spiti';
-  if (title.includes('leh ladakh car tour')) return '/leh-ladakh-car-tour';
-  
-  // New SEO-friendly URL mappings
-  if (title.includes('buddhist & tribal circuit')) return '/BUDDHIST-AND-TRIBAL-CIRCUIT-SPITI';
-  if (title.includes('into the heart of spiti')) return '/INTO-THE-HEART-OF-SPITI';
-  if (title.includes('kinnaur valley exploration')) return '/KINNAUR-VALLEY-EXPLORATION';
-  if (title.includes('lahaul spiti - bike tour')) return '/LAHAUL-SPITI-BIKE-TOUR';
-  if (title.includes('royal spiti valley')) return '/ROYAL-SPITI-VALLEY-WHOLE-CIRCUIT';
-  if (title.includes('snow leopard expedition')) return '/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL';
-  if (title.includes('soulful spiti gateway')) return '/SOULFUL-SPITI-GATEWAY';
-  if (title.includes('spiti complete circuit')) return '/SPITI-COMPLETE-CIRCUIT-MOST-POPULAR';
-  if (title.includes('spiti valley tour in your own car')) return '/SPITI-VALLEY-TOUR-IN-YOUR-OWN-CAR';
-  if (title.includes('spiti valley women only tour')) return '/SPITI-VALLEY-WOMEN-ONLY-TOUR';
-  if (title.includes('unexplored spiti')) return '/UNEXPLORED-SPITI';
-  if (title.includes('winter white spiti')) return '/WINTER-WHITE-SPITI';
-  
-  // Fallback to the dynamic route if no specific route is defined
-  return `/tour/${tour.id}`;
-};
-
 // Memoized TourPackage component to prevent unnecessary re-renders
 const TourPackage: React.FC<TourPackageProps & {
   id?: string;
@@ -53,16 +23,13 @@ const TourPackage: React.FC<TourPackageProps & {
   isWomenOnly,
   isFixedDeparture = false,
   isCustomizable = true,
-  overviewDetails,
-  ...rest
+  overviewDetails
 }) => {
   // Get availability dates with fallbacks
   const availableFrom = overviewDetails?.availableFrom || 'June';
   const availableTo = overviewDetails?.availableTo || 'October';
 
-  // Create a tour object to pass to the slug generator
-  const tour = { id, title, transportType, isWomenOnly };
-  const detailsUrl = getTourSlug(tour as TourPackageProps);
+  const detailsUrl = id ? `/tour/${id}` : "#";
 
   return (
     <div className="block h-full w-full">

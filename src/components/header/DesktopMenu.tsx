@@ -34,31 +34,13 @@ interface DesktopMenuProps {
 
 const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [] }: DesktopMenuProps) => {
   const getTourRoute = (tour: TourPackageProps) => {
-    const title = tour.title.toLowerCase();
-    
-    // Original mappings
-    if (title.includes('spiti bike expedition')) return '/spiti-bike-expedition';
-    if (title.includes('manali-leh expedition')) return '/manali-leh-expedition';
-    if (title.includes('women explore ladakh')) return '/women-explore-ladakh';
-    if (title.includes('hidden heaven')) return '/hidden-heaven-spiti-valley';
-    if (title.includes('unexplored lahaul & spiti')) return '/unexplored-lahaul-spiti';
-    if (title.includes('leh ladakh car tour')) return '/leh-ladakh-car-tour';
-    
-    // New SEO-friendly URL mappings
-    if (title.includes('buddhist & tribal circuit')) return '/BUDDHIST-AND-TRIBAL-CIRCUIT-SPITI';
-    if (title.includes('into the heart of spiti')) return '/INTO-THE-HEART-OF-SPITI';
-    if (title.includes('kinnaur valley exploration')) return '/KINNAUR-VALLEY-EXPLORATION';
-    if (title.includes('lahaul spiti - bike tour')) return '/LAHAUL-SPITI-BIKE-TOUR';
-    if (title.includes('royal spiti valley')) return '/ROYAL-SPITI-VALLEY-WHOLE-CIRCUIT';
-    if (title.includes('snow leopard expedition')) return '/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL';
-    if (title.includes('soulful spiti gateway')) return '/SOULFUL-SPITI-GATEWAY';
-    if (title.includes('spiti complete circuit')) return '/SPITI-COMPLETE-CIRCUIT-MOST-POPULAR';
-    if (title.includes('spiti valley tour in your own car')) return '/SPITI-VALLEY-TOUR-IN-YOUR-OWN-CAR';
-    if (title.includes('spiti valley women only tour')) return '/SPITI-VALLEY-WOMEN-ONLY-TOUR';
-    if (title.includes('unexplored spiti')) return '/UNEXPLORED-SPITI';
-    if (title.includes('winter white spiti')) return '/WINTER-WHITE-SPITI';
-    
-    return `/tour/${tour.id}`;
+    // Map tour types to route names
+    if (tour.transportType === 'bike') return '/tour-bike';
+    if (tour.title === 'HIDDEN HEAVEN - SPITI VALLEY') return '/tour-hiddenheaven';
+    if (tour.title.includes('BUDDHIST')) return '/tour-buddhist';
+    if (tour.title.includes('WOMEN')) return '/tour-women';
+    if (tour.title.includes('OWN CAR')) return '/tour-owncar';
+    return '/tour-unexplored';
   };
 
   const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
