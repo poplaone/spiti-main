@@ -29,11 +29,13 @@ const TourDetail = () => {
         // Try to get custom slug from meta data
         let customSlug = '';
         try {
-          if (tour.meta && typeof tour.meta === 'object') {
-            customSlug = tour.meta.custom_slug || '';
-          } else if (typeof tour.meta === 'string' && tour.meta) {
-            const metaObj = JSON.parse(tour.meta);
-            customSlug = metaObj.custom_slug || '';
+          if (tour.meta) {
+            if (typeof tour.meta === 'object') {
+              customSlug = tour.meta.custom_slug || '';
+            } else if (typeof tour.meta === 'string' && tour.meta) {
+              const metaObj = JSON.parse(tour.meta);
+              customSlug = metaObj.custom_slug || '';
+            }
           }
         } catch (e) {
           console.error("Error parsing meta field:", e);

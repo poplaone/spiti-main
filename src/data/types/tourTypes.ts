@@ -42,6 +42,7 @@ export interface TourPackageProps {
   exclusions: string[];
   itinerary: TourItineraryDay[];
   overviewDetails?: TourOverviewDetails;
+  meta?: { custom_slug?: string } | string; // Added meta property to support custom slugs
 }
 
 export interface TourPackageWithId extends TourPackageProps {

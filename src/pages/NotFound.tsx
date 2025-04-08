@@ -27,11 +27,13 @@ const NotFound = () => {
         // Get custom slug from meta if available
         let customSlug = '';
         try {
-          if (tour.meta && typeof tour.meta === 'object') {
-            customSlug = tour.meta.custom_slug || '';
-          } else if (typeof tour.meta === 'string' && tour.meta) {
-            const metaObj = JSON.parse(tour.meta);
-            customSlug = metaObj.custom_slug || '';
+          if (tour.meta) {
+            if (typeof tour.meta === 'object') {
+              customSlug = tour.meta.custom_slug || '';
+            } else if (typeof tour.meta === 'string' && tour.meta) {
+              const metaObj = JSON.parse(tour.meta);
+              customSlug = metaObj.custom_slug || '';
+            }
           }
         } catch (e) {
           console.error("Error parsing meta field:", e);
@@ -73,11 +75,13 @@ const NotFound = () => {
         // Get custom slug from meta if available
         let customSlug = '';
         try {
-          if (targetTour.meta && typeof targetTour.meta === 'object') {
-            customSlug = targetTour.meta.custom_slug || '';
-          } else if (typeof targetTour.meta === 'string' && targetTour.meta) {
-            const metaObj = JSON.parse(targetTour.meta);
-            customSlug = metaObj.custom_slug || '';
+          if (targetTour.meta) {
+            if (typeof targetTour.meta === 'object') {
+              customSlug = targetTour.meta.custom_slug || '';
+            } else if (typeof targetTour.meta === 'string' && targetTour.meta) {
+              const metaObj = JSON.parse(targetTour.meta);
+              customSlug = metaObj.custom_slug || '';
+            }
           }
         } catch (e) {
           console.error("Error parsing meta field:", e);
