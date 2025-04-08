@@ -35,13 +35,14 @@ export const extractIdFromSlug = (slug: string): string | null => {
 
 /**
  * Creates a full tour URL with slug and ID
- * @param title The tour title
+ * @param title The tour title or custom slug
  * @param id The tour ID
+ * @param customSlug Optional custom slug to use instead of title
  * @returns The full URL slug
  */
-export const createTourUrl = (title: string, id: string): string => {
-  if (!title || !id) return '/';
+export const createTourUrl = (title: string, id: string, customSlug?: string): string => {
+  if (!id) return '/';
   
-  const slug = createSlug(title);
+  const slug = customSlug || createSlug(title);
   return `/tour/${slug}/${id}`;
 };

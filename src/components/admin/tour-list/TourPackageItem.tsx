@@ -28,6 +28,7 @@ interface TourPackage {
   is_visible: boolean;
   created_at: string;
   updated_at: string;
+  meta?: any;
 }
 
 interface TourPackageItemProps {
@@ -54,8 +55,21 @@ const TourPackageItem: React.FC<TourPackageItemProps> = ({
     setDeleteDialogOpen(false);
   };
   
+  // Get custom slug from meta if available
+  let customSlug = '';
+  try {
+    if (pkg.meta && typeof pkg.meta === 'object') {
+      customSlug = pkg.meta.custom_slug || '';
+    } else if (typeof pkg.meta === 'string' && pkg.meta) {
+      const metaObj = JSON.parse(pkg.meta);
+      customSlug = metaObj.custom_slug || '';
+    }
+  } catch (e) {
+    console.error("Error parsing meta field:", e);
+  }
+  
   // Generate the proper tour URL for preview
-  const previewUrl = createTourUrl(pkg.title, pkg.id);
+  const previewUrl = createTourUrl(pkg.title, pkg.id, customSlug);
 
   return (
     <TableRow key={pkg.id} className={!pkg.is_visible ? "opacity-60" : ""}>

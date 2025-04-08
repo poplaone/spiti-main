@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
-import { extractIdFromSlug, createSlug } from '@/utils/slugUtils';
+import { extractIdFromSlug, createSlug, createTourUrl } from '@/utils/slugUtils';
 
 const TourDetail = () => {
   const params = useParams<{ id: string; slug?: string }>();
@@ -25,7 +25,22 @@ const TourDetail = () => {
       if (tour) {
         // Check if we need to redirect to the correct URL format with slug
         const currentPath = window.location.pathname;
-        const correctSlug = createSlug(tour.title);
+        
+        // Try to get custom slug from meta data
+        let customSlug = '';
+        try {
+          if (tour.meta && typeof tour.meta === 'object') {
+            customSlug = tour.meta.custom_slug || '';
+          } else if (typeof tour.meta === 'string' && tour.meta) {
+            const metaObj = JSON.parse(tour.meta);
+            customSlug = metaObj.custom_slug || '';
+          }
+        } catch (e) {
+          console.error("Error parsing meta field:", e);
+        }
+        
+        // Use custom slug if available, otherwise generate from title
+        const correctSlug = customSlug || createSlug(tour.title);
         const correctPath = `/tour/${correctSlug}/${actualId}`;
         
         // If current URL doesn't match the correct format, redirect

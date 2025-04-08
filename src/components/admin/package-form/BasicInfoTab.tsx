@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { createSlug } from "@/utils/slugUtils";
 import { 
   FormControl,
   FormField,
@@ -19,6 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 interface BasicInfoTabProps {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
+  customSlug?: string;
+  setCustomSlug: React.Dispatch<React.SetStateAction<string>>;
   overview: string;
   setOverview: React.Dispatch<React.SetStateAction<string>>;
   originalPrice: string;
@@ -52,11 +55,14 @@ interface BasicInfoTabProps {
   setAvailableFrom: React.Dispatch<React.SetStateAction<string>>;
   availableTo?: string;
   setAvailableTo: React.Dispatch<React.SetStateAction<string>>;
+  packageId?: string;
 }
 
 const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
   title,
   setTitle,
+  customSlug = '',
+  setCustomSlug,
   overview,
   setOverview,
   originalPrice,
@@ -88,8 +94,21 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
   availableFrom = '',
   setAvailableFrom,
   availableTo = '',
-  setAvailableTo
+  setAvailableTo,
+  packageId
 }) => {
+  // Handle auto-generating slug from title
+  const handleGenerateSlug = () => {
+    if (title) {
+      setCustomSlug(createSlug(title));
+    }
+  };
+
+  // Preview URL example
+  const previewUrl = packageId 
+    ? `/tour/${customSlug || createSlug(title)}/${packageId}` 
+    : '/tour/example-tour-slug/example-id';
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -127,6 +146,42 @@ const BasicInfoTab: React.FC<BasicInfoTabProps> = ({
               onChange={(e) => setDiscountedPrice(e.target.value)}
               className="mt-1"
             />
+          </div>
+        </div>
+      </div>
+
+      {/* Custom Slug Section */}
+      <div className="border rounded-lg p-4 bg-gray-50">
+        <h3 className="text-lg font-medium mb-2">Custom URL Slug</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="md:col-span-2">
+            <Label htmlFor="customSlug">Custom URL Slug</Label>
+            <div className="flex gap-2 mt-1">
+              <Input 
+                id="customSlug" 
+                type="text" 
+                placeholder="custom-url-slug" 
+                value={customSlug}
+                onChange={(e) => setCustomSlug(e.target.value)}
+                className="flex-grow"
+              />
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={handleGenerateSlug}
+                className="whitespace-nowrap"
+              >
+                Generate from Title
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              This will be used in the tour URL: {previewUrl}
+            </p>
+          </div>
+          <div className="flex items-center mt-7">
+            <div className="text-sm text-gray-600">
+              <span className="font-semibold">Tip:</span> Use simple, descriptive slugs for better SEO.
+            </div>
           </div>
         </div>
       </div>

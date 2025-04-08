@@ -24,8 +24,21 @@ const NotFound = () => {
       const tour = tours.find(t => t.id === id);
       
       if (tour) {
+        // Get custom slug from meta if available
+        let customSlug = '';
+        try {
+          if (tour.meta && typeof tour.meta === 'object') {
+            customSlug = tour.meta.custom_slug || '';
+          } else if (typeof tour.meta === 'string' && tour.meta) {
+            const metaObj = JSON.parse(tour.meta);
+            customSlug = metaObj.custom_slug || '';
+          }
+        } catch (e) {
+          console.error("Error parsing meta field:", e);
+        }
+        
         // Redirect to the new slug format
-        const slug = createSlug(tour.title);
+        const slug = customSlug || createSlug(tour.title);
         navigate(`/tour/${slug}/${id}`, { replace: true });
         return;
       }
@@ -57,8 +70,21 @@ const NotFound = () => {
           targetTour = tours.find(t => t.title.toLowerCase().includes("hidden")) || targetTour;
         }
         
+        // Get custom slug from meta if available
+        let customSlug = '';
+        try {
+          if (targetTour.meta && typeof targetTour.meta === 'object') {
+            customSlug = targetTour.meta.custom_slug || '';
+          } else if (typeof targetTour.meta === 'string' && targetTour.meta) {
+            const metaObj = JSON.parse(targetTour.meta);
+            customSlug = metaObj.custom_slug || '';
+          }
+        } catch (e) {
+          console.error("Error parsing meta field:", e);
+        }
+        
         // Generate slug from title and redirect to the new URL format
-        const slug = createSlug(targetTour.title);
+        const slug = customSlug || createSlug(targetTour.title);
         navigate(`/tour/${slug}/${targetTour.id}`, { replace: true });
       } else {
         // If no tours are available yet, redirect to home
