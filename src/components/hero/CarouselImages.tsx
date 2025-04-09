@@ -47,19 +47,16 @@ interface CarouselImagesProps {
 
 const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
-  const [imagesToShow, setImagesToShow] = useState<typeof desktopImages>([]);
+  const [loadedImages, setLoadedImages] = useState<number[]>([0]); // Track loaded images
+  const images = isMobile ? mobileImages : desktopImages;
   
-  useEffect(() => {
-    setImagesToShow(isMobile ? mobileImages : desktopImages);
-  }, [isMobile]);
-
   const handleImageLoad = () => {
-    // Simplified - removed unnecessary tracking logic
+    // Image load tracking is simplified to reduce processing overhead
   };
 
   return (
     <>
-      {imagesToShow.map((img, index) => (
+      {images.map((img, index) => (
         <CarouselImage 
           key={index} 
           src={img.src}

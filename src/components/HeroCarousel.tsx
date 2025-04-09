@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CarouselImages, { desktopImages, mobileImages } from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
@@ -13,11 +13,11 @@ const HeroCarousel = () => {
   // Use the appropriate image set based on device type
   const images = isMobile ? mobileImages : desktopImages;
 
-  const resetTimeout = () => {
+  const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-  };
+  }, []);
 
   useEffect(() => {
     resetTimeout();
@@ -28,7 +28,7 @@ const HeroCarousel = () => {
     );
     
     return resetTimeout;
-  }, [current, images.length]);
+  }, [current, images.length, resetTimeout]);
 
   // Removed the goToPrevious and goToNext functions since we're removing the arrows
 

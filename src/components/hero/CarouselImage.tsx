@@ -20,15 +20,16 @@ const CarouselImage = memo(({
   isCurrent, 
   onLoad 
 }: CarouselImageProps) => {
-  const [imageLoaded, setImageLoaded] = useState(index === 0); // Assume first image is loaded
+  const [isLoaded, setIsLoaded] = useState(index === 0); // Only consider first image as pre-loaded
 
   const handleLoad = () => {
-    setImageLoaded(true);
+    setIsLoaded(true);
     onLoad();
   };
 
-  // Eagerly load the first/current image
-  const loadingStrategy = (index === 0 || isCurrent) ? "eager" : "lazy";
+  // Only load images when they're either the first one or about to be displayed
+  // This prevents loading all images at once on mobile
+  const shouldLoad = index === 0 || isCurrent || index === (isCurrent + 1) % 3;
   
   return (
     <div 
@@ -37,16 +38,21 @@ const CarouselImage = memo(({
       }`}
       aria-hidden={!isCurrent}
     >
-      <img 
-        src={src} 
-        alt={alt}
-        className="w-full h-full object-cover"
-        loading={loadingStrategy}
-        onLoad={handleLoad}
-        width={width}
-        height={height}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
+      {shouldLoad && (
+        <>
+          <img 
+            src={src} 
+            alt={alt}
+            className="w-full h-full object-cover"
+            loading={index === 0 ? "eager" : "lazy"}
+            onLoad={handleLoad}
+            width={width}
+            height={height}
+            fetchpriority={index === 0 ? "high" : "auto"}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
+        </>
+      )}
     </div>
   );
 });

@@ -17,6 +17,9 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
         alt="Spiti Valley Travels Logo" 
         className="w-32 h-32 mb-1 md:w-40 md:h-40 md:mb-4 mt-[-70px] md:mt-0 object-contain" 
         src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
+        width={160}
+        height={160}
+        fetchpriority="high"
       />
       
       {/* Google Ratings Badge */}
