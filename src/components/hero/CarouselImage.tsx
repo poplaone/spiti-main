@@ -27,9 +27,14 @@ const CarouselImage = memo(({
     onLoad();
   };
 
+  // If this is the first image and it's current, eagerly load
+  const loadingStrategy = (index === 0 || isCurrent) ? "eager" : "lazy";
+  const priorityStrategy = (index === 0 || isCurrent) ? "high" : "auto";
+  const decodingStrategy = (index === 0 || isCurrent) ? "sync" : "async";
+
   return (
     <div 
-      className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+      className={`absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
         isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
@@ -42,13 +47,13 @@ const CarouselImage = memo(({
       <img 
         src={src} 
         alt={alt}
-        className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-        loading={index === 0 ? "eager" : "lazy"} 
+        className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+        loading={loadingStrategy}
         onLoad={handleLoad}
-        fetchPriority={index === 0 ? "high" : "auto"}
+        fetchPriority={priorityStrategy}
         width={width}
         height={height}
-        decoding={index === 0 ? "sync" : "async"}
+        decoding={decodingStrategy}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
     </div>

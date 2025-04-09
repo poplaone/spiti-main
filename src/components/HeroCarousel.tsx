@@ -23,7 +23,7 @@ const HeroCarousel = () => {
       setTimeout(() => {
         heroPlaceholder.remove();
         setIsLoaded(true);
-      }, 500);
+      }, 300); // Reduced the transition time for faster display
     } else {
       setIsLoaded(true);
     }
@@ -58,8 +58,9 @@ const HeroCarousel = () => {
     }
   };
 
-  if (!isLoaded && isMobile === undefined) {
-    return null; // Use the HTML placeholder until we know device type
+  // Don't wait for isMobile to be defined before rendering
+  if (!isLoaded) {
+    return null; // Return null instead of using the HTML placeholder
   }
 
   return (

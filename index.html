@@ -28,7 +28,6 @@
       .hero-placeholder {
         height:100vh;
         position: relative;
-        background-image: url('/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png'); 
         background-size: cover;
         background-position: center;
         display: flex;
@@ -38,6 +37,21 @@
         color: white;
         text-align: center;
       }
+
+      /* Media query for mobile devices */
+      @media (max-width: 768px) {
+        .hero-placeholder {
+          background-image: url('/lovable-uploads/fa13766a-c062-495a-bbe3-ba96893628e0.png');
+        }
+      }
+      
+      /* Media query for larger devices */
+      @media (min-width: 769px) {
+        .hero-placeholder {
+          background-image: url('/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png');
+        }
+      }
+      
       .hero-placeholder::before {
         content: '';
         position: absolute;
@@ -96,7 +110,8 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"></noscript>
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" as="image" fetchpriority="high" />
+    <link rel="preload" href="/lovable-uploads/fa13766a-c062-495a-bbe3-ba96893628e0.png" as="image" media="(max-width: 768px)" fetchpriority="high" />
+    <link rel="preload" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" as="image" media="(min-width: 769px)" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
     <link rel="preload" href="/src/main.tsx" as="script" />
   </head>
@@ -113,7 +128,7 @@
         <div class="hero-content">
           <img src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" alt="Spiti Valley Travels Logo" class="hero-logo" />
           <h1 class="hero-title">Spiti Valley Travels</h1>
-          <p class="hero-subtitle">Explore the breathtaking landscapes of Spiti Valley with expert local guides</p>
+          <p class="hero-subtitle">Begin your Spiti adventure with us – your local guides to explore more...</p>
           <div class="loading-spinner"></div>
         </div>
       </div>
