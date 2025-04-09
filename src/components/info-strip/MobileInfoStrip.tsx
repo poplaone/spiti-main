@@ -10,7 +10,7 @@ const MobileInfoStrip = ({ items }: MobileInfoStripProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
   
-  // Use a simpler autoplay implementation
+  // Use a simpler autoplay implementation to avoid the plugin errors
   useEffect(() => {
     // Clear any existing interval
     if (intervalRef.current) {
@@ -39,7 +39,7 @@ const MobileInfoStrip = ({ items }: MobileInfoStripProps) => {
         opts={{
           align: "start",
           loop: true,
-          // Fix: Use currentIndex directly without startIndex
+          startIndex: currentIndex
         }}
       >
         <CarouselContent className="py-1">

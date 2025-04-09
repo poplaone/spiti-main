@@ -22,15 +22,18 @@ interface CarouselImagesProps {
   current: number;
 }
 
+// Only render the current image and the next one to minimize DOM elements
 const CarouselImages = memo(({ current }: CarouselImagesProps) => {
+  // On mobile especially, we don't need to render all images at once
   return (
     <>
       {carouselImages.map((img, index) => {
         // Only render the current image and the next one (with wrap-around)
+        // This prevents unnecessary DOM elements for performance
         const nextIndex = (current + 1) % carouselImages.length;
-        const shouldRender = index === current || index === nextIndex;
+        const shouldRender = index === current || index === nextIndex || index === 0;
         
-        if (!shouldRender && index !== 0) return null;
+        if (!shouldRender) return null;
         
         return (
           <CarouselImage 

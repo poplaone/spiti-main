@@ -19,12 +19,12 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
   
   return (
     <div 
-      className="absolute inset-0 w-full h-full transform transition-opacity"
+      className={`absolute inset-0 w-full h-full transform transition-opacity duration-${transitionDuration}`}
       style={{
         opacity: isCurrent ? 1 : 0,
         // Use will-change only for the active slide to optimize GPU acceleration
         willChange: isCurrent ? 'opacity' : 'auto',
-        // Set explicit transition duration
+        // Reduce transition on mobile for better performance
         transitionDuration: `${transitionDuration}ms`
       }}
       aria-hidden={!isCurrent}
