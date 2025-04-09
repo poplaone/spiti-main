@@ -29,7 +29,7 @@ const HeroContent = memo(({ scrollToDiscoverSection }: HeroContentProps) => {
       <GoogleRatingBadge />
       
       {/* Critical text content - Simplified for LCP */}
-      <h1 className="text-2xl md:text-4xl font-display font-bold text-white mb-1 md:mb-2">Spiti Valley Travels</h1>
+      <h1 className="text-2xl md:text-4xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
       
       <div className="relative w-full flex justify-center">
         <Button 
