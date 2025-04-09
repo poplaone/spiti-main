@@ -1,46 +1,58 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { MessageSquare, PhoneCall } from 'lucide-react';
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
+import { trackButtonClick, trackPhoneCall } from '@/utils/analyticsUtils';
 
 interface MobileStickyFooterProps {
-  discountedPrice: number;
-  originalPrice: number;
-  formatPrice: (price: number) => string;
+  phone?: string;
+  tourId?: string;
+  tourName?: string;
 }
 
 const MobileStickyFooter: React.FC<MobileStickyFooterProps> = ({ 
-  discountedPrice, 
-  originalPrice,
-  formatPrice 
+  phone = "+918353040008",
+  tourId,
+  tourName
 }) => {
+
+  const handleCallClick = () => {
+    // Track the phone call
+    trackPhoneCall(phone, `tour_page_${tourId || 'unknown'}`);
+    // We don't need to do anything else as the tel: link will handle the call
+  };
+
+  const handleEnquiryClick = () => {
+    trackButtonClick('send_enquiry', `tour_page_${tourId || 'unknown'}`);
+  };
+
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-slate-800 to-spiti-forest shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
       <div className="flex items-center">
-        {/* Price Section */}
-        <div className="flex-1 px-3 py-2 text-white">
-          <div className="flex flex-col">
-            <span className="text-xs font-medium">Starting from</span>
-            <div className="flex items-baseline">
-              <span className="text-xl font-bold text-green-400">₹{formatPrice(discountedPrice)}/-</span>
-              <span className="text-xs line-through opacity-75 ml-1">₹{formatPrice(originalPrice)}</span>
-            </div>
-            <span className="text-xs">per person</span>
-          </div>
-        </div>
-        
-        {/* Book/Customize Button */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="flex-1 rounded-none rounded-l-full h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold">
-              Book/Customize
-            </Button>
+            <button 
+              className="flex-1 flex items-center justify-center h-14 bg-spiti-slate hover:bg-spiti-slate/90 text-white"
+              onClick={handleEnquiryClick}
+            >
+              <MessageSquare className="mr-2 h-5 w-5" />
+              Send Enquiry
+            </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
-            <LeadForm />
+            <LeadForm tourId={tourId} tourName={tourName} />
           </DialogContent>
         </Dialog>
+        
+        <a 
+          href={`tel:${phone}`} 
+          className="flex-1 flex items-center justify-center h-14 bg-green-600 hover:bg-green-700 text-white"
+          onClick={handleCallClick}
+        >
+          <PhoneCall className="mr-2 h-5 w-5" />
+          Call Now
+        </a>
       </div>
     </div>
   );

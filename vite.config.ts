@@ -18,16 +18,18 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // Add explicit alias for embla-carousel to resolve peer dependency issue
       "embla-carousel": path.resolve(__dirname, "./node_modules/embla-carousel"),
     },
   },
   optimizeDeps: {
     include: ['embla-carousel'],
-    force: true, // Force dependencies optimization to resolve lockfile issues
+    force: true,
   },
   build: {
-    // Add build configuration to handle lockfile-related issues
+    // Optimize build
+    sourcemap: false, // Disable sourcemaps in production for smaller files
+    minify: 'terser', // Use terser for better minification
+    cssMinify: true, // Ensure CSS is minified
     commonjsOptions: {
       transformMixedEsModules: true,
     },
@@ -46,10 +48,17 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-popover',
             '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
+          ],
+          forms: [
+            'react-hook-form',
+            'zod',
+            '@hookform/resolvers'
           ]
         }
       }
     },
     chunkSizeWarningLimit: 1000,
+    // Add reportCompressedSize for production builds only
+    reportCompressedSize: mode === 'production',
   },
 }));

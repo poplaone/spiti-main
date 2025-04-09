@@ -3,8 +3,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -52,10 +52,37 @@ import CreatePackage from "./pages/admin/CreatePackage";
 import EditPackage from "./pages/admin/EditPackage";
 import AdminSettings from "./pages/admin/AdminSettings";
 
+// Analytics tracking component
+const PageTracker = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    // Track page view when route changes
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'pageView',
+        pagePath: location.pathname,
+        pageTitle: document.title
+      });
+      console.log('Page tracked:', location.pathname);
+    }
+  }, [location]);
+  
+  return null;
+};
+
 const App = () => {
   // Create a new QueryClient instance within the component function
   // This ensures proper React context usage
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false, // Improves performance by not refetching when window gets focus
+        staleTime: 300000, // 5 minutes - data will be considered fresh for 5 minutes
+        retry: 1, // Only retry failed requests once
+      },
+    },
+  }));
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -64,6 +91,7 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <PageTracker />
           <Routes>
             {/* Home page route */}
             <Route path="/" element={<Index />} />
