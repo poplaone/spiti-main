@@ -20,17 +20,16 @@ const CarouselImage = memo(({
   isCurrent, 
   onLoad 
 }: CarouselImageProps) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(index === 0); // Assume first image is loaded
 
   const handleLoad = () => {
     setImageLoaded(true);
     onLoad();
   };
 
-  // If this is the first image and it's current, eagerly load
+  // Eagerly load the first/current image
   const loadingStrategy = (index === 0 || isCurrent) ? "eager" : "lazy";
   const priorityStrategy = (index === 0 || isCurrent) ? "high" : "auto";
-  const decodingStrategy = (index === 0 || isCurrent) ? "sync" : "async";
 
   return (
     <div 
@@ -39,21 +38,15 @@ const CarouselImage = memo(({
       }`}
       aria-hidden={!isCurrent}
     >
-      {/* Show image placeholder until loaded */}
-      {!imageLoaded && (
-        <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
-      )}
-      
       <img 
         src={src} 
         alt={alt}
-        className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className="w-full h-full object-cover"
         loading={loadingStrategy}
         onLoad={handleLoad}
         fetchPriority={priorityStrategy}
         width={width}
         height={height}
-        decoding={decodingStrategy}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
     </div>

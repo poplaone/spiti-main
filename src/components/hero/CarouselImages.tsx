@@ -47,7 +47,6 @@ interface CarouselImagesProps {
 const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
   const [imagesToShow, setImagesToShow] = useState<typeof desktopImages>([]);
-  const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({0: false});
   
   // Set images as soon as possible
   useEffect(() => {
@@ -55,26 +54,15 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
     setImagesToShow(isMobile === undefined ? mobileImages : (isMobile ? mobileImages : desktopImages));
   }, [isMobile]);
 
-  // Memoize the image load handler to prevent unnecessary re-renders
+  // Only render images that are current or next in sequence
+  const shouldRender = (index: number) => {
+    return index === current || index === (current + 1) % imagesToShow.length;
+  };
+
   const handleImageLoad = useCallback((index: number) => {
-    setLoadedImages(prev => ({...prev, [index]: true}));
+    // Nothing to do on load anymore - we're optimizing for immediate display
   }, []);
 
-  // Preload the next image when current changes
-  useEffect(() => {
-    if (imagesToShow.length > 0 && current !== undefined) {
-      // Preload the next image (circular)
-      const nextIdx = (current + 1) % imagesToShow.length;
-      
-      if (!loadedImages[nextIdx]) {
-        const img = new Image();
-        img.src = imagesToShow[nextIdx].src;
-        img.onload = () => handleImageLoad(nextIdx);
-      }
-    }
-  }, [current, imagesToShow, loadedImages, handleImageLoad]);
-
-  // Don't wait for images to be loaded to start rendering
   return (
     <>
       {imagesToShow.map((img, index) => (

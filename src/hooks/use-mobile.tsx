@@ -20,32 +20,18 @@ export function useIsMobile() {
   useEffect(() => {
     // Function to check if the device is mobile
     const checkMobile = () => {
-      const mobile = window.matchMedia('(max-width: 768px)').matches;
-      setIsMobile(mobile);
+      setIsMobile(window.innerWidth <= 768);
     };
 
     // Set initial value immediately
     checkMobile();
     
-    // Create media query list and add listener
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    // Use resize event for better performance
+    window.addEventListener('resize', checkMobile);
     
-    // Use the appropriate event based on browser support
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', checkMobile);
-    } else {
-      // Fallback for older browsers
-      mediaQuery.addListener(checkMobile);
-    }
-    
-    // Clean up listener
+    // Clean up
     return () => {
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener('change', checkMobile);
-      } else {
-        // Fallback cleanup
-        mediaQuery.removeListener(checkMobile);
-      }
+      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 

@@ -8,26 +8,11 @@ import HeroContent from './hero/HeroContent';
 
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
   // Use the appropriate image set based on device type
   const images = isMobile ? mobileImages : desktopImages;
-
-  // Remove initial placeholder once component is mounted
-  useEffect(() => {
-    const heroPlaceholder = document.querySelector('.hero-placeholder');
-    if (heroPlaceholder) {
-      heroPlaceholder.classList.add('fade-out');
-      setTimeout(() => {
-        heroPlaceholder.remove();
-        setIsLoaded(true);
-      }, 300); // Reduced the transition time for faster display
-    } else {
-      setIsLoaded(true);
-    }
-  }, []);
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -57,11 +42,6 @@ const HeroCarousel = () => {
       discoverSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  // Don't wait for isMobile to be defined before rendering
-  if (!isLoaded) {
-    return null; // Return null instead of using the HTML placeholder
-  }
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
