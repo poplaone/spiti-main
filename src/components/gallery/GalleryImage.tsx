@@ -1,5 +1,5 @@
 
-import { memo, useState } from 'react';
+import { memo, useState, useRef, useEffect } from 'react';
 
 interface GalleryImageProps {
   photo: {
@@ -26,6 +26,33 @@ const GalleryImage = memo(({
   onLoad
 }: GalleryImageProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  
+  // Use Intersection Observer for more efficient lazy loading
+  useEffect(() => {
+    if (!isVisible || imageLoaded) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Start loading the image
+          if (imgRef.current) {
+            imgRef.current.src = isMobile ? photo.mobileUrl : photo.url;
+          }
+          observer.disconnect();
+        }
+      });
+    }, {
+      rootMargin: '200px', // Start loading before the image is visible
+      threshold: 0.01
+    });
+    
+    if (imgRef.current) {
+      observer.observe(imgRef.current);
+    }
+    
+    return () => observer.disconnect();
+  }, [isVisible, imageLoaded, photo.url, photo.mobileUrl, isMobile]);
 
   if (!isVisible) {
     return (
@@ -36,7 +63,6 @@ const GalleryImage = memo(({
     );
   }
   
-  const imageUrl = isMobile ? photo.mobileUrl : photo.url;
   const isPriority = photo.priority || index === 0;
   
   const handleImageLoad = () => {
@@ -52,7 +78,8 @@ const GalleryImage = memo(({
       )}
       
       <img 
-        src={imageUrl} 
+        ref={imgRef}
+        src={isPriority ? (isMobile ? photo.mobileUrl : photo.url) : ''}
         alt={photo.alt} 
         className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
         loading={isPriority ? "eager" : "lazy"} 
@@ -60,7 +87,11 @@ const GalleryImage = memo(({
         height={photo.height} 
         decoding={isPriority ? "sync" : "async"} 
         onLoad={handleImageLoad} 
-        fetchPriority={isPriority ? "high" : "auto"}
+        style={{
+          // Add blur-up effect for smoother loading experience
+          filter: imageLoaded ? 'none' : 'blur(5px)',
+          transition: 'filter 0.3s ease, opacity 0.3s ease'
+        }}
       />
     </div>
   );

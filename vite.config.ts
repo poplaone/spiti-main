@@ -31,13 +31,29 @@ export default defineConfig(({ mode }) => ({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    // Additional optimizations for mobile performance
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        passes: 2, // Additional optimization passes
+      },
+      output: {
+        comments: false, // Remove comments to reduce file size
+      }
+    },
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: [
             'react', 
             'react-dom', 
+          ],
+          router: [
             'react-router-dom',
+          ],
+          query: [
             '@tanstack/react-query',
           ],
           ui: [
@@ -47,7 +63,7 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
           ],
-          // Add admin-specific chunks
+          // Add admin-specific chunks - kept separate for code splitting
           admin: [
             'src/components/admin/package-form/departure-dates/index.tsx',
             'src/components/admin/package-form/departure-dates/DepartureDateForm.tsx',
@@ -63,23 +79,35 @@ export default defineConfig(({ mode }) => ({
             'src/hooks/lead-form/index.ts',
             'src/hooks/lead-form/useFormState.ts',
             'src/hooks/lead-form/useFormSubmission.ts',
+          ],
+          // Add smaller chunks for mobile optimization
+          home: [
+            'src/components/HeroCarousel.tsx',
+            'src/components/hero/CarouselImages.tsx',
+            'src/components/hero/CarouselImage.tsx',
+          ],
+          tours: [
+            'src/components/TourPackages.tsx',
+            'src/components/tour/TourPackageGrid.tsx',
+            'src/components/tour/TourPackageHeader.tsx',
+          ],
+          // Create a chunk for image-related components
+          images: [
+            'src/components/PhotoGallery.tsx',
+            'src/components/gallery/GalleryImage.tsx',
+            'src/hooks/useGalleryNavigation.ts',
           ]
         },
-        // Improve code splitting
+        // Improve code splitting with deterministic names
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
     // Increase chunk size warning limit
-    chunkSizeWarningLimit: 1000,
-    // Improve minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
+    chunkSizeWarningLimit: 1200,
+    cssCodeSplit: true, // Split CSS into per-component chunks
+    assetsInlineLimit: 4096, // Inline small files to reduce HTTP requests
+    sourcemap: false, // Disable sourcemaps in production for smaller files
   },
 }));

@@ -1,44 +1,62 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export function useIsMobile() {
-  // Using mobile-first approach with synchronous initial check for SSR compatibility
-  const [isMobile, setIsMobile] = useState(() => {
-    // During SSR or before mount, use viewport size
+  // Cache the initial value to prevent repeated calculations
+  const initialValueRef = useRef<boolean>(() => {
     if (typeof window === 'undefined') return true;
     return window.innerWidth < 769;
-  });
-
-  // Memoized resize handler for better performance
+  }());
+  
+  const [isMobile, setIsMobile] = useState(initialValueRef.current);
+  
+  // Use throttling to prevent excessive resize calculations
+  const throttleTimeout = useRef<number | null>(null);
+  
   const handleResize = useCallback(() => {
-    // Use direct comparison for efficiency
-    const isMobileView = window.innerWidth < 769;
-    if (isMobile !== isMobileView) {
-      setIsMobile(isMobileView);
-    }
+    if (throttleTimeout.current) return;
+    
+    throttleTimeout.current = window.setTimeout(() => {
+      const isMobileView = window.innerWidth < 769;
+      if (isMobile !== isMobileView) {
+        setIsMobile(isMobileView);
+      }
+      throttleTimeout.current = null;
+    }, 100); // Throttle resize events to once every 100ms
   }, [isMobile]);
 
   useEffect(() => {
     // Use more efficient resize observer if supported
     if (typeof ResizeObserver !== 'undefined') {
+      // Only observe document.documentElement changes
       const resizeObserver = new ResizeObserver(() => {
-        handleResize();
+        // Check if device width actually crossed our breakpoint
+        const isMobileView = window.innerWidth < 769;
+        if (isMobile !== isMobileView) {
+          setIsMobile(isMobileView);
+        }
       });
       
       resizeObserver.observe(document.documentElement);
       
       return () => {
         resizeObserver.disconnect();
+        if (throttleTimeout.current) {
+          clearTimeout(throttleTimeout.current);
+        }
       };
     } else {
-      // Fallback to window resize with passive listener
+      // Fallback to throttled window resize with passive listener
       window.addEventListener('resize', handleResize, { passive: true });
       
       return () => {
         window.removeEventListener('resize', handleResize);
+        if (throttleTimeout.current) {
+          clearTimeout(throttleTimeout.current);
+        }
       };
     }
-  }, [handleResize]);
+  }, [handleResize, isMobile]);
 
   return isMobile;
 }

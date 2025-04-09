@@ -1,5 +1,5 @@
 
-import { memo, useState, useEffect } from 'react';
+import { memo, useState, useEffect, useRef } from 'react';
 
 interface CarouselImageProps {
   src: string;
@@ -18,24 +18,41 @@ const CarouselImage = memo(({
   index, 
   isCurrent
 }: CarouselImageProps) => {
-  const [isLoaded, setIsLoaded] = useState(index === 0); // Assume first image is already loaded
-
-  // More efficient image loading strategy
+  const [isLoaded, setIsLoaded] = useState(index === 0);
+  const imgRef = useRef<HTMLImageElement>(null);
+  
+  // Implement Intersection Observer for more efficient lazy loading
   useEffect(() => {
-    if (index !== 0 && !isLoaded) {
-      // Only create the Image object if not already loaded
-      const img = new Image();
-      img.onload = () => setIsLoaded(true);
-      img.src = src; // Set src after onload to ensure event fires
+    // Always load the first image immediately
+    if (index === 0 && !isLoaded) {
+      setIsLoaded(true);
+      return;
     }
-    // Clean up function to prevent memory leaks
-    return () => {
-      if (index !== 0 && !isLoaded) {
-        // Clear any pending operations
-        setIsLoaded(false);
+    
+    // For non-first images, use Intersection Observer for better performance
+    if (!isLoaded) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting || isCurrent) {
+            // Load the image when it comes into viewport or becomes the current slide
+            const img = new Image();
+            img.onload = () => setIsLoaded(true);
+            img.src = src;
+            observer.disconnect();
+          }
+        });
+      }, {
+        rootMargin: '200px', // Start loading before the image is visible
+        threshold: 0.01
+      });
+      
+      if (imgRef.current) {
+        observer.observe(imgRef.current);
       }
-    };
-  }, [index, isLoaded, src]);
+      
+      return () => observer.disconnect();
+    }
+  }, [src, index, isLoaded, isCurrent]);
 
   return (
     <div 
@@ -45,17 +62,22 @@ const CarouselImage = memo(({
       aria-hidden={!isCurrent}
     >
       <img 
-        src={src} 
+        ref={imgRef}
+        src={isLoaded ? src : (index === 0 ? src : '')} 
         alt={alt}
         className="w-full h-full object-cover"
         loading={index === 0 ? "eager" : "lazy"}
         width={width}
         height={height}
-        fetchPriority={index === 0 ? "high" : "auto"}
         decoding={index === 0 ? "sync" : "async"}
-        style={{ contentVisibility: index === 0 ? 'visible' : 'auto' }}
+        style={{ 
+          contentVisibility: isCurrent ? 'visible' : 'auto',
+          // Add blur-up effect for smoother loading experience
+          filter: isLoaded ? 'none' : 'blur(10px)',
+          transition: 'filter 0.3s ease'
+        }}
       />
-      {/* Simplified gradient overlay for better performance */}
+      {/* Simplified gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
     </div>
   );

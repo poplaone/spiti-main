@@ -26,40 +26,46 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Remove hero placeholder after component mounts
+  // Remove hero placeholder after component mounts - use requestAnimationFrame for better performance
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
       const placeholder = document.querySelector('.hero-placeholder');
       if (placeholder) {
-        // Short delay before starting the fade to ensure smooth transition
+        // Use requestAnimationFrame for better performance
         requestAnimationFrame(() => {
           placeholder.classList.add('fade-out');
           // Remove from DOM after fade completes
           setTimeout(() => {
             placeholder.remove();
-          }, 500);
+          }, 300); // Reduced from 500ms to 300ms for faster removal
         });
       }
     }
   }, []);
 
+  // Use a longer interval on mobile to reduce resource usage
   useEffect(() => {
     resetTimeout();
-    // Set a longer timeout for better performance - 12 seconds
+    // Set a longer timeout for better performance
+    const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
+    
     timeoutRef.current = window.setTimeout(() => 
       setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-      12000
+      interval
     );
     
     return resetTimeout;
-  }, [current, images.length, resetTimeout]);
+  }, [current, images.length, resetTimeout, isMobile]);
 
   const scrollToDiscoverSection = useCallback(() => {
-    document.querySelector('#discover-spiti-valley')?.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
-    });
+    const element = document.querySelector('#discover-spiti-valley');
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
   }, []);
 
   return (
@@ -73,4 +79,4 @@ const HeroCarousel = () => {
   );
 };
 
-export default HeroCarousel;
+export default memo(HeroCarousel); // Memoize the entire component
