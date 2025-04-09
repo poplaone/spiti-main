@@ -1,28 +1,28 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 export function useIsMobile() {
-  // Initialize with server-side value based on initial window size
-  const [isMobile, setIsMobile] = useState(() => {
-    // Default to true for SSR, but immediately check on client if available
-    if (typeof window === 'undefined') return true;
-    return window.innerWidth <= 768;
-  });
+  // Initialize with mobile by default for server-side rendering
+  const [isMobile, setIsMobile] = useState(true);
 
-  // Memoized handler to reduce re-renders
-  const handleResize = useCallback(() => {
-    setIsMobile(window.innerWidth <= 768);
-  }, []);
-  
   useEffect(() => {
-    // Add event listener for resize
-    window.addEventListener('resize', handleResize);
+    // Use a more efficient check with matchMedia
+    const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
     
-    // Clean up
-    return () => {
-      window.removeEventListener('resize', handleResize);
+    // Set initial value
+    setIsMobile(mobileMediaQuery.matches);
+    
+    // Use modern event listener for better performance
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
     };
-  }, [handleResize]);
+    
+    mobileMediaQuery.addEventListener('change', handleChange);
+    
+    return () => {
+      mobileMediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
 
   return isMobile;
 }
