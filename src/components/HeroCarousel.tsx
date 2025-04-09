@@ -21,26 +21,28 @@ const HeroCarousel = () => {
 
   useEffect(() => {
     resetTimeout();
-    // Set a longer timeout for better performance - 6 seconds instead of 5
+    // Set a longer timeout for better performance - 8 seconds instead of 6
+    // This reduces CPU usage for animations on mobile
     timeoutRef.current = window.setTimeout(() => 
       setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-      6000
+      8000
     );
     
     return resetTimeout;
   }, [current, images.length, resetTimeout]);
 
-  // Removed the goToPrevious and goToNext functions since we're removing the arrows
-
   const scrollToDiscoverSection = () => {
-    document.querySelector('#discover-spiti-valley')?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector('#discover-spiti-valley')?.scrollIntoView({ 
+      behavior: 'smooth',
+      // Add block: 'start' for better scrolling
+      block: 'start'
+    });
   };
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
       <CarouselImages current={current} />
       <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      {/* Removed CarouselControls component which contained the arrows */}
       <CarouselIndicators images={images} current={current} setCurrent={setCurrent} />
     </div>
   );
