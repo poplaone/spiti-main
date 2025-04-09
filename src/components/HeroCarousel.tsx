@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState, useCallback, memo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import CarouselImages, { desktopImages, mobileImages } from './hero/CarouselImages';
+import CarouselImages, { carouselImages } from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
 import HeroContent from './hero/HeroContent';
 
@@ -15,8 +15,8 @@ const HeroCarousel = () => {
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
-  // Use the appropriate image set based on device type
-  const images = isMobile ? mobileImages : desktopImages;
+  // Use the carouselImages directly instead of separate desktop/mobile sets
+  const images = carouselImages;
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
