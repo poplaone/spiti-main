@@ -14,7 +14,6 @@ const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
-  const mounted = useRef(false);
   
   // Use the appropriate image set based on device type
   const images = isMobile ? mobileImages : desktopImages;
@@ -23,24 +22,6 @@ const HeroCarousel = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
-    }
-  }, []);
-
-  // Remove hero placeholder after component mounts - use requestAnimationFrame for better performance
-  useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
-      const placeholder = document.querySelector('.hero-placeholder');
-      if (placeholder) {
-        // Use requestAnimationFrame for better performance
-        requestAnimationFrame(() => {
-          placeholder.classList.add('fade-out');
-          // Remove from DOM after fade completes
-          setTimeout(() => {
-            placeholder.remove();
-          }, 300); // Reduced from 500ms to 300ms for faster removal
-        });
-      }
     }
   }, []);
 
