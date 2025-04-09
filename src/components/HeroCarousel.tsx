@@ -15,26 +15,37 @@ const HeroCarousel = () => {
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
-  // Use the carouselImages directly instead of separate desktop/mobile sets
+  // Use the carouselImages directly
   const images = carouselImages;
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+      window.clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
   }, []);
 
-  // Use a longer interval on mobile to reduce resource usage
+  // On mobile, use an even longer timeout to save battery and resources
   useEffect(() => {
     resetTimeout();
-    // Set a longer timeout for better performance
-    const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
     
-    timeoutRef.current = window.setTimeout(() => 
-      setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-      interval
-    );
+    // Prevent unnecessary animation on mobile to save resources
+    const interval = isMobile ? 20000 : 12000; // 20 seconds on mobile, 12 on desktop
+    
+    // Use requestIdleCallback where available for better mobile performance
+    if (window.requestIdleCallback && isMobile) {
+      window.requestIdleCallback(() => {
+        timeoutRef.current = window.setTimeout(() => 
+          setCurrent(prevIndex => (prevIndex + 1) % images.length), 
+          interval
+        );
+      });
+    } else {
+      timeoutRef.current = window.setTimeout(() => 
+        setCurrent(prevIndex => (prevIndex + 1) % images.length), 
+        interval
+      );
+    }
     
     return resetTimeout;
   }, [current, images.length, resetTimeout, isMobile]);
@@ -42,12 +53,13 @@ const HeroCarousel = () => {
   const scrollToDiscoverSection = useCallback(() => {
     const element = document.querySelector('#discover-spiti-valley');
     if (element) {
+      // Smooth scroll for desktop, instant for mobile to save resources
       element.scrollIntoView({ 
-        behavior: 'smooth',
+        behavior: isMobile ? 'auto' : 'smooth',
         block: 'start'
       });
     }
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gray-900">
@@ -60,4 +72,4 @@ const HeroCarousel = () => {
   );
 };
 
-export default memo(HeroCarousel); // Memoize the entire component
+export default memo(HeroCarousel);

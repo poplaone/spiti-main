@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -37,18 +36,30 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: true,
         drop_debugger: true,
-        passes: 2, // Additional optimization passes
+        passes: 3, // Additional optimization passes
+        pure_getters: true, // Optimize getter functions
+        unsafe: true, // Enable "unsafe" optimizations
+        unsafe_arrows: true, // Optimize arrow functions
+        unsafe_comps: true, // Optimize comparisons
+        unsafe_math: true, // Optimize math expressions
+        unsafe_methods: true, // Optimize method calls
       },
-      output: {
-        comments: false, // Remove comments to reduce file size
-      }
+      mangle: {
+        safari10: true, // Fix Safari 10 bugs
+      },
+      format: {
+        comments: false, // Remove all comments
+      },
+      ecma: 2020, // Use modern features
+      toplevel: true, // Mangle top-level functions and variables
     },
+    // Create separate chunks for better caching and mobile loading
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: [
             'react', 
-            'react-dom', 
+            'react-dom',
           ],
           router: [
             'react-router-dom',
@@ -63,24 +74,7 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
           ],
-          // Add admin-specific chunks - kept separate for code splitting
-          admin: [
-            'src/components/admin/package-form/departure-dates/index.tsx',
-            'src/components/admin/package-form/departure-dates/DepartureDateForm.tsx',
-            'src/components/admin/package-form/departure-dates/DepartureDatesList.tsx',
-            'src/hooks/admin/useTourPackages.tsx',
-            'src/pages/admin/AdminDashboard.tsx',
-            'src/pages/admin/AdminSettings.tsx',
-            'src/services/tourService.ts',
-          ],
-          // Create a separate chunks for form-related components
-          forms: [
-            'src/components/LeadForm.tsx',
-            'src/hooks/lead-form/index.ts',
-            'src/hooks/lead-form/useFormState.ts',
-            'src/hooks/lead-form/useFormSubmission.ts',
-          ],
-          // Add smaller chunks for mobile optimization
+          // Create separate chunks for mobile optimization
           home: [
             'src/components/HeroCarousel.tsx',
             'src/components/hero/CarouselImages.tsx',
@@ -91,14 +85,41 @@ export default defineConfig(({ mode }) => ({
             'src/components/tour/TourPackageGrid.tsx',
             'src/components/tour/TourPackageHeader.tsx',
           ],
-          // Create a chunk for image-related components
-          images: [
+          gallery: [
             'src/components/PhotoGallery.tsx',
             'src/components/gallery/GalleryImage.tsx',
             'src/hooks/useGalleryNavigation.ts',
-          ]
+          ],
+          forms: [
+            'src/components/LeadForm.tsx',
+            'src/hooks/lead-form/index.ts',
+            'src/hooks/lead-form/useFormState.ts',
+            'src/hooks/lead-form/useFormSubmission.ts',
+          ],
+          // Create a separate chunk for critical header components
+          header: [
+            'src/components/Header.tsx',
+            'src/components/header/DesktopMenu.tsx',
+            'src/components/header/Logo.tsx',
+            'src/components/header/MobileMenu.tsx',
+          ],
+          // Create a separate chunk for utilities
+          utils: [
+            'src/hooks/use-mobile.tsx',
+            'src/utils/lazyLoading.ts',
+            'src/utils/imageUtils.ts',
+          ],
+          // Admin chunk - still keeping separate but not eagerly loaded
+          admin: {
+            include: [
+              'src/components/admin/**/*',
+              'src/pages/admin/**/*',
+              'src/hooks/admin/**/*',
+            ],
+            enforce: true, // Ensure admin code is always separate
+          },
         },
-        // Improve code splitting with deterministic names
+        // Generate non-hashed chunk names for better debugging
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'

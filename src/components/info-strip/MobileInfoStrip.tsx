@@ -1,54 +1,43 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import AutoplayPlugin from 'embla-carousel-autoplay';
 
 interface MobileInfoStripProps {
   items: string[];
 }
 
 const MobileInfoStrip = ({ items }: MobileInfoStripProps) => {
-  // Use a ref to store the autoplay plugin instance
-  const autoplayRef = useRef<any>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const intervalRef = useRef<number | null>(null);
   
-  // Create the autoplay plugin with options, safely handling initialization
+  // Use a simpler autoplay implementation to avoid the plugin errors
   useEffect(() => {
-    try {
-      // Create the plugin instance but don't assign to ref yet
-      const plugin = AutoplayPlugin({ 
-        delay: 3000, 
-        stopOnInteraction: false,
-        stopOnMouseEnter: false, // Continue even when hovering for better UX
-      });
-      
-      // Now assign to ref
-      autoplayRef.current = plugin;
-    } catch (error) {
-      console.error('Error creating autoplay plugin:', error);
-      autoplayRef.current = null;
+    // Clear any existing interval
+    if (intervalRef.current) {
+      window.clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
     
-    // Clean up plugin on unmount - with proper null checking
+    // Set up a new interval
+    intervalRef.current = window.setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % items.length);
+    }, 5000);
+    
+    // Clean up on unmount
     return () => {
-      if (autoplayRef.current && 
-          typeof autoplayRef.current === 'object' && 
-          autoplayRef.current.destroy && 
-          typeof autoplayRef.current.destroy === 'function') {
-        try {
-          autoplayRef.current.destroy();
-        } catch (error) {
-          console.error('Error destroying autoplay plugin:', error);
-        }
-        autoplayRef.current = null;
+      if (intervalRef.current) {
+        window.clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
-  }, []); // Empty dependency array ensures this runs only once
+  }, [items.length]);
 
   return (
     <div className="md:hidden">
       <Carousel 
         className="w-full"
-        plugins={autoplayRef.current ? [autoplayRef.current] : undefined} 
+        value={{ selectedIndex: currentIndex }}
+        onValueChange={val => setCurrentIndex(val.selectedIndex || 0)}
         opts={{
           align: "start",
           loop: true,

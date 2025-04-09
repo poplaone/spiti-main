@@ -23,6 +23,14 @@
       :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
       body {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0;background-color:#f5f7fa;}
       #root {display:flex;flex-direction:column;min-height:100vh;}
+      
+      /* Add content-visibility for better paint performance */
+      section {content-visibility:auto;contain-intrinsic-size:1px 500px;}
+      
+      /* Add loading spinner for progressive enhancement */
+      .page-load {position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:9999;display:flex;justify-content:center;align-items:center;}
+      .spinner {width:40px;height:40px;border:4px solid rgba(0,0,0,.1);border-radius:50%;border-top-color:#2D3A3A;animation:spin .8s linear infinite;}
+      @keyframes spin {0% {transform:rotate(0deg)} 100% {transform:rotate(360deg)}}
     </style>
     
     <!-- Preconnect to key domains -->
@@ -34,7 +42,10 @@
     <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
     
     <!-- Load fonts asynchronously -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" media="print" onload="this.media='all'" />
+    
+    <!-- Add preload for the main CSS file -->
+    <link rel="preload" href="/src/index.css" as="style" />
   </head>
 
   <body>
@@ -43,7 +54,29 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     
+    <!-- Add a loading spinner that will be removed once the page is ready -->
+    <div class="page-load" id="page-loader">
+      <div class="spinner"></div>
+    </div>
+    
     <div id="root"></div>
+    
+    <!-- Add code to remove the loading spinner once the page is interactive -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Remove loader after a short delay to ensure content is ready
+        setTimeout(function() {
+          const loader = document.getElementById('page-loader');
+          if (loader) {
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 0.3s';
+            setTimeout(function() {
+              loader.remove();
+            }, 300);
+          }
+        }, 200);
+      });
+    </script>
     
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
