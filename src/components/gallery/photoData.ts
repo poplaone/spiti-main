@@ -1,13 +1,6 @@
 
 // Photo data with optimized dimensions for mobile and desktop
 export const galleryPhotos = [{
-  url: "/lovable-uploads/c8752240-9e88-439d-940e-ec659fe4ff17.png",
-  mobileUrl: "/lovable-uploads/c8752240-9e88-439d-940e-ec659fe4ff17.png",
-  alt: "Chandra Taal - Person walking along path by the lake with mountains in background",
-  width: 600,
-  height: 600,
-  location: "Chandra Taal"
-}, {
   url: "/lovable-uploads/33bd2684-f305-45c4-a696-a0c111768a8b.png",
   mobileUrl: "/lovable-uploads/33bd2684-f305-45c4-a696-a0c111768a8b.png",
   alt: "Kalpa - Colorful houses and buildings with snow-capped mountains in background",
