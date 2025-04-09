@@ -1,6 +1,13 @@
 
+interface CarouselImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 interface CarouselIndicatorsProps {
-  images: string[];
+  images: CarouselImage[];
   current: number;
   setCurrent: (index: number) => void;
 }
