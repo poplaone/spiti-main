@@ -1,39 +1,28 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-/**
- * Custom hook to detect if the user's device is mobile
- * Uses a default value based on window size during SSR
- */
 export function useIsMobile() {
-  // Initialize with a check if we're in the browser
-  const getInitialState = () => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth <= 768;
-    }
-    // Default to mobile during SSR to prioritize mobile optimization
-    return true;
-  };
+  // Initialize with server-side value based on initial window size
+  const [isMobile, setIsMobile] = useState(() => {
+    // Default to true for SSR, but immediately check on client if available
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth <= 768;
+  });
 
-  const [isMobile, setIsMobile] = useState(getInitialState);
-
+  // Memoized handler to reduce re-renders
+  const handleResize = useCallback(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
+  
   useEffect(() => {
-    // Function to check if the device is mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    // Set initial value immediately
-    checkMobile();
-    
-    // Use resize event for better performance
-    window.addEventListener('resize', checkMobile);
+    // Add event listener for resize
+    window.addEventListener('resize', handleResize);
     
     // Clean up
     return () => {
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   return isMobile;
 }

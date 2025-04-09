@@ -1,5 +1,5 @@
 
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 interface CarouselImageProps {
   src: string;
@@ -20,21 +20,13 @@ const CarouselImage = memo(({
   isCurrent, 
   onLoad 
 }: CarouselImageProps) => {
-  const [imageLoaded, setImageLoaded] = useState(index === 0); // Assume first image is loaded
-
-  const handleLoad = () => {
-    setImageLoaded(true);
-    onLoad();
-  };
-
-  // Eagerly load the first/current image
-  const loadingStrategy = (index === 0 || isCurrent) ? "eager" : "lazy";
-  const priorityStrategy = (index === 0 || isCurrent) ? "high" : "auto";
-
+  // Simplified loading strategy - only first image is eager
+  const loadingStrategy = index === 0 ? "eager" : "lazy";
+  
   return (
     <div 
       className={`absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
-        isCurrent ? 'opacity-100' : 'opacity-0'
+        isCurrent ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       aria-hidden={!isCurrent}
     >
@@ -43,8 +35,7 @@ const CarouselImage = memo(({
         alt={alt}
         className="w-full h-full object-cover"
         loading={loadingStrategy}
-        onLoad={handleLoad}
-        fetchPriority={priorityStrategy}
+        onLoad={onLoad}
         width={width}
         height={height}
       />

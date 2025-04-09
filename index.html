@@ -2,13 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KZMKK4C8');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Tag Manager - moved to end of body -->
     
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,36 +12,64 @@
     <!-- Favicon -->
     <link rel="icon" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" sizes="32x32" />
     
-    <!-- Critical CSS -->
+    <!-- Critical CSS - Inlined -->
     <style>
       :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
       body {font-family:'Montserrat',sans-serif;margin:0;padding:0;background-color:#f5f7fa;}
       #root {display:flex;flex-direction:column;min-height:100vh;}
+      .hero-placeholder {position:absolute;top:0;left:0;right:0;bottom:0;background-color:#213547;transition:opacity 0.3s ease;}
+      .hero-placeholder.fade-out {opacity:0;}
+      h1 {font-size:2rem;margin:0.67em 0;line-height:1.2;}
+      .text-white {color:white;}
     </style>
     
-    <!-- Preconnect to key domains -->
+    <!-- Preconnect to domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"></noscript>
     
-    <!-- Preload critical resources -->
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png" as="image" media="(max-width: 768px)" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" as="image" media="(min-width: 769px)" fetchpriority="high" />
-    <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
-    <link rel="preload" href="/src/main.tsx" as="script" />
+    
+    <!-- Load critical fonts first -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" />
   </head>
 
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZMKK4C8"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    
     <div id="root"></div>
+    
+    <!-- App mounting point -->
+    <script>
+      // Add a loading placeholder to prevent LCP delay
+      document.addEventListener('DOMContentLoaded', function() {
+        // This helps with perceived performance
+        setTimeout(function() {
+          const heroPlaceholder = document.querySelector('.hero-placeholder');
+          if (heroPlaceholder) heroPlaceholder.classList.add('fade-out');
+        }, 100);
+      });
+    </script>
+    
+    <!-- Deferred non-critical resources -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" media="print" onload="this.media='all'" />
     
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Google Tag Manager - moved to end of body to not block rendering -->
+    <script>
+      window.addEventListener('load', function() {
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KZMKK4C8');
+      });
+    </script>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZMKK4C8"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
   </body>
 </html>

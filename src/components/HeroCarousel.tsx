@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import CarouselImages, { desktopImages, mobileImages } from './hero/CarouselImages';
+import CarouselImages from './hero/CarouselImages';
 import CarouselControls from './hero/CarouselControls';
 import CarouselIndicators from './hero/CarouselIndicators';
 import HeroContent from './hero/HeroContent';
@@ -11,7 +11,8 @@ const HeroCarousel = () => {
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
-  // Use the appropriate image set based on device type
+  // Get images directly from CarouselImages
+  const { mobileImages, desktopImages } = CarouselImages;
   const images = isMobile ? mobileImages : desktopImages;
 
   const resetTimeout = () => {
@@ -22,10 +23,13 @@ const HeroCarousel = () => {
 
   useEffect(() => {
     resetTimeout();
-    timeoutRef.current = window.setTimeout(() => setCurrent(prevIndex => (prevIndex + 1) % images.length), 5000);
-    return () => {
-      resetTimeout();
-    };
+    // Increased timeout for better performance
+    timeoutRef.current = window.setTimeout(() => 
+      setCurrent(prevIndex => (prevIndex + 1) % images.length), 
+      8000 // Increased from 6s to 8s to reduce CPU usage
+    );
+    
+    return resetTimeout;
   }, [current, images.length]);
 
   const goToPrevious = () => {
@@ -37,24 +41,14 @@ const HeroCarousel = () => {
   };
 
   const scrollToDiscoverSection = () => {
-    const discoverSection = document.querySelector('#discover-spiti-valley');
-    if (discoverSection) {
-      discoverSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector('#discover-spiti-valley')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Carousel Images */}
       <CarouselImages current={current} />
-      
-      {/* Hero Content */}
       <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      
-      {/* Navigation Controls */}
       <CarouselControls goToPrevious={goToPrevious} goToNext={goToNext} />
-      
-      {/* Indicator Dots */}
       <CarouselIndicators images={images} current={current} setCurrent={setCurrent} />
     </div>
   );
