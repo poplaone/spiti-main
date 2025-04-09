@@ -13,13 +13,15 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-[-70px] md:mt-0">
-      {/* Preloaded logo image */}
+      {/* Preloaded logo image with priority loading */}
       <img 
         alt="Spiti Valley Travels Logo" 
         className="w-28 h-28 mb-1 md:w-36 md:h-36 md:mb-3 mt-[-50px] md:mt-0 object-contain" 
         src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
         width="144"
         height="144"
+        loading="eager"
+        fetchPriority="high"
       />
       
       {/* Google Ratings Badge */}

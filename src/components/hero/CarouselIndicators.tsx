@@ -1,10 +1,5 @@
 
-interface CarouselImage {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-}
+import { CarouselImage } from './CarouselImages';
 
 interface CarouselIndicatorsProps {
   images: CarouselImage[];

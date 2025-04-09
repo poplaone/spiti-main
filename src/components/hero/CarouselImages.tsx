@@ -4,7 +4,7 @@ import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
 // Optimized image sets with reduced amount of images
-const desktopImages = [
+export const desktopImages = [
   {
     src: "/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png",
     alt: "Suspension bridge in Spiti Valley",
@@ -20,7 +20,7 @@ const desktopImages = [
 ];
 
 // Optimized mobile images
-const mobileImages = [
+export const mobileImages = [
   {
     src: "/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png",
     alt: "Buddha statue under starry night sky in Spiti Valley",
@@ -35,17 +35,20 @@ const mobileImages = [
   }
 ];
 
-interface CarouselImagesProps {
+export interface CarouselImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+export interface CarouselImagesProps {
   current: number;
 }
 
 const CarouselImages = memo(({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
   const images = isMobile ? mobileImages : desktopImages;
-
-  const handleImageLoad = () => {
-    // Simplified - no tracking logic needed
-  };
 
   return (
     <>
@@ -58,16 +61,13 @@ const CarouselImages = memo(({ current }: CarouselImagesProps) => {
           height={img.height}
           index={index} 
           isCurrent={index === current}
-          onLoad={handleImageLoad}
+          onLoad={() => {}}
         />
       ))}
     </>
   );
 });
 
-// Export images for use in HeroCarousel
-CarouselImages.mobileImages = mobileImages;
-CarouselImages.desktopImages = desktopImages;
+CarouselImages.displayName = 'CarouselImages';
 
-export { desktopImages, mobileImages };
 export default CarouselImages;

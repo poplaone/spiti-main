@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import CarouselImages from './hero/CarouselImages';
+import CarouselImages, { mobileImages, desktopImages } from './hero/CarouselImages';
 import CarouselControls from './hero/CarouselControls';
 import CarouselIndicators from './hero/CarouselIndicators';
 import HeroContent from './hero/HeroContent';
@@ -11,8 +11,7 @@ const HeroCarousel = () => {
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
-  // Get images directly from CarouselImages
-  const { mobileImages, desktopImages } = CarouselImages;
+  // Get images directly from the imported arrays
   const images = isMobile ? mobileImages : desktopImages;
 
   const resetTimeout = () => {
