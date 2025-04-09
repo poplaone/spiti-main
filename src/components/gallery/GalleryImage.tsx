@@ -1,5 +1,6 @@
 
-import { memo } from 'react';
+import { memo, useState } from 'react';
+
 interface GalleryImageProps {
   photo: {
     url: string;
@@ -24,6 +25,8 @@ const GalleryImage = memo(({
   isMobile,
   onLoad
 }: GalleryImageProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   if (!isVisible) {
     return (
       <div 
@@ -36,17 +39,27 @@ const GalleryImage = memo(({
   const imageUrl = isMobile ? photo.mobileUrl : photo.url;
   const isPriority = photo.priority || index === 0;
   
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    onLoad(index);
+  };
+  
   return (
     <div className="relative w-full h-full">
+      {/* Show skeleton until image loads */}
+      {!imageLoaded && (
+        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+      )}
+      
       <img 
         src={imageUrl} 
         alt={photo.alt} 
-        className="w-full h-full object-cover" 
+        className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
         loading={isPriority ? "eager" : "lazy"} 
         width={photo.width} 
         height={photo.height} 
         decoding={isPriority ? "sync" : "async"} 
-        onLoad={() => onLoad(index)} 
+        onLoad={handleImageLoad} 
         fetchPriority={isPriority ? "high" : "auto"}
       />
     </div>

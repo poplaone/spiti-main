@@ -1,5 +1,5 @@
 
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 interface CarouselImageProps {
   src: string;
@@ -20,6 +20,13 @@ const CarouselImage = memo(({
   isCurrent, 
   onLoad 
 }: CarouselImageProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleLoad = () => {
+    setImageLoaded(true);
+    onLoad();
+  };
+
   return (
     <div 
       className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
@@ -27,12 +34,17 @@ const CarouselImage = memo(({
       }`}
       aria-hidden={!isCurrent}
     >
+      {/* Show image placeholder until loaded */}
+      {!imageLoaded && (
+        <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
+      )}
+      
       <img 
         src={src} 
         alt={alt}
-        className="w-full h-full object-cover" 
+        className={`w-full h-full object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
         loading={index === 0 ? "eager" : "lazy"} 
-        onLoad={onLoad}
+        onLoad={handleLoad}
         fetchPriority={index === 0 ? "high" : "auto"}
         width={width}
         height={height}

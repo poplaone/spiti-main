@@ -51,7 +51,7 @@ const PhotoGallery = () => {
       });
     }, {
       root: null,
-      rootMargin: '100px',
+      rootMargin: '200px', // Increased for earlier preloading
       threshold: 0.1
     });
     
@@ -68,14 +68,16 @@ const PhotoGallery = () => {
     };
   }, [setVisibleRange]);
   
-  // Mark gallery as loaded after a short delay
+  // Mark gallery as loaded after images are visible
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setImagesLoaded(true);
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, []);
+    if (!imagesLoaded) {
+      const timer = setTimeout(() => {
+        setImagesLoaded(true);
+      }, 200);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [imagesLoaded]);
   
   // Handle image load events
   const handleImageLoad = useCallback((index: number) => {
@@ -88,8 +90,11 @@ const PhotoGallery = () => {
         <div 
           id="gallery" 
           ref={galleryRef}
-          className={`flex gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory transition-opacity duration-300 ${imagesLoaded ? 'opacity-100' : 'opacity-0'}`} 
-          style={{ scrollBehavior: 'smooth' }}
+          className="flex gap-4 overflow-x-auto scrollbar-none snap-x snap-mandatory transition-opacity duration-300" 
+          style={{ 
+            scrollBehavior: 'smooth',
+            opacity: 1 // Always visible to avoid flash of invisible content
+          }}
         >
           {galleryPhotos.map((photo, index) => (
             <div 

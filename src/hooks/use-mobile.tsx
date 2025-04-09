@@ -1,20 +1,45 @@
 
-import * as React from "react"
+import { useState, useEffect } from 'react';
 
-const MOBILE_BREAKPOINT = 768
-
+/**
+ * Custom hook to detect if the user's device is mobile
+ * Returns undefined during SSR or initial render
+ */
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
+  // Initialize with undefined to prevent hydration mismatch
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
 
-  React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    const onChange = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+  useEffect(() => {
+    // Function to check if the device is mobile
+    const checkMobile = () => {
+      const mobile = window.matchMedia('(max-width: 768px)').matches;
+      setIsMobile(mobile);
+    };
+
+    // Set initial value immediately
+    checkMobile();
+    
+    // Create media query list and add listener
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    // Use the appropriate event based on browser support
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', checkMobile);
+    } else {
+      // Fallback for older browsers
+      mediaQuery.addListener(checkMobile);
     }
-    mql.addEventListener("change", onChange)
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    return () => mql.removeEventListener("change", onChange)
-  }, [])
+    
+    // Clean up listener
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', checkMobile);
+      } else {
+        // Fallback cleanup
+        mediaQuery.removeListener(checkMobile);
+      }
+    };
+  }, []);
 
-  return !!isMobile
+  return isMobile;
 }

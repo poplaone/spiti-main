@@ -20,6 +20,7 @@ const CarouselIndicators = ({ images, current, setCurrent }: CarouselIndicatorsP
           key={index} 
           className={`w-3 h-3 rounded-full ${index === current ? 'bg-white' : 'bg-white/50'}`} 
           onClick={() => setCurrent(index)} 
+          aria-label={`Go to slide ${index + 1}`}
         />
       ))}
     </div>

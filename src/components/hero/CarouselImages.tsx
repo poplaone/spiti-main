@@ -46,11 +46,11 @@ interface CarouselImagesProps {
 
 const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
-  const [imagesToShow, setImagesToShow] = useState<typeof desktopImages>([]);
+  const [imagesToShow, setImagesToShow] = useState<typeof desktopImages>(isMobile === undefined ? [] : (isMobile ? mobileImages : desktopImages));
   const [isLoaded, setIsLoaded] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({0: false});
   
-  // Wait for the isMobile value to be determined before showing any images
+  // Immediately show images once we know device type
   useEffect(() => {
     if (isMobile !== undefined) {
       const appropriateImages = isMobile ? mobileImages : desktopImages;
@@ -66,7 +66,7 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
 
   // Preload the next image when current changes
   useEffect(() => {
-    if (imagesToShow.length > 0) {
+    if (imagesToShow.length > 0 && current !== undefined) {
       // Preload the next image (circular)
       const nextIdx = (current + 1) % imagesToShow.length;
       
@@ -80,7 +80,7 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
 
   // Don't render anything until we know which device type we're on
   if (!isLoaded) {
-    return <div className="absolute inset-0 bg-gray-900"></div>; // Placeholder while loading
+    return null; // No loading placeholder - will use the HTML fallback
   }
 
   return (
