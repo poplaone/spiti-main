@@ -20,14 +20,21 @@ const CarouselImage = memo(({
 }: CarouselImageProps) => {
   const [isLoaded, setIsLoaded] = useState(index === 0); // Assume first image is already loaded
 
-  // Load all images immediately but only show the current one
+  // More efficient image loading strategy
   useEffect(() => {
-    // Create an image object to preload
     if (index !== 0 && !isLoaded) {
+      // Only create the Image object if not already loaded
       const img = new Image();
-      img.src = src;
       img.onload = () => setIsLoaded(true);
+      img.src = src; // Set src after onload to ensure event fires
     }
+    // Clean up function to prevent memory leaks
+    return () => {
+      if (index !== 0 && !isLoaded) {
+        // Clear any pending operations
+        setIsLoaded(false);
+      }
+    };
   }, [index, isLoaded, src]);
 
   return (
@@ -46,8 +53,9 @@ const CarouselImage = memo(({
         height={height}
         fetchPriority={index === 0 ? "high" : "auto"}
         decoding={index === 0 ? "sync" : "async"}
+        style={{ contentVisibility: index === 0 ? 'visible' : 'auto' }}
       />
-      {/* Optimized gradient overlay */}
+      {/* Simplified gradient overlay for better performance */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
     </div>
   );

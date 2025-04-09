@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export function useIsMobile() {
   // Using mobile-first approach with synchronous initial check for SSR compatibility
@@ -9,30 +9,36 @@ export function useIsMobile() {
     return window.innerWidth < 769;
   });
 
+  // Memoized resize handler for better performance
+  const handleResize = useCallback(() => {
+    // Use direct comparison for efficiency
+    const isMobileView = window.innerWidth < 769;
+    if (isMobile !== isMobileView) {
+      setIsMobile(isMobileView);
+    }
+  }, [isMobile]);
+
   useEffect(() => {
-    // Performance optimized check function with debounce
-    let timeoutId: number;
-    
-    const handleResize = () => {
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
+    // Use more efficient resize observer if supported
+    if (typeof ResizeObserver !== 'undefined') {
+      const resizeObserver = new ResizeObserver(() => {
+        handleResize();
+      });
       
-      timeoutId = window.setTimeout(() => {
-        setIsMobile(window.innerWidth < 769);
-      }, 150); // 150ms debounce
-    };
-    
-    // Add event listener
-    window.addEventListener('resize', handleResize, { passive: true });
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
-    };
-  }, []);
+      resizeObserver.observe(document.documentElement);
+      
+      return () => {
+        resizeObserver.disconnect();
+      };
+    } else {
+      // Fallback to window resize with passive listener
+      window.addEventListener('resize', handleResize, { passive: true });
+      
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+  }, [handleResize]);
 
   return isMobile;
 }

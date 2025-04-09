@@ -46,10 +46,40 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-popover',
             '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
+          ],
+          // Add admin-specific chunks
+          admin: [
+            'src/components/admin/package-form/departure-dates/index.tsx',
+            'src/components/admin/package-form/departure-dates/DepartureDateForm.tsx',
+            'src/components/admin/package-form/departure-dates/DepartureDatesList.tsx',
+            'src/hooks/admin/useTourPackages.tsx',
+            'src/pages/admin/AdminDashboard.tsx',
+            'src/pages/admin/AdminSettings.tsx',
+            'src/services/tourService.ts',
+          ],
+          // Create a separate chunks for form-related components
+          forms: [
+            'src/components/LeadForm.tsx',
+            'src/hooks/lead-form/index.ts',
+            'src/hooks/lead-form/useFormState.ts',
+            'src/hooks/lead-form/useFormSubmission.ts',
           ]
-        }
+        },
+        // Improve code splitting
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
+    // Increase chunk size warning limit
     chunkSizeWarningLimit: 1000,
+    // Improve minification
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
   },
 }));

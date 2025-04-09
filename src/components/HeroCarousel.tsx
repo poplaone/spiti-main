@@ -1,14 +1,20 @@
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, memo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CarouselImages, { desktopImages, mobileImages } from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
 import HeroContent from './hero/HeroContent';
 
+// Memoize components for better performance
+const MemoizedCarouselImages = memo(CarouselImages);
+const MemoizedCarouselIndicators = memo(CarouselIndicators);
+const MemoizedHeroContent = memo(HeroContent);
+
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
+  const mounted = useRef(false);
   
   // Use the appropriate image set based on device type
   const images = isMobile ? mobileImages : desktopImages;
@@ -16,18 +22,25 @@ const HeroCarousel = () => {
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
   }, []);
 
   // Remove hero placeholder after component mounts
   useEffect(() => {
-    const placeholder = document.querySelector('.hero-placeholder');
-    if (placeholder) {
-      placeholder.classList.add('fade-out');
-      // Remove from DOM after fade completes
-      setTimeout(() => {
-        placeholder.remove();
-      }, 500);
+    if (!mounted.current) {
+      mounted.current = true;
+      const placeholder = document.querySelector('.hero-placeholder');
+      if (placeholder) {
+        // Short delay before starting the fade to ensure smooth transition
+        requestAnimationFrame(() => {
+          placeholder.classList.add('fade-out');
+          // Remove from DOM after fade completes
+          setTimeout(() => {
+            placeholder.remove();
+          }, 500);
+        });
+      }
     }
   }, []);
 
@@ -42,20 +55,20 @@ const HeroCarousel = () => {
     return resetTimeout;
   }, [current, images.length, resetTimeout]);
 
-  const scrollToDiscoverSection = () => {
+  const scrollToDiscoverSection = useCallback(() => {
     document.querySelector('#discover-spiti-valley')?.scrollIntoView({ 
       behavior: 'smooth',
       block: 'start'
     });
-  };
+  }, []);
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gray-900">
       <div className="w-full h-full">
-        <CarouselImages current={current} />
+        <MemoizedCarouselImages current={current} />
       </div>
-      <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      <CarouselIndicators images={images} current={current} setCurrent={setCurrent} />
+      <MemoizedHeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
+      <MemoizedCarouselIndicators images={images} current={current} setCurrent={setCurrent} />
     </div>
   );
 };
