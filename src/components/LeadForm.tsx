@@ -6,12 +6,7 @@ import TourPreferences from './form/TourPreferences';
 import FormActions from './form/FormActions';
 import { useLeadForm } from '@/hooks/lead-form';
 
-interface LeadFormProps {
-  tourId?: string;
-  tourName?: string;
-}
-
-const LeadForm: React.FC<LeadFormProps> = ({ tourId, tourName }) => {
+const LeadForm = () => {
   const {
     date,
     setDate,

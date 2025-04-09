@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,7 +13,6 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { trackEvent } from '@/utils/analyticsUtils';
 
 const ThankYou = () => {
   const navigate = useNavigate();
@@ -20,48 +20,45 @@ const ThankYou = () => {
   const formData = location.state?.formData || {};
   
   useEffect(() => {
-    // Track conversion
-    if (location.state?.formData) {
-      trackEvent('conversion', {
-        formType: 'tourInquiry',
-        formData: {
-          name: formData.name || 'Not provided',
-          email: formData.email || 'Not provided',
-          phone: formData.phone || 'Not provided',
-          duration: formData.duration || 'Not specified',
-          travelDate: formData.date || 'Not specified',
-          guests: formData.guests || '1',
-          isCustomized: formData.isCustomized || false,
-          isFixedDeparture: formData.isFixedDeparture || false
-        },
-        conversionValue: 1
-      });
-      
-      console.log("Thank you page conversion tracked");
-    } else {
-      // If someone tries to access the thank you page directly without form data
-      // redirect them to the homepage after 5 seconds
+    // Output debug info about GTM availability
+    console.log("ThankYou page loaded - GTM dataLayer available:", !!window.dataLayer);
+    console.log("Form data available:", !!location.state?.formData);
+    
+    // If someone tries to access the thank you page directly without form data
+    // redirect them to the homepage after 5 seconds
+    if (!location.state?.formData) {
       const timer = setTimeout(() => {
         navigate('/');
       }, 5000);
       
       return () => clearTimeout(timer);
     }
+
+    // Google Tag Manager event trigger for conversion tracking
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'formSubmission',
+        'formType': 'tourInquiry',
+        'formData': {
+          'name': formData.name || 'Not provided',
+          'email': formData.email || 'Not provided',
+          'phone': formData.phone || 'Not provided',
+          'duration': formData.duration || 'Not specified',
+          'travelDate': formData.date || 'Not specified',
+          'guests': formData.guests || '1',
+          'isCustomized': formData.isCustomized || false,
+          'isFixedDeparture': formData.isFixedDeparture || false
+        }
+      });
+      
+      console.log("Thank you page conversion event tracked and pushed to dataLayer");
+    }
+    
+    console.log("Thank you page viewed with form data:", formData);
   }, [navigate, location.state, formData]);
 
   const goBack = () => {
-    trackEvent('buttonClick', {
-      buttonName: 'back_to_home',
-      buttonLocation: 'thank_you_page'
-    });
     navigate('/');
-  };
-
-  const handleContinueClick = () => {
-    trackEvent('buttonClick', {
-      buttonName: 'continue_exploring',
-      buttonLocation: 'thank_you_page'
-    });
   };
 
   return (
@@ -148,7 +145,7 @@ const ThankYou = () => {
                 </Table>
               </div>
               
-              <Link to="/" onClick={handleContinueClick}>
+              <Link to="/">
                 <Button className="bg-spiti-blue hover:bg-spiti-blue/80 text-white">
                   Continue Exploring
                 </Button>

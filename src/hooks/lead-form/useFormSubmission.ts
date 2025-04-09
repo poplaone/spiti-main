@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { FormState } from "./types";
-import { trackEvent } from "@/utils/analyticsUtils";
 
 export const useFormSubmission = (
   formData: FormState, 
@@ -14,10 +13,15 @@ export const useFormSubmission = (
   const navigate = useNavigate();
 
   const trackFormEvent = (eventName: string, extraData?: Record<string, any>) => {
-    trackEvent(eventName, {
-      formType: 'tourInquiry',
-      ...extraData
-    });
+    console.log(`Tracking GTM event: ${eventName} - GTM dataLayer available:`, !!window.dataLayer);
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': eventName,
+        'formType': 'tourInquiry',
+        ...extraData
+      });
+      console.log(`Event ${eventName} pushed to dataLayer`);
+    }
   };
   
   const submitLeadForm = async (leadData: any) => {
@@ -26,7 +30,7 @@ export const useFormSubmission = (
       
       console.log("Submitting lead form to edge function:", leadData);
       
-      // Track form submission start
+      // Track form submission start in GTM
       trackFormEvent('formSubmissionAttempt');
       
       // Call the Supabase Edge Function to send the email
@@ -101,16 +105,6 @@ export const useFormSubmission = (
     if (success) {
       toast.success("Your request has been submitted! We've sent you a confirmation email.");
       
-      // Track conversion
-      trackEvent('conversion', {
-        formType: 'tourInquiry',
-        formData: {
-          ...formData,
-          date: date ? format(date, "PPP") : "Not specified"
-        },
-        conversionValue: 1
-      });
-      
       // Navigate to thank you page with form data
       navigate('/thank-you', { 
         state: { 
@@ -129,9 +123,7 @@ export const useFormSubmission = (
     }
 
     // Track WhatsApp contact method
-    trackEvent('whatsAppContact', {
-      formType: 'tourInquiry'
-    });
+    trackFormEvent('whatsAppContact');
 
     const message = `
 *New Tour Inquiry*

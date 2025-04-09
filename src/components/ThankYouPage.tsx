@@ -1,8 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mountain, Bike, Car, Users, CloudSnow, X, CheckCircle } from 'lucide-react';
-import { trackEvent } from '@/utils/analyticsUtils';
 
 interface ThankYouPageProps {
   onClose: () => void;
@@ -16,21 +16,28 @@ const ThankYouPage = ({ onClose }: ThankYouPageProps) => {
       setShowElements(true);
     }, 300);
     
-    // Track modal thank you page view
-    trackEvent('modalThankYouView', {
-      formType: 'tourInquiry',
-      viewedIn: 'modal'
-    });
+    // Track modal thank you page view with GTM
+    console.log("ThankYouPage component mounted - GTM dataLayer available:", !!window.dataLayer);
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'modalThankYouView',
+        'formType': 'tourInquiry'
+      });
+      console.log("Modal thank you page view event pushed to dataLayer");
+    }
     
     return () => clearTimeout(timer);
   }, []);
 
   const handleContinueClick = () => {
     // Track continue exploring clicks
-    trackEvent('thankYouContinue', {
-      buttonLocation: 'modal',
-      action: 'continue_exploring'
-    });
+    console.log("Continue exploring button clicked - GTM dataLayer available:", !!window.dataLayer);
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'thankYouContinue'
+      });
+      console.log("Thank you continue button click event pushed to dataLayer");
+    }
     onClose();
   };
 
