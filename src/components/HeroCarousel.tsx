@@ -7,7 +7,6 @@ import HeroContent from './hero/HeroContent';
 
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
-  const [isInitialized, setIsInitialized] = useState(false);
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
@@ -20,21 +19,17 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Set carousel as initialized after first render
+  // Remove hero placeholder after component mounts
   useEffect(() => {
-    if (!isInitialized) {
-      // Remove hero placeholder after the component mounts
-      const placeholder = document.querySelector('.hero-placeholder');
-      if (placeholder) {
-        placeholder.classList.add('fade-out');
-        // Remove from DOM after fade completes
-        setTimeout(() => {
-          placeholder.remove();
-        }, 500);
-      }
-      setIsInitialized(true);
+    const placeholder = document.querySelector('.hero-placeholder');
+    if (placeholder) {
+      placeholder.classList.add('fade-out');
+      // Remove from DOM after fade completes
+      setTimeout(() => {
+        placeholder.remove();
+      }, 500);
     }
-  }, [isInitialized]);
+  }, []);
 
   useEffect(() => {
     resetTimeout();

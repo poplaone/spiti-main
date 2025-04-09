@@ -18,48 +18,37 @@ const CarouselImage = memo(({
   index, 
   isCurrent
 }: CarouselImageProps) => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isVisible, setIsVisible] = useState(index === 0);
+  const [isLoaded, setIsLoaded] = useState(index === 0); // Assume first image is already loaded
 
-  // Optimize image loading strategy
+  // Load all images immediately but only show the current one
   useEffect(() => {
-    // When an image becomes current, make it visible
-    if (isCurrent) {
-      setIsVisible(true);
+    // Create an image object to preload
+    if (index !== 0 && !isLoaded) {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => setIsLoaded(true);
     }
-  }, [isCurrent]);
+  }, [index, isLoaded, src]);
 
-  const handleLoad = () => {
-    setIsLoaded(true);
-  };
-
-  // Only render the actual image element when needed
   return (
     <div 
-      className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
+      className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
         isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
     >
-      {isVisible && (
-        <>
-          <img 
-            src={src} 
-            alt={alt}
-            className={`w-full h-full object-cover transition-opacity duration-300 ${
-              isLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            loading={index === 0 ? "eager" : "lazy"}
-            onLoad={handleLoad}
-            width={width}
-            height={height}
-            fetchPriority={index === 0 ? "high" : "auto"}
-            decoding={index === 0 ? "sync" : "async"}
-          />
-          {/* Optimized gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
-        </>
-      )}
+      <img 
+        src={src} 
+        alt={alt}
+        className="w-full h-full object-cover"
+        loading={index === 0 ? "eager" : "lazy"}
+        width={width}
+        height={height}
+        fetchPriority={index === 0 ? "high" : "auto"}
+        decoding={index === 0 ? "sync" : "async"}
+      />
+      {/* Optimized gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
     </div>
   );
 });
