@@ -3,7 +3,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
-// Reduced to just ONE image per device type to improve LCP
+// Define image arrays that will be used throughout the component
 export const desktopImages = [
   {
     src: "/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png",
@@ -13,7 +13,6 @@ export const desktopImages = [
   }
 ];
 
-// Single mobile image optimized for mobile
 export const mobileImages = [
   {
     src: "/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png",
@@ -63,5 +62,5 @@ const CarouselImages = memo(({ current }: CarouselImagesProps) => {
 
 CarouselImages.displayName = 'CarouselImages';
 
-export { mobileImages, desktopImages };
+// Removed duplicate exports here - they were already exported at the top of the file
 export default CarouselImages;
