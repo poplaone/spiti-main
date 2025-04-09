@@ -6,9 +6,12 @@ export function useIsMobile() {
   const initialValueRef = useRef<boolean>(() => {
     if (typeof window === 'undefined') return true;
     return window.innerWidth < 769;
-  }());
+  });
   
-  const [isMobile, setIsMobile] = useState(initialValueRef.current);
+  // Initialize state with the calculated initial value
+  const [isMobile, setIsMobile] = useState(() => {
+    return initialValueRef.current();
+  });
   
   // Use throttling to prevent excessive resize calculations
   const throttleTimeout = useRef<number | null>(null);
