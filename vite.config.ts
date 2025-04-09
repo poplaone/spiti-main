@@ -18,27 +18,35 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // Add explicit alias for embla-carousel to resolve peer dependency issue
       "embla-carousel": path.resolve(__dirname, "./node_modules/embla-carousel"),
     },
   },
   optimizeDeps: {
     include: ['embla-carousel'],
-    force: true, // Force dependencies optimization to resolve lockfile issues
+    force: true,
   },
   build: {
-    // Add build configuration to handle lockfile-related issues
-    commonjsOptions: {
-      transformMixedEsModules: true,
+    // Improved minification and optimization
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      }
     },
+    // Improved chunking strategy
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: [
             'react', 
-            'react-dom', 
-            'react-router-dom',
-            '@tanstack/react-query',
+            'react-dom'
+          ],
+          router: [
+            'react-router-dom'
+          ],
+          query: [
+            '@tanstack/react-query'
           ],
           ui: [
             '@radix-ui/react-accordion',
