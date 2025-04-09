@@ -41,14 +41,9 @@ interface CarouselImagesProps {
 
 const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
-  const [imagesLoaded, setImagesLoaded] = useState(0);
   
   // Use appropriate image set based on device
   const images = isMobile ? mobileImages : desktopImages;
-  
-  const handleImageLoad = useCallback(() => {
-    setImagesLoaded(prev => prev + 1);
-  }, []);
 
   return (
     <>
@@ -61,7 +56,6 @@ const CarouselImages = ({ current }: CarouselImagesProps) => {
           height={img.height}
           index={index} 
           isCurrent={index === current}
-          onLoad={handleImageLoad}
         />
       ))}
     </>

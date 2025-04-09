@@ -7,6 +7,7 @@ import HeroContent from './hero/HeroContent';
 
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
@@ -19,13 +20,28 @@ const HeroCarousel = () => {
     }
   }, []);
 
+  // Set carousel as initialized after first render
+  useEffect(() => {
+    if (!isInitialized) {
+      // Remove hero placeholder after the component mounts
+      const placeholder = document.querySelector('.hero-placeholder');
+      if (placeholder) {
+        placeholder.classList.add('fade-out');
+        // Remove from DOM after fade completes
+        setTimeout(() => {
+          placeholder.remove();
+        }, 500);
+      }
+      setIsInitialized(true);
+    }
+  }, [isInitialized]);
+
   useEffect(() => {
     resetTimeout();
-    // Set a longer timeout for better performance - 10 seconds instead of 8
-    // This reduces CPU usage for animations on mobile even further
+    // Set a longer timeout for better performance - 12 seconds
     timeoutRef.current = window.setTimeout(() => 
       setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-      10000
+      12000
     );
     
     return resetTimeout;

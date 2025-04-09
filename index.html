@@ -23,24 +23,24 @@
       :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
       body {font-family:'Montserrat',sans-serif;margin:0;padding:0;background-color:#f5f7fa;}
       #root {display:flex;flex-direction:column;min-height:100vh;}
-      /* Preload content */
+      /* Preload hero placeholder */
       .hero-section {height:100vh;background-color:#1a202c;}
       /* Hero placeholder animation */
       @keyframes pulse {0%,100%{opacity:.5}50%{opacity:.7}}
       .hero-placeholder{position:absolute;inset:0;background-color:#1a202c;animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}
+      .hero-placeholder.fade-out{opacity:0;transition:opacity 0.5s ease;}
     </style>
     
     <!-- Preconnect to key domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
     <!-- Preload critical fonts - minimal subset -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" as="style" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" />
     
-    <!-- Preload hero images based on viewport -->
-    <link rel="preload" href="/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png" as="image" media="(max-width: 768px)" fetchpriority="high" />
-    <link rel="preload" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" as="image" media="(min-width: 769px)" fetchpriority="high" />
+    <!-- Preload hero images -->
+    <link rel="preload" href="/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png" as="image" fetchpriority="high" />
     
     <!-- Preload logo -->
     <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
