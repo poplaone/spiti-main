@@ -19,7 +19,7 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
         src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
         width={160}
         height={160}
-        fetchpriority="high"
+        fetchPriority="high"
       />
       
       {/* Google Ratings Badge */}

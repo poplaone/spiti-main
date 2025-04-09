@@ -29,7 +29,7 @@ const CarouselImage = memo(({
 
   // Only load images when they're either the first one or about to be displayed
   // This prevents loading all images at once on mobile
-  const shouldLoad = index === 0 || isCurrent || index === (isCurrent + 1) % 3;
+  const shouldLoad = index === 0 || isCurrent || index === ((isCurrent ? 1 : 0) + index) % 3;
   
   return (
     <div 
@@ -48,7 +48,7 @@ const CarouselImage = memo(({
             onLoad={handleLoad}
             width={width}
             height={height}
-            fetchpriority={index === 0 ? "high" : "auto"}
+            fetchPriority={index === 0 ? "high" : "auto"}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
         </>
