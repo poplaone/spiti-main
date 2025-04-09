@@ -1,3 +1,4 @@
+
 import { memo, useRef, useEffect } from 'react';
 import { createLazyLoadObserver } from '@/utils/lazyLoading';
 
@@ -76,7 +77,7 @@ const GalleryImage = memo(({
         width={photo.width} 
         height={photo.height} 
         decoding={index < 4 ? "sync" : "async"}
-        fetchpriority={index < 2 ? "high" : "low"}
+        fetchPriority={index < 2 ? "high" : "low"}
       />
     </div>
   );

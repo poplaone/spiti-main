@@ -40,7 +40,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         decoding={index === 0 ? "sync" : "async"}
         // Set explicit width/height to prevent layout shifts
         className="w-full h-full object-cover"
-        // Add fetchPriority hint for browsers that support it (note the capitalization)
+        // Correct capitalization for fetchPriority
         fetchPriority={index === 0 ? "high" : "low"}
       />
       {/* Simplified overlay with reduced opacity on mobile */}
