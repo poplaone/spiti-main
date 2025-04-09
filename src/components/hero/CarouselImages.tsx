@@ -2,7 +2,7 @@
 import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
-// Define optimized image sizes - smaller for mobile
+// Define optimized image sizes
 export const carouselImages = [
   {
     src: "/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png",
@@ -53,5 +53,4 @@ const CarouselImages = memo(({ current }: CarouselImagesProps) => {
 
 CarouselImages.displayName = 'CarouselImages';
 
-export { carouselImages };
 export default CarouselImages;

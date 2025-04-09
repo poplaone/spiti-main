@@ -36,8 +36,8 @@ const MobileInfoStrip = ({ items }: MobileInfoStripProps) => {
     <div className="md:hidden">
       <Carousel 
         className="w-full"
-        value={{ selectedIndex: currentIndex }}
-        onValueChange={val => setCurrentIndex(val.selectedIndex || 0)}
+        // Use defaultIndex instead of value/onValueChange which aren't part of CarouselProps
+        defaultIndex={currentIndex}
         opts={{
           align: "start",
           loop: true,

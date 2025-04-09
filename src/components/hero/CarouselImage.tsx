@@ -40,8 +40,8 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         decoding={index === 0 ? "sync" : "async"}
         // Set explicit width/height to prevent layout shifts
         className="w-full h-full object-cover"
-        // Add fetchpriority hint for browsers that support it
-        fetchpriority={index === 0 ? "high" : "low"}
+        // Add fetchPriority hint for browsers that support it (note the capitalization)
+        fetchPriority={index === 0 ? "high" : "low"}
       />
       {/* Simplified overlay with reduced opacity on mobile */}
       <div className="absolute inset-0 bg-black" style={{ opacity: isMobile ? 0.3 : 0.4 }}></div>
