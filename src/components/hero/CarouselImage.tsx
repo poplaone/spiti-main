@@ -27,12 +27,8 @@ const CarouselImage = memo(({
     onLoad();
   };
 
-  // Only load current and next image for better performance
-  const shouldLoad = index === 0 || isCurrent || index === ((isCurrent ? index : 0) + 1) % 2;
-  
-  if (!shouldLoad) {
-    return null; // Return nothing for images we don't need to load yet
-  }
+  // Always load both images since we only have two now
+  // This simplifies the logic and ensures smoother transitions
   
   return (
     <div 

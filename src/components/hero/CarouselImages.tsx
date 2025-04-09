@@ -6,14 +6,14 @@ import CarouselImage from './CarouselImage';
 // Highly optimized mobile images at smaller file sizes
 const mobileImages = [
   {
-    src: "/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png",
-    alt: "Buddha statue under starry night sky in Spiti Valley",
-    width: 540,  // Reduced dimensions for faster loading
+    src: "/lovable-uploads/77160f74-955b-48e1-a67a-23a220f55ad7.png",
+    alt: "Snow-covered Key Monastery in winter",
+    width: 540,
     height: 810
   },
   {
-    src: "/lovable-uploads/77160f74-955b-48e1-a67a-23a220f55ad7.png",
-    alt: "Snow-covered Key Monastery in winter",
+    src: "/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png",
+    alt: "Key Monastery with snow-capped mountains in Spiti Valley",
     width: 540,
     height: 810
   }
@@ -22,14 +22,14 @@ const mobileImages = [
 // Desktop images with higher resolution
 const desktopImages = [
   {
-    src: "/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png",
-    alt: "Suspension bridge in Spiti Valley",
+    src: "/lovable-uploads/8edf4fb0-5e63-4e88-8ca8-0d0d40eb7626.png",
+    alt: "Key Monastery with snow-capped mountains",
     width: 1280,
     height: 720
   },
   {
-    src: "/lovable-uploads/8edf4fb0-5e63-4e88-8ca8-0d0d40eb7626.png",
-    alt: "Key Monastery with snow-capped mountains",
+    src: "/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png",
+    alt: "Suspension bridge in Spiti Valley with mountains in background",
     width: 1280,
     height: 720
   }
