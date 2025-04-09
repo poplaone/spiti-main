@@ -30,8 +30,22 @@ const TourPackage: React.FC<TourPackageProps & {
   const availableFrom = overviewDetails?.availableFrom || 'June';
   const availableTo = overviewDetails?.availableTo || 'October';
 
-  // Get the custom URL for this tour package if available
-  const detailsUrl = title && tourTitleToSlug[title] ? tourTitleToSlug[title] : (id ? `/tour/${id}` : "#");
+  // Determine the URL based on the tour title
+  let detailsUrl;
+  
+  // Check for specific titles that should use custom URLs
+  if (title === "BUDDHIST AND TRIBAL CIRCUIT–SPITI" || 
+      title === "BUDDHIST AND TRIBAL CIRCUIT–SPITI " || 
+      title === "BUDDHIST AND TRIBAL CIRCUIT SPITI") {
+    detailsUrl = "/BUDDHIST-AND-TRIBAL-CIRCUIT–SPITI";
+  } else if (title === "SNOW LEOPARD EXPEDITION (WINTER SPECIAL)" || 
+             title === "SNOW LEOPARD EXPEDITION (WINTER SPECIAL) " || 
+             title === "SNOW LEOPARD EXPEDITION WINTER SPECIAL") {
+    detailsUrl = "/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL";
+  } else {
+    // For other tours, use the existing logic
+    detailsUrl = title && tourTitleToSlug[title] ? tourTitleToSlug[title] : (id ? `/tour/${id}` : "#");
+  }
 
   return (
     <div className="block h-full w-full">
