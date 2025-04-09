@@ -52,10 +52,7 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('/src/components/form/')) return 'forms';
           if (id.includes('/src/components/header/')) return 'header';
           if (id.includes('/src/utils/') || id.includes('/src/lib/')) return 'utils';
-        },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        }
       }
     }
   }
