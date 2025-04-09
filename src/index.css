@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -102,21 +103,12 @@
     font-display: swap;
   }
 
-  /* Mobile-optimized background - simplified with solid colors for better performance */
-  @media (max-width: 768px) {
-    body {
-      background-color: #f5f7fa;
-    }
-  }
-
-  /* Desktop background - kept only for desktop */
-  @media (min-width: 769px) {
-    body {
-      background-image: linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop');
-      background-attachment: fixed;
-      background-size: cover;
-      background-position: center;
-    }
+  /* Restore the blue gradient background for all devices (both mobile and desktop) */
+  body {
+    background-image: linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop');
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
   }
 
   h1, h2, h3, h4, h5, h6 {
