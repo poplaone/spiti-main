@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
-import { TourPackageProps } from '@/data/types/tourTypes';
 
 const TourDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,10 +15,10 @@ const TourDetail = () => {
       const tour = tours.find(t => t.id === id);
       
       if (tour) {
-        // Always use the exact same image that was uploaded by admin
+        // Use the exact tour image without any processing
         setHeroImage(tour.image);
         
-        // Set tour type based on characteristics
+        // Determine tour type based on characteristics
         if (tour.transportType.toLowerCase() === 'bike') {
           setTourType('bike');
         } else if (tour.isWomenOnly) {
@@ -35,7 +34,7 @@ const TourDetail = () => {
         }
       } else {
         setTourType('unexplored');
-        // Use a fallback image if tour not found
+        // Use a fallback image if tour not found - this is a direct reference
         setHeroImage("/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png");
       }
     } else {

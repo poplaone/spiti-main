@@ -40,6 +40,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
               src={imagePreview} 
               alt="Tour preview"
               className="rounded-md max-h-64 mx-auto object-contain"
+              loading="eager"
             />
             <Button
               type="button"

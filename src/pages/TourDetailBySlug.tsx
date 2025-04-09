@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
-import { TourPackageProps } from '@/data/types/tourTypes';
 import { slugToTourTitle } from '@/utils/routeUtils';
 
 const TourDetailBySlug = () => {
@@ -25,7 +24,7 @@ const TourDetailBySlug = () => {
           setTourId(tour.id);
           setHeroImage(tour.image);
           
-          // Set tour type based on characteristics
+          // Determine tour type directly
           if (tour.transportType.toLowerCase() === 'bike') {
             setTourType('bike');
           } else if (tour.isWomenOnly) {

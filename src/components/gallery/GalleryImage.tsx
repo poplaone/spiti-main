@@ -1,5 +1,5 @@
 
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 interface GalleryImageProps {
   photo: {
@@ -25,14 +25,7 @@ const GalleryImage = memo(({
   isMobile,
   onLoad
 }: GalleryImageProps) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    onLoad(index);
-  };
-  
-  // Load the image directly regardless of visibility
+  // Use the appropriate image URL based on device
   const imageUrl = isMobile ? photo.mobileUrl : photo.url;
   
   return (
@@ -41,11 +34,11 @@ const GalleryImage = memo(({
         src={imageUrl}
         alt={photo.alt} 
         className="w-full h-full object-cover"
-        loading={index < 4 ? "eager" : "lazy"} 
+        loading="eager" 
         width={photo.width} 
         height={photo.height} 
-        decoding={index < 4 ? "sync" : "async"} 
-        onLoad={handleImageLoad} 
+        decoding="async" 
+        onLoad={() => onLoad(index)} 
       />
     </div>
   );

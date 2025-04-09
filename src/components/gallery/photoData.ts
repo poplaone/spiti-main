@@ -1,5 +1,5 @@
 
-// Photo data with optimized dimensions and WebP format
+// Photo data with optimized dimensions and format
 export const galleryPhotos = [{
   url: "/lovable-uploads/33bd2684-f305-45c4-a696-a0c111768a8b.png",
   mobileUrl: "/lovable-uploads/33bd2684-f305-45c4-a696-a0c111768a8b.png",

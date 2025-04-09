@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { TourPackageFormData } from "./types";
 import { uploadImage } from "./imageHandler";

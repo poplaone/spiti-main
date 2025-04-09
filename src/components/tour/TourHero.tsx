@@ -40,8 +40,8 @@ const TourHero: React.FC<TourHeroProps> = ({
       marginTop: '0',
       paddingTop: '0'
     }}>
-      {/* Hero Background with Overlay */}
-      <TourHeroBackground heroImage={heroImage} />
+      {/* Background with Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
       
       <div className="container mx-auto px-4 h-full flex items-end sm:items-center pb-16 sm:pb-0 relative z-10">
         {/* Hero Content - Title and Duration */}
