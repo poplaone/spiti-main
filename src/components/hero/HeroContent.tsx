@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import GoogleRatingBadge from './GoogleRatingBadge';
 import WeatherDisplay from '../weather/WeatherDisplay';
 import { useIsMobile } from "@/hooks/use-mobile";
+import { memo } from 'react';
 
 interface HeroContentProps {
   scrollToDiscoverSection: () => void;
 }
 
-const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
+const HeroContent = memo(({ scrollToDiscoverSection }: HeroContentProps) => {
   const isMobile = useIsMobile();
 
   return (
@@ -49,6 +50,9 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
       </div>
     </div>
   );
-};
+});
+
+// Add display name for React DevTools and debugging
+HeroContent.displayName = 'HeroContent';
 
 export default HeroContent;

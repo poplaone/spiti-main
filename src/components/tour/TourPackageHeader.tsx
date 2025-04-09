@@ -1,10 +1,12 @@
 
-import React from 'react';
+import React, { memo } from 'react';
+
 interface TourPackageHeaderProps {
   title: string;
   description: string;
 }
-const TourPackageHeader: React.FC<TourPackageHeaderProps> = ({
+
+const TourPackageHeader: React.FC<TourPackageHeaderProps> = memo(({
   title,
   description
 }) => {
@@ -15,5 +17,8 @@ const TourPackageHeader: React.FC<TourPackageHeaderProps> = ({
       </h2>
     </div>
   );
-};
+});
+
+TourPackageHeader.displayName = 'TourPackageHeader';
+
 export default TourPackageHeader;
