@@ -3,7 +3,6 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { supabase } from "@/integrations/supabase/client";
 import { TourPackageProps } from '@/data/types/tourTypes';
 import { mapDbTourToFrontend } from '@/services/tourService';
-import { tourPackagesData } from '@/data/tourPackagesData'; // Import the original data
 
 interface ToursContextProps {
   tours: TourPackageProps[];
@@ -46,25 +45,16 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         const mappedTours = await Promise.all(tourPromises);
         setTours(mappedTours);
       } else {
-        // If no tours in Supabase, use the original data with generated ids
-        const toursWithIds = tourPackagesData.map((tour, index) => ({
-          ...tour,
-          id: `static-${index}`,
-          isVisible: true // Set default visibility for static data
-        }));
-        setTours(toursWithIds);
+        // If no visible tours in Supabase, set empty array
+        // REMOVED fallback to static data
+        setTours([]);
       }
       
     } catch (err: any) {
       console.error("Error fetching tours:", err);
       setError("Failed to load tour packages. Please try again later.");
-      // Fall back to original data on error with generated ids
-      const toursWithIds = tourPackagesData.map((tour, index) => ({
-        ...tour,
-        id: `static-${index}`,
-        isVisible: true // Set default visibility for static data
-      }));
-      setTours(toursWithIds);
+      // REMOVED fallback to static data on error
+      setTours([]);
     } finally {
       setLoading(false);
     }
