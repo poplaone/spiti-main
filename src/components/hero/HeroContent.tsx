@@ -31,11 +31,6 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
       {/* Critical text content - Simplified for LCP */}
       <h1 className="text-2xl md:text-4xl font-display font-bold text-white mb-1 md:mb-2">Spiti Valley Travels</h1>
       
-      {/* This is the LCP element - must be optimized */}
-      <p className="text-base text-white/90 mb-3 max-w-xl">
-        Begin your Spiti adventure with us – your local guides to explore more...
-      </p>
-      
       <div className="relative w-full flex justify-center">
         <Button 
           variant="outline" 
