@@ -19,24 +19,25 @@ const desktopImages = [
   }
 ];
 
+// Updated mobile images with optimized dimensions and new images
 const mobileImages = [
   {
-    src: "/lovable-uploads/fa13766a-c062-495a-bbe3-ba96893628e0.png",
-    alt: "Snowy temple/monastery",
-    width: 768,
-    height: 1024
+    src: "/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png",
+    alt: "Buddha statue under starry night sky in Spiti Valley",
+    width: 640,
+    height: 960
   },
   {
-    src: "/lovable-uploads/fe95c61b-1c4d-48be-9e18-1d3b19b7c41e.png",
-    alt: "River valley",
-    width: 768,
-    height: 1024
+    src: "/lovable-uploads/77160f74-955b-48e1-a67a-23a220f55ad7.png",
+    alt: "Snow-covered Key Monastery in winter",
+    width: 640,
+    height: 960
   },
   {
-    src: "/lovable-uploads/5b82c4c3-e5f4-4752-8825-2aaa8634642a.png",
-    alt: "Person looking at Chandrataal lake",
-    width: 768,
-    height: 1024
+    src: "/lovable-uploads/835ac6dc-55c3-49d5-8e8f-78369e09cc19.png",
+    alt: "Person overlooking Chandrataal lake with mountains",
+    width: 640,
+    height: 960
   }
 ];
 
