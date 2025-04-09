@@ -13,23 +13,26 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-[-70px] md:mt-0">
-      {/* Preloaded logo image with priority loading */}
+      {/* Preloaded logo with explicit width/height for layout stability */}
       <img 
         alt="Spiti Valley Travels Logo" 
-        className="w-28 h-28 mb-1 md:w-36 md:h-36 md:mb-3 mt-[-50px] md:mt-0 object-contain" 
+        className="w-24 h-24 mb-1 md:w-32 md:h-32 md:mb-2 mt-[-40px] md:mt-0 object-contain" 
         src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
-        width="144"
-        height="144"
+        width="96"
+        height="96"
         loading="eager"
         fetchPriority="high"
+        decoding="async"
       />
       
-      {/* Google Ratings Badge */}
+      {/* Google Ratings Badge - Simplified for performance */}
       <GoogleRatingBadge />
       
-      {/* Critical text content - optimized for LCP */}
-      <h1 className="text-2xl md:text-5xl font-display font-bold text-white mb-2 md:mb-4">Spiti Valley Travels</h1>
-      <p className="text-base md:text-lg text-white/90 mb-3 md:mb-6 max-w-xl">
+      {/* Critical text content - Simplified for LCP */}
+      <h1 className="text-2xl md:text-4xl font-display font-bold text-white mb-1 md:mb-2">Spiti Valley Travels</h1>
+      
+      {/* This is the LCP element - must be optimized */}
+      <p className="text-base text-white/90 mb-3 max-w-xl">
         Begin your Spiti adventure with us – your local guides to explore more...
       </p>
       
@@ -42,7 +45,7 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
           Explore Tours
         </Button>
         
-        {/* Weather Display for Desktop - positioned at bottom right */}
+        {/* Weather Display for Desktop - Lazy loaded */}
         {!isMobile && (
           <div className="absolute bottom-0 right-0 md:right-4 lg:right-8">
             <WeatherDisplay className="animate-fade-in-up" />

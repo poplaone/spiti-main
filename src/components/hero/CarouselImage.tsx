@@ -26,7 +26,7 @@ const CarouselImage = memo(({
   
   return (
     <div 
-      className={`absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
+      className={`absolute inset-0 w-full h-full transition-opacity duration-300 ease-in-out ${
         isCurrent ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       aria-hidden={!isCurrent}
@@ -40,8 +40,10 @@ const CarouselImage = memo(({
         onLoad={onLoad}
         width={width}
         height={height}
+        decoding="async"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
+      {/* Simplified gradient overlay for performance */}
+      {isCurrent && <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>}
     </div>
   );
 });

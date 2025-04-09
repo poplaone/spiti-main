@@ -3,33 +3,21 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
-// Optimized image sets with reduced amount of images
+// Reduced to just ONE image per device type to improve LCP
 export const desktopImages = [
   {
     src: "/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png",
     alt: "Suspension bridge in Spiti Valley",
     width: 1280,
     height: 720
-  },
-  {
-    src: "/lovable-uploads/8edf4fb0-5e63-4e88-8ca8-0d0d40eb7626.png",
-    alt: "Key Monastery with snow-capped mountains",
-    width: 1280,
-    height: 720
   }
 ];
 
-// Optimized mobile images
+// Single mobile image optimized for mobile
 export const mobileImages = [
   {
     src: "/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png",
     alt: "Buddha statue under starry night sky in Spiti Valley",
-    width: 640,
-    height: 960
-  },
-  {
-    src: "/lovable-uploads/77160f74-955b-48e1-a67a-23a220f55ad7.png",
-    alt: "Snow-covered Key Monastery in winter",
     width: 640,
     height: 960
   }
@@ -61,7 +49,12 @@ const CarouselImages = memo(({ current }: CarouselImagesProps) => {
           height={img.height}
           index={index} 
           isCurrent={index === current}
-          onLoad={() => {}}
+          onLoad={() => {
+            // Mark the LCP as complete with an empty callback
+            if (index === 0) {
+              window.performance?.mark?.('hero-image-loaded');
+            }
+          }}
         />
       ))}
     </>
@@ -70,4 +63,5 @@ const CarouselImages = memo(({ current }: CarouselImagesProps) => {
 
 CarouselImages.displayName = 'CarouselImages';
 
+export { mobileImages, desktopImages };
 export default CarouselImages;
