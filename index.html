@@ -28,14 +28,14 @@
     <!-- Preconnect to key domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"></noscript>
     
-    <!-- Preload critical resources -->
+    <!-- Preload only the most critical font -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"></noscript>
+    
+    <!-- Preload only the hero image for current viewport -->
     <link rel="preload" href="/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png" as="image" media="(max-width: 768px)" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" as="image" media="(min-width: 769px)" fetchpriority="high" />
-    <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
-    <link rel="preload" href="/src/main.tsx" as="script" />
   </head>
 
   <body>

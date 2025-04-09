@@ -22,10 +22,13 @@ const HeroCarousel = () => {
 
   useEffect(() => {
     resetTimeout();
-    timeoutRef.current = window.setTimeout(() => setCurrent(prevIndex => (prevIndex + 1) % images.length), 5000);
-    return () => {
-      resetTimeout();
-    };
+    // Set a longer timeout for better performance - 6 seconds instead of 5
+    timeoutRef.current = window.setTimeout(() => 
+      setCurrent(prevIndex => (prevIndex + 1) % images.length), 
+      6000
+    );
+    
+    return resetTimeout;
   }, [current, images.length]);
 
   const goToPrevious = () => {
@@ -37,24 +40,14 @@ const HeroCarousel = () => {
   };
 
   const scrollToDiscoverSection = () => {
-    const discoverSection = document.querySelector('#discover-spiti-valley');
-    if (discoverSection) {
-      discoverSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector('#discover-spiti-valley')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Carousel Images */}
       <CarouselImages current={current} />
-      
-      {/* Hero Content */}
       <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      
-      {/* Navigation Controls */}
       <CarouselControls goToPrevious={goToPrevious} goToNext={goToNext} />
-      
-      {/* Indicator Dots */}
       <CarouselIndicators images={images} current={current} setCurrent={setCurrent} />
     </div>
   );
