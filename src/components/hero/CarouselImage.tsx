@@ -1,15 +1,25 @@
 
 import { memo } from 'react';
-import { getCarouselImageAlt } from '@/utils/imageUtils';
 
 interface CarouselImageProps {
   src: string;
+  alt: string;
+  width: number;
+  height: number;
   index: number;
   isCurrent: boolean;
   onLoad: () => void;
 }
 
-const CarouselImage = memo(({ src, index, isCurrent, onLoad }: CarouselImageProps) => {
+const CarouselImage = memo(({ 
+  src, 
+  alt,
+  width,
+  height,
+  index, 
+  isCurrent, 
+  onLoad 
+}: CarouselImageProps) => {
   return (
     <div 
       className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
@@ -19,14 +29,14 @@ const CarouselImage = memo(({ src, index, isCurrent, onLoad }: CarouselImageProp
     >
       <img 
         src={src} 
-        alt={getCarouselImageAlt(src, index)}
+        alt={alt}
         className="w-full h-full object-cover" 
         loading={index === 0 ? "eager" : "lazy"} 
         onLoad={onLoad}
         fetchPriority={index === 0 ? "high" : "auto"}
-        width={1920}
-        height={1080}
-        decoding="async"
+        width={width}
+        height={height}
+        decoding={index === 0 ? "sync" : "async"}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
     </div>

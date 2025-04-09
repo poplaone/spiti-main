@@ -14,8 +14,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spiti Valley Travels</title>
     <meta name="description" content="Experience the magic of Spiti Valley with our expert-guided tours. Discover ancient monasteries, high-altitude villages, and stunning landscapes." />
-    <meta name="author" content="Lovable" />
-    <meta property="og:image" content="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" sizes="32x32" />
+    
+    <!-- Critical CSS -->
+    <style>
+      :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
+      body {font-family:'Montserrat',sans-serif;margin:0;padding:0;background-color:#f5f7fa;}
+      #root {display:flex;flex-direction:column;min-height:100vh;}
+      .hero-placeholder {height:100vh;background-color:#2c3e50;}
+    </style>
     
     <!-- Preconnect to key domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,16 +32,14 @@
     <link rel="preconnect" href="https://images.unsplash.com" />
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="/lovable-uploads/19314897-9ee9-4163-83f6-c3e10cec290f.png" as="image" fetchpriority="high" />
+    <link rel="preload" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" as="image" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/fa13766a-c062-495a-bbe3-ba96893628e0.png" as="image" fetchpriority="high" />
+    <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
     <link rel="preload" href="https://d5a253b1-d44a-4ce3-a46d-b7cf1c11df74.lovableproject.com/src/main.tsx" as="script" />
     
-    <!-- DNS prefetch -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://images.unsplash.com" />
-    
-    <!-- Favicon -->
-    <link rel="icon" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" />
+    <!-- Fonts -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
   </head>
 
   <body>
@@ -41,7 +48,11 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     
-    <div id="root"></div>
+    <div id="root">
+      <!-- Minimal hero placeholder to prevent layout shift -->
+      <div class="hero-placeholder"></div>
+    </div>
+    
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>

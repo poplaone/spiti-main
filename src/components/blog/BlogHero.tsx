@@ -10,6 +10,11 @@ const BlogHero = () => {
           src="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" 
           alt="Suspension bridge in Spiti Valley" 
           className="w-full h-full object-cover"
+          width={1280}
+          height={720}
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-spiti-forest/90 to-spiti-forest/70"></div>
       </div>

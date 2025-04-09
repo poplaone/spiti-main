@@ -8,6 +8,7 @@ interface GalleryImageProps {
     width: number;
     height: number;
     location?: string;
+    priority?: boolean;
   };
   index: number;
   isVisible: boolean;
@@ -24,24 +25,35 @@ const GalleryImage = memo(({
   onLoad
 }: GalleryImageProps) => {
   if (!isVisible) {
-    return <div className="w-full h-full bg-gray-200 animate-pulse" />;
+    return (
+      <div 
+        className="w-full h-full bg-gray-200 animate-pulse" 
+        style={{ aspectRatio: `${photo.width}/${photo.height}` }}
+      />
+    );
   }
+  
   const imageUrl = isMobile ? photo.mobileUrl : photo.url;
-  const priority = index <= 1;
+  const isPriority = photo.priority || index === 0;
+  
   return (
     <div className="relative w-full h-full">
       <img 
         src={imageUrl} 
         alt={photo.alt} 
         className="w-full h-full object-cover" 
-        loading={priority ? "eager" : "lazy"} 
+        loading={isPriority ? "eager" : "lazy"} 
         width={photo.width} 
         height={photo.height} 
-        decoding={priority ? "sync" : "async"} 
+        decoding={isPriority ? "sync" : "async"} 
         onLoad={() => onLoad(index)} 
-        fetchPriority={priority ? "high" : "auto"}
+        fetchPriority={isPriority ? "high" : "auto"}
       />
-      {photo.location}
+      {photo.location && (
+        <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+          {photo.location}
+        </div>
+      )}
     </div>
   );
 });
