@@ -27,34 +27,33 @@ const CarouselImage = memo(({
     onLoad();
   };
 
-  // Critical optimization: Only load the current image and next image
-  // This significantly improves performance on mobile
-  const shouldLoad = index === 0 || isCurrent || index === (index + 1) % 3;
+  // Only load current and next image for better performance
+  const shouldLoad = index === 0 || isCurrent || index === ((isCurrent ? index : 0) + 1) % 2;
+  
+  if (!shouldLoad) {
+    return null; // Return nothing for images we don't need to load yet
+  }
   
   return (
     <div 
-      className={`absolute inset-0 w-full h-full transition-opacity duration-300 ease-in-out ${
+      className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
         isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
     >
-      {shouldLoad && (
-        <>
-          {/* Use proper image loading attributes for performance */}
-          <img 
-            src={src} 
-            alt={alt}
-            className="w-full h-full object-cover"
-            loading={index === 0 ? "eager" : "lazy"}
-            onLoad={handleLoad}
-            width={width}
-            height={height}
-            fetchPriority={index === 0 ? "high" : "auto"}
-          />
-          {/* Simplified overlay gradient for better performance */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
-        </>
-      )}
+      {/* Simplified image with proper loading attributes */}
+      <img 
+        src={src} 
+        alt={alt}
+        className="w-full h-full object-cover"
+        loading={index === 0 ? "eager" : "lazy"}
+        onLoad={handleLoad}
+        width={width}
+        height={height}
+        fetchPriority={index === 0 ? "high" : "auto"}
+      />
+      {/* Simplified gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent"></div>
     </div>
   );
 });

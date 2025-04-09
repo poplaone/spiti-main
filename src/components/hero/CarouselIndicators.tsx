@@ -13,17 +13,18 @@ interface CarouselIndicatorsProps {
 }
 
 const CarouselIndicators = ({ images, current, setCurrent }: CarouselIndicatorsProps) => {
-  // Creating a simple dots indicator that's performant
+  // Performance optimized indicator - simpler DOM structure
   return (
-    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
       {images.map((_, index) => (
         <button 
           key={index} 
-          className={`w-2.5 h-2.5 rounded-full transition-colors duration-200 ${
-            index === current ? 'bg-white' : 'bg-white/40'
+          className={`w-2 h-2 rounded-full transition-colors ${
+            index === current ? 'bg-white' : 'bg-white/30'
           }`} 
           onClick={() => setCurrent(index)} 
           aria-label={`Go to slide ${index + 1}`}
+          aria-current={index === current ? 'true' : 'false'}
         />
       ))}
     </div>

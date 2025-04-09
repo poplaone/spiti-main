@@ -2,34 +2,40 @@
 import { useState, useEffect } from 'react';
 
 export function useIsMobile() {
-  // Start with true for mobile-first rendering
+  // Using mobile-first approach for SSR compatibility
   const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    // Function to update based on window width
+    // Performance optimized check function
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth < 769);
     };
     
     // Initial check
     checkMobile();
     
-    // Only add listener if we're in a browser environment
-    if (typeof window !== 'undefined') {
-      // Use resize event with throttling for better performance
-      let resizeTimer: number;
-      const handleResize = () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = window.setTimeout(checkMobile, 100);
-      };
+    // Use a more efficient event listener with RAF for better performance
+    let frameId: number;
+    const handleResize = () => {
+      // Cancel any pending frames
+      if (frameId) {
+        cancelAnimationFrame(frameId);
+      }
       
-      window.addEventListener('resize', handleResize);
-      
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        clearTimeout(resizeTimer);
-      };
-    }
+      // Schedule a new frame
+      frameId = requestAnimationFrame(() => {
+        checkMobile();
+      });
+    };
+    
+    window.addEventListener('resize', handleResize, { passive: true });
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (frameId) {
+        cancelAnimationFrame(frameId);
+      }
+    };
   }, []);
 
   return isMobile;

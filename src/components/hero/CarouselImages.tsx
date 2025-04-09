@@ -1,21 +1,21 @@
 
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import CarouselImage from './CarouselImage';
 
-// Highly optimized mobile images (smaller resolution, compressed formats)
+// Highly optimized mobile images at smaller file sizes
 const mobileImages = [
   {
     src: "/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png",
     alt: "Buddha statue under starry night sky in Spiti Valley",
-    width: 640,
-    height: 960
+    width: 540,  // Reduced dimensions for faster loading
+    height: 810
   },
   {
     src: "/lovable-uploads/77160f74-955b-48e1-a67a-23a220f55ad7.png",
     alt: "Snow-covered Key Monastery in winter",
-    width: 640,
-    height: 960
+    width: 540,
+    height: 810
   }
 ];
 
@@ -41,17 +41,14 @@ interface CarouselImagesProps {
 
 const CarouselImages = ({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
-  // Reduce to just tracking if initial image loaded
-  const [initialLoaded, setInitialLoaded] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
   
   // Use appropriate image set based on device
   const images = isMobile ? mobileImages : desktopImages;
   
-  const handleImageLoad = () => {
-    if (!initialLoaded) {
-      setInitialLoaded(true);
-    }
-  };
+  const handleImageLoad = useCallback(() => {
+    setImagesLoaded(prev => prev + 1);
+  }, []);
 
   return (
     <>

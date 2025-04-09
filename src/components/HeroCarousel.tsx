@@ -21,11 +21,11 @@ const HeroCarousel = () => {
 
   useEffect(() => {
     resetTimeout();
-    // Set a longer timeout for better performance - 8 seconds instead of 6
-    // This reduces CPU usage for animations on mobile
+    // Set a longer timeout for better performance - 10 seconds instead of 8
+    // This reduces CPU usage for animations on mobile even further
     timeoutRef.current = window.setTimeout(() => 
       setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-      8000
+      10000
     );
     
     return resetTimeout;
@@ -34,14 +34,15 @@ const HeroCarousel = () => {
   const scrollToDiscoverSection = () => {
     document.querySelector('#discover-spiti-valley')?.scrollIntoView({ 
       behavior: 'smooth',
-      // Add block: 'start' for better scrolling
       block: 'start'
     });
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      <CarouselImages current={current} />
+    <div className="relative w-full h-screen overflow-hidden bg-gray-900">
+      <div className="w-full h-full">
+        <CarouselImages current={current} />
+      </div>
       <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
       <CarouselIndicators images={images} current={current} setCurrent={setCurrent} />
     </div>

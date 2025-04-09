@@ -1,5 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -103,15 +102,14 @@
     font-display: swap;
   }
 
-  /* Mobile-optimized background */
+  /* Mobile-optimized background - simplified with solid colors for better performance */
   @media (max-width: 768px) {
     body {
-      background: linear-gradient(to bottom, rgba(44, 82, 130, 0.1), rgba(99, 179, 237, 0.05));
       background-color: #f5f7fa;
     }
   }
 
-  /* Desktop background with higher quality image */
+  /* Desktop background - kept only for desktop */
   @media (min-width: 769px) {
     body {
       background-image: linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop');
@@ -130,32 +128,18 @@
     opacity: 0;
     transition: opacity 0.5s ease;
   }
-}
 
-/* Animation keyframes */
-@keyframes flip-out {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(90deg);
+  /* Performance optimized image loading */
+  img {
+    content-visibility: auto;
   }
 }
 
-@keyframes flip-in {
-  0% {
-    transform: rotateY(-90deg);
-  }
-  100% {
-    transform: rotateY(0deg);
-  }
-}
-
-/* New fade-in animation for content */
+/* Simplified animations for better performance */
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -176,7 +160,7 @@
   @apply transition-all duration-500;
 }
 
-/* Marquee animation for scrolling info strip */
+/* Simplified marquee animation for better performance */
 @keyframes marquee {
   0% {
     transform: translateX(0);
