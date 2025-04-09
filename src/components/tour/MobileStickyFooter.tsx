@@ -3,18 +3,27 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
+import { trackButtonClick, trackPhoneCall } from '@/utils/analyticsUtils';
 
 interface MobileStickyFooterProps {
   discountedPrice: number;
   originalPrice: number;
   formatPrice: (price: number) => string;
+  tourId?: string;
+  tourName?: string;
 }
 
 const MobileStickyFooter: React.FC<MobileStickyFooterProps> = ({ 
   discountedPrice, 
   originalPrice,
-  formatPrice 
+  formatPrice,
+  tourId,
+  tourName
 }) => {
+  const handleBookClick = () => {
+    trackButtonClick('Book/Customize', 'MobileStickyFooter');
+  };
+
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-slate-800 to-spiti-forest shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
       <div className="flex items-center">
@@ -33,12 +42,15 @@ const MobileStickyFooter: React.FC<MobileStickyFooterProps> = ({
         {/* Book/Customize Button */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="flex-1 rounded-none rounded-l-full h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold">
+            <Button 
+              className="flex-1 rounded-none rounded-l-full h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold"
+              onClick={handleBookClick}
+            >
               Book/Customize
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
-            <LeadForm />
+            <LeadForm tourId={tourId} tourName={tourName} />
           </DialogContent>
         </Dialog>
       </div>

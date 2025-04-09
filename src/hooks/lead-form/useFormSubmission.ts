@@ -4,25 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { FormState } from "./types";
+import { 
+  trackFormSubmission, 
+  trackFormAttempt, 
+  trackFormError, 
+  trackWhatsAppContact 
+} from '@/utils/analyticsUtils';
 
 export const useFormSubmission = (
   formData: FormState, 
   date: Date | undefined,
-  setIsSubmitting: (value: boolean) => void
+  setIsSubmitting: (value: boolean) => void,
+  tourId?: string,
+  tourName?: string
 ) => {
   const navigate = useNavigate();
-
-  const trackFormEvent = (eventName: string, extraData?: Record<string, any>) => {
-    console.log(`Tracking GTM event: ${eventName} - GTM dataLayer available:`, !!window.dataLayer);
-    if (window.dataLayer) {
-      window.dataLayer.push({
-        'event': eventName,
-        'formType': 'tourInquiry',
-        ...extraData
-      });
-      console.log(`Event ${eventName} pushed to dataLayer`);
-    }
-  };
   
   const submitLeadForm = async (leadData: any) => {
     try {
@@ -30,8 +26,17 @@ export const useFormSubmission = (
       
       console.log("Submitting lead form to edge function:", leadData);
       
-      // Track form submission start in GTM
-      trackFormEvent('formSubmissionAttempt');
+      // Track form submission start
+      trackFormAttempt();
+      
+      // Add tour information if available
+      if (tourId) {
+        leadData.tourId = tourId;
+      }
+      
+      if (tourName) {
+        leadData.tourName = tourName;
+      }
       
       // Call the Supabase Edge Function to send the email
       const { data, error } = await supabase.functions.invoke('send-lead-email', {
@@ -43,9 +48,7 @@ export const useFormSubmission = (
         toast.error("Failed to send your request. Please try again later.");
         
         // Track form submission failure
-        trackFormEvent('formSubmissionError', {
-          'errorMessage': error.message || 'Unknown error'
-        });
+        trackFormError(error.message || 'Unknown error');
         return false;
       }
 
@@ -54,14 +57,17 @@ export const useFormSubmission = (
         toast.error("Failed to send your request. Please try again later.");
         
         // Track form submission failure
-        trackFormEvent('formSubmissionError', {
-          'errorMessage': 'API returned unsuccessful response'
-        });
+        trackFormError('API returned unsuccessful response');
         return false;
       }
 
       // Track successful form submission
-      trackFormEvent('formSubmissionSuccess');
+      trackFormSubmission({
+        ...formData,
+        date: date ? format(date, "PPP") : undefined,
+        tourId,
+        tourName
+      });
       
       console.log("Lead form submitted successfully:", data);
       return true;
@@ -70,9 +76,7 @@ export const useFormSubmission = (
       toast.error("Failed to send your request. Please try again later.");
       
       // Track form submission exception
-      trackFormEvent('formSubmissionError', {
-        'errorMessage': err instanceof Error ? err.message : 'Unknown exception'
-      });
+      trackFormError(err instanceof Error ? err.message : 'Unknown exception');
       return false;
     } finally {
       setIsSubmitting(false);
@@ -82,7 +86,7 @@ export const useFormSubmission = (
   const handleFormSubmit = async (validateForm: (data: FormState) => boolean) => {
     if (!validateForm(formData)) {
       // Track validation failure
-      trackFormEvent('formValidationError');
+      trackFormError('Validation error');
       return;
     }
 
@@ -110,7 +114,9 @@ export const useFormSubmission = (
         state: { 
           formData: {
             ...formData,
-            date: date ? format(date, "PPP") : "Not specified"
+            date: date ? format(date, "PPP") : "Not specified",
+            tourId,
+            tourName
           } 
         }
       });
@@ -123,7 +129,7 @@ export const useFormSubmission = (
     }
 
     // Track WhatsApp contact method
-    trackFormEvent('whatsAppContact');
+    trackWhatsAppContact(formData);
 
     const message = `
 *New Tour Inquiry*
@@ -134,6 +140,7 @@ Duration: ${formData.duration}
 Travel Date: ${date ? format(date, "PPP") : "Not specified"}
 Guests: ${formData.guests}
 Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ? 'Fixed Departure' : ''}
+${tourName ? `Tour: ${tourName}` : ''}
     `.trim();
 
     const encodedMessage = encodeURIComponent(message);

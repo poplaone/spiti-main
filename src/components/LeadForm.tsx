@@ -1,12 +1,18 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-
 import ContactForm from './form/ContactForm';
 import TourPreferences from './form/TourPreferences';
 import FormActions from './form/FormActions';
 import { useLeadForm } from '@/hooks/lead-form';
+import { useEffect } from 'react';
+import { trackFormAttempt } from '@/utils/analyticsUtils';
 
-const LeadForm = () => {
+export interface LeadFormProps {
+  tourId?: string;
+  tourName?: string;
+}
+
+const LeadForm = ({ tourId, tourName }: LeadFormProps) => {
   const {
     date,
     setDate,
@@ -17,7 +23,19 @@ const LeadForm = () => {
     handleCheckboxChange,
     handleSubmit,
     sendWhatsApp
-  } = useLeadForm();
+  } = useLeadForm(tourId, tourName);
+
+  // Track form view on component mount
+  useEffect(() => {
+    console.log("LeadForm component mounted - Tracking form view");
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        'event': 'formView',
+        'formType': 'tourInquiry',
+        'formContext': tourName ? `Tour: ${tourName}` : 'General Inquiry'
+      });
+    }
+  }, [tourName]);
 
   return (
     <Card className="w-full max-w-md bg-blue-100/60 backdrop-blur-md p-2 shadow-lg rounded-lg border-0">
@@ -48,7 +66,10 @@ const LeadForm = () => {
             />
 
             <FormActions 
-              onSubmit={handleSubmit}
+              onSubmit={() => {
+                trackFormAttempt();
+                handleSubmit();
+              }}
               onWhatsApp={sendWhatsApp}
               isSubmitting={isSubmitting}
             />

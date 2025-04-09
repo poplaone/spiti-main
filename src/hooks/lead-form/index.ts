@@ -4,7 +4,7 @@ import { useFormSubmission } from './useFormSubmission';
 import { useFormValidation } from '../useFormValidation';
 import { UseLeadFormReturn } from './types';
 
-export const useLeadForm = (): UseLeadFormReturn => {
+export const useLeadForm = (tourId?: string, tourName?: string): UseLeadFormReturn => {
   const { 
     date, 
     setDate, 
@@ -21,7 +21,7 @@ export const useLeadForm = (): UseLeadFormReturn => {
   const { 
     handleFormSubmit,
     sendWhatsAppMessage
-  } = useFormSubmission(formData, date, setIsSubmitting);
+  } = useFormSubmission(formData, date, setIsSubmitting, tourId, tourName);
 
   const handleSubmit = async () => {
     await handleFormSubmit(validateForm);
