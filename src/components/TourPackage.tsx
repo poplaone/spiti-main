@@ -33,7 +33,7 @@ const TourPackage: React.FC<TourPackageProps & {
   // Determine the URL based on the tour title
   let detailsUrl;
   
-  // Check for specific titles that should use custom URLs
+  // Map specific titles to their clean URLs - adding a more direct check for exact title match
   if (title === "BUDDHIST AND TRIBAL CIRCUIT–SPITI" || 
       title === "BUDDHIST AND TRIBAL CIRCUIT–SPITI " || 
       title === "BUDDHIST AND TRIBAL CIRCUIT SPITI") {
@@ -43,7 +43,7 @@ const TourPackage: React.FC<TourPackageProps & {
              title === "SNOW LEOPARD EXPEDITION WINTER SPECIAL") {
     detailsUrl = "/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL";
   } else {
-    // For other tours, use the existing logic
+    // For other tours, use the existing mapping from tourTitleToSlug or default to ID-based URL
     detailsUrl = title && tourTitleToSlug[title] ? tourTitleToSlug[title] : (id ? `/tour/${id}` : "#");
   }
 

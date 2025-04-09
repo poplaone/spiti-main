@@ -6,9 +6,10 @@ import { useToursContext } from '@/context/ToursContext';
 const BuddhistAndTribalCircuit = () => {
   const { tours } = useToursContext();
   
-  // Find the Buddhist tour by ID or title
+  // Find the Buddhist tour by ID or title - adding a debug check for all available tour titles
   const tour = tours.find(t => 
-    t.id === "22f0b97e-3d5f-46e0-adae-c3f9e66b2a53" || // First try to match by ID 
+    t.id === "22f0b97e-3d5f-46e0-adae-c3f9e66b2a53" || // Primary ID
+    t.id === "90268253-3324-41df-8db8-4e2c975f7e68" || // Also check this ID
     t.title === "BUDDHIST AND TRIBAL CIRCUIT–SPITI" ||
     t.title === "BUDDHIST AND TRIBAL CIRCUIT SPITI" ||
     t.title.includes("BUDDHIST AND TRIBAL CIRCUIT")
