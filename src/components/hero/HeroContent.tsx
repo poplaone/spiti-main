@@ -22,7 +22,6 @@ const HeroContent = memo(({ scrollToDiscoverSection }: HeroContentProps) => {
         width="96"
         height="96"
         loading="eager"
-        fetchPriority="high"
         decoding="async"
       />
       
