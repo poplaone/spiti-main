@@ -3,7 +3,7 @@ import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
 // Define optimized image sizes
-export const carouselImages = [
+const carouselImages = [
   {
     src: "/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png",
     alt: "Snow-covered monastery with mountains in Spiti Valley",
@@ -54,3 +54,4 @@ const CarouselImages = memo(({ current }: CarouselImagesProps) => {
 CarouselImages.displayName = 'CarouselImages';
 
 export default CarouselImages;
+export { carouselImages };

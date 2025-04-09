@@ -36,11 +36,10 @@ const MobileInfoStrip = ({ items }: MobileInfoStripProps) => {
     <div className="md:hidden">
       <Carousel 
         className="w-full"
-        // Remove defaultIndex which is not supported and use index instead
         opts={{
           align: "start",
           loop: true,
-          startIndex: currentIndex // Use startIndex instead of defaultIndex
+          startIndex: currentIndex
         }}
       >
         <CarouselContent className="py-1">

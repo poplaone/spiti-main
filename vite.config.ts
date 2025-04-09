@@ -23,7 +23,7 @@ export default defineConfig({
     force: true
   },
   build: {
-    minify: 'terser', // Properly typed now
+    minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: process.env.NODE_ENV === 'production',
@@ -32,21 +32,24 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: [
-            'react', 
-            'react-dom', 
-            'react-router-dom',
-          ],
-          router: ['react-router-dom'],
-          query: ['@tanstack/react-query'],
-          ui: ['@/components/ui'],
-          home: ['@/components/hero', '@/components/TourPackages'],
-          tours: ['@/components/tour'],
-          gallery: ['@/components/gallery'],
-          forms: ['@/components/form'],
-          header: ['@/components/header'],
-          utils: ['@/utils', '@/lib']
+        manualChunks: (id) => {
+          // Create optimized chunks based on imports
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'vendor-react';
+            if (id.includes('tanstack')) return 'vendor-tanstack';
+            if (id.includes('radix-ui')) return 'vendor-radix';
+            if (id.includes('lucide')) return 'vendor-icons';
+            return 'vendor';
+          }
+          
+          // App code chunks
+          if (id.includes('/src/components/ui/')) return 'ui';
+          if (id.includes('/src/components/hero/')) return 'home-hero';
+          if (id.includes('/src/components/tour/')) return 'tours';
+          if (id.includes('/src/components/gallery/')) return 'gallery';
+          if (id.includes('/src/components/form/')) return 'forms';
+          if (id.includes('/src/components/header/')) return 'header';
+          if (id.includes('/src/utils/') || id.includes('/src/lib/')) return 'utils';
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
