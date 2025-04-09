@@ -29,7 +29,7 @@ const CarouselImage = memo(({
 
   // Eagerly load the first/current image
   const loadingStrategy = (index === 0 || isCurrent) ? "eager" : "lazy";
-  const priorityStrategy = (index === 0 || isCurrent) ? "high" : "auto";
+  const priorityAttr = (index === 0 || isCurrent) ? "high" : "auto";
 
   return (
     <div 
@@ -44,7 +44,7 @@ const CarouselImage = memo(({
         className="w-full h-full object-cover"
         loading={loadingStrategy}
         onLoad={handleLoad}
-        fetchPriority={priorityStrategy}
+        fetchpriority={priorityAttr}
         width={width}
         height={height}
       />
