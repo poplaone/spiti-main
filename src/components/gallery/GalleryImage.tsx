@@ -49,11 +49,6 @@ const GalleryImage = memo(({
         onLoad={() => onLoad(index)} 
         fetchPriority={isPriority ? "high" : "auto"}
       />
-      {photo.location && (
-        <div className="absolute bottom-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-          {photo.location}
-        </div>
-      )}
     </div>
   );
 });
