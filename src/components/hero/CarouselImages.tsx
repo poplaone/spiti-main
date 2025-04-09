@@ -5,8 +5,6 @@ import CarouselImage from './CarouselImage';
 
 // Different sets of images for mobile and desktop
 const desktopImages = [
-  "/lovable-uploads/19314897-9ee9-4163-83f6-c3e10cec290f.png", // Chandrataal Lake with mountains
-  "/lovable-uploads/9b3798e9-cc2d-469e-b579-f362903a5f9d.png", // Milky Way night sky over mountains
   "/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png", // Suspension bridge in Spiti Valley
   "/lovable-uploads/8edf4fb0-5e63-4e88-8ca8-0d0d40eb7626.png"  // Key Monastery with snow-capped mountains
 ];
