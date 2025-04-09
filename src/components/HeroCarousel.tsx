@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CarouselImages, { desktopImages, mobileImages } from './hero/CarouselImages';
-import CarouselControls from './hero/CarouselControls';
 import CarouselIndicators from './hero/CarouselIndicators';
 import HeroContent from './hero/HeroContent';
 
@@ -31,13 +30,7 @@ const HeroCarousel = () => {
     return resetTimeout;
   }, [current, images.length]);
 
-  const goToPrevious = () => {
-    setCurrent(current === 0 ? images.length - 1 : current - 1);
-  };
-
-  const goToNext = () => {
-    setCurrent((current + 1) % images.length);
-  };
+  // Removed the goToPrevious and goToNext functions since we're removing the arrows
 
   const scrollToDiscoverSection = () => {
     document.querySelector('#discover-spiti-valley')?.scrollIntoView({ behavior: 'smooth' });
@@ -47,7 +40,7 @@ const HeroCarousel = () => {
     <div className="relative w-full h-screen overflow-hidden">
       <CarouselImages current={current} />
       <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      <CarouselControls goToPrevious={goToPrevious} goToNext={goToNext} />
+      {/* Removed CarouselControls component which contained the arrows */}
       <CarouselIndicators images={images} current={current} setCurrent={setCurrent} />
     </div>
   );

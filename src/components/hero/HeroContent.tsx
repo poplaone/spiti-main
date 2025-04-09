@@ -22,8 +22,9 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
       {/* Google Ratings Badge */}
       <GoogleRatingBadge />
       
-      <h1 className="text-3xl md:text-6xl font-display font-bold text-white mb-2 md:mb-6">Spiti Valley Travels</h1>
-      <p className="text-lg md:text-xl text-white/90 mb-4 md:mb-8 max-w-2xl">Begin your Spiti adventure with us – your local guides to explore more...</p>
+      <h1 className="text-3xl md:text-6xl font-display font-bold text-white mb-4 md:mb-8">Spiti Valley Travels</h1>
+      
+      {/* Removed the tagline paragraph */}
       
       {/* Weather Display for Mobile is handled in Header.tsx */}
       
