@@ -3,13 +3,12 @@ import { Button } from "@/components/ui/button";
 import GoogleRatingBadge from './GoogleRatingBadge';
 import WeatherDisplay from '../weather/WeatherDisplay';
 import { useIsMobile } from "@/hooks/use-mobile";
-import { memo } from 'react';
 
 interface HeroContentProps {
   scrollToDiscoverSection: () => void;
 }
 
-const HeroContent = memo(({ scrollToDiscoverSection }: HeroContentProps) => {
+const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
   const isMobile = useIsMobile();
 
   return (
@@ -22,6 +21,7 @@ const HeroContent = memo(({ scrollToDiscoverSection }: HeroContentProps) => {
         width="96"
         height="96"
         loading="eager"
+        fetchPriority="high"
         decoding="async"
       />
       
@@ -29,7 +29,12 @@ const HeroContent = memo(({ scrollToDiscoverSection }: HeroContentProps) => {
       <GoogleRatingBadge />
       
       {/* Critical text content - Simplified for LCP */}
-      <h1 className="text-2xl md:text-4xl font-display font-bold text-white mb-4 md:mb-6">Spiti Valley Travels</h1>
+      <h1 className="text-2xl md:text-4xl font-display font-bold text-white mb-1 md:mb-2">Spiti Valley Travels</h1>
+      
+      {/* This is the LCP element - must be optimized */}
+      <p className="text-base text-white/90 mb-3 max-w-xl">
+        Begin your Spiti adventure with us – your local guides to explore more...
+      </p>
       
       <div className="relative w-full flex justify-center">
         <Button 
@@ -49,9 +54,6 @@ const HeroContent = memo(({ scrollToDiscoverSection }: HeroContentProps) => {
       </div>
     </div>
   );
-});
-
-// Add display name for React DevTools and debugging
-HeroContent.displayName = 'HeroContent';
+};
 
 export default HeroContent;
