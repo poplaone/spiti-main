@@ -36,9 +36,8 @@ const TourPackages = () => {
             </button>
           </div>
         ) : tours.length === 0 ? (
-          <div className="text-center py-12 bg-white/70 rounded-lg shadow p-6">
-            <p className="text-gray-700 font-medium">No tour packages are currently available.</p>
-            <p className="text-gray-600 mt-2">Please check back later for our upcoming tours.</p>
+          <div className="text-center py-12">
+            <p className="text-gray-600">No tour packages available at the moment.</p>
           </div>
         ) : (
           <div className="mt-8">

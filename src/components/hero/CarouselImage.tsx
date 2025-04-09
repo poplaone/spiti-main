@@ -1,5 +1,5 @@
 
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 interface CarouselImageProps {
   src: string;
@@ -20,14 +20,21 @@ const CarouselImage = memo(({
   isCurrent, 
   onLoad 
 }: CarouselImageProps) => {
-  // First image loads eagerly with high priority, others lazy load
-  const loadingStrategy = index === 0 ? "eager" : "lazy";
-  const priorityAttr = index === 0 ? "high" : "auto";
-  
+  const [imageLoaded, setImageLoaded] = useState(index === 0); // Assume first image is loaded
+
+  const handleLoad = () => {
+    setImageLoaded(true);
+    onLoad();
+  };
+
+  // Eagerly load the first/current image
+  const loadingStrategy = (index === 0 || isCurrent) ? "eager" : "lazy";
+  const priorityStrategy = (index === 0 || isCurrent) ? "high" : "auto";
+
   return (
     <div 
-      className={`absolute inset-0 w-full h-full transition-opacity duration-300 ease-in-out ${
-        isCurrent ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      className={`absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
+        isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
     >
@@ -36,14 +43,12 @@ const CarouselImage = memo(({
         alt={alt}
         className="w-full h-full object-cover"
         loading={loadingStrategy}
-        fetchPriority={priorityAttr as "high" | "auto"}
-        onLoad={onLoad}
+        onLoad={handleLoad}
+        fetchPriority={priorityStrategy}
         width={width}
         height={height}
-        decoding="async"
       />
-      {/* Simplified gradient overlay for performance */}
-      {isCurrent && <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
     </div>
   );
 });

@@ -1,29 +1,39 @@
 
 import { useState, useEffect } from 'react';
 
-// Moved outside the hook to avoid recreation on each render
-const mobileBreakpoint = 768;
-
+/**
+ * Custom hook to detect if the user's device is mobile
+ * Uses a default value based on window size during SSR
+ */
 export function useIsMobile() {
-  // Initialize with null to prevent hydration mismatch
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
-  
+  // Initialize with a check if we're in the browser
+  const getInitialState = () => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 768;
+    }
+    // Default to mobile during SSR to prioritize mobile optimization
+    return true;
+  };
+
+  const [isMobile, setIsMobile] = useState(getInitialState);
+
   useEffect(() => {
-    // Immediate check function
+    // Function to check if the device is mobile
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= mobileBreakpoint);
+      setIsMobile(window.innerWidth <= 768);
     };
-    
-    // Initial check on mount
+
+    // Set initial value immediately
     checkMobile();
     
-    // Use passive event listener for better performance
-    window.addEventListener('resize', checkMobile, { passive: true });
+    // Use resize event for better performance
+    window.addEventListener('resize', checkMobile);
     
     // Clean up
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
-  // For SSR safety, default to false (desktop) if not determined yet
-  return isMobile === null ? false : isMobile;
+  return isMobile;
 }

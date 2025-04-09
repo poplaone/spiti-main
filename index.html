@@ -2,6 +2,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KZMKK4C8');</script>
+    <!-- End Google Tag Manager -->
+    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spiti Valley Travels</title>
@@ -10,88 +18,36 @@
     <!-- Favicon -->
     <link rel="icon" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" sizes="32x32" />
     
-    <!-- Critical CSS - Inlined and expanded -->
+    <!-- Critical CSS -->
     <style>
-      :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;}
-      
-      /* Core critical styles needed for initial render */
+      :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
       body {font-family:'Montserrat',sans-serif;margin:0;padding:0;background-color:#f5f7fa;}
       #root {display:flex;flex-direction:column;min-height:100vh;}
-      
-      /* Critical hero styles */
-      .absolute {position:absolute;}
-      .relative {position:relative;}
-      .inset-0 {top:0;right:0;bottom:0;left:0;}
-      .flex {display:flex;}
-      .flex-col {flex-direction:column;}
-      .items-center {align-items:center;}
-      .justify-center {justify-content:center;}
-      .text-center {text-align:center;}
-      .z-10 {z-index:10;}
-      .h-screen {height:100vh;}
-      .w-full {width:100%;}
-      .object-cover {object-fit:cover;}
-      .text-white {color:white;}
-      .font-bold {font-weight:700;}
-      .overflow-hidden {overflow:hidden;}
-      .text-2xl {font-size:1.5rem;line-height:2rem;}
-      .text-base {font-size:1rem;line-height:1.5rem;}
-      
-      /* Hero image loading placeholder */
-      .hero-placeholder {position:absolute;top:0;left:0;right:0;bottom:0;background-color:#213547;transition:opacity 0.3s ease;}
-      .hero-placeholder.fade-out {opacity:0;}
     </style>
     
-    <!-- Preconnect to domains -->
+    <!-- Preconnect to key domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"></noscript>
     
-    <!-- Preload critical hero images -->
-    <link rel="preload" as="image" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png" media="(max-width: 768px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" media="(min-width: 769px)" fetchpriority="high" />
-    
-    <!-- Load only essential font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" />
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/lovable-uploads/4c671f64-f143-4e1d-9875-5e9aaaa33ca7.png" as="image" media="(max-width: 768px)" fetchpriority="high" />
+    <link rel="preload" href="/lovable-uploads/84853251-2ed0-409f-aee1-a9b4e9a7f41e.png" as="image" media="(min-width: 769px)" fetchpriority="high" />
+    <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
+    <link rel="preload" href="/src/main.tsx" as="script" />
   </head>
 
   <body>
-    <!-- Hero image placeholder to avoid CLS -->
-    <div class="hero-placeholder"></div>
-    
-    <div id="root"></div>
-    
-    <!-- Hero image loaded marker script -->
-    <script>
-      // Add a loading placeholder to prevent layout shift
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          document.querySelector('.hero-placeholder')?.classList.add('fade-out');
-        }, 100);
-      });
-    </script>
-    
-    <!-- Deferred non-critical resources -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@400;700&family=Lato:wght@400;700&display=swap" media="print" onload="this.media='all'" />
-    
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module" defer></script>
-    <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Google Tag Manager - moved to end of body and loaded with defer -->
-    <script defer>
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-KZMKK4C8');
-        }, 2000); // Delay GTM load
-      });
-    </script>
+    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZMKK4C8"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    
+    <div id="root"></div>
+    
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
