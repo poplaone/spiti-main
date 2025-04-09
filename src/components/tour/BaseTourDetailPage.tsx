@@ -76,6 +76,9 @@ const BaseTourDetailPage: React.FC<BaseTourDetailPageProps> = ({ tourType, heroI
       
       {/* Mobile Sticky Footer */}
       <MobileStickyFooter 
+        phone="+918353040008"
+        tourId={tour.id}
+        tourName={tour.title}
         discountedPrice={tour.discountedPrice}
         originalPrice={tour.originalPrice}
         formatPrice={formatPrice}

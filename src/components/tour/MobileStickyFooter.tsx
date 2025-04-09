@@ -9,12 +9,18 @@ interface MobileStickyFooterProps {
   phone?: string;
   tourId?: string;
   tourName?: string;
+  discountedPrice?: number;
+  originalPrice?: number;
+  formatPrice?: (price: number) => string;
 }
 
 const MobileStickyFooter: React.FC<MobileStickyFooterProps> = ({ 
   phone = "+918353040008",
   tourId,
-  tourName
+  tourName,
+  discountedPrice,
+  originalPrice,
+  formatPrice = (price) => price.toString()
 }) => {
 
   const handleCallClick = () => {
