@@ -2,15 +2,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 export function useIsMobile() {
-  // Cache the initial value to prevent repeated calculations
-  const initialValueRef = useRef<boolean>(() => {
+  // Initialize state with a function to calculate the initial value only once
+  const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') return true;
     return window.innerWidth < 769;
-  });
-  
-  // Initialize state with the calculated initial value
-  const [isMobile, setIsMobile] = useState(() => {
-    return initialValueRef.current();
   });
   
   // Use throttling to prevent excessive resize calculations
