@@ -1,5 +1,5 @@
 
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo } from 'react';
 
 interface CarouselImageProps {
   src: string;
@@ -11,57 +11,23 @@ interface CarouselImageProps {
 }
 
 const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: CarouselImageProps) => {
-  const [loaded, setLoaded] = useState(index <= 1);
-  const imgRef = useRef<HTMLImageElement>(null);
-  
-  // Use intersection observer for non-current images to lazy load them
-  useEffect(() => {
-    // Skip for current image or already loaded images
-    if (isCurrent || loaded || index <= 1) return;
-    
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setLoaded(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
-    }
-    
-    return () => observer.disconnect();
-  }, [isCurrent, loaded, index]);
-  
   return (
     <div 
       className={`absolute inset-0 w-full h-full transform transition-opacity duration-1000 ${
-        isCurrent ? 'opacity-100 z-10' : 'opacity-0 z-0'
+        isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
     >
-      {(isCurrent || loaded) && (
-        <>
-          <img 
-            ref={imgRef}
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            loading={index <= 1 ? "eager" : "lazy"}
-            decoding="async"
-            fetchPriority={index === 0 ? "high" : "auto"}
-            className="w-full h-full object-cover"
-            onLoad={() => setLoaded(true)}
-          />
-          <div className="absolute inset-0 bg-black opacity-40"></div>
-        </>
-      )}
+      <img 
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={index <= 1 ? "eager" : "lazy"}
+        decoding="async"
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black opacity-40"></div>
     </div>
   );
 });
