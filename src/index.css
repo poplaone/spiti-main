@@ -151,11 +151,7 @@
   @apply transition-all duration-500;
 }
 
-/* Header styles */
-header {
-  @apply bg-spiti-forest/70 backdrop-blur-sm;
-}
-
+/* Remove default header background style to allow transparency */
 /* Simplified marquee animation for better performance */
 @keyframes marquee {
   0% {

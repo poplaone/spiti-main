@@ -23,7 +23,7 @@ const MemoizedWeatherDisplay = memo(WeatherDisplay);
 const Header = ({ scrollToPackages }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logoVisible, setLogoVisible] = useState(false);
+  const [logoVisible, setLogoVisible] = useState(true); // Start with logo visible
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollListenerRef = useRef<boolean>(false);
   const location = useLocation();
@@ -50,13 +50,13 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
         const scrollPosition = window.scrollY;
         setIsScrolled(scrollPosition > 10);
 
-        // Show logo in header when scrolled down enough (past the hero section) if on homepage
-        // For other pages, always show the logo
+        // Always show logo except on homepage when at the top
         if (isHomePage) {
-          setLogoVisible(scrollPosition > window.innerHeight * 0.6);
+          setLogoVisible(scrollPosition > 0);
         } else {
           setLogoVisible(true);
         }
+        
         scrollTimeout = null;
       }, 10); // 10ms throttle for smoother performance
     };
@@ -82,7 +82,7 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' 
-          : 'bg-spiti-forest/70 backdrop-blur-sm'
+          : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4">
