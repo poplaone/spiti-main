@@ -1,15 +1,11 @@
-
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { FormState } from "./types";
-import { 
-  trackFormSubmission, 
-  trackFormAttempt, 
-  trackFormError, 
-  trackWhatsAppContact 
-} from '@/utils/analyticsUtils';
+import { trackFormSubmission, trackFormAttempt, trackFormError, trackWhatsAppContact } from '@/utils/analyticsUtils';
+
+const recentSubmissions = new Set<string>();
 
 export const useFormSubmission = (
   formData: FormState, 
@@ -24,62 +20,60 @@ export const useFormSubmission = (
     try {
       setIsSubmitting(true);
       
-      // Create a minimized version of the form data to reduce payload size
+      const submissionKey = `${leadData.email}-${Date.now().toString().substring(0, 8)}`;
+      if (recentSubmissions.has(submissionKey)) {
+        console.log("Preventing duplicate submission");
+        return true;
+      }
+      
       const minimizedData = {
         name: leadData.name,
         email: leadData.email,
         phone: leadData.phone || '',
-        formType: leadData.formType || 'Lead Form',
+        formType: 'Lead Form',
         travelDate: leadData.travelDate,
-        // Only include essential fields
         duration: leadData.duration,
         guests: leadData.guests,
-        tourId: leadData.tourId,
-        tourName: leadData.tourName ? leadData.tourName.substring(0, 50) : undefined, // Limit string length
-        // Skip other fields
+        tourId: tourId,
+        tourName: tourName ? tourName.substring(0, 30) : undefined,
       };
       
-      // Track form submission start
       trackFormAttempt();
       
-      // Call the Supabase Edge Function to send the email
       const { data, error } = await supabase.functions.invoke('send-lead-email', {
         body: minimizedData
       });
 
       if (error) {
-        console.error("Error sending lead form:", error);
-        toast.error("Failed to send your request. Please try again later.");
-        
-        // Track form submission failure
+        console.error("Error sending lead form:", error.message || "Unknown error");
+        toast.error("Request failed. Please try again.");
         trackFormError(error.message || 'Unknown error');
         return false;
       }
 
       if (!data || !data.success) {
-        console.error("Lead form submission failed:", data);
-        toast.error("Failed to send your request. Please try again later.");
-        
-        // Track form submission failure
+        console.error("Lead form submission failed");
+        toast.error("Request failed. Please try again.");
         trackFormError('API returned unsuccessful response');
         return false;
       }
 
-      // Track successful form submission with minimal data
+      recentSubmissions.add(submissionKey);
+      if (recentSubmissions.size > 10) {
+        const iterator = recentSubmissions.values();
+        recentSubmissions.delete(iterator.next().value);
+      }
+      
       trackFormSubmission({
-        name: formData.name,
+        name: formData.name.substring(0, 20),
         email: formData.email,
-        date: date ? format(date, "PPP") : undefined,
-        tourId,
-        tourName
+        tourId
       });
       
       return true;
     } catch (err) {
-      console.error("Exception sending lead form:", err);
-      toast.error("Failed to send your request. Please try again later.");
-      
-      // Track form submission exception
+      console.error("Exception sending lead form:", err instanceof Error ? err.message : 'Unknown exception');
+      toast.error("Request failed. Please try again.");
       trackFormError(err instanceof Error ? err.message : 'Unknown exception');
       return false;
     } finally {
@@ -89,36 +83,29 @@ export const useFormSubmission = (
 
   const handleFormSubmit = async (validateForm: (data: FormState) => boolean) => {
     if (!validateForm(formData)) {
-      // Track validation failure
       trackFormError('Validation error');
       return;
     }
 
-    // Prepare data for submission
     const leadData = {
       ...formData,
       travelDate: date ? format(date, "PPP") : undefined
     };
 
-    const toastId = toast.loading("Submitting your request...");
+    const toastId = toast.loading("Submitting...");
     
-    // Send email via our edge function
     const success = await submitLeadForm(leadData);
     
     toast.dismiss(toastId);
 
     if (success) {
-      toast.success("Your request has been submitted! We've sent you a confirmation email.");
+      toast.success("Request submitted! Confirmation email sent.");
       
-      // Navigate to thank you page with minimal form data
       navigate('/thank-you', { 
         state: { 
           formData: {
             name: formData.name,
             email: formData.email,
-            date: date ? format(date, "PPP") : "Not specified",
-            tourId,
-            tourName
           } 
         }
       });
@@ -130,20 +117,16 @@ export const useFormSubmission = (
       return;
     }
 
-    // Track WhatsApp contact method with minimal data
     trackWhatsAppContact({
-      name: formData.name,
-      email: formData.email
+      name: formData.name
     });
 
     const message = `
-*New Tour Inquiry*
+*Tour Inquiry*
 Name: ${formData.name}
 Email: ${formData.email}
 Phone: ${formData.phone || 'Not provided'}
-Duration: ${formData.duration || 'Not specified'}
-Travel Date: ${date ? format(date, "PPP") : "Not specified"}
-Guests: ${formData.guests || 'Not specified'}
+Guests: ${formData.guests || '1'}
 ${tourName ? `Tour: ${tourName}` : ''}
     `.trim();
 

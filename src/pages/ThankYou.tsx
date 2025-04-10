@@ -3,16 +3,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Mountain, 
-  Bike, 
-  Car, 
-  Users, 
-  CloudSnow, 
-  CheckCircle,
-  ArrowLeft
-} from 'lucide-react';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { CheckCircle, ArrowLeft } from 'lucide-react';
 
 const ThankYou = () => {
   const navigate = useNavigate();
@@ -20,10 +11,6 @@ const ThankYou = () => {
   const formData = location.state?.formData || {};
   
   useEffect(() => {
-    // Output debug info about GTM availability
-    console.log("ThankYou page loaded - GTM dataLayer available:", !!window.dataLayer);
-    console.log("Form data available:", !!location.state?.formData);
-    
     // If someone tries to access the thank you page directly without form data
     // redirect them to the homepage after 5 seconds
     if (!location.state?.formData) {
@@ -34,28 +21,14 @@ const ThankYou = () => {
       return () => clearTimeout(timer);
     }
 
-    // Google Tag Manager event trigger for conversion tracking
+    // Simplified GTM tracking
     if (window.dataLayer) {
       window.dataLayer.push({
-        'event': 'formSubmission',
-        'formType': 'tourInquiry',
-        'formData': {
-          'name': formData.name || 'Not provided',
-          'email': formData.email || 'Not provided',
-          'phone': formData.phone || 'Not provided',
-          'duration': formData.duration || 'Not specified',
-          'travelDate': formData.date || 'Not specified',
-          'guests': formData.guests || '1',
-          'isCustomized': formData.isCustomized || false,
-          'isFixedDeparture': formData.isFixedDeparture || false
-        }
+        'event': 'formSubmissionComplete',
+        'formType': 'tourInquiry'
       });
-      
-      console.log("Thank you page conversion event tracked and pushed to dataLayer");
     }
-    
-    console.log("Thank you page viewed with form data:", formData);
-  }, [navigate, location.state, formData]);
+  }, [navigate, location.state]);
 
   const goBack = () => {
     navigate('/');
@@ -82,15 +55,16 @@ const ThankYou = () => {
                 </div>
               </div>
               
-              <h1 className="text-3xl md:text-4xl font-display font-bold text-spiti-dark mb-4 animate-fade-in-up">
+              <h1 className="text-3xl md:text-4xl font-display font-bold text-spiti-dark mb-4">
                 Thank You for Your Inquiry!
               </h1>
               
-              <Card className="bg-white/60 backdrop-blur-md border-0 shadow-lg mb-8 animate-fade-in-up">
+              <Card className="bg-white/60 backdrop-blur-md border-0 shadow-lg mb-8">
                 <CardContent className="p-6">
                   <p className="text-lg text-spiti-slate mb-4">
                     We're excited to help you plan your adventure in the beautiful Spiti Valley!
                   </p>
+                  
                   <p className="text-spiti-slate mb-4">
                     Our team will contact you shortly to discuss your tour preferences and create a personalized itinerary.
                   </p>
@@ -102,48 +76,6 @@ const ThankYou = () => {
                   )}
                 </CardContent>
               </Card>
-              
-              <div className="bg-white/60 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-spiti-dark">Spiti Valley Adventures</h3>
-                <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="flex items-center justify-center p-4">
-                        <div className="bg-white/80 p-4 rounded-full shadow-md">
-                          <Mountain className="h-8 w-8 text-spiti-blue" />
-                        </div>
-                      </TableCell>
-                      <TableCell className="flex items-center justify-center p-4">
-                        <div className="bg-white/80 p-4 rounded-full shadow-md">
-                          <CloudSnow className="h-8 w-8 text-spiti-lightblue" />
-                        </div>
-                      </TableCell>
-                      <TableCell className="flex items-center justify-center p-4">
-                        <div className="bg-white/80 p-4 rounded-full shadow-md">
-                          <Bike className="h-8 w-8 text-spiti-accent" />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="flex items-center justify-center p-4">
-                        <div className="bg-white/80 p-4 rounded-full shadow-md">
-                          <Car className="h-8 w-8 text-spiti-forest" />
-                        </div>
-                      </TableCell>
-                      <TableCell className="flex items-center justify-center p-4">
-                        <div className="bg-white/80 p-4 rounded-full shadow-md">
-                          <Users className="h-8 w-8 text-spiti-mountain" />
-                        </div>
-                      </TableCell>
-                      <TableCell className="flex items-center justify-center p-4">
-                        <div className="bg-white/80 p-4 rounded-full shadow-md">
-                          <Mountain className="h-8 w-8 text-spiti-slate" />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </div>
               
               <Link to="/">
                 <Button className="bg-spiti-blue hover:bg-spiti-blue/80 text-white">
