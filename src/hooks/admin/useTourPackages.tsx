@@ -33,10 +33,11 @@ export const useTourPackages = () => {
     try {
       setLoading(true);
       // Modified query to order by display_order first, then by title
+      // Fixing the error by removing the unsupported "nullsLast" property
       const { data, error } = await supabase
         .from('tour_packages')
         .select('*')
-        .order('display_order', { ascending: true, nullsLast: true })
+        .order('display_order', { ascending: true })
         .order('title');
       
       if (error) throw error;
