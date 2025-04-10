@@ -19,7 +19,7 @@ export const usePackageFetch = () => {
       const { data, error } = await supabase
         .from('tour_packages')
         .select('*')
-        .order('display_order', { ascending: true })
+        .order('display_order', { ascending: true, nullsLast: true })
         .order('title');
       
       if (error) throw error;

@@ -9,7 +9,7 @@ export interface TourPackage {
   transport_type: string;
   is_women_only: boolean;
   is_visible: boolean;
-  display_order: number;
+  display_order?: number;
   created_at: string;
   updated_at: string;
 }

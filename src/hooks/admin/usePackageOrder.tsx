@@ -44,12 +44,19 @@ export const usePackageOrder = (
     const previousPackage = packages[index - 1];
     
     // Swap the display_order values
-    const tempOrder = previousPackage.display_order;
-    await updateDisplayOrder(currentPackage.id, tempOrder);
-    await updateDisplayOrder(previousPackage.id, currentPackage.display_order);
-    
-    // Refresh the list
-    await fetchPackages();
+    if (currentPackage && previousPackage) {
+      try {
+        setUpdatingOrder(currentPackage.id);
+        const tempOrder = previousPackage.display_order;
+        await updateDisplayOrder(currentPackage.id, tempOrder || 0);
+        await updateDisplayOrder(previousPackage.id, currentPackage.display_order || 0);
+        
+        // Refresh the list
+        await fetchPackages();
+      } finally {
+        setUpdatingOrder(null);
+      }
+    }
   };
   
   // Function to move package down in order
@@ -60,12 +67,19 @@ export const usePackageOrder = (
     const nextPackage = packages[index + 1];
     
     // Swap the display_order values
-    const tempOrder = nextPackage.display_order;
-    await updateDisplayOrder(currentPackage.id, tempOrder);
-    await updateDisplayOrder(nextPackage.id, currentPackage.display_order);
-    
-    // Refresh the list
-    await fetchPackages();
+    if (currentPackage && nextPackage) {
+      try {
+        setUpdatingOrder(currentPackage.id);
+        const tempOrder = nextPackage.display_order;
+        await updateDisplayOrder(currentPackage.id, tempOrder || 0);
+        await updateDisplayOrder(nextPackage.id, currentPackage.display_order || 0);
+        
+        // Refresh the list
+        await fetchPackages();
+      } finally {
+        setUpdatingOrder(null);
+      }
+    }
   };
 
   return {
