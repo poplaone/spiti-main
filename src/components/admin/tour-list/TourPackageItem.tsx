@@ -124,7 +124,7 @@ const TourPackageItem: React.FC<TourPackageProps> = ({
         )}
         <TableCell className="text-right">
           <div className="flex justify-end space-x-1">
-            <Link to={`/admin/edit-package/${pkg.id}`}>
+            <Link to={`/admin/tour-packages/edit/${pkg.id}`}>
               <Button 
                 variant="ghost" 
                 size="sm" 
