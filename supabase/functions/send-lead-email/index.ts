@@ -24,13 +24,8 @@ const handler = async (req: Request): Promise<Response> => {
     if (!resend && !resendAlternate) {
       console.error("No Resend API keys are configured!");
       return new Response(
-        JSON.stringify({ 
-          error: "Email service is not configured" 
-        }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
+        JSON.stringify({ error: "Email service is not configured" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -41,29 +36,28 @@ const handler = async (req: Request): Promise<Response> => {
       return validationError;
     }
 
-    console.log("Processing form submission for:", formData.name);
-    
     // Create email templates - simplified to reduce processing
     const { adminEmailHtml, customerEmailHtml } = createEmailTemplates(formData);
     
     // Send the emails using the available Resend clients
-    const adminEmailResult = await sendAdminEmail(
-      formData,
-      adminEmailHtml,
-      resend,
-      resendAlternate,
-      !!resendApiKey,
-      !!resendApiKeyAlternate
-    );
-    
-    const customerEmailResult = await sendCustomerEmail(
-      formData,
-      customerEmailHtml,
-      resend,
-      resendAlternate,
-      !!resendApiKey,
-      !!resendApiKeyAlternate
-    );
+    const [adminEmailResult, customerEmailResult] = await Promise.all([
+      sendAdminEmail(
+        formData,
+        adminEmailHtml,
+        resend,
+        resendAlternate,
+        !!resendApiKey,
+        !!resendApiKeyAlternate
+      ),
+      sendCustomerEmail(
+        formData,
+        customerEmailHtml,
+        resend,
+        resendAlternate,
+        !!resendApiKey,
+        !!resendApiKeyAlternate
+      )
+    ]);
 
     // Return minimal success response to reduce data transfer
     return new Response(
@@ -72,10 +66,7 @@ const handler = async (req: Request): Promise<Response> => {
         adminEmailSent: adminEmailResult.sent,
         customerEmailSent: customerEmailResult.sent
       }),
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      }
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
     console.error("Error in send-lead-email function:", error);
@@ -83,10 +74,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Return minimal error response
     return new Response(
       JSON.stringify({ error: "Failed to send email" }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      }
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
 };

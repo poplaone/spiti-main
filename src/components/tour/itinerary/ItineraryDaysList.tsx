@@ -1,5 +1,5 @@
 
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { TourItineraryDay, TourNightStay } from "@/data/types/tourTypes";
 import ItineraryDay from './ItineraryDay';
 
@@ -13,15 +13,23 @@ const ItineraryDaysList: React.FC<ItineraryDaysListProps> = memo(({
   itinerary, 
   nightStays 
 }) => {
-  // Create a map for faster lookups of nightStays
-  const locationMap = new Map();
-  nightStays.forEach((stay, index) => {
-    locationMap.set(index, stay.location);
-  });
+  // Create a map for faster lookups of nightStays - using useMemo to avoid recreating on every render
+  const locationMap = useMemo(() => {
+    const map = new Map();
+    nightStays.forEach((stay, index) => {
+      map.set(index, stay.location);
+    });
+    return map;
+  }, [nightStays]);
+
+  // Only render days that have complete data to avoid unnecessary UI elements
+  const validItineraryDays = useMemo(() => 
+    itinerary.filter(day => day && day.day && day.title && day.description),
+  [itinerary]);
 
   return (
     <>
-      {itinerary.map((day, index) => (
+      {validItineraryDays.map((day, index) => (
         <ItineraryDay 
           key={day.day || index} 
           day={day} 

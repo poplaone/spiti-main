@@ -15,8 +15,8 @@ interface WeatherData {
   timestamp?: number;
 }
 
-// Cache duration - 3 hours in milliseconds to reduce API calls
-const CACHE_DURATION = 3 * 60 * 60 * 1000;
+// Cache duration - 6 hours in milliseconds to reduce API calls further
+const CACHE_DURATION = 6 * 60 * 60 * 1000;
 const CACHE_KEY = 'spiti_weather_data';
 
 const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
@@ -51,7 +51,7 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
       setLoading(true);
       // Using OpenWeatherMap free API with minimal fields to reduce data
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04&fields=main,weather,wind`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04&fields=main.temp,main.feels_like,weather.0.description,weather.0.icon,wind.speed`
       );
       
       if (!response.ok) {
@@ -60,6 +60,7 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
       
       const data = await response.json();
       
+      // Store only the minimum required data
       const weatherData = {
         temp: Math.round(data.main.temp),
         feelsLike: Math.round(data.main.feels_like),
@@ -80,6 +81,18 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
       console.error('Error fetching weather:', err);
       setError('Could not load weather');
       setLoading(false);
+      
+      // Try to use cached data even if it's expired, as fallback
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      if (cachedData) {
+        try {
+          const parsedData = JSON.parse(cachedData);
+          setWeather(parsedData);
+          setLastUpdated(new Date(parsedData.timestamp));
+        } catch (e) {
+          // Ignore parsing errors
+        }
+      }
     }
   }, []);
   
@@ -87,7 +100,7 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
     // Initial fetch
     fetchWeather();
     
-    // Refresh weather data every 3 hours instead of 30 minutes to reduce API calls
+    // Refresh weather data every 6 hours instead of 3 hours to reduce API calls further
     const intervalId = setInterval(() => fetchWeather(true), CACHE_DURATION);
     
     return () => clearInterval(intervalId);
@@ -134,25 +147,24 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
     });
   };
 
-  // For mobile, show an elegant and compact display
+  // For mobile, show an even more compact display
   if (isMobile) {
     return (
       <div 
         onClick={handleRefresh}
-        className={`group flex items-center justify-center gap-1.5 backdrop-blur-0 px-2.5 py-1.5 rounded-full 
+        className={`group flex items-center justify-center gap-1 backdrop-blur-0 px-2 py-1 rounded-full 
         border border-white/20 shadow-sm hover:border-white/40 transition-all duration-300 
         animate-fade-in-up hover:scale-105 cursor-pointer ${className}`}
       >
         <div className="transform transition-all duration-300 group-hover:rotate-12">
           {getWeatherIcon()}
         </div>
-        <span className="text-xs font-bold text-white/90 group-hover:text-white transition-colors">{weather?.temp}°C</span>
-        <span className="text-[10px] text-white/60 hidden xs:inline group-hover:text-white/90 transition-colors">Lahaul-Spiti</span>
+        <span className="text-xs font-bold text-white/90 group-hover:text-white transition-colors">{weather?.temp}°</span>
       </div>
     );
   }
   
-  // For desktop, show a more interactive and detailed display with more transparency
+  // For desktop, show a more interactive but still lightweight display
   return (
     <div 
       onClick={handleRefresh}
@@ -160,29 +172,23 @@ const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
       overflow-hidden cursor-pointer transition-all duration-300 shadow-lg backdrop-blur-0
       hover:shadow-xl animate-fade-in-up transform hover:scale-[1.02] ${className}`}
     >
-      <div className="p-2.5 pt-2.5">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-full transform transition-transform duration-500 hover:rotate-12">
+      <div className="p-2">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 rounded-full transform transition-transform duration-500 hover:rotate-12">
             {getWeatherIcon()}
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-white/90 transition-colors hover:text-white">{weather?.temp}°C</span>
-              <span className="text-xs text-white/70 transition-colors hover:text-white/90">Feels: {weather?.feelsLike}°C</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm font-bold text-white/90 transition-colors hover:text-white">{weather?.temp}°C</span>
+              <span className="text-xs text-white/70 transition-colors hover:text-white/90">{weather?.feelsLike}°</span>
             </div>
             <div className="flex items-center gap-1 text-xs text-white/60 transition-colors hover:text-white/80">
-              <span>Lahaul-Spiti</span>
-              <span className="mx-1">•</span>
+              <span>Spiti</span>
               <div className="flex items-center gap-1 opacity-70">
                 <Wind className="w-3 h-3" />
-                <span>{weather?.windSpeed} m/s</span>
+                <span>{weather?.windSpeed}m/s</span>
               </div>
             </div>
-            {lastUpdated && (
-              <div className="text-[10px] text-white/40 mt-0.5 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-                Updated: {lastUpdated.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-              </div>
-            )}
           </div>
         </div>
       </div>

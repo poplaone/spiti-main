@@ -24,23 +24,27 @@ export const useFormSubmission = (
     try {
       setIsSubmitting(true);
       
-      console.log("Submitting lead form to edge function:", leadData);
+      // Create a minimized version of the form data to reduce payload size
+      const minimizedData = {
+        name: leadData.name,
+        email: leadData.email,
+        phone: leadData.phone || '',
+        formType: leadData.formType || 'Lead Form',
+        travelDate: leadData.travelDate,
+        // Only include essential fields
+        duration: leadData.duration,
+        guests: leadData.guests,
+        tourId: leadData.tourId,
+        tourName: leadData.tourName ? leadData.tourName.substring(0, 50) : undefined, // Limit string length
+        // Skip other fields
+      };
       
       // Track form submission start
       trackFormAttempt();
       
-      // Add tour information if available
-      if (tourId) {
-        leadData.tourId = tourId;
-      }
-      
-      if (tourName) {
-        leadData.tourName = tourName;
-      }
-      
       // Call the Supabase Edge Function to send the email
       const { data, error } = await supabase.functions.invoke('send-lead-email', {
-        body: leadData
+        body: minimizedData
       });
 
       if (error) {
@@ -61,15 +65,15 @@ export const useFormSubmission = (
         return false;
       }
 
-      // Track successful form submission
+      // Track successful form submission with minimal data
       trackFormSubmission({
-        ...formData,
+        name: formData.name,
+        email: formData.email,
         date: date ? format(date, "PPP") : undefined,
         tourId,
         tourName
       });
       
-      console.log("Lead form submitted successfully:", data);
       return true;
     } catch (err) {
       console.error("Exception sending lead form:", err);
@@ -96,9 +100,6 @@ export const useFormSubmission = (
       travelDate: date ? format(date, "PPP") : undefined
     };
 
-    // In a real application, you would send this data to a server
-    console.log("Form submission:", leadData);
-
     const toastId = toast.loading("Submitting your request...");
     
     // Send email via our edge function
@@ -109,11 +110,12 @@ export const useFormSubmission = (
     if (success) {
       toast.success("Your request has been submitted! We've sent you a confirmation email.");
       
-      // Navigate to thank you page with form data
+      // Navigate to thank you page with minimal form data
       navigate('/thank-you', { 
         state: { 
           formData: {
-            ...formData,
+            name: formData.name,
+            email: formData.email,
             date: date ? format(date, "PPP") : "Not specified",
             tourId,
             tourName
@@ -128,18 +130,20 @@ export const useFormSubmission = (
       return;
     }
 
-    // Track WhatsApp contact method
-    trackWhatsAppContact(formData);
+    // Track WhatsApp contact method with minimal data
+    trackWhatsAppContact({
+      name: formData.name,
+      email: formData.email
+    });
 
     const message = `
 *New Tour Inquiry*
 Name: ${formData.name}
 Email: ${formData.email}
-Phone: ${formData.phone}
-Duration: ${formData.duration}
+Phone: ${formData.phone || 'Not provided'}
+Duration: ${formData.duration || 'Not specified'}
 Travel Date: ${date ? format(date, "PPP") : "Not specified"}
-Guests: ${formData.guests}
-Type: ${formData.isCustomized ? 'Customized' : ''} ${formData.isFixedDeparture ? 'Fixed Departure' : ''}
+Guests: ${formData.guests || 'Not specified'}
 ${tourName ? `Tour: ${tourName}` : ''}
     `.trim();
 
