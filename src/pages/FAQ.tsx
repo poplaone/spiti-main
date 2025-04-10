@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -7,6 +6,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import { Button } from "@/components/ui/button";
 import { HelpCircle } from 'lucide-react';
+
 const FAQ = () => {
   const faqCategories = [{
     title: "General Information",
@@ -90,29 +90,24 @@ const FAQ = () => {
       answer: "Yes, we offer discounts for groups of 4 or more people. The exact discount depends on the tour, group size, and season. Contact us with your group details, and we'll provide a customized quote. We also occasionally offer early bird discounts and special promotions."
     }]
   }];
+  
   return <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative pt-20 lg:pt-28">
-        <div className="h-[40vh] md:h-[50vh] relative overflow-hidden">
-          <img 
-            src="/lovable-uploads/48dd37b1-e6eb-4a83-9fb1-577aa55a7bb7.png" 
-            alt="Chandratal Lake, Spiti Valley" 
-            className="absolute inset-0 w-full h-full object-cover" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-spiti-forest/80 to-transparent"></div>
-          <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Frequently Asked Questions</h1>
-            <p className="text-xl text-white/90 max-w-2xl">
-              Find answers to the most common questions about Spiti Valley and our tours.
-            </p>
-          </div>
+      {/* Simple Header Section */}
+      <section className="relative pt-20 lg:pt-28 pb-8">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 text-center">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto text-center">
+            Find answers to the most common questions about Spiti Valley and our tours.
+          </p>
         </div>
       </section>
       
       {/* FAQ Section */}
-      <section className="py-16">
+      <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-lg p-6 md:p-8">
             {faqCategories.map((category, index) => <div key={index} className="mb-10 last:mb-0">
@@ -160,4 +155,5 @@ const FAQ = () => {
       <Footer />
     </div>;
 };
+
 export default FAQ;
