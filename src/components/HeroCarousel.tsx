@@ -39,35 +39,12 @@ const HeroCarousel = () => {
     // Set a longer timeout for better performance
     const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
     
-    // Only set up carousel rotation if the tab is visible
-    if (document.visibilityState === 'visible') {
-      timeoutRef.current = window.setTimeout(() => 
-        setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-        interval
-      );
-    }
+    timeoutRef.current = window.setTimeout(() => 
+      setCurrent(prevIndex => (prevIndex + 1) % images.length), 
+      interval
+    );
     
-    // Handle visibility change
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        // Reset timeout when tab becomes visible again
-        resetTimeout();
-        timeoutRef.current = window.setTimeout(() => 
-          setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-          interval
-        );
-      } else {
-        // Clear timeout when tab is hidden to save resources
-        resetTimeout();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
-    return () => {
-      resetTimeout();
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
+    return resetTimeout;
   }, [current, images.length, resetTimeout, isMobile]);
 
   const scrollToDiscoverSection = useCallback(() => {

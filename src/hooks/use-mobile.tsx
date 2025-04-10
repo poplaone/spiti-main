@@ -18,18 +18,12 @@ export function useIsMobile() {
     throttleTimeout.current = window.setTimeout(() => {
       setIsMobile(window.innerWidth < 769);
       throttleTimeout.current = null;
-    }, 200); // Throttle resize events to once every 200ms for better performance
+    }, 100); // Throttle resize events to once every 100ms
   }, []);
 
   useEffect(() => {
-    // Skip attaching listeners if window is undefined
-    if (typeof window === 'undefined') return;
-    
     // Add event listener with passive option for better performance
     window.addEventListener('resize', handleResize, { passive: true });
-    
-    // Initial check for proper state
-    handleResize();
     
     return () => {
       window.removeEventListener('resize', handleResize);
