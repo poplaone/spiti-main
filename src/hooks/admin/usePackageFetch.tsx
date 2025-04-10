@@ -16,10 +16,11 @@ export const usePackageFetch = () => {
     try {
       setLoading(true);
       // Query packages ordered by display_order first, then by title
+      // Use nullsFirst: false to ensure null values appear last
       const { data, error } = await supabase
         .from('tour_packages')
         .select('*')
-        .order('display_order', { ascending: true, nullsLast: true })
+        .order('display_order', { ascending: true, nullsFirst: false })
         .order('title');
       
       if (error) throw error;
