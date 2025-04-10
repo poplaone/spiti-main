@@ -86,8 +86,8 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
             isHomePage={isHomePage}
           />
 
-          {/* Weather Display for Mobile */}
-          {isMobile && <MemoizedWeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />}
+          {/* Weather Display */}
+          <MemoizedWeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />
 
           {/* Desktop Menu - only render when needed */}
           {!isMobile && (
