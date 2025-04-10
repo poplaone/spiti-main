@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { format, parse } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 interface DepartureDateProps {
   id?: string;
@@ -50,9 +50,10 @@ const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
       
       if (data && data.length > 0) {
         data.forEach(dateItem => {
-          // Parse the date strings from database
-          const startDate = new Date(dateItem.start_date);
-          const endDate = new Date(dateItem.end_date);
+          // Fix: Parse date strings correctly using parseISO to avoid timezone issues
+          // This ensures we're working with the exact date from the database
+          const startDate = parseISO(dateItem.start_date);
+          const endDate = parseISO(dateItem.end_date);
           
           // Format them for display
           const formattedStartDate = format(startDate, 'dd MMM');
