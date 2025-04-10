@@ -15,9 +15,9 @@ const HeroCarousel = () => {
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
-  // Use the carouselImages directly instead of separate desktop/mobile sets
   const images = carouselImages;
   const isFirstRender = useRef(true);
+  const isPaused = useRef(false);
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -26,8 +26,11 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Use a longer interval on mobile to reduce resource usage
+  // Use a longer interval on mobile to reduce resource usage and battery drain
   useEffect(() => {
+    // Don't start animation if user has manually paused
+    if (isPaused.current) return;
+    
     resetTimeout();
     
     // Skip animation on first render for better performance
@@ -36,8 +39,8 @@ const HeroCarousel = () => {
       return;
     }
     
-    // Set a longer timeout for better performance
-    const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
+    // Set a longer timeout for better performance on mobile
+    const interval = isMobile ? 18000 : 12000; // 18 seconds on mobile, 12 seconds on desktop
     
     timeoutRef.current = window.setTimeout(() => 
       setCurrent(prevIndex => (prevIndex + 1) % images.length), 
@@ -47,14 +50,30 @@ const HeroCarousel = () => {
     return resetTimeout;
   }, [current, images.length, resetTimeout, isMobile]);
 
+  // Manually change slide and pause auto-rotation when user interacts
+  const handleManualChange = useCallback((index: number) => {
+    setCurrent(index);
+    isPaused.current = true;
+    
+    // Resume auto-rotation after 30 seconds of inactivity
+    resetTimeout();
+    timeoutRef.current = window.setTimeout(() => {
+      isPaused.current = false;
+      setCurrent(prevIndex => (prevIndex + 1) % images.length);
+    }, 30000);
+  }, [images.length, resetTimeout]);
+  
   const scrollToDiscoverSection = useCallback(() => {
     const element = document.querySelector('#discover-spiti-valley');
-    if (element) {
+    if (!element) return;
+    
+    // Use requestAnimationFrame for smoother scrolling
+    requestAnimationFrame(() => {
       element.scrollIntoView({ 
         behavior: 'smooth',
         block: 'start'
       });
-    }
+    });
   }, []);
 
   return (
@@ -63,9 +82,13 @@ const HeroCarousel = () => {
         <MemoizedCarouselImages current={current} />
       </div>
       <MemoizedHeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      <MemoizedCarouselIndicators images={images} current={current} setCurrent={setCurrent} />
+      <MemoizedCarouselIndicators 
+        images={images} 
+        current={current} 
+        setCurrent={handleManualChange} 
+      />
     </div>
   );
 };
 
-export default memo(HeroCarousel); // Memoize the entire component
+export default memo(HeroCarousel);
