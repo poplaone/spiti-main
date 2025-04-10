@@ -24,6 +24,7 @@ const TourPackage: React.FC<TourPackageProps & {
   isWomenOnly,
   isFixedDeparture = false,
   isCustomizable = true,
+  displayOrder,
   overviewDetails
 }) => {
   // Get availability dates with fallbacks

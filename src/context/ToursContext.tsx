@@ -29,6 +29,7 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         .from('tour_packages')
         .select('*')
         .eq('is_visible', true) // Only fetch visible tours for the frontend
+        .order('display_order', { ascending: true, nullsFirst: false })
         .order('title');
       
       if (error) {
@@ -39,8 +40,12 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       if (dbTours && dbTours.length > 0) {
         const tourPromises = dbTours.map(async (dbTour) => {
           const tour = await mapDbTourToFrontend(dbTour);
-          // Make sure to include the id from the database
-          return { ...tour, id: dbTour.id };
+          // Make sure to include the id and display_order from the database
+          return { 
+            ...tour, 
+            id: dbTour.id,
+            displayOrder: dbTour.display_order 
+          };
         });
         
         const mappedTours = await Promise.all(tourPromises);
@@ -50,7 +55,8 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         const toursWithIds = tourPackagesData.map((tour, index) => ({
           ...tour,
           id: `static-${index}`,
-          isVisible: true // Set default visibility for static data
+          isVisible: true, // Set default visibility for static data
+          displayOrder: index // Use index as default display order for static data
         }));
         setTours(toursWithIds);
       }
@@ -62,7 +68,8 @@ export const ToursProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       const toursWithIds = tourPackagesData.map((tour, index) => ({
         ...tour,
         id: `static-${index}`,
-        isVisible: true // Set default visibility for static data
+        isVisible: true, // Set default visibility for static data
+        displayOrder: index // Use index as default display order for static data
       }));
       setTours(toursWithIds);
     } finally {

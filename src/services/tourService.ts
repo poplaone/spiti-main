@@ -77,7 +77,8 @@ export const mapDbTourToFrontend = async (dbTour: any): Promise<TourPackageProps
     isWomenOnly: dbTour.is_women_only,
     isFixedDeparture: dbTour.is_fixed_departure,
     isCustomizable: dbTour.is_customizable,
-    isVisible: dbTour.is_visible, 
+    isVisible: dbTour.is_visible,
+    displayOrder: dbTour.display_order,
     overview: dbTour.overview,
     nightStays,
     inclusions,
@@ -100,6 +101,7 @@ export const getAllTourPackages = async (): Promise<TourPackageWithId[]> => {
     const { data: dbTours, error } = await supabase
       .from('tour_packages')
       .select('*')
+      .order('display_order', { ascending: true, nullsFirst: false })
       .order('title');
     
     if (error) {

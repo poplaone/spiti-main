@@ -1,3 +1,4 @@
+
 export interface TourNightStay {
   location: string;
   nights: number;
@@ -36,6 +37,7 @@ export interface TourPackageProps {
   isFixedDeparture?: boolean; // Optional with default false
   isCustomizable?: boolean; // Optional with default true
   isVisible?: boolean; // Add this property
+  displayOrder?: number | null; // Add display order property
   overview: string | null;
   nightStays: TourNightStay[];
   inclusions: string[];

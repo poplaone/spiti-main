@@ -13,7 +13,8 @@ const TourPackageList: React.FC = () => {
     deleteLoading,
     updatingVisibility,
     confirmDelete,
-    toggleVisibility
+    toggleVisibility,
+    movePackage
   } = useTourPackages();
 
   return (
@@ -31,6 +32,7 @@ const TourPackageList: React.FC = () => {
           onConfirmDelete={confirmDelete}
           deleteLoading={deleteLoading}
           updatingVisibility={updatingVisibility}
+          onMovePackage={movePackage}
         />
       )}
     </div>
