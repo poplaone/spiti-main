@@ -32,8 +32,7 @@ export const useTourPackages = () => {
   const fetchPackages = async () => {
     try {
       setLoading(true);
-      // Modified query to order by display_order first, then by title
-      // Fixing the error by removing the unsupported "nullsLast" property
+      // Query packages ordered by display_order first, then by title
       const { data, error } = await supabase
         .from('tour_packages')
         .select('*')
