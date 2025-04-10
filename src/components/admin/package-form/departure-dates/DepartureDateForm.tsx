@@ -46,12 +46,16 @@ const DepartureDateForm: React.FC<DepartureDateFormProps> = ({ tourId, onDateAdd
     try {
       const { supabase } = await import('@/integrations/supabase/client');
       
+      // Format dates to YYYY-MM-DD format without time component to avoid timezone issues
+      const formattedStartDate = newDate.startDate.toISOString().split('T')[0];
+      const formattedEndDate = newDate.endDate.toISOString().split('T')[0];
+      
       const { data, error } = await supabase
         .from('tour_departure_dates')
         .insert({
           tour_package_id: tourId,
-          start_date: newDate.startDate.toISOString().split('T')[0],
-          end_date: newDate.endDate.toISOString().split('T')[0],
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
           status: newDate.status
         })
         .select('id')

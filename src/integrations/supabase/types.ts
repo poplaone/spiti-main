@@ -180,6 +180,7 @@ export type Database = {
           created_at: string
           discount: number
           discounted_price: number
+          display_order: number | null
           duration_days: number
           duration_nights: number
           id: string
@@ -200,6 +201,7 @@ export type Database = {
           created_at?: string
           discount: number
           discounted_price: number
+          display_order?: number | null
           duration_days: number
           duration_nights: number
           id?: string
@@ -220,6 +222,7 @@ export type Database = {
           created_at?: string
           discount?: number
           discounted_price?: number
+          display_order?: number | null
           duration_days?: number
           duration_nights?: number
           id?: string

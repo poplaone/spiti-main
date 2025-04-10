@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { format, parse } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 interface DepartureDateProps {
   id?: string;
@@ -13,13 +13,13 @@ interface DepartureDateProps {
 interface DepartureDatesCardProps {
   className?: string;
   tourId?: string;
-  hideTitle?: boolean; // New prop to conditionally hide the title
+  hideTitle?: boolean;
 }
 
 const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
   className = "",
   tourId,
-  hideTitle = false // Default to showing the title
+  hideTitle = false
 }) => {
   const [loading, setLoading] = useState(false);
   const [departureDatesByMonth, setDepartureDatesByMonth] = useState<Record<string, DepartureDateProps[]>>({});
@@ -50,9 +50,9 @@ const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
       
       if (data && data.length > 0) {
         data.forEach(dateItem => {
-          // Parse the date strings from database
-          const startDate = new Date(dateItem.start_date);
-          const endDate = new Date(dateItem.end_date);
+          // Use parseISO to correctly parse ISO date strings without timezone issues
+          const startDate = parseISO(dateItem.start_date);
+          const endDate = parseISO(dateItem.end_date);
           
           // Format them for display
           const formattedStartDate = format(startDate, 'dd MMM');
