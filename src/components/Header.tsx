@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef, memo } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
@@ -86,10 +85,10 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
             isHomePage={isHomePage}
           />
 
-          {/* Weather Display - Only for Mobile */}
-          {isMobile && (
-            <MemoizedWeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />
-          )}
+          {/* Weather Display - Centered in the header for all screen sizes */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <MemoizedWeatherDisplay />
+          </div>
 
           {/* Desktop Menu - only render when needed */}
           {!isMobile && (

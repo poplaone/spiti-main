@@ -24,9 +24,14 @@ const HeroContent = ({ scrollToDiscoverSection }: HeroContentProps) => {
       {/* Google Ratings Badge */}
       <GoogleRatingBadge />
       
-      <h1 className="text-2xl md:text-6xl font-display font-bold text-white mb-3 md:mb-8 max-w-3xl">
+      <h1 className="text-2xl md:text-6xl font-display font-bold text-white mb-3 md:mb-4 max-w-3xl">
         Spiti Valley Travels
       </h1>
+      
+      {/* New subheading */}
+      <p className="text-white text-sm md:text-lg mb-4 md:mb-6 max-w-xl">
+        Begin your Spiti adventure with us – your local guides to explore more...
+      </p>
       
       <Button 
         variant="outline" 
