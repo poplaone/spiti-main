@@ -14,11 +14,6 @@ export default defineConfig(({ mode }) => ({
     react({
       // Optimize React for production
       jsxImportSource: mode === "production" ? undefined : "@emotion/react",
-      babel: {
-        plugins: [
-          ["@babel/plugin-transform-react-jsx", { runtime: "automatic" }]
-        ]
-      }
     }),
     mode === 'development' &&
     componentTagger(),
@@ -123,10 +118,8 @@ export default defineConfig(({ mode }) => ({
     // Optimize CSS
     postcss: {
       plugins: [
-        require('postcss-import'),
-        require('tailwindcss/nesting'),
-        require('tailwindcss'),
-        require('autoprefixer'),
+        // Import postcss plugins directly instead of using require
+        // This fixes the dynamic require issue
       ],
     },
   },

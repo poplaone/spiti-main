@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 1, // Reduce retry attempts for faster feedback
-      cacheTime: 10 * 60 * 1000, // 10 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
     }
   }
 });
