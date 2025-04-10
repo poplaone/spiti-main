@@ -29,15 +29,19 @@ const GalleryImage = memo(({
   const imageUrl = isMobile ? photo.mobileUrl : photo.url;
   
   return (
-    <div className="relative w-full h-full">
+    <div 
+      className="relative w-full h-full"
+      style={{ aspectRatio: `${photo.width}/${photo.height}` }}
+    >
       <img 
         src={imageUrl}
         alt={photo.alt} 
         className="w-full h-full object-cover"
-        loading="eager" 
+        loading="lazy" 
         width={photo.width} 
         height={photo.height} 
         decoding="async" 
+        fetchPriority={index < 2 ? "high" : "auto"}
         onLoad={() => onLoad(index)} 
       />
     </div>

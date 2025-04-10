@@ -113,6 +113,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+    font-display: swap;
   }
   
   /* Smooth transition for hero placeholder */
@@ -124,6 +125,19 @@
   /* Performance optimized image loading */
   img {
     content-visibility: auto;
+    /* Prevent layout shifts */
+    display: block;
+  }
+  
+  /* Font display swap for better text rendering during load */
+  @font-face {
+    font-family: 'Montserrat';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Playfair Display';
+    font-display: swap;
   }
 }
 

@@ -6,12 +6,14 @@ import './index.css';
 import { ToursProvider } from './context/ToursContext';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Create a client
+// Create a client with optimized settings for performance
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+      gcTime: 10 * 60 * 1000 // 10 minutes
     }
   }
 });
