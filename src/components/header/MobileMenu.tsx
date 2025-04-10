@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
@@ -33,7 +32,7 @@ const MobileMenu = ({
   };
   
   return (
-    <div className="md:hidden absolute top-16 left-0 right-0 bg-spiti-forest/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in">
+    <div className="md:hidden absolute top-16 left-0 right-0 bg-spiti-forest/95 backdrop-blur-lg shadow-lg p-4 space-y-4 animate-slide-in z-50">
       <Popover>
         <PopoverTrigger asChild>
           <button className="w-full flex justify-between items-center text-white hover:text-spiti-green transition-colors">

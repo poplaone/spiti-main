@@ -77,17 +77,26 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
   }, [location.pathname]);
 
   return (
-    <header ref={headerRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
+    <header 
+      ref={headerRef} 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' 
+          : 'bg-spiti-forest/70 backdrop-blur-sm'
+      }`}
+    >
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16 md:h-20">
+        <nav className="flex items-center justify-between h-16 md:h-20 relative">
           <MemoizedLogo 
             isVisible={logoVisible} 
             isTourPage={isTourPage} 
             isHomePage={isHomePage}
           />
 
-          {/* Weather Display for Mobile */}
-          {isMobile && <MemoizedWeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />}
+          {/* Weather Display - Centered in header */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <MemoizedWeatherDisplay />
+          </div>
 
           {/* Desktop Menu - only render when needed */}
           {!isMobile && (
