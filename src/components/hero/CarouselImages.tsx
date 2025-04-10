@@ -1,8 +1,9 @@
 
+import { useIsMobile } from '@/hooks/use-mobile';
 import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
-// Define optimized image sizes
+// Use the same optimized images for both mobile and desktop to avoid duplication
 const carouselImages = [
   {
     src: "/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png",
@@ -23,32 +24,25 @@ interface CarouselImagesProps {
 }
 
 const CarouselImages = memo(({ current }: CarouselImagesProps) => {
+  // Render all images for immediate availability
   return (
     <>
-      {carouselImages.map((img, index) => {
-        // Only render the current image and the next one (with wrap-around)
-        const nextIndex = (current + 1) % carouselImages.length;
-        const shouldRender = index === current || index === nextIndex;
-        
-        if (!shouldRender && index !== 0) return null;
-        
-        return (
-          <CarouselImage 
-            key={index} 
-            src={img.src}
-            alt={img.alt}
-            width={img.width}
-            height={img.height}
-            index={index} 
-            isCurrent={index === current}
-          />
-        );
-      })}
+      {carouselImages.map((img, index) => (
+        <CarouselImage 
+          key={index} 
+          src={img.src}
+          alt={img.alt}
+          width={img.width}
+          height={img.height}
+          index={index} 
+          isCurrent={index === current}
+        />
+      ))}
     </>
   );
 });
 
 CarouselImages.displayName = 'CarouselImages';
 
-export default CarouselImages;
 export { carouselImages };
+export default CarouselImages;
