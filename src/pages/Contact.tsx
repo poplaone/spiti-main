@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter, Send, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Send, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -115,6 +116,8 @@ const Contact = () => {
             src="/lovable-uploads/ca833426-3806-4da0-b1eb-d94155df1935.png" 
             alt="Spiti Valley in Winter with Prayer Flags" 
             className="absolute inset-0 w-full h-full object-cover" 
+            loading="eager"
+            fetchpriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-spiti-forest/80 to-transparent"></div>
           <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center">
