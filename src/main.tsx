@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       staleTime: 10 * 60 * 1000, // 10 minutes
-      gcTime: 60 * 60 * 1000, // 1 hour (previously cacheTime)
+      gcTime: 60 * 60 * 1000, // 1 hour
       retry: 1, // Reduce retries on mobile
     }
   }
@@ -37,6 +37,10 @@ if (!rootElement) throw new Error('Failed to find the root element');
 
 // Create root outside of render call to avoid issues
 const root = createRoot(rootElement);
+
+// Set priority for core components loading
+document.documentElement.style.setProperty('--carousel-opacity', '1');
+document.documentElement.style.setProperty('--hero-content-opacity', '1');
 
 // Determine if we should disable strict mode on low-end devices
 const shouldUseStrictMode = !isLowEndDevice();

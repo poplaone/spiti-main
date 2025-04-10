@@ -11,13 +11,21 @@ interface CarouselImageProps {
 }
 
 const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: CarouselImageProps) => {
-  const [loaded, setLoaded] = useState(index <= 1);
+  // Always load first image immediately
+  const isFirstImage = index === 0;
+  const [loaded, setLoaded] = useState(isFirstImage);
   const imgRef = useRef<HTMLImageElement>(null);
   
   // Use intersection observer for non-current images to lazy load them
   useEffect(() => {
-    // Skip for current image or already loaded images
-    if (isCurrent || loaded || index <= 1) return;
+    // Skip for first image or already loaded images
+    if (isFirstImage || loaded) return;
+    
+    // Immediate load for current image or nearby images (for smooth transitions)
+    if (isCurrent || index <= 1) {
+      setLoaded(true);
+      return;
+    }
     
     const observer = new IntersectionObserver(
       (entries) => {
@@ -28,7 +36,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: "200px" }
     );
     
     if (imgRef.current) {
@@ -36,7 +44,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
     }
     
     return () => observer.disconnect();
-  }, [isCurrent, loaded, index]);
+  }, [isCurrent, loaded, index, isFirstImage]);
   
   return (
     <div 
@@ -53,9 +61,9 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
             alt={alt}
             width={width}
             height={height}
-            loading={index <= 1 ? "eager" : "lazy"}
-            decoding="async"
-            fetchPriority={index === 0 ? "high" : "auto"}
+            loading={isFirstImage ? "eager" : "lazy"}
+            decoding={isFirstImage ? "sync" : "async"}
+            fetchPriority={isFirstImage ? "high" : "auto"}
             className="w-full h-full object-cover"
             onLoad={() => setLoaded(true)}
           />

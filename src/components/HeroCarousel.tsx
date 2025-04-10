@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState, useCallback, memo } from 'react';
+import { useRef, useState, useCallback, memo, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CarouselImages, { carouselImages } from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
@@ -16,8 +16,10 @@ const HeroCarousel = () => {
   const isMobile = useIsMobile();
   
   const images = carouselImages;
-  const isFirstRender = useRef(true);
   const isPaused = useRef(false);
+  
+  // Set content as immediately visible
+  const [contentVisible, setContentVisible] = useState(true);
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -26,18 +28,26 @@ const HeroCarousel = () => {
     }
   }, []);
 
+  // Make sure the hero carousel starts with immediate content visibility
+  useEffect(() => {
+    // Force immediate rendering of carousel content
+    document.documentElement.style.setProperty('--carousel-opacity', '1');
+    document.documentElement.style.setProperty('--hero-content-opacity', '1');
+    
+    // Ensure content is displayed right away
+    setContentVisible(true);
+    
+    return () => {
+      resetTimeout();
+    };
+  }, [resetTimeout]);
+
   // Use a longer interval on mobile to reduce resource usage and battery drain
   useEffect(() => {
     // Don't start animation if user has manually paused
     if (isPaused.current) return;
     
     resetTimeout();
-    
-    // Skip animation on first render for better performance
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     
     // Set a longer timeout for better performance on mobile
     const interval = isMobile ? 18000 : 12000; // 18 seconds on mobile, 12 seconds on desktop
@@ -81,12 +91,16 @@ const HeroCarousel = () => {
       <div className="w-full h-full">
         <MemoizedCarouselImages current={current} />
       </div>
-      <MemoizedHeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      <MemoizedCarouselIndicators 
-        images={images} 
-        current={current} 
-        setCurrent={handleManualChange} 
-      />
+      {contentVisible && (
+        <>
+          <MemoizedHeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
+          <MemoizedCarouselIndicators 
+            images={images} 
+            current={current} 
+            setCurrent={handleManualChange} 
+          />
+        </>
+      )}
     </div>
   );
 };

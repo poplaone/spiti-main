@@ -1,5 +1,5 @@
 
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -31,22 +31,12 @@ interface CarouselImagesProps {
 
 const CarouselImages = memo(({ current }: CarouselImagesProps) => {
   const isMobile = useIsMobile();
-  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 1 });
   
-  // Calculate visible range based on current image
-  useEffect(() => {
-    const start = Math.max(0, current - 1);
-    const end = Math.min(carouselImages.length - 1, current + 1);
-    setVisibleRange({ start, end });
-  }, [current]);
-  
-  // Only render images that are close to the current one
+  // Always render all images for immediate availability, but prioritize loading the first one
   return (
     <>
       {carouselImages.map((img, index) => {
-        const inRange = index >= visibleRange.start && index <= visibleRange.end;
-        // Skip rendering images far from current view for better performance
-        if (!inRange && index !== current) return null;
+        const isFirst = index === 0;
         
         return (
           <CarouselImage 
