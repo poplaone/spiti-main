@@ -1,5 +1,4 @@
 
-import { useIsMobile } from '@/hooks/use-mobile';
 import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 

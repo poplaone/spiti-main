@@ -17,6 +17,7 @@ const HeroCarousel = () => {
   
   // Use the carouselImages directly instead of separate desktop/mobile sets
   const images = carouselImages;
+  const isFirstRender = useRef(true);
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -28,6 +29,13 @@ const HeroCarousel = () => {
   // Use a longer interval on mobile to reduce resource usage
   useEffect(() => {
     resetTimeout();
+    
+    // Skip animation on first render for better performance
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    
     // Set a longer timeout for better performance
     const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
     
