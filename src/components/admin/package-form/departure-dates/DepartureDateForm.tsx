@@ -46,9 +46,20 @@ const DepartureDateForm: React.FC<DepartureDateFormProps> = ({ tourId, onDateAdd
     try {
       const { supabase } = await import('@/integrations/supabase/client');
       
-      // Format dates to YYYY-MM-DD format without time component to avoid timezone issues
-      const formattedStartDate = newDate.startDate.toISOString().split('T')[0];
-      const formattedEndDate = newDate.endDate.toISOString().split('T')[0];
+      // Create a new date with time set to noon UTC to avoid timezone issues
+      const formatDateToUTC = (date: Date) => {
+        const d = new Date(date);
+        d.setUTCHours(12, 0, 0, 0);
+        return d.toISOString().split('T')[0];
+      };
+      
+      const formattedStartDate = formatDateToUTC(newDate.startDate);
+      const formattedEndDate = formatDateToUTC(newDate.endDate);
+      
+      console.log('Saving dates to database:', {
+        start: formattedStartDate,
+        end: formattedEndDate
+      });
       
       const { data, error } = await supabase
         .from('tour_departure_dates')

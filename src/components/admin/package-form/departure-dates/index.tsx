@@ -52,10 +52,17 @@ const DepartureDatesTab: React.FC<DepartureDatesTabProps> = ({
       
       console.log("Fetched departure dates:", data);
       
+      // Function to create date objects with consistent time (noon UTC)
+      const createConsistentDate = (dateStr: string): Date => {
+        const date = new Date(dateStr);
+        date.setUTCHours(12, 0, 0, 0);
+        return date;
+      };
+      
       const formattedDates = data.map(date => ({
         id: date.id,
-        startDate: new Date(date.start_date),
-        endDate: new Date(date.end_date),
+        startDate: createConsistentDate(date.start_date),
+        endDate: createConsistentDate(date.end_date),
         status: date.status as 'Available' | 'Limited' | 'Full'
       }));
       

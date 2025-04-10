@@ -65,7 +65,6 @@ const DepartureDatesList: React.FC<DepartureDatesListProps> = ({
         {dates.map((date) => (
           <TableRow key={date.id}>
             <TableCell>
-              {/* Format date directly without timezone adjustments */}
               {format(date.startDate, 'dd MMM yyyy')}
             </TableCell>
             <TableCell>

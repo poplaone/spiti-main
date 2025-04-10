@@ -50,9 +50,25 @@ const DepartureDatesCard: React.FC<DepartureDatesCardProps> = ({
       
       if (data && data.length > 0) {
         data.forEach(dateItem => {
-          // Use parseISO to correctly parse ISO date strings without timezone issues
-          const startDate = parseISO(dateItem.start_date);
-          const endDate = parseISO(dateItem.end_date);
+          console.log('Raw date from DB:', {
+            start: dateItem.start_date,
+            end: dateItem.end_date
+          });
+          
+          // Create date objects with consistent time (noon UTC)
+          const createConsistentDate = (dateStr: string): Date => {
+            const date = new Date(dateStr + 'T12:00:00Z');
+            return date;
+          };
+          
+          // Use consistent time dates to avoid timezone shifts
+          const startDate = createConsistentDate(dateItem.start_date);
+          const endDate = createConsistentDate(dateItem.end_date);
+          
+          console.log('Processed dates:', {
+            start: startDate.toISOString(),
+            end: endDate.toISOString()
+          });
           
           // Format them for display
           const formattedStartDate = format(startDate, 'dd MMM');
