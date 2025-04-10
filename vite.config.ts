@@ -1,60 +1,113 @@
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   server: {
-    host: '0.0.0.0',
+    host: "::",
     port: 8080,
   },
   plugins: [
-    react()
-  ],
+    react(),
+    mode === 'development' &&
+    componentTagger(),
+  ].filter(Boolean),
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      'embla-carousel': path.resolve(__dirname, 'node_modules/embla-carousel'),
+      "@": path.resolve(__dirname, "./src"),
+      // Add explicit alias for embla-carousel to resolve peer dependency issue
+      "embla-carousel": path.resolve(__dirname, "./node_modules/embla-carousel"),
     },
   },
   optimizeDeps: {
     include: ['embla-carousel'],
-    force: true
+    force: true, // Force dependencies optimization to resolve lockfile issues
   },
   build: {
+    // Add build configuration to handle lockfile-related issues
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+    // Additional optimizations for mobile performance
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: process.env.NODE_ENV === 'production',
-        drop_debugger: process.env.NODE_ENV === 'production',
+        drop_console: true,
+        drop_debugger: true,
+        passes: 2, // Additional optimization passes
       },
+      output: {
+        comments: false, // Remove comments to reduce file size
+      }
     },
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Create optimized chunks based on imports
-          if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'vendor-react';
-            if (id.includes('tanstack')) return 'vendor-tanstack';
-            if (id.includes('radix-ui')) return 'vendor-radix';
-            if (id.includes('lucide')) return 'vendor-icons';
-            return 'vendor';
-          }
-          
-          // App code chunks
-          if (id.includes('/src/components/ui/')) return 'ui';
-          if (id.includes('/src/components/hero/')) return 'home-hero';
-          if (id.includes('/src/components/tour/')) return 'tours';
-          if (id.includes('/src/components/gallery/')) return 'gallery';
-          if (id.includes('/src/components/form/')) return 'forms';
-          if (id.includes('/src/components/header/')) return 'header';
-          if (id.includes('/src/utils/') || id.includes('/src/lib/')) return 'utils';
+        manualChunks: {
+          vendor: [
+            'react', 
+            'react-dom', 
+          ],
+          router: [
+            'react-router-dom',
+          ],
+          query: [
+            '@tanstack/react-query',
+          ],
+          ui: [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+          ],
+          // Add admin-specific chunks - kept separate for code splitting
+          admin: [
+            'src/components/admin/package-form/departure-dates/index.tsx',
+            'src/components/admin/package-form/departure-dates/DepartureDateForm.tsx',
+            'src/components/admin/package-form/departure-dates/DepartureDatesList.tsx',
+            'src/hooks/admin/useTourPackages.tsx',
+            'src/pages/admin/AdminDashboard.tsx',
+            'src/pages/admin/AdminSettings.tsx',
+            'src/services/tourService.ts',
+          ],
+          // Create a separate chunks for form-related components
+          forms: [
+            'src/components/LeadForm.tsx',
+            'src/hooks/lead-form/index.ts',
+            'src/hooks/lead-form/useFormState.ts',
+            'src/hooks/lead-form/useFormSubmission.ts',
+          ],
+          // Add smaller chunks for mobile optimization
+          home: [
+            'src/components/HeroCarousel.tsx',
+            'src/components/hero/CarouselImages.tsx',
+            'src/components/hero/CarouselImage.tsx',
+          ],
+          tours: [
+            'src/components/TourPackages.tsx',
+            'src/components/tour/TourPackageGrid.tsx',
+            'src/components/tour/TourPackageHeader.tsx',
+          ],
+          // Create a chunk for image-related components
+          images: [
+            'src/components/PhotoGallery.tsx',
+            'src/components/gallery/GalleryImage.tsx',
+            'src/hooks/useGalleryNavigation.ts',
+          ]
         },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        // Improve code splitting with deterministic names
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
-    }
-  }
-});
+    },
+    // Increase chunk size warning limit
+    chunkSizeWarningLimit: 1200,
+    cssCodeSplit: true, // Split CSS into per-component chunks
+    assetsInlineLimit: 4096, // Inline small files to reduce HTTP requests
+    sourcemap: false, // Disable sourcemaps in production for smaller files
+  },
+}));
