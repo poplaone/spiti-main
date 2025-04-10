@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Twitter, Send, Loader2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Send, Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,16 +32,20 @@ const Contact = () => {
     try {
       setIsSubmitting(true);
       
-      console.log("Submitting contact form to edge function:", data);
+      // Minimize data sent to edge function to reduce egress
+      const minimizedData = {
+        name: data.name,
+        email: data.email,
+        phone: data.phone || 'N/A',
+        subject: data.subject,
+        message: data.message,
+        formType: 'Contact Form',
+      };
+      
+      console.log("Submitting contact form with minimized data");
       
       const { data: responseData, error } = await supabase.functions.invoke('send-lead-email', {
-        body: {
-          ...data,
-          duration: "Contact Form",
-          guests: "N/A",
-          isCustomized: false,
-          isFixedDeparture: false
-        }
+        body: minimizedData
       });
 
       if (error) {
@@ -55,7 +60,7 @@ const Contact = () => {
         return false;
       }
 
-      console.log("Contact form submitted successfully:", responseData);
+      console.log("Contact form submitted successfully");
       return true;
     } catch (err) {
       console.error("Exception sending contact form:", err);
@@ -95,11 +100,11 @@ const Contact = () => {
     if (success) {
       toast.success("Your message has been sent successfully!");
       
+      // Use a simpler approach for thank-you navigation to reduce state size
       navigate('/thank-you', { 
         state: { 
-          formData: {
-            ...formData
-          } 
+          name: formData.name,
+          email: formData.email 
         }
       });
     }
@@ -115,6 +120,7 @@ const Contact = () => {
             src="/lovable-uploads/ca833426-3806-4da0-b1eb-d94155df1935.png" 
             alt="Spiti Valley in Winter with Prayer Flags" 
             className="absolute inset-0 w-full h-full object-cover" 
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-spiti-forest/80 to-transparent"></div>
           <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center">

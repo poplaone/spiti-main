@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { Sun, Cloud, CloudRain, Snowflake, Thermometer, Wind } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,9 +12,14 @@ interface WeatherData {
   windSpeed: number;
   location?: string;
   feelsLike?: number;
+  timestamp?: number;
 }
 
-const WeatherDisplay = ({ className = "" }: { className?: string }) => {
+// Cache duration - 3 hours in milliseconds to reduce API calls
+const CACHE_DURATION = 3 * 60 * 60 * 1000;
+const CACHE_KEY = 'spiti_weather_data';
+
+const WeatherDisplay = memo(({ className = "" }: { className?: string }) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,12 +31,27 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
   const lat = 32.6192;
   const lon = 77.3784;
   
-  const fetchWeather = async () => {
+  const fetchWeather = useCallback(async (forceRefresh = false) => {
     try {
+      // Check if we have cached data first
+      if (!forceRefresh) {
+        const cachedData = localStorage.getItem(CACHE_KEY);
+        if (cachedData) {
+          const parsedData = JSON.parse(cachedData);
+          // Only use cache if it's still valid (less than CACHE_DURATION old)
+          if (parsedData.timestamp && Date.now() - parsedData.timestamp < CACHE_DURATION) {
+            setWeather(parsedData);
+            setLastUpdated(new Date(parsedData.timestamp));
+            setLoading(false);
+            return;
+          }
+        }
+      }
+      
       setLoading(true);
-      // Using OpenWeatherMap free API
+      // Using OpenWeatherMap free API with minimal fields to reduce data
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=8d2de98e089f1c28e1a22fc19a24ef04&fields=main,weather,wind`
       );
       
       if (!response.ok) {
@@ -39,17 +59,21 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
       }
       
       const data = await response.json();
-      console.log('Weather data:', data); // Verify coordinates in log
       
-      setWeather({
+      const weatherData = {
         temp: Math.round(data.main.temp),
         feelsLike: Math.round(data.main.feels_like),
         description: data.weather[0].description,
         icon: data.weather[0].icon,
         windSpeed: data.wind.speed,
-        location: 'Lahaul-Spiti'
-      });
+        location: 'Lahaul-Spiti',
+        timestamp: Date.now()
+      };
       
+      // Save to localStorage to reduce API calls
+      localStorage.setItem(CACHE_KEY, JSON.stringify(weatherData));
+      
+      setWeather(weatherData);
       setLastUpdated(new Date());
       setLoading(false);
     } catch (err) {
@@ -57,17 +81,17 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
       setError('Could not load weather');
       setLoading(false);
     }
-  };
+  }, []);
   
   useEffect(() => {
     // Initial fetch
     fetchWeather();
     
-    // Refresh weather data every 30 minutes
-    const intervalId = setInterval(fetchWeather, 30 * 60 * 1000);
+    // Refresh weather data every 3 hours instead of 30 minutes to reduce API calls
+    const intervalId = setInterval(() => fetchWeather(true), CACHE_DURATION);
     
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchWeather]);
   
   const getWeatherIcon = () => {
     if (!weather) return <Sun className="w-5 h-5 text-yellow-300" />;
@@ -103,7 +127,7 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
   }
 
   const handleRefresh = () => {
-    fetchWeather();
+    fetchWeather(true); // Force refresh
     toast({
       title: "Weather Updated",
       description: "Latest weather data for Lahaul-Spiti has been fetched",
@@ -164,6 +188,8 @@ const WeatherDisplay = ({ className = "" }: { className?: string }) => {
       </div>
     </div>
   );
-};
+});
+
+WeatherDisplay.displayName = 'WeatherDisplay';
 
 export default WeatherDisplay;

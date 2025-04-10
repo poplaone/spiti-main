@@ -25,7 +25,7 @@ const handler = async (req: Request): Promise<Response> => {
       console.error("No Resend API keys are configured!");
       return new Response(
         JSON.stringify({ 
-          error: "Email service is not configured. Please set RESEND_API_KEY or RESEND_API_KEY_ALTERNATE in your environment." 
+          error: "Email service is not configured" 
         }),
         { 
           status: 500, 
@@ -34,24 +34,16 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Parse and validate the request
+    // Parse and validate the request with minimal data processing
     const formData: LeadFormRequest = await req.json();
     const validationError = validateRequest(formData);
     if (validationError) {
       return validationError;
     }
 
-    console.log("Processing lead form submission for:", formData.name);
-    console.log("Form data received:", JSON.stringify(formData));
+    console.log("Processing form submission for:", formData.name);
     
-    // Verify that API keys are available
-    const primaryKeyAvailable = !!resendApiKey;
-    const alternateKeyAvailable = !!resendApiKeyAlternate;
-    
-    console.log("API Key Status - Primary:", primaryKeyAvailable ? "Available" : "Missing");
-    console.log("API Key Status - Alternate:", alternateKeyAvailable ? "Available" : "Missing");
-    
-    // Create email templates
+    // Create email templates - simplified to reduce processing
     const { adminEmailHtml, customerEmailHtml } = createEmailTemplates(formData);
     
     // Send the emails using the available Resend clients
@@ -60,8 +52,8 @@ const handler = async (req: Request): Promise<Response> => {
       adminEmailHtml,
       resend,
       resendAlternate,
-      primaryKeyAvailable,
-      alternateKeyAvailable
+      !!resendApiKey,
+      !!resendApiKeyAlternate
     );
     
     const customerEmailResult = await sendCustomerEmail(
@@ -69,19 +61,16 @@ const handler = async (req: Request): Promise<Response> => {
       customerEmailHtml,
       resend,
       resendAlternate,
-      primaryKeyAvailable,
-      alternateKeyAvailable
+      !!resendApiKey,
+      !!resendApiKeyAlternate
     );
 
-    // Return success response with information about email delivery status
+    // Return minimal success response to reduce data transfer
     return new Response(
       JSON.stringify({ 
-        success: true, 
-        message: "Lead form submitted successfully",
+        success: true,
         adminEmailSent: adminEmailResult.sent,
-        customerEmailSent: customerEmailResult.sent,
-        adminEmailError: adminEmailResult.error ? adminEmailResult.error : null,
-        customerEmailError: customerEmailResult.error ? customerEmailResult.error : null
+        customerEmailSent: customerEmailResult.sent
       }),
       { 
         status: 200, 
@@ -91,8 +80,9 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error) {
     console.error("Error in send-lead-email function:", error);
     
+    // Return minimal error response
     return new Response(
-      JSON.stringify({ error: error.message || "Failed to send email" }),
+      JSON.stringify({ error: "Failed to send email" }),
       { 
         status: 500, 
         headers: { ...corsHeaders, "Content-Type": "application/json" } 
