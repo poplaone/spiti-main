@@ -12,8 +12,8 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react({
-      // Optimize React for production
-      jsxImportSource: mode === "production" ? undefined : "@emotion/react",
+      // Remove the jsxImportSource that's causing problems
+      // This will use the default React JSX runtime instead of Emotion
     }),
     mode === 'development' &&
     componentTagger(),
