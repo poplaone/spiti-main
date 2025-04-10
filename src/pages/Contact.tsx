@@ -301,16 +301,6 @@ const Contact = () => {
         </div>
       </section>
       
-      <section className="py-8 pb-16">
-        <div className="container mx-auto px-4">
-          <div className="bg-white/10 backdrop-blur-sm p-1 rounded-lg overflow-hidden">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13627.81869461705!2d77.16873782835623!3d31.10241706659592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39057e2d891c3a8b%3A0xaae14aecf454d58f!2sKhalini%2C%20Shimla%2C%20Himachal%20Pradesh!5e0!3m2!1sen!2sin!4v1715684051542!5m2!1sen!2sin" width="100%" height="450" style={{
-            border: 0
-          }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Spiti Valley Travels Map"></iframe>
-          </div>
-        </div>
-      </section>
-      
       <Footer />
     </div>
   );
