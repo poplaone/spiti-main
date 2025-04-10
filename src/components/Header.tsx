@@ -23,7 +23,7 @@ const MemoizedWeatherDisplay = memo(WeatherDisplay);
 const Header = ({ scrollToPackages }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logoVisible, setLogoVisible] = useState(true); // Start with logo visible
+  const [logoVisible, setLogoVisible] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   const scrollListenerRef = useRef<boolean>(false);
   const location = useLocation();
@@ -50,13 +50,13 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
         const scrollPosition = window.scrollY;
         setIsScrolled(scrollPosition > 10);
 
-        // Always show logo except on homepage when at the top
+        // Show logo in header when scrolled down enough (past the hero section) if on homepage
+        // For other pages, always show the logo
         if (isHomePage) {
-          setLogoVisible(scrollPosition > 0);
+          setLogoVisible(scrollPosition > window.innerHeight * 0.6);
         } else {
           setLogoVisible(true);
         }
-        
         scrollTimeout = null;
       }, 10); // 10ms throttle for smoother performance
     };
@@ -77,26 +77,17 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
   }, [location.pathname]);
 
   return (
-    <header 
-      ref={headerRef} 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' 
-          : 'bg-transparent'
-      }`}
-    >
+    <header ref={headerRef} className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-spiti-forest/90 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16 md:h-20 relative">
+        <nav className="flex items-center justify-between h-16 md:h-20">
           <MemoizedLogo 
             isVisible={logoVisible} 
             isTourPage={isTourPage} 
             isHomePage={isHomePage}
           />
 
-          {/* Weather Display - Centered in header */}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
-            <MemoizedWeatherDisplay />
-          </div>
+          {/* Weather Display for Mobile */}
+          {isMobile && <MemoizedWeatherDisplay className="absolute left-1/2 transform -translate-x-1/2" />}
 
           {/* Desktop Menu - only render when needed */}
           {!isMobile && (

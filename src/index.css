@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -151,7 +152,6 @@
   @apply transition-all duration-500;
 }
 
-/* Remove default header background style to allow transparency */
 /* Simplified marquee animation for better performance */
 @keyframes marquee {
   0% {
