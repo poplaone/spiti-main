@@ -1,64 +1,105 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 
+// Using a global variable to optimize first load and avoid React state
+let cachedIsMobile: boolean | null = null;
+
 export function useIsMobile() {
-  // Use a ref to store previous value to prevent unnecessary rerenders
-  const isMobileRef = useRef<boolean | null>(null);
-  
-  // Initialize state with a function to calculate the initial value only once
-  const [isMobile, setIsMobile] = useState<boolean>(() => {
-    // Safe check for SSR
+  // Initialize state with globally cached value or calculate if first time
+  const [isMobile, setIsMobile] = useState(() => {
+    if (cachedIsMobile !== null) return cachedIsMobile;
     if (typeof window === 'undefined') return true;
+    
     const mobileCheck = window.innerWidth < 769;
-    isMobileRef.current = mobileCheck;
+    cachedIsMobile = mobileCheck;
     return mobileCheck;
   });
   
-  // Use debouncing to prevent excessive resize calculations
-  const debounceTimeout = useRef<number | null>(null);
-  
-  // Last check timestamp to avoid excessive processing
-  const lastCheckRef = useRef<number>(0);
+  // Use superthrottling to prevent excessive resize calculations
+  const throttleTimeout = useRef<number | null>(null);
+  const lastWidth = useRef<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
   
   const handleResize = useCallback(() => {
-    // Skip if we've checked recently (within 100ms)
-    const now = Date.now();
-    if (now - lastCheckRef.current < 100) return;
+    // Skip if already in a throttle period
+    if (throttleTimeout.current) return;
     
-    // Clear existing timeout if it exists
-    if (debounceTimeout.current) {
-      window.clearTimeout(debounceTimeout.current);
+    // Only calculate again if width actually crossed our breakpoint boundary
+    const currentWidth = window.innerWidth;
+    const wasMobile = lastWidth.current < 769;
+    const isMobileNow = currentWidth < 769;
+    
+    // Skip unnecessary updates when staying in the same size category
+    if (wasMobile === isMobileNow) {
+      lastWidth.current = currentWidth;
+      return;
     }
     
-    // Set a debounce timeout
-    debounceTimeout.current = window.setTimeout(() => {
-      const newIsMobile = window.innerWidth < 769;
-      
-      // Only update state if the value actually changed
-      if (newIsMobile !== isMobileRef.current) {
-        isMobileRef.current = newIsMobile;
-        setIsMobile(newIsMobile);
-      }
-      
-      lastCheckRef.current = now;
-      debounceTimeout.current = null;
-    }, 150); // Slightly longer debounce time for better performance
+    // Apply longer throttle on mobile for better performance
+    const throttleTime = isMobileNow ? 300 : 150;
+    
+    throttleTimeout.current = window.setTimeout(() => {
+      lastWidth.current = currentWidth;
+      setIsMobile(isMobileNow);
+      cachedIsMobile = isMobileNow; // Update global cache
+      throttleTimeout.current = null;
+    }, throttleTime);
   }, []);
 
   useEffect(() => {
-    // Use more efficient passive listener
-    window.addEventListener('resize', handleResize, { passive: true });
+    // Skip attaching listeners for SSR
+    if (typeof window === 'undefined') return;
     
-    // Initial check
-    handleResize();
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      if (debounceTimeout.current) {
-        window.clearTimeout(debounceTimeout.current);
+    // Use most efficient method available in browser
+    if (typeof window.matchMedia === 'function') {
+      // Use matchMedia for better performance
+      const mediaQuery = window.matchMedia('(max-width: 768px)');
+      
+      // Modern browsers support addEventListener
+      const handleMediaChange = (e: MediaQueryListEvent) => {
+        const isMobileNow = e.matches;
+        if (isMobile !== isMobileNow) {
+          setIsMobile(isMobileNow);
+          cachedIsMobile = isMobileNow; // Update global cache
+        }
+      };
+
+      // Add the appropriate listener based on browser support
+      if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', handleMediaChange);
+      } else {
+        // Fallback to throttled resize
+        window.addEventListener('resize', handleResize, { passive: true });
       }
-    };
-  }, [handleResize]);
+      
+      // Initial check
+      if (mediaQuery.matches !== isMobile) {
+        setIsMobile(mediaQuery.matches);
+        cachedIsMobile = mediaQuery.matches; // Update global cache
+      }
+      
+      return () => {
+        if (mediaQuery.removeEventListener) {
+          mediaQuery.removeEventListener('change', handleMediaChange);
+        } else {
+          window.removeEventListener('resize', handleResize);
+        }
+        
+        if (throttleTimeout.current) {
+          clearTimeout(throttleTimeout.current);
+        }
+      };
+    } else {
+      // Fallback to resize event with passive listener
+      window.addEventListener('resize', handleResize, { passive: true });
+      
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        if (throttleTimeout.current) {
+          clearTimeout(throttleTimeout.current);
+        }
+      };
+    }
+  }, [handleResize, isMobile]);
 
   return isMobile;
 }
