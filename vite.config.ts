@@ -11,7 +11,15 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [
-    react(),
+    react({
+      // Optimize React for production
+      jsxImportSource: mode === "production" ? undefined : "@emotion/react",
+      babel: {
+        plugins: [
+          ["@babel/plugin-transform-react-jsx", { runtime: "automatic" }]
+        ]
+      }
+    }),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
@@ -43,6 +51,7 @@ export default defineConfig(({ mode }) => ({
         comments: false, // Remove comments to reduce file size
       }
     },
+    // Optimize chunk strategy
     rollupOptions: {
       output: {
         manualChunks: {
@@ -109,5 +118,16 @@ export default defineConfig(({ mode }) => ({
     cssCodeSplit: true, // Split CSS into per-component chunks
     assetsInlineLimit: 4096, // Inline small files to reduce HTTP requests
     sourcemap: false, // Disable sourcemaps in production for smaller files
+  },
+  css: {
+    // Optimize CSS
+    postcss: {
+      plugins: [
+        require('postcss-import'),
+        require('tailwindcss/nesting'),
+        require('tailwindcss'),
+        require('autoprefixer'),
+      ],
+    },
   },
 }));

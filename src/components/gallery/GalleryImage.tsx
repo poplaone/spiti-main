@@ -34,11 +34,12 @@ const GalleryImage = memo(({
         src={imageUrl}
         alt={photo.alt} 
         className="w-full h-full object-cover"
-        loading="eager" 
+        loading={photo.priority ? "eager" : "lazy"}
         width={photo.width} 
         height={photo.height} 
         decoding="async" 
-        onLoad={() => onLoad(index)} 
+        onLoad={() => onLoad(index)}
+        fetchpriority={photo.priority ? "high" : "auto"}
       />
     </div>
   );

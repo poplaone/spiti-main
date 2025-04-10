@@ -23,7 +23,8 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         alt={alt}
         width={width}
         height={height}
-        loading={index <= 1 ? "eager" : "lazy"}
+        loading={index === 0 ? "eager" : "lazy"} 
+        fetchpriority={index === 0 ? "high" : "auto"}
         decoding="async"
         className="w-full h-full object-cover"
       />
