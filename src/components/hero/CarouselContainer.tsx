@@ -8,7 +8,7 @@ interface CarouselContainerProps {
 
 const CarouselContainer = memo(forwardRef<HTMLDivElement, CarouselContainerProps>(
   ({ children, heroHeight }, ref) => {
-    // Use aspect-ratio for more stable layout
+    // Reserve exact space for hero section to prevent layout shifts
     const containerStyle: CSSProperties = { 
       height: heroHeight, 
       minHeight: heroHeight,
@@ -27,6 +27,12 @@ const CarouselContainer = memo(forwardRef<HTMLDivElement, CarouselContainerProps
         style={containerStyle}
         data-lcp-candidate="true" // Hint for performance monitoring
       >
+        {/* Add a placeholder that matches exact dimensions of hero */}
+        <div 
+          aria-hidden="true" 
+          className="absolute inset-0 bg-spiti-forest" 
+          style={{ minHeight: heroHeight }}
+        />
         {children}
       </div>
     );

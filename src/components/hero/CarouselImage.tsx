@@ -35,7 +35,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
     }
   }, [isCurrent, loaded, index]);
   
-  // Use a background color placeholder before image loads to prevent layout shifts
+  // Reserve space with fixed dimensions to prevent CLS
   return (
     <div 
       className={`absolute inset-0 w-full h-full transform transition-opacity duration-300 ${
@@ -45,7 +45,8 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
       style={{ 
         backgroundColor: '#2c5282', // Placeholder color matching the brand
         contain: 'content',
-        willChange: isCurrent ? 'opacity' : 'auto'
+        willChange: isCurrent ? 'opacity' : 'auto',
+        aspectRatio: '16/9'
       }}
     >
       {shouldLoad && (
@@ -63,10 +64,16 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
             style={{
               objectFit: 'cover',
               objectPosition: 'center',
+              minHeight: '100%', // Ensure image takes full height
+              minWidth: '100%', // Ensure image takes full width
             }}
           />
           {/* Simplified overlay with better performance */}
-          <div className="absolute inset-0 bg-black opacity-50" style={{ contain: 'strict' }}></div>
+          <div 
+            className="absolute inset-0 bg-black opacity-50" 
+            style={{ contain: 'strict' }}
+            aria-hidden="true"
+          ></div>
         </>
       )}
     </div>
