@@ -84,9 +84,6 @@
         contain:paint;
       }
       
-      /* Hero placeholder fade out */
-      .hero-placeholder.fade-out {opacity:0;transition:opacity 0.3s ease;}
-      
       /* Responsive optimizations with sizing optimizations */
       @media (min-width: 768px) {
         .hero-logo {width:160px;height:160px;margin-bottom:1rem;}
@@ -151,35 +148,6 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZMKK4C8"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
-    <!-- Initial Hero Content for LCP optimization with explicit dimensions -->
-    <div id="hero-placeholder" class="hero-section">
-      <div class="hero-image-placeholder"></div>
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <img 
-          alt="Spiti Valley Travels Logo" 
-          class="hero-logo" 
-          src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
-          width="160" 
-          height="160" 
-          fetchpriority="high" 
-          loading="eager"
-        />
-        <div class="rating-badge">
-          <!-- Google Rating badge placeholder -->
-          <div style="display:flex;align-items:center;background:rgba(255,255,255,0.2);border-radius:9999px;padding:0.25rem 0.75rem;">
-            <span style="font-weight:600;color:white;margin-right:0.25rem;">4.9</span>
-            <span style="color:rgba(255,255,255,0.9);font-size:0.75rem;">on Google ratings</span>
-          </div>
-        </div>
-        <h1 class="hero-title">Spiti Valley Travels</h1>
-        <div class="hero-text-container">
-          <p class="hero-subtitle">Begin your Spiti adventure with us – your local guides to explore more...</p>
-        </div>
-        <button class="btn-primary">Explore Tours</button>
-      </div>
-    </div>
     
     <!-- Root app mount point -->
     <div id="root"></div>

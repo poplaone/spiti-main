@@ -24,16 +24,6 @@ const renderApp = () => {
   const rootElement = document.getElementById('root');
   if (!rootElement) throw new Error('Failed to find the root element');
   
-  // Remove placeholder when app loads
-  const placeholder = document.getElementById('hero-placeholder');
-  if (placeholder) {
-    placeholder.style.opacity = '0';
-    placeholder.style.transition = 'opacity 0.3s ease';
-    setTimeout(() => {
-      placeholder.remove();
-    }, 300);
-  }
-  
   const root = ReactDOM.createRoot(rootElement);
 
   // Render with error boundary
