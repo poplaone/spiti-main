@@ -1,11 +1,8 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Instagram, Facebook, MapPin, Mail, Phone, ChevronRight } from 'lucide-react';
-
 const Footer = () => {
   const navigate = useNavigate();
-  
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -15,14 +12,11 @@ const Footer = () => {
       });
     }
   };
-  
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     e.preventDefault();
     navigate(path);
   };
-  
-  return (
-    <footer className="text-white py-12 bg-neutral-950">
+  return <footer className="text-white py-12 bg-neutral-950">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -130,11 +124,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center">
                 <Phone className="mr-2 text-spiti-green" size={18} />
-                <span>+91 8353040008 / 8353010033</span>
+                <span>+91 8353040008 /  +91 7876163051</span>
               </li>
               <li className="flex items-center">
                 <Mail className="mr-2 text-spiti-green" size={18} />
-                <span>hello@spitivalleytravels.com</span>
+                <span>hello@spitivalleytravels.com - spitivalleytravels@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -148,8 +142,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
