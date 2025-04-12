@@ -50,23 +50,21 @@ const HeroContent = memo(({
         />
       </div>
       
-      {/* Pre-sized ratings badge container */}
-      <div className="mb-2 md:mb-3 h-[32px]" style={{ contain: 'size layout' }}>
+      {/* Google Rating Badge with fixed dimensions */}
+      <div className="mb-2 md:mb-3 flex justify-center">
         <GoogleRatingBadge />
       </div>
       
-      {/* Pre-sized heading container */}
+      {/* Heading with proper constraints */}
       <h1 
         className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-3 max-w-3xl font-normal leading-tight"
-        style={{ contain: 'layout paint', maxHeight: isMobile ? '4rem' : '6rem' }}
       >
         Spiti Valley Travels
       </h1>
       
-      {/* Simplified text with reduced paint complexity */}
+      {/* Simplified text */}
       <p 
         className="text-white text-sm md:text-base lg:text-lg max-w-xl font-medium mb-4 md:mb-6 px-4"
-        style={{ contain: 'content', maxHeight: isMobile ? '3rem' : '4rem' }}
       >
         Begin your Spiti adventure with us
       </p>
