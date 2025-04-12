@@ -24,7 +24,7 @@ const HeroContent = memo(({
           width={isMobile ? 96 : 160} 
           height={isMobile ? 96 : 160} 
           loading="eager"
-          fetchpriority="high"
+          fetchPriority="high"
         />
       </div>
       
