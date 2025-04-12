@@ -121,7 +121,12 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin className="mr-2 mt-1 text-spiti-green" size={18} />
-                <span>Quality Restaurant Building, 1st Floor, Main Bazar Chirgaon, Distt. Shimla, Himachal Pradesh</span>
+                <span>
+                  Ground Floor, Mehta Villa, Upper Khalini Chowk, Shimla, Himachal Pradesh
+                  <br />
+                  <br />
+                  Quality Restaurant Building, 1st Floor, Main Bazar Chirgaon, Distt. Shimla, Himachal Pradesh
+                </span>
               </li>
               <li className="flex items-center">
                 <Phone className="mr-2 text-spiti-green" size={18} />
