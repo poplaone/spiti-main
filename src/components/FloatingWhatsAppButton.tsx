@@ -14,15 +14,23 @@ const FloatingWhatsAppButton = () => {
   const buttonRef = useRef<HTMLDivElement>(null);
   const dragStartPosition = useRef<Position>({ x: 0, y: 0 });
   const isMobile = useIsMobile();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (buttonRef.current) {
       const viewportWidth = window.innerWidth;
-      const initialX = viewportWidth - buttonRef.current.offsetWidth - 20;
+      const initialX = viewportWidth - 70;
       const initialY = window.innerHeight - 120; // Position above the footer
       
       setPosition({ x: initialX, y: initialY });
       setInitialPosition({ x: initialX, y: initialY });
+      
+      // Add a small delay before showing the button to prevent layout shifts
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 300);
+      
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -94,12 +102,14 @@ const FloatingWhatsAppButton = () => {
   return (
     <div 
       ref={buttonRef}
-      className={`fixed z-50 ${isMobile ? '' : 'lg:block'}`}
+      className={`fixed z-50 ${isMobile ? '' : 'lg:block'} ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
         touchAction: 'none',
-        cursor: isDragging ? 'grabbing' : 'grab'
+        cursor: isDragging ? 'grabbing' : 'grab',
+        width: '56px',
+        height: '56px'
       }}
       onMouseDown={handleDragStart}
       onTouchStart={handleDragStart}

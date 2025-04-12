@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState, useCallback, memo, lazy, Suspense } from 'react';
+import { useEffect, useRef, useState, useCallback, memo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CarouselImages, { carouselImages } from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
@@ -19,6 +19,7 @@ const HeroCarousel = () => {
   const images = carouselImages;
   const isFirstRender = useRef(true);
   const isVisible = useRef(true);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -57,7 +58,7 @@ const HeroCarousel = () => {
       { threshold: 0.1 }
     );
     
-    const heroElement = document.querySelector('.hero-carousel');
+    const heroElement = heroRef.current;
     if (heroElement) {
       observer.observe(heroElement);
     }
@@ -80,7 +81,16 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gray-900 hero-carousel">
+    <div 
+      ref={heroRef}
+      className="relative w-full h-screen overflow-hidden bg-gray-900 hero-carousel"
+      style={{ 
+        height: '100vh', 
+        minHeight: isMobile ? '500px' : '600px',
+        // Set aspect ratio to prevent layout shift
+        aspectRatio: '16/9' 
+      }}
+    >
       <div className="w-full h-full">
         <MemoizedCarouselImages current={current} />
       </div>

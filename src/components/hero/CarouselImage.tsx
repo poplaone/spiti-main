@@ -25,8 +25,6 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         width={width}
         height={height}
         loading={index <= 1 ? "eager" : "lazy"}
-        fetchPriority={index === 0 ? "high" : "auto"}
-        decoding="async"
         className="w-full h-full object-cover"
       />
       <div className="absolute inset-0 bg-black opacity-40"></div>

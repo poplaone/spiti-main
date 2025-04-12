@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -139,6 +138,47 @@
     font-family: 'Playfair Display';
     font-display: swap;
   }
+}
+
+/* Anti-layout shift utility classes */
+.fixed-height-sm {
+  height: 24px;
+  min-height: 24px;
+}
+
+.fixed-height-md {
+  height: 32px;
+  min-height: 32px;
+}
+
+.fixed-height-lg {
+  height: 48px;
+  min-height: 48px;
+}
+
+.fixed-height-xl {
+  height: 64px;
+  min-height: 64px;
+}
+
+.fixed-width-sm {
+  width: 24px;
+  min-width: 24px;
+}
+
+.fixed-width-md {
+  width: 32px;
+  min-width: 32px;
+}
+
+.fixed-width-lg {
+  width: 48px;
+  min-width: 48px;
+}
+
+.fixed-width-xl {
+  width: 64px;
+  min-width: 64px;
 }
 
 /* Simplified animations for better performance */

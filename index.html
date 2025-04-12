@@ -18,6 +18,15 @@
     <!-- Favicon -->
     <link rel="icon" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" sizes="32x32" />
     
+    <!-- Preload critical resources -->
+    <link rel="preload" as="image" href="/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" fetchpriority="high" />
+    
+    <!-- Preconnect to key domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://ttyhfrbubjpmzruwwihd.supabase.co" crossorigin />
+    
     <!-- Inline critical CSS for faster rendering -->
     <style>
       /* Critical CSS for initial render */
@@ -39,6 +48,11 @@
         .hero-subtitle {font-size:1.125rem;margin-bottom:1.5rem;}
       }
       
+      /* Pre-dimensioned space for elements that cause layout shifts */
+      .rating-badge {height:32px;}
+      .hero-text-container {height:80px;}
+      .whatsapp-btn {width:56px;height:56px;position:fixed;bottom:80px;right:20px;z-index:50;opacity:0;transition:opacity 0.3s ease;}
+      
       /* Font display swap for better text rendering during load */
       @font-face {
         font-family: 'Montserrat';
@@ -50,7 +64,7 @@
       }
       
       /* Prevent Cumulative Layout Shift for images */
-      img {aspect-ratio: attr(width) / attr(height);display:block;}
+      img {display:block; max-width:100%;}
       
       /* Hero image placeholder */
       .hero-image-placeholder {
@@ -62,16 +76,19 @@
         filter: blur(10px);
         transform: scale(1.1);
       }
+      
+      /* Weather display placeholder */
+      .weather-placeholder {
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 24px;
+        top: 10px;
+        right: 10px;
+      }
     </style>
-    
-    <!-- Preload hero image -->
-    <link rel="preload" as="image" href="/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" fetchpriority="high" />
-    
-    <!-- Preconnect to key domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://ttyhfrbubjpmzruwwihd.supabase.co" crossorigin />
     
     <!-- Load fonts with correct display swap strategy -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
@@ -97,14 +114,22 @@
           src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
           width="160" 
           height="160" 
-          fetchpriority="high"
           loading="eager"
         />
+        <div class="rating-badge">
+          <!-- Google Rating badge placeholder -->
+        </div>
         <h1 class="hero-title">Spiti Valley Travels</h1>
-        <p class="hero-subtitle">Begin your Spiti adventure with us – your local guides to explore more...</p>
+        <div class="hero-text-container">
+          <p class="hero-subtitle">Begin your Spiti adventure with us – your local guides to explore more...</p>
+        </div>
       </div>
     </div>
     
+    <!-- Weather display placeholder to prevent layout shift -->
+    <div class="weather-placeholder"></div>
+    
+    <!-- Root app mount point -->
     <div id="root"></div>
     
     <script>
