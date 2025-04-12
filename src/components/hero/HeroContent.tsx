@@ -15,14 +15,14 @@ const HeroContent = memo(({
   
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4">
-      {/* Fixed dimensions for logo container to prevent layout shifts */}
-      <div className="w-12 h-12 md:w-16 md:h-16 mb-2 md:mb-4">
+      {/* Increased dimensions for logo container for better visibility */}
+      <div className="w-16 h-16 md:w-24 md:h-24 mb-2 md:mb-4">
         <img 
           alt="Spiti Valley Travels Logo" 
           className="w-full h-full object-contain" 
           src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
-          width={isMobile ? 48 : 64} 
-          height={isMobile ? 48 : 64} 
+          width={isMobile ? 64 : 96} 
+          height={isMobile ? 64 : 96} 
           loading="eager"
           fetchPriority="high"
         />
