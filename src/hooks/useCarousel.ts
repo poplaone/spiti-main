@@ -21,7 +21,7 @@ export function useCarousel(imagesLength: number) {
   useEffect(() => {
     if (isInitialLoad) {
       // Wait until after LCP before starting any animations
-      const initialTimer = window.setTimeout(() => {
+      const initialTimer = setTimeout(() => {
         setIsInitialLoad(false);
       }, 2500); // Wait for LCP to complete before transitions
       
@@ -42,14 +42,14 @@ export function useCarousel(imagesLength: number) {
     const interval = isMobile ? 30000 : 25000; // 30s on mobile, 25s on desktop
     
     // Defer carousel transitions to requestIdleCallback when available
-    if ('requestIdleCallback' in window) {
-      timeoutRef.current = window.setTimeout(() => {
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      timeoutRef.current = setTimeout(() => {
         window.requestIdleCallback(() => {
           setCurrent(prevIndex => (prevIndex + 1) % imagesLength);
         }, { timeout: 1000 });
       }, interval);
-    } else {
-      timeoutRef.current = window.setTimeout(() => 
+    } else if (typeof window !== 'undefined') {
+      timeoutRef.current = setTimeout(() => 
         setCurrent(prevIndex => (prevIndex + 1) % imagesLength), 
         interval
       );
