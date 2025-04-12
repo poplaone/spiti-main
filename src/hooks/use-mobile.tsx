@@ -11,14 +11,24 @@ export function useIsMobile() {
   
   // Use throttling to prevent excessive resize calculations
   const throttleTimeout = useRef<number | null>(null);
+  const lastWidth = useRef<number>(typeof window !== 'undefined' ? window.innerWidth : 0);
   
   const handleResize = useCallback(() => {
     if (throttleTimeout.current) return;
     
     throttleTimeout.current = window.setTimeout(() => {
-      setIsMobile(window.innerWidth < 768);
+      // Only update state if width crosses the breakpoint boundary
+      const currentWidth = window.innerWidth;
+      const wasMobile = lastWidth.current < 768;
+      const isMobileNow = currentWidth < 768;
+      
+      if (wasMobile !== isMobileNow) {
+        setIsMobile(isMobileNow);
+      }
+      
+      lastWidth.current = currentWidth;
       throttleTimeout.current = null;
-    }, 100); // Throttle resize events to once every 100ms
+    }, 150); // Increased throttle to 150ms for better performance
   }, []);
 
   useEffect(() => {

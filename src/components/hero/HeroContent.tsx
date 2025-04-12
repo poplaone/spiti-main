@@ -15,7 +15,7 @@ const HeroContent = memo(({
   
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4">
-      {/* Increased dimensions for logo container for better visibility */}
+      {/* Optimized logo for faster rendering */}
       <div className="w-16 h-16 md:w-24 md:h-24 mb-2 md:mb-4">
         <img 
           alt="Spiti Valley Travels Logo" 
@@ -25,20 +25,20 @@ const HeroContent = memo(({
           height={isMobile ? 64 : 96} 
           loading="eager"
           fetchPriority="high"
+          decoding="async"
         />
       </div>
       
-      {/* Google Ratings Badge - Fixed height to prevent shifts */}
-      <div className="mb-2 md:mb-3">
+      {/* Simplified Google Ratings Badge */}
+      <div className="mb-2 md:mb-3 h-[32px]">
         <GoogleRatingBadge />
       </div>
       
-      {/* Title with responsive sizing */}
+      {/* Simplified text content for faster rendering */}
       <h1 className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-3 max-w-3xl font-normal leading-tight">
         Spiti Valley Travels
       </h1>
       
-      {/* Subheading with responsive sizing */}
       <p className="text-white text-sm md:text-base lg:text-lg max-w-xl font-medium mb-4 md:mb-6 px-4">
         Begin your Spiti adventure with us – your local guides to explore more...
       </p>

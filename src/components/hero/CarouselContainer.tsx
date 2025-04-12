@@ -13,7 +13,7 @@ const CarouselContainer = memo(forwardRef<HTMLDivElement, CarouselContainerProps
       minHeight: heroHeight,
       maxHeight: '100vh', 
       width: '100%',
-      contain: 'layout size'
+      contain: 'layout size paint'
     };
 
     return (

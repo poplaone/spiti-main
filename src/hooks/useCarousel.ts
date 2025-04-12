@@ -17,7 +17,7 @@ export function useCarousel(imagesLength: number) {
     }
   }, []);
 
-  // Use a longer interval and only start rotation after initial render
+  // Optimize carousel rotation timing for better performance
   useEffect(() => {
     // Skip animation if not visible, or in prerender
     if (!isVisible.current || typeof window === 'undefined') {
@@ -33,13 +33,13 @@ export function useCarousel(imagesLength: number) {
         resetTimeout();
         
         // Set a longer timeout for better performance
-        const interval = isMobile ? 20000 : 15000; // 20 seconds on mobile, 15 seconds on desktop
+        const interval = isMobile ? 25000 : 20000; // 25 seconds on mobile, 20 seconds on desktop
         
         timeoutRef.current = window.setTimeout(() => 
           setCurrent(prevIndex => (prevIndex + 1) % imagesLength), 
           interval
         );
-      }, 3000); // 3 second delay on first load
+      }, 5000); // 5 second delay on first load for better LCP
       
       return resetTimeout;
     }
@@ -47,7 +47,7 @@ export function useCarousel(imagesLength: number) {
     resetTimeout();
     
     // Set a longer timeout for better performance
-    const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
+    const interval = isMobile ? 20000 : 15000; // 20 seconds on mobile, 15 seconds on desktop
     
     timeoutRef.current = window.setTimeout(() => 
       setCurrent(prevIndex => (prevIndex + 1) % imagesLength), 
@@ -59,7 +59,7 @@ export function useCarousel(imagesLength: number) {
 
   // Optimize visibility observer to pause animations when not visible
   useEffect(() => {
-    // Only run in browser
+    // Only run in browser with IntersectionObserver support
     if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
 
     const observer = new IntersectionObserver(
