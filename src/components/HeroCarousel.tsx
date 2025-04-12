@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState, useCallback, memo, lazy, Suspense } from 'react';
+import { useEffect, useRef, useState, useCallback, memo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CarouselImages, { carouselImages } from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
@@ -19,6 +19,7 @@ const HeroCarousel = () => {
   const images = carouselImages;
   const isFirstRender = useRef(true);
   const isVisible = useRef(true);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -50,23 +51,25 @@ const HeroCarousel = () => {
 
   // Add visibility check to pause animations when not visible
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible.current = entry.isIntersecting;
-      },
-      { threshold: 0.1 }
-    );
-    
-    const heroElement = document.querySelector('.hero-carousel');
-    if (heroElement) {
-      observer.observe(heroElement);
-    }
-    
-    return () => {
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible.current = entry.isIntersecting;
+        },
+        { threshold: 0.1 }
+      );
+      
+      const heroElement = heroRef.current;
       if (heroElement) {
-        observer.unobserve(heroElement);
+        observer.observe(heroElement);
       }
-    };
+      
+      return () => {
+        if (heroElement) {
+          observer.unobserve(heroElement);
+        }
+      };
+    }
   }, []);
 
   const scrollToDiscoverSection = useCallback(() => {
@@ -79,8 +82,20 @@ const HeroCarousel = () => {
     }
   }, []);
 
+  // Fixed dimensions for the hero container
+  const heroHeight = isMobile ? '500px' : '600px';
+
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gray-900 hero-carousel">
+    <div 
+      ref={heroRef}
+      className="relative w-full overflow-hidden bg-gray-900 hero-carousel"
+      style={{ 
+        height: '100vh', 
+        minHeight: heroHeight,
+        maxHeight: '100vh',
+        aspectRatio: '16/9' 
+      }}
+    >
       <div className="w-full h-full">
         <MemoizedCarouselImages current={current} />
       </div>
@@ -90,4 +105,4 @@ const HeroCarousel = () => {
   );
 };
 
-export default memo(HeroCarousel); // Memoize the entire component
+export default memo(HeroCarousel);

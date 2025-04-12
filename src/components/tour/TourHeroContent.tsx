@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Clock } from 'lucide-react';
 
 interface TourHeroContentProps {
@@ -10,13 +10,14 @@ interface TourHeroContentProps {
   };
 }
 
-const TourHeroContent: React.FC<TourHeroContentProps> = ({
+const TourHeroContent: React.FC<TourHeroContentProps> = memo(({
   title,
   duration
 }) => {
   return (
     <div className="max-w-3xl space-y-4 sm:space-y-6">
-      <h1 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-white leading-tight">
+      <h1 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-white leading-tight"
+          style={{ minHeight: '2.5rem', lineHeight: 1.2 }}>
         {title}
       </h1>
       
@@ -29,6 +30,7 @@ const TourHeroContent: React.FC<TourHeroContentProps> = ({
       </div>
     </div>
   );
-};
+});
 
+TourHeroContent.displayName = 'TourHeroContent';
 export default TourHeroContent;
