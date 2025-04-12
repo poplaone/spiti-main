@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -22,8 +23,17 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
   // Create date object for today
   const today = new Date();
   
+  // Add state to control popover open/close
+  const [open, setOpen] = useState(false);
+  
+  // Function to handle date selection and close the popover
+  const handleSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
+    setOpen(false); // Close the popover when a date is selected
+  };
+  
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
@@ -48,7 +58,7 @@ const DatePickerInput = ({ date, setDate, className, icon: Icon = CalendarIcon }
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleSelect}
           disabled={(date) => date < today}
           initialFocus
           className={cn("p-2 pointer-events-auto")}
