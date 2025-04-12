@@ -91,9 +91,9 @@
     font-display: swap;
   }
 
-  /* Restore the blue gradient background for all devices (both mobile and desktop) */
+  /* Image background for better performance */
   body {
-    background-image: linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop');
+    background-image: url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop');
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
@@ -104,16 +104,8 @@
     font-display: swap;
   }
   
-  /* Smooth transition for hero placeholder */
-  .hero-placeholder.fade-out {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
   /* Performance optimized image loading */
   img {
-    content-visibility: auto;
-    /* Prevent layout shifts */
-    display: block;
+    display: block; /* Prevent layout shifts */
   }
 }

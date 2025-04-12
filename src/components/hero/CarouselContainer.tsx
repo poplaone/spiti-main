@@ -23,16 +23,10 @@ const CarouselContainer = memo(forwardRef<HTMLDivElement, CarouselContainerProps
     return (
       <div 
         ref={ref}
-        className="relative w-full overflow-hidden bg-gray-900 hero-carousel content-visibility-auto"
+        className="relative w-full overflow-hidden bg-gray-900 hero-carousel"
         style={containerStyle}
         data-lcp-candidate="true" // Hint for performance monitoring
       >
-        {/* Add a placeholder that matches exact dimensions of hero */}
-        <div 
-          aria-hidden="true" 
-          className="absolute inset-0 bg-spiti-forest" 
-          style={{ minHeight: heroHeight }}
-        />
         {children}
       </div>
     );
