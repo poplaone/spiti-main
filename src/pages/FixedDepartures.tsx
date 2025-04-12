@@ -26,33 +26,33 @@ const FixedDepartures = () => {
     }}>
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-4">
+      {/* Hero Section - Reduced padding */}
+      <section className="relative pt-16 pb-6 md:pt-24 md:pb-8 px-4">
         <div className="container mx-auto text-center">
-          <h1 className="font-heading md:text-5xl lg:text-6xl text-white mb-6 drop-shadow-lg font-light text-2xl">
+          <h1 className="font-heading md:text-5xl lg:text-6xl text-white mb-4 drop-shadow-lg font-light text-2xl">
             Fixed Departure Tours
           </h1>
-          <p className="max-w-3xl mx-auto text-zinc-100 md:text-xl mb-8 text-lg font-light">
+          <p className="max-w-3xl mx-auto text-zinc-100 md:text-xl mb-4 text-lg font-light">
             Join our scheduled group tours to Spiti Valley on fixed dates with guaranteed departures
           </p>
         </div>
       </section>
       
-      {/* Fixed Departure Packages Section */}
-      <section className="py-16">
+      {/* Fixed Departure Packages Section - Reduced top padding */}
+      <section className="py-8">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-12">
+            <div className="flex flex-col items-center justify-center py-8">
               <Loader2 className="h-8 w-8 animate-spin text-spiti-forest" />
               <p className="mt-4 text-gray-600">Loading tour packages...</p>
             </div>
           ) : error ? (
-            <div className="text-center py-8 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
+            <div className="text-center py-6 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
               <p className="text-xl text-red-500">{error}</p>
               <p className="mt-2 text-gray-600">Please try again later or contact us for assistance.</p>
             </div>
           ) : fixedDepartureTours.length === 0 ? (
-            <div className="text-center py-8 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
+            <div className="text-center py-6 bg-white/50 backdrop-blur-sm rounded-lg shadow-md p-6">
               <p className="text-xl text-gray-600">No fixed departure tours available at the moment.</p>
               <p className="mt-2 text-gray-500">Please check back later or contact us to schedule a custom tour.</p>
             </div>
