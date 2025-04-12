@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
@@ -23,7 +23,6 @@ const renderApp = () => {
   // Create root outside of render call to avoid issues
   const rootElement = document.getElementById('root');
   if (!rootElement) throw new Error('Failed to find the root element');
-  
   const root = ReactDOM.createRoot(rootElement);
 
   // Render with error boundary
@@ -38,13 +37,10 @@ const renderApp = () => {
   );
 };
 
-// Use requestIdleCallback for non-critical initialization
-if (typeof window !== 'undefined') {
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    // If already interactive or complete, render immediately
-    renderApp();
-  } else {
-    // Add as high priority task but let browser finish parsing HTML first
-    window.addEventListener('DOMContentLoaded', renderApp);
-  }
+// Use requestIdleCallback for non-critical initialization if available
+if ('requestIdleCallback' in window) {
+  window.requestIdleCallback(renderApp);
+} else {
+  // Fallback for browsers that don't support requestIdleCallback
+  setTimeout(renderApp, 1);
 }

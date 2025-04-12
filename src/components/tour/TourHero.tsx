@@ -1,5 +1,5 @@
 
-import React, { memo } from 'react';
+import React from 'react';
 import { TourPackageProps } from '@/data/types/tourTypes';
 import TourHeroBadges from './TourHeroBadges';
 import TourHeroPrice from './TourHeroPrice';
@@ -15,7 +15,7 @@ interface TourHeroProps {
   isLoading?: boolean;
 }
 
-const TourHero: React.FC<TourHeroProps> = memo(({
+const TourHero: React.FC<TourHeroProps> = ({
   tour,
   selectedMonth,
   setSelectedMonth,
@@ -33,19 +33,15 @@ const TourHero: React.FC<TourHeroProps> = memo(({
   };
 
   return (
-    <section 
-      className="relative h-[80vh] sm:h-[70vh] mt-0" 
-      style={{
-        backgroundImage: `url(${heroImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        marginTop: '0',
-        paddingTop: '0',
-        aspectRatio: '16/9'
-      }}
-    >
+    <section className="relative h-[80vh] sm:h-[70vh] mt-0" style={{
+      backgroundImage: `url(${heroImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      marginTop: '0',
+      paddingTop: '0'
+    }}>
       {/* Background with Overlay */}
-      <TourHeroBackground heroImage={heroImage} />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
       
       <div className="container mx-auto px-4 h-full flex items-end sm:items-center pb-16 sm:pb-0 relative z-10">
         {/* Hero Content - Title and Duration */}
@@ -73,7 +69,6 @@ const TourHero: React.FC<TourHeroProps> = memo(({
       </div>
     </section>
   );
-});
+};
 
-TourHero.displayName = 'TourHero';
 export default TourHero;

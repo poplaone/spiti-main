@@ -2,11 +2,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 export function useIsMobile() {
-  // Initialize with proper mobile check (smaller breakpoint to catch more devices)
+  // Initialize state with a function to calculate the initial value only once
   const [isMobile, setIsMobile] = useState(() => {
     // Safe check for SSR
     if (typeof window === 'undefined') return true;
-    return window.innerWidth < 768;
+    return window.innerWidth < 769;
   });
   
   // Use throttling to prevent excessive resize calculations
@@ -16,7 +16,7 @@ export function useIsMobile() {
     if (throttleTimeout.current) return;
     
     throttleTimeout.current = window.setTimeout(() => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 769);
       throttleTimeout.current = null;
     }, 100); // Throttle resize events to once every 100ms
   }, []);

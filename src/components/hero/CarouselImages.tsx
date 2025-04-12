@@ -2,7 +2,7 @@
 import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
-// These images are now preloaded via <link rel="preload"> in index.html
+// Use the same optimized images for both mobile and desktop to avoid duplication
 const carouselImages = [
   {
     src: "/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png",
@@ -23,7 +23,7 @@ interface CarouselImagesProps {
 }
 
 const CarouselImages = memo(({ current }: CarouselImagesProps) => {
-  // Only render current and next image to reduce memory usage
+  // Render all images for immediate availability
   return (
     <>
       {carouselImages.map((img, index) => (

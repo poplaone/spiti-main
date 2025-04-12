@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,12 +38,19 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
+
     --sidebar-foreground: 240 5.3% 26.1%;
+
     --sidebar-primary: 240 5.9% 10%;
+
     --sidebar-primary-foreground: 0 0% 98%;
+
     --sidebar-accent: 240 4.8% 95.9%;
+
     --sidebar-accent-foreground: 240 5.9% 10%;
+
     --sidebar-border: 220 13% 91%;
+
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -89,8 +99,7 @@
   }
 
   body {
-    @apply text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    @apply text-foreground font-body;
     font-display: swap;
   }
 
@@ -103,7 +112,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    @apply font-heading;
     font-display: swap;
   }
   
@@ -119,47 +128,17 @@
     /* Prevent layout shifts */
     display: block;
   }
-}
-
-/* Anti-layout shift utility classes */
-.fixed-height-sm {
-  height: 24px;
-  min-height: 24px;
-}
-
-.fixed-height-md {
-  height: 32px;
-  min-height: 32px;
-}
-
-.fixed-height-lg {
-  height: 48px;
-  min-height: 48px;
-}
-
-.fixed-height-xl {
-  height: 64px;
-  min-height: 64px;
-}
-
-.fixed-width-sm {
-  width: 24px;
-  min-width: 24px;
-}
-
-.fixed-width-md {
-  width: 32px;
-  min-width: 32px;
-}
-
-.fixed-width-lg {
-  width: 48px;
-  min-width: 48px;
-}
-
-.fixed-width-xl {
-  width: 64px;
-  min-width: 64px;
+  
+  /* Font display swap for better text rendering during load */
+  @font-face {
+    font-family: 'Montserrat';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Playfair Display';
+    font-display: swap;
+  }
 }
 
 /* Simplified animations for better performance */

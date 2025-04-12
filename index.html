@@ -18,119 +18,65 @@
     <!-- Favicon -->
     <link rel="icon" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" sizes="32x32" />
     
-    <!-- Critical Resource Preloading - High Priority -->
-    <link rel="preload" as="image" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png" fetchpriority="high" />
-    <link rel="preload" as="image" href="/lovable-uploads/895a39e1-0ac0-46b3-b0b3-a2efbcaa3157.png" fetchpriority="high" />
-    
-    <!-- Preconnect to key domains -->
-    <link rel="preconnect" href="https://ttyhfrbubjpmzruwwihd.supabase.co" crossorigin />
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-    <link rel="dns-prefetch" href="https://images.unsplash.com" />
-    
-    <!-- Inline critical CSS enhanced for faster render -->
+    <!-- Inline critical CSS for faster rendering -->
     <style>
       /* Critical CSS for initial render */
       :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
+      body {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0;background-color:#f5f7fa;}
+      #root {display:flex;flex-direction:column;min-height:100vh;}
       
-      /* Base element styling */
-      body {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0;background-color:#f5f7fa;text-rendering:optimizeSpeed;-webkit-text-size-adjust:100%;line-height:1.5;color:#333;overflow-x:hidden;}
-      #root {display:flex;flex-direction:column;min-height:100vh;width:100%;}
-      h1, h2, h3, h4, h5, h6 {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-display:swap;margin:0;line-height:1.2;}
-      img {max-width:100%;display:block;content-visibility:auto;height:auto;}
-      
-      /* Set a solid background color first before any images for faster perceived load */
-      body {
-        background-color:#f0f4f8;
-      }
-      
-      /* Load background image with lower priority */
-      .bg-image-container {
-        position:fixed;
-        inset:0;
-        z-index:-1;
-        background-color:#f0f4f8;
-      }
-      
-      /* Optimize for fast hero section LCP with dimensions */
-      .hero-section {position:relative;min-height:100vh;color:white;width:100%;height:100vh;overflow:hidden;background-color:#f0f4f8;contain:layout size;}
+      /* Hero section styles for instant rendering */
+      .hero-section {position:relative;min-height:100vh;color:white;}
       .hero-content {position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;padding:1rem;}
       .hero-overlay {position:absolute;inset:0;background:rgba(0,0,0,0.4);}
       .hero-logo {margin-bottom:1rem;width:96px;height:96px;object-fit:contain;}
       .hero-title {font-size:2rem;margin-bottom:0.75rem;font-weight:300;max-width:48rem;}
       .hero-subtitle {margin-bottom:1rem;max-width:36rem;font-size:0.875rem;}
       
-      /* Header and navigation styles with content-visibility improvements */
-      .header {position:fixed;top:0;left:0;right:0;z-index:50;transition:background-color 0.3s ease;contain:layout style;content-visibility:auto;}
-      .header-transparent {background-color:transparent;}
-      .header-scrolled {background-color:rgba(22, 36, 36, 0.9);backdrop-filter:blur(8px);}
-      
-      /* Anti-layout shift utility classes */
-      .fixed-height-sm {height:24px;min-height:24px;max-height:24px;}
-      .fixed-height-md {height:32px;min-height:32px;max-height:32px;}
-      .fixed-height-lg {height:48px;min-height:48px;max-height:48px;}
-      .fixed-height-xl {height:64px;min-height:64px;max-height:64px;}
-      .fixed-width-sm {width:24px;min-width:24px;max-width:24px;}
-      .fixed-width-md {width:32px;min-width:32px;max-width:32px;}
-      .fixed-width-lg {width:48px;min-width:48px;max-width:48px;}
-      .fixed-width-xl {width:64px;min-width:64px;max-width:64px;}
-      
-      /* Responsive optimizations with sizing optimizations */
       @media (min-width: 768px) {
         .hero-logo {width:160px;height:160px;margin-bottom:1rem;}
         .hero-title {font-size:3.75rem;}
         .hero-subtitle {font-size:1.125rem;margin-bottom:1.5rem;}
       }
       
-      /* Pre-dimensioned spaces for elements that cause layout shifts - expanded */
-      .rating-badge {height:32px;min-height:32px;margin-bottom:0.5rem;display:flex;align-items:center;justify-content:center;}
-      .hero-text-container {height:80px;min-height:80px;display:flex;align-items:center;justify-content:center;}
-      
-      /* Buttons with dimensions to prevent CLS */
-      .btn-primary {
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        border-radius:0.375rem;
-        font-weight:500;
-        padding:0.5rem 1rem;
-        background-color:rgba(255,255,255,0.2);
-        color:white;
-        border:1px solid rgba(255,255,255,0.5);
-        cursor:pointer;
-        transition:background-color 0.2s;
-        height:40px;
-        min-width:120px;
+      /* Font display swap for better text rendering during load */
+      @font-face {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v25/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aXo.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
-      .btn-primary:hover {background-color:rgba(255,255,255,0.3);}
       
-      /* Tour packages section with contain property */
-      .tours-section {padding:2rem 1rem;contain:content;}
-      .tour-card {background-color:white;border-radius:0.5rem;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:transform 0.2s,box-shadow 0.2s;height:100%;}
-      .tour-card:hover {transform:translateY(-4px);box-shadow:0 10px 15px rgba(0,0,0,0.1);}
+      /* Prevent Cumulative Layout Shift for images */
+      img {aspect-ratio: attr(width) / attr(height);display:block;}
       
-      /* Layout stabilization for tour grid */
-      .tour-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;contain:layout style;}
-      .tour-card img {aspect-ratio:16/9;object-fit:cover;height:200px;}
-      
-      /* Mobile navigation with dimension controls */
-      .mobile-menu {position:fixed;top:0;right:0;bottom:0;width:300px;max-width:100%;background-color:rgba(0,24,40,0.95);transform:translateX(100%);transition:transform 0.3s ease;z-index:100;contain:layout;}
-      .mobile-menu.active {transform:translateX(0);}
-      
-      /* Content visibility optimization classes */
-      .content-visibility-auto {content-visibility:auto;contain-intrinsic-size:0 500px;}
-      
-      /* Fix for Safari rendering issues with fixed elements */
-      @supports (-webkit-overflow-scrolling: touch) {
-        .header {position:absolute;}
-        body {-webkit-overflow-scrolling:touch;}
+      /* Hero image placeholder */
+      .hero-image-placeholder {
+        position: absolute;
+        inset: 0;
+        background-image: url('/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png');
+        background-size: cover;
+        background-position: center;
+        filter: blur(10px);
+        transform: scale(1.1);
       }
     </style>
     
-    <!-- Defer main CSS to prevent render blocking -->
-    <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'" />
+    <!-- Preload hero image -->
+    <link rel="preload" as="image" href="/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" fetchpriority="high" />
+    
+    <!-- Preconnect to key domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://ttyhfrbubjpmzruwwihd.supabase.co" crossorigin />
+    
+    <!-- Load fonts with correct display swap strategy -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
     <noscript>
-      <link rel="stylesheet" href="/src/index.css" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" />
     </noscript>
   </head>
 
@@ -140,24 +86,43 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     
-    <!-- Root app mount point -->
+    <!-- Initial Hero Content for LCP optimization -->
+    <div id="hero-placeholder" class="hero-section">
+      <div class="hero-image-placeholder"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img 
+          alt="Spiti Valley Travels Logo" 
+          class="hero-logo" 
+          src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
+          width="160" 
+          height="160" 
+          fetchpriority="high"
+          loading="eager"
+        />
+        <h1 class="hero-title">Spiti Valley Travels</h1>
+        <p class="hero-subtitle">Begin your Spiti adventure with us – your local guides to explore more...</p>
+      </div>
+    </div>
+    
     <div id="root"></div>
     
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module" defer></script>
-    <script type="module" src="/src/main.tsx" defer></script>
-    
-    <!-- Improved background loading -->
     <script>
-      // Load background image after critical content
+      // Remove placeholder when app loads
       window.addEventListener('load', function() {
-        setTimeout(function() {
-          document.body.style.backgroundImage = "linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop')";
-          document.body.style.backgroundAttachment = "fixed";
-          document.body.style.backgroundSize = "cover";
-          document.body.style.backgroundPosition = "center";
-        }, 100);
+        const placeholder = document.getElementById('hero-placeholder');
+        if (placeholder) {
+          placeholder.style.opacity = '0';
+          placeholder.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            placeholder.remove();
+          }, 300);
+        }
       });
     </script>
+    
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
