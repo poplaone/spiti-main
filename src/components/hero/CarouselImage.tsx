@@ -21,10 +21,6 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
-      style={{ 
-        aspectRatio: `${width}/${height}`,
-        height: '100%'
-      }}
     >
       <img 
         src={src}
@@ -35,13 +31,12 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         fetchPriority={fetchPriority}
         className="w-full h-full object-cover"
         style={{
-          aspectRatio: `${width}/${height}`,
           objectFit: 'cover',
-          objectPosition: 'center'
+          objectPosition: 'center',
         }}
       />
-      {/* Use a separate div for overlay to avoid repaints on image load */}
-      <div className="absolute inset-0 bg-black opacity-40"></div>
+      {/* Darker overlay for better text visibility */}
+      <div className="absolute inset-0 bg-black opacity-50"></div>
     </div>
   );
 });

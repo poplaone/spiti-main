@@ -12,10 +12,7 @@ const CarouselContainer = memo(forwardRef<HTMLDivElement, CarouselContainerProps
       height: heroHeight, 
       minHeight: heroHeight,
       maxHeight: '100vh', 
-      aspectRatio: '16/9',
-      // Set explicit width to help browser calculate layout faster
       width: '100%',
-      // Prevent content-based layout shifts
       contain: 'layout size'
     };
 

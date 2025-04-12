@@ -19,8 +19,8 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Fixed dimensions for the hero container
-  const heroHeight = isMobile ? '500px' : '600px';
+  // Adjusted height for better mobile experience
+  const heroHeight = isMobile ? '100vh' : '100vh';
 
   return (
     <CarouselContainer ref={heroRef} heroHeight={heroHeight}>
