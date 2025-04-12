@@ -5,7 +5,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 export function useCarousel(imagesLength: number) {
   const [current, setCurrent] = useState(0);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const timeoutRef = useRef<number | null>(null);
+  // Update the type to accept NodeJS.Timeout | null instead of number | null
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isMobile = useIsMobile();
   const isVisible = useRef(true);
   const heroRef = useRef<HTMLDivElement>(null);
