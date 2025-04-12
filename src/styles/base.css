@@ -91,14 +91,12 @@
     font-display: swap;
   }
 
-  /* Mountain-themed background with a high-quality texture for both mobile and desktop */
+  /* Restore the blue gradient background for all devices (both mobile and desktop) */
   body {
-    background-image: url('/lovable-uploads/16460ec4-5967-4f69-8f5a-27e2188f6158.png'), linear-gradient(to bottom, rgba(28, 40, 56, 0.8), rgba(12, 20, 28, 0.9));
-    background-blend-mode: overlay;
+    background-image: linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop');
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
-    background-color: #1c2838; /* Fallback color */
   }
 
   h1, h2, h3, h4, h5, h6 {
