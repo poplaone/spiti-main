@@ -28,10 +28,10 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Use a longer interval on mobile to reduce resource usage
+  // Use a longer interval and only start rotation after initial render
   useEffect(() => {
-    // Skip animation if not visible or on first render
-    if (!isVisible.current || isFirstRender.current) {
+    // Skip animation if not visible, on first render, or in prerender
+    if (!isVisible.current || isFirstRender.current || typeof window === 'undefined') {
       isFirstRender.current = false;
       return;
     }
@@ -49,27 +49,32 @@ const HeroCarousel = () => {
     return resetTimeout;
   }, [current, images.length, resetTimeout, isMobile]);
 
-  // Add visibility check to pause animations when not visible
+  // Optimize visibility observer to pause animations when not visible
   useEffect(() => {
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          isVisible.current = entry.isIntersecting;
-        },
-        { threshold: 0.1 }
-      );
-      
-      const heroElement = heroRef.current;
-      if (heroElement) {
-        observer.observe(heroElement);
-      }
-      
-      return () => {
-        if (heroElement) {
-          observer.unobserve(heroElement);
+    // Only run in browser
+    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Only update if visibility changes
+        if (entries[0]?.isIntersecting !== isVisible.current) {
+          isVisible.current = !!entries[0]?.isIntersecting;
         }
-      };
+      },
+      { threshold: 0.1 }
+    );
+    
+    const heroElement = heroRef.current;
+    if (heroElement) {
+      observer.observe(heroElement);
     }
+    
+    return () => {
+      if (heroElement) {
+        observer.unobserve(heroElement);
+      }
+      observer.disconnect();
+    };
   }, []);
 
   const scrollToDiscoverSection = useCallback(() => {

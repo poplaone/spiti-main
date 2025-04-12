@@ -16,8 +16,8 @@ const TourHeroContent: React.FC<TourHeroContentProps> = memo(({
 }) => {
   return (
     <div className="max-w-3xl space-y-4 sm:space-y-6">
-      <h1 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-white leading-tight"
-          style={{ minHeight: '2.5rem', lineHeight: 1.2 }}>
+      <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white leading-tight fixed-height-lg sm:fixed-height-xl"
+          style={{ lineHeight: 1.2 }}>
         {title}
       </h1>
       

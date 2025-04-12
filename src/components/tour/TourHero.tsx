@@ -4,6 +4,7 @@ import { TourPackageProps } from '@/data/types/tourTypes';
 import TourHeroBadges from './TourHeroBadges';
 import TourHeroPrice from './TourHeroPrice';
 import TourHeroContent from './TourHeroContent';
+import TourHeroBackground from './TourHeroBackground';
 
 interface TourHeroProps {
   tour: TourPackageProps;
@@ -44,7 +45,7 @@ const TourHero: React.FC<TourHeroProps> = memo(({
       }}
     >
       {/* Background with Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
+      <TourHeroBackground heroImage={heroImage} />
       
       <div className="container mx-auto px-4 h-full flex items-end sm:items-center pb-16 sm:pb-0 relative z-10">
         {/* Hero Content - Title and Duration */}

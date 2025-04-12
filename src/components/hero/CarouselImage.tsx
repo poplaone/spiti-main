@@ -11,6 +11,10 @@ interface CarouselImageProps {
 }
 
 const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: CarouselImageProps) => {
+  // Preload the first two images, load the rest normally
+  const loadingPriority = index <= 1 ? "eager" : "lazy";
+  const fetchPriority = index === 0 ? "high" : "auto";
+  
   return (
     <div 
       className={`absolute inset-0 w-full h-full transform transition-opacity duration-1000 ${
@@ -27,7 +31,8 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         alt={alt}
         width={width}
         height={height}
-        loading={index <= 1 ? "eager" : "lazy"}
+        loading={loadingPriority}
+        fetchpriority={fetchPriority}
         className="w-full h-full object-cover"
         style={{
           aspectRatio: `${width}/${height}`,
@@ -35,6 +40,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
           objectPosition: 'center'
         }}
       />
+      {/* Use a separate div for overlay to avoid repaints on image load */}
       <div className="absolute inset-0 bg-black opacity-40"></div>
     </div>
   );
