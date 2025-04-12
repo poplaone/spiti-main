@@ -19,10 +19,29 @@ export function useCarousel(imagesLength: number) {
 
   // Use a longer interval and only start rotation after initial render
   useEffect(() => {
-    // Skip animation if not visible, on first render, or in prerender
-    if (!isVisible.current || isFirstRender.current || typeof window === 'undefined') {
-      isFirstRender.current = false;
+    // Skip animation if not visible, or in prerender
+    if (!isVisible.current || typeof window === 'undefined') {
       return;
+    }
+    
+    // On first render, wait longer before starting animations to prioritize initial content
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      
+      // Delay first transition to improve initial load performance
+      setTimeout(() => {
+        resetTimeout();
+        
+        // Set a longer timeout for better performance
+        const interval = isMobile ? 20000 : 15000; // 20 seconds on mobile, 15 seconds on desktop
+        
+        timeoutRef.current = window.setTimeout(() => 
+          setCurrent(prevIndex => (prevIndex + 1) % imagesLength), 
+          interval
+        );
+      }, 3000); // 3 second delay on first load
+      
+      return resetTimeout;
     }
     
     resetTimeout();

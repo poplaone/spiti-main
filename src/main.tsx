@@ -38,11 +38,13 @@ const renderApp = () => {
   );
 };
 
-// Use requestIdleCallback for non-critical initialization if available
+// Use requestIdleCallback for non-critical initialization
 if (typeof window !== 'undefined') {
-  if (document.readyState === 'complete') {
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    // If already interactive or complete, render immediately
     renderApp();
   } else {
-    window.addEventListener('load', renderApp);
+    // Add as high priority task but let browser finish parsing HTML first
+    window.addEventListener('DOMContentLoaded', renderApp);
   }
 }

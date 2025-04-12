@@ -11,13 +11,13 @@ interface CarouselImageProps {
 }
 
 const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: CarouselImageProps) => {
-  // Preload the first two images, load the rest normally
-  const loadingPriority = index <= 1 ? "eager" : "lazy";
-  const fetchPriority = index === 0 ? "high" : "auto";
+  // Only load the first image eagerly, load the rest on demand
+  const loadingPriority = index === 0 ? "eager" : "lazy";
+  const fetchPriority = index === 0 ? "high" as const : "auto" as const;
   
   return (
     <div 
-      className={`absolute inset-0 w-full h-full transform transition-opacity duration-1000 ${
+      className={`absolute inset-0 w-full h-full transform transition-opacity duration-700 ${
         isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
@@ -32,7 +32,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         width={width}
         height={height}
         loading={loadingPriority}
-        fetchPriority={fetchPriority as "high" | "low" | "auto"}
+        fetchPriority={fetchPriority}
         className="w-full h-full object-cover"
         style={{
           aspectRatio: `${width}/${height}`,

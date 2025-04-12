@@ -24,6 +24,8 @@ const HeroCarousel = () => {
 
   return (
     <CarouselContainer ref={heroRef} heroHeight={heroHeight}>
+      {/* Add a placeholder solid color background for fast initial render */}
+      <div className="w-full h-full bg-spiti-forest bg-opacity-20"></div>
       <div className="w-full h-full">
         <CarouselImages current={current} />
       </div>
