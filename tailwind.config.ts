@@ -79,10 +79,11 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Montserrat', 'system-ui', 'sans-serif'],
-        display: ['Playfair Display', 'Georgia', 'serif'],
-        heading: ['Raleway', 'system-ui', 'sans-serif'],
-        body: ['Lato', 'system-ui', 'sans-serif'],
+        // Replace custom fonts with system fonts
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        display: ['Georgia', 'Times', 'serif'],
+        heading: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        body: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
       },
       borderRadius: {
         lg: 'var(--radius)',
