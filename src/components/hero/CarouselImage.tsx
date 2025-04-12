@@ -17,10 +17,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
-      style={{ 
-        aspectRatio: `${width}/${height}`,
-        height: '100%'
-      }}
+      style={{ aspectRatio: `${width}/${height}` }}
     >
       <img 
         src={src}
@@ -29,11 +26,6 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         height={height}
         loading={index <= 1 ? "eager" : "lazy"}
         className="w-full h-full object-cover"
-        style={{
-          aspectRatio: `${width}/${height}`,
-          objectFit: 'cover',
-          objectPosition: 'center'
-        }}
       />
       <div className="absolute inset-0 bg-black opacity-40"></div>
     </div>

@@ -1,5 +1,4 @@
 
-import { memo } from 'react';
 import { Button } from "@/components/ui/button";
 import GoogleRatingBadge from './GoogleRatingBadge';
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -8,7 +7,7 @@ interface HeroContentProps {
   scrollToDiscoverSection: () => void;
 }
 
-const HeroContent = memo(({
+const HeroContent = ({
   scrollToDiscoverSection
 }: HeroContentProps) => {
   const isMobile = useIsMobile();
@@ -16,8 +15,7 @@ const HeroContent = memo(({
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-[-60px] md:mt-0">
       {/* Fixed dimensions for logo container to prevent layout shifts */}
-      <div className="w-24 h-24 md:w-40 md:h-40 mb-1 md:mb-4 mt-[-30px] md:mt-0"
-           style={{ width: isMobile ? '96px' : '160px', height: isMobile ? '96px' : '160px' }}>
+      <div className="w-24 h-24 md:w-40 md:h-40 mb-1 md:mb-4 mt-[-30px] md:mt-0">
         <img 
           alt="Spiti Valley Travels Logo" 
           className="w-full h-full object-contain" 
@@ -29,20 +27,17 @@ const HeroContent = memo(({
       </div>
       
       {/* Google Ratings Badge - Fixed height to prevent shifts */}
-      <div className="h-8 md:h-10 flex items-center justify-center" 
-           style={{ height: isMobile ? '32px' : '40px' }}>
+      <div className="h-8 md:h-10 flex items-center justify-center">
         <GoogleRatingBadge />
       </div>
       
       {/* Fixed height for title to prevent shifts */}
-      <h1 className="md:text-6xl font-display text-white mb-3 md:mb-4 max-w-3xl font-thin text-2xl h-8 md:h-16 flex items-center justify-center"
-          style={{ height: isMobile ? '32px' : '64px', fontSize: isMobile ? '24px' : '48px' }}>
+      <h1 className="md:text-6xl font-display text-white mb-3 md:mb-4 max-w-3xl font-thin text-2xl h-8 md:h-16 flex items-center justify-center">
         Spiti Valley Travels
       </h1>
       
       {/* Fixed height for subheading to prevent shifts */}
-      <div className="h-12 md:h-14 flex items-center justify-center mb-4 md:mb-6"
-           style={{ height: isMobile ? '48px' : '56px' }}>
+      <div className="h-12 md:h-14 flex items-center justify-center mb-4 md:mb-6">
         <p className="text-white text-sm md:text-lg max-w-xl font-medium">
           Begin your Spiti adventure with us – your local guides to explore more...
         </p>
@@ -53,7 +48,6 @@ const HeroContent = memo(({
       </Button>
     </div>
   );
-});
+};
 
-HeroContent.displayName = 'HeroContent';
 export default HeroContent;

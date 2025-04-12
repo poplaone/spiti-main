@@ -51,25 +51,23 @@ const HeroCarousel = () => {
 
   // Add visibility check to pause animations when not visible
   useEffect(() => {
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          isVisible.current = entry.isIntersecting;
-        },
-        { threshold: 0.1 }
-      );
-      
-      const heroElement = heroRef.current;
-      if (heroElement) {
-        observer.observe(heroElement);
-      }
-      
-      return () => {
-        if (heroElement) {
-          observer.unobserve(heroElement);
-        }
-      };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible.current = entry.isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+    
+    const heroElement = heroRef.current;
+    if (heroElement) {
+      observer.observe(heroElement);
     }
+    
+    return () => {
+      if (heroElement) {
+        observer.unobserve(heroElement);
+      }
+    };
   }, []);
 
   const scrollToDiscoverSection = useCallback(() => {
@@ -82,17 +80,14 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Fixed dimensions for the hero container
-  const heroHeight = isMobile ? '500px' : '600px';
-
   return (
     <div 
       ref={heroRef}
-      className="relative w-full overflow-hidden bg-gray-900 hero-carousel"
+      className="relative w-full h-screen overflow-hidden bg-gray-900 hero-carousel"
       style={{ 
         height: '100vh', 
-        minHeight: heroHeight,
-        maxHeight: '100vh',
+        minHeight: isMobile ? '500px' : '600px',
+        // Set aspect ratio to prevent layout shift
         aspectRatio: '16/9' 
       }}
     >
@@ -105,4 +100,4 @@ const HeroCarousel = () => {
   );
 };
 
-export default memo(HeroCarousel);
+export default memo(HeroCarousel); // Memoize the entire component

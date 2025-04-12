@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
@@ -38,8 +38,9 @@ const renderApp = () => {
 };
 
 // Use requestIdleCallback for non-critical initialization if available
-if (document.readyState === 'complete') {
-  renderApp();
+if ('requestIdleCallback' in window) {
+  window.requestIdleCallback(renderApp);
 } else {
-  window.addEventListener('load', renderApp);
+  // Fallback for browsers that don't support requestIdleCallback
+  setTimeout(renderApp, 1);
 }

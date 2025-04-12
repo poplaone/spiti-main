@@ -1,7 +1,5 @@
 
-import { memo } from 'react';
-
-const GoogleRatingBadge = memo(() => {
+const GoogleRatingBadge = () => {
   return (
     <div className="flex items-center gap-1 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
       {/* Ultra-simplified Google Icon as inline SVG */}
@@ -19,7 +17,6 @@ const GoogleRatingBadge = memo(() => {
       <span className="text-white/90 text-xs">on Google ratings</span>
     </div>
   );
-});
+};
 
-GoogleRatingBadge.displayName = 'GoogleRatingBadge';
 export default GoogleRatingBadge;
