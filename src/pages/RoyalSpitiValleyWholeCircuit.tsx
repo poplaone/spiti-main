@@ -1,30 +1,49 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import BaseTourDetailPage from "@/components/tour/BaseTourDetailPage";
 import { useToursContext } from '@/context/ToursContext';
+import usePerformanceMetrics from '@/hooks/usePerformanceMetrics';
+
+// Preloaded image path for instant display
+const fallbackImage = "/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png";
 
 const RoyalSpitiValleyWholeCircuit = () => {
   const { tours } = useToursContext();
+  const { markStart, markEnd } = usePerformanceMetrics();
+  const [heroImage, setHeroImage] = useState(fallbackImage);
   
-  // Look for the tour with the exact title or with variations of the name
-  const tour = tours.find(t => 
-    t.title === "ROYAL SPITI VALLEY WHOLE CIRCUIT" || 
-    t.title === "ROYAL SPITI VALLEY (WHOLE CIRCUIT)"
+  // Use memo to avoid recomputing on every render
+  const tour = useMemo(() => 
+    tours.find(t => 
+      t.title === "ROYAL SPITI VALLEY WHOLE CIRCUIT" || 
+      t.title === "ROYAL SPITI VALLEY (WHOLE CIRCUIT)"
+    ), 
+    [tours]
   );
   
-  // Debug logging to see what's happening
+  // Mark performance metrics for component rendering
   useEffect(() => {
-    if (tours.length > 0) {
-      console.log("Available tours:", tours.map(t => ({ id: t.id, title: t.title })));
-      console.log("Found Royal Spiti Valley tour:", tour);
+    markStart('royal-spiti-render');
+    
+    if (tour?.image) {
+      // Only update image if we found a tour with an image
+      setHeroImage(tour.image);
     }
-  }, [tours, tour]);
+    
+    return () => {
+      // Measure render performance when component unmounts
+      const duration = markEnd('royal-spiti-render');
+      if (duration) {
+        console.info(`Royal Spiti Valley page render time: ${duration.toFixed(2)}ms`);
+      }
+    };
+  }, [tour, markStart, markEnd]);
   
   return (
     <BaseTourDetailPage 
       tourId={tour?.id}
       tourType="unexplored"
-      heroImage={tour?.image || "/lovable-uploads/c55ecde9-4eb8-4cfb-b626-4c5b1036b4b9.png"}
+      heroImage={heroImage}
     />
   );
 };

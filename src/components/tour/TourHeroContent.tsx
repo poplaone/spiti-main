@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Clock } from 'lucide-react';
 
 interface TourHeroContentProps {
@@ -10,25 +10,27 @@ interface TourHeroContentProps {
   };
 }
 
-const TourHeroContent: React.FC<TourHeroContentProps> = ({
+// Memoize the component to prevent unnecessary re-renders
+const TourHeroContent = memo(({
   title,
   duration
-}) => {
+}: TourHeroContentProps) => {
   return (
     <div className="max-w-3xl space-y-4 sm:space-y-6">
       <h1 className="text-2xl sm:text-3xl md:text-5xl font-heading font-bold text-white leading-tight">
         {title}
       </h1>
       
-      {/* Tour duration info */}
+      {/* Tour duration info - simplified for better performance */}
       <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-5 text-white">
         <div className="flex items-center">
-          <Clock className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-spiti-blue" />
+          <Clock className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-spiti-blue" strokeWidth={2.5} />
           <span className="text-sm sm:text-base">{duration.nights} Nights / {duration.days} Days</span>
         </div>
       </div>
     </div>
   );
-};
+});
 
+TourHeroContent.displayName = 'TourHeroContent';
 export default TourHeroContent;

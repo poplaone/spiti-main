@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { TourPackageProps } from '@/data/types/tourTypes';
 import TourHeroBadges from './TourHeroBadges';
 import TourHeroPrice from './TourHeroPrice';
@@ -15,13 +15,14 @@ interface TourHeroProps {
   isLoading?: boolean;
 }
 
-const TourHero: React.FC<TourHeroProps> = ({
+// Memoize the component to prevent unnecessary re-renders
+const TourHero = memo(({
   tour,
   selectedMonth,
   setSelectedMonth,
   formatPrice,
   heroImage = "https://images.unsplash.com/photo-1580289143186-03f54224aad6?w=1200&q=80"
-}) => {
+}: TourHeroProps) => {
   // Function to scroll to itinerary section
   const scrollToItinerary = () => {
     const itinerarySection = document.querySelector('.tour-itinerary');
@@ -40,8 +41,8 @@ const TourHero: React.FC<TourHeroProps> = ({
       marginTop: '0',
       paddingTop: '0'
     }}>
-      {/* Background with Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
+      {/* Apply background overlay */}
+      <TourHeroBackground heroImage={heroImage} />
       
       <div className="container mx-auto px-4 h-full flex items-end sm:items-center pb-16 sm:pb-0 relative z-10">
         {/* Hero Content - Title and Duration */}
@@ -69,6 +70,7 @@ const TourHero: React.FC<TourHeroProps> = ({
       </div>
     </section>
   );
-};
+});
 
+TourHero.displayName = 'TourHero';
 export default TourHero;

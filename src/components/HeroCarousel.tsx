@@ -15,11 +15,16 @@ const HeroCarousel = () => {
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
   
-  // Use the carouselImages directly instead of separate desktop/mobile sets
+  // Directly reference carouselImages instead of computing it
   const images = carouselImages;
   const isFirstRender = useRef(true);
-  const isVisible = useRef(true);
   const heroRef = useRef<HTMLDivElement>(null);
+  
+  // Track if component is visible to pause animations when not visible
+  const isVisible = useRef(true);
+  
+  // Only run carousel when in viewport
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -28,47 +33,56 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Use a longer interval on mobile to reduce resource usage
+  // Use intersection observer to only animate when visible
   useEffect(() => {
-    // Skip animation if not visible or on first render
-    if (!isVisible.current || isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    
-    resetTimeout();
-    
-    // Set a longer timeout for better performance
-    const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
-    
-    timeoutRef.current = window.setTimeout(() => 
-      setCurrent(prevIndex => (prevIndex + 1) % images.length), 
-      interval
-    );
-    
-    return resetTimeout;
-  }, [current, images.length, resetTimeout, isMobile]);
-
-  // Add visibility check to pause animations when not visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
+    observerRef.current = new IntersectionObserver(
       ([entry]) => {
         isVisible.current = entry.isIntersecting;
+        // Only start carousel when visible
+        if (entry.isIntersecting && timeoutRef.current === null) {
+          resetTimeout();
+          
+          // Use a longer interval for better performance
+          const interval = isMobile ? 15000 : 12000;
+          
+          timeoutRef.current = window.setTimeout(() => 
+            setCurrent(prev => (prev + 1) % images.length), 
+            interval
+          );
+        } else if (!entry.isIntersecting) {
+          resetTimeout();
+        }
       },
       { threshold: 0.1 }
     );
     
     const heroElement = heroRef.current;
-    if (heroElement) {
-      observer.observe(heroElement);
+    if (heroElement && observerRef.current) {
+      observerRef.current.observe(heroElement);
     }
     
     return () => {
-      if (heroElement) {
-        observer.unobserve(heroElement);
+      if (heroElement && observerRef.current) {
+        observerRef.current.unobserve(heroElement);
       }
+      resetTimeout();
     };
-  }, []);
+  }, [images.length, isMobile, resetTimeout]);
+
+  // Start carousel on first render
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      // Initial timeout to start carousel
+      const interval = isMobile ? 15000 : 12000;
+      timeoutRef.current = window.setTimeout(() => 
+        setCurrent(prev => (prev + 1) % images.length), 
+        interval
+      );
+    }
+    
+    return resetTimeout;
+  }, [current, images.length, resetTimeout, isMobile]);
 
   const scrollToDiscoverSection = useCallback(() => {
     const element = document.querySelector('#discover-spiti-valley');
@@ -87,8 +101,8 @@ const HeroCarousel = () => {
       style={{ 
         height: '100vh', 
         minHeight: isMobile ? '500px' : '600px',
-        // Set aspect ratio to prevent layout shift
-        aspectRatio: '16/9' 
+        // Set fixed dimensions to prevent layout shifts
+        aspectRatio: '16/9'
       }}
     >
       <div className="w-full h-full">
@@ -100,4 +114,4 @@ const HeroCarousel = () => {
   );
 };
 
-export default memo(HeroCarousel); // Memoize the entire component
+export default memo(HeroCarousel);
