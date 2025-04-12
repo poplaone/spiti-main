@@ -14,7 +14,7 @@ const queryClient = new QueryClient({
       staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 1,
       gcTime: 10 * 60 * 1000, // 10 minutes
-      suspense: false // Disable suspense for better initial load
+      // Remove the suspense property as it's not supported in the current version
     }
   }
 });
