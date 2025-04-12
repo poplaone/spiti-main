@@ -14,19 +14,28 @@ const CustomizableTours = () => {
   const customizableTours = tours.filter(tour => tour.isCustomizable === true);
   
   useEffect(() => {
+    // Scroll to top on page load
     window.scrollTo(0, 0);
+    
+    // Preload key images for this page
+    if (typeof window !== 'undefined') {
+      const preloadBackgroundImage = new Image();
+      preloadBackgroundImage.src = 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1280&auto=format&fit=crop';
+    }
   }, []);
   
   return (
     <div className="min-h-screen" style={{
-      backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop')`,
+      backgroundImage: `linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1280&auto=format&fit=crop')`,
       backgroundAttachment: 'fixed',
       backgroundSize: 'cover',
-      backgroundPosition: 'center'
+      backgroundPosition: 'center',
+      // Add contain property to optimize layout calculations
+      contain: 'paint'
     }}>
       <Header />
       
-      {/* Hero Section */}
+      {/* Hero Section with fixed dimensions to prevent CLS */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-4">
         <div className="container mx-auto text-center">
           <h1 className="font-heading md:text-5xl lg:text-6xl text-white mb-6 drop-shadow-lg font-light text-2xl">
@@ -38,7 +47,7 @@ const CustomizableTours = () => {
         </div>
       </section>
       
-      {/* Customizable Packages Section */}
+      {/* Customizable Packages Section with content-visibility optimization */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           {loading ? (
@@ -57,7 +66,9 @@ const CustomizableTours = () => {
               <p className="mt-2 text-gray-500">Please check back later or contact us for assistance.</p>
             </div>
           ) : (
-            <TourPackageGrid packages={customizableTours} />
+            <div style={{ contentVisibility: 'auto', containIntrinsicSize: '1000px' }}>
+              <TourPackageGrid packages={customizableTours} />
+            </div>
           )}
         </div>
       </section>
