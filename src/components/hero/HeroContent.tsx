@@ -12,14 +12,25 @@ const HeroContent = memo(({
   scrollToDiscoverSection
 }: HeroContentProps) => {
   const isMobile = useIsMobile();
-  const [isVisible, setIsVisible] = useState(true); // Set to true by default to avoid flicker
+  const [isVisible, setIsVisible] = useState(false);
+  
+  // Fade in content after a short delay to prioritize image LCP
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 50);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   // Optimized logo dimensions for faster loading
   const logoSize = isMobile ? 64 : 96;
   
   return (
     <div 
-      className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4"
+      className={`absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 transition-opacity duration-300 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
       style={{ willChange: 'opacity' }}
     >
       {/* Pre-sized logo container to prevent layout shifts */}
@@ -34,6 +45,7 @@ const HeroContent = memo(({
           width={logoSize} 
           height={logoSize} 
           loading="eager"
+          fetchPriority="high"
           decoding="async"
         />
       </div>

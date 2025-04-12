@@ -20,6 +20,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
   
   // Determine loading priority
   const loadingPriority = index === 0 ? "eager" : "lazy";
+  const fetchPriority = index === 0 ? "high" as const : "auto" as const;
   
   // Handle visibility updates with a slight delay to prioritize first image
   useEffect(() => {
@@ -56,7 +57,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
             width={width}
             height={height}
             loading={loadingPriority}
-            // Removed fetchPriority which was causing warnings
+            fetchPriority={fetchPriority}
             decoding="async"
             onLoad={() => setLoaded(true)}
             className="w-full h-full object-cover"
