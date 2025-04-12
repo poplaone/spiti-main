@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import Logo from './header/Logo';
 import DesktopMenu from './header/DesktopMenu';
 import MobileMenu from './header/MobileMenu';
-import WeatherDisplay from './weather/WeatherDisplay';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToursContext } from '@/context/ToursContext';
 import { useTourFilters } from '@/hooks/useTourFilters';
@@ -18,7 +17,6 @@ interface HeaderProps {
 const MemoizedLogo = memo(Logo);
 const MemoizedDesktopMenu = memo(DesktopMenu);
 const MemoizedMobileMenu = memo(MobileMenu);
-const MemoizedWeatherDisplay = memo(WeatherDisplay);
 
 const Header = ({ scrollToPackages }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -85,13 +83,6 @@ const Header = ({ scrollToPackages }: HeaderProps) => {
             isTourPage={isTourPage} 
             isHomePage={isHomePage}
           />
-
-          {/* Weather Display - Only display on mobile devices */}
-          {isMobile && (
-            <div className="absolute left-1/2 transform -translate-x-1/2">
-              <MemoizedWeatherDisplay />
-            </div>
-          )}
 
           {/* Desktop Menu - only render when needed */}
           {!isMobile && (
