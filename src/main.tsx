@@ -1,33 +1,39 @@
 
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { ToursProvider } from './context/ToursContext';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Optimize query client settings for better performance
+// Create query client with optimized settings
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      staleTime: 10 * 60 * 1000, // 10 minutes
+      staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 1,
-      gcTime: 15 * 60 * 1000, // 15 minutes
-      networkMode: 'offlineFirst' // Prioritize cached data first
+      gcTime: 10 * 60 * 1000, // 10 minutes
     }
   }
 });
 
-// Use an IIFE for immediate execution without waiting for idle callback
-(function() {
-  // Create root outside of render call to avoid issues
+// Use requestIdleCallback for non-critical initialization
+const init = () => {
   const rootElement = document.getElementById('root');
   if (!rootElement) throw new Error('Failed to find the root element');
+  
   const root = ReactDOM.createRoot(rootElement);
-
-  // Render with Error Boundary and without StrictMode in production
-  // StrictMode causes double rendering which impacts performance metrics
+  
+  // Remove hero placeholder after hydration
+  const placeholder = document.getElementById('hero-placeholder');
+  if (placeholder) {
+    placeholder.style.opacity = '0';
+    placeholder.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => placeholder.remove(), 300);
+  }
+  
+  // Render without StrictMode in production for better performance
   root.render(
     process.env.NODE_ENV === 'development' ? (
       <React.StrictMode>
@@ -45,4 +51,7 @@ const queryClient = new QueryClient({
       </QueryClientProvider>
     )
   );
-})();
+};
+
+// Execute immediately without waiting for idle callback
+init();

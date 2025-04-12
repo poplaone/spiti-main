@@ -13,15 +13,16 @@ interface CarouselImageProps {
 const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: CarouselImageProps) => {
   const [isLoaded, setIsLoaded] = useState(index === 0); // Consider first image as pre-loaded
   
+  // Return null for non-current images after the first few to reduce DOM nodes
+  if (!isCurrent && index > 2) return null;
+  
   return (
     <div 
-      className={`absolute inset-0 w-full h-full transform transition-opacity duration-500 ${
+      className={`absolute inset-0 w-full h-full transform transition-opacity duration-300 ${
         isCurrent ? 'opacity-100' : 'opacity-0'
       }`}
       aria-hidden={!isCurrent}
-      style={{ aspectRatio: `${width}/${height}` }}
     >
-      {/* Simplified rendering approach with better performance characteristics */}
       <img 
         src={src}
         alt={alt}
@@ -33,8 +34,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         onLoad={() => setIsLoaded(true)}
         className={`w-full h-full object-cover ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
       />
-      {/* Only add overlay if loaded to prevent unnecessary repaints */}
-      {isLoaded && <div className="absolute inset-0 bg-black opacity-30"></div>}
+      {isLoaded && isCurrent && <div className="absolute inset-0 bg-black opacity-20"></div>}
     </div>
   );
 });

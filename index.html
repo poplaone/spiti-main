@@ -90,7 +90,7 @@
       }
     </style>
     
-    <!-- Load fonts with correct display swap strategy -->
+    <!-- Load fonts asynchronously with display swap -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" />
@@ -131,20 +131,6 @@
     
     <!-- Root app mount point -->
     <div id="root"></div>
-    
-    <script>
-      // Remove placeholder when app loads
-      window.addEventListener('load', function() {
-        const placeholder = document.getElementById('hero-placeholder');
-        if (placeholder) {
-          placeholder.style.opacity = '0';
-          placeholder.style.transition = 'opacity 0.3s ease';
-          setTimeout(() => {
-            placeholder.remove();
-          }, 300);
-        }
-      });
-    </script>
     
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>

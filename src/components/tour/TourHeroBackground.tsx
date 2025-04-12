@@ -9,11 +9,11 @@ interface TourHeroBackgroundProps {
 const TourHeroBackground: React.FC<TourHeroBackgroundProps> = memo(({ heroImage }) => {
   return (
     <>
-      {/* Optimized gradient overlay - simplified for better performance */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/30"></div>
+      {/* Simplified overlay with reduced CSS complexity */}
+      <div className="absolute inset-0 bg-black/50"></div>
       
-      {/* Bottom gradient for better text readability */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/70 to-transparent"></div>
+      {/* Bottom gradient for better text readability - simplified */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 to-transparent"></div>
     </>
   );
 });

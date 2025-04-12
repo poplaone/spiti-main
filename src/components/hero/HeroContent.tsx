@@ -14,8 +14,8 @@ const HeroContent = ({
   
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 mt-[-60px] md:mt-0">
-      {/* Fixed dimensions for logo container to prevent layout shifts */}
-      <div className="w-24 h-24 md:w-40 md:h-40 mb-1 md:mb-4 mt-[-30px] md:mt-0">
+      {/* Fixed dimensions for logo container */}
+      <div className="w-24 h-24 md:w-40 md:h-40 mb-1 md:mb-2">
         <img 
           alt="Spiti Valley Travels Logo" 
           className="w-full h-full object-contain" 
@@ -23,27 +23,33 @@ const HeroContent = ({
           width={isMobile ? 96 : 160} 
           height={isMobile ? 96 : 160} 
           loading="eager"
+          fetchPriority="high"
+          decoding="sync"
         />
       </div>
       
-      {/* Google Ratings Badge - Fixed height to prevent shifts */}
-      <div className="h-8 md:h-10 flex items-center justify-center">
+      {/* Google Ratings Badge - Fixed height */}
+      <div className="h-8 flex items-center justify-center">
         <GoogleRatingBadge />
       </div>
       
-      {/* Fixed height for title to prevent shifts */}
-      <h1 className="md:text-6xl font-display text-white mb-3 md:mb-4 max-w-3xl font-thin text-2xl h-8 md:h-16 flex items-center justify-center">
+      {/* Fixed height for title */}
+      <h1 className="md:text-5xl text-white mb-2 max-w-2xl font-thin text-2xl h-8 md:h-14 flex items-center justify-center">
         Spiti Valley Travels
       </h1>
       
-      {/* Fixed height for subheading to prevent shifts */}
-      <div className="h-12 md:h-14 flex items-center justify-center mb-4 md:mb-6">
-        <p className="text-white text-sm md:text-lg max-w-xl font-medium">
+      {/* Fixed height for subheading */}
+      <div className="h-10 flex items-center justify-center mb-4">
+        <p className="text-white text-sm md:text-base max-w-lg">
           Begin your Spiti adventure with us – your local guides to explore more...
         </p>
       </div>
       
-      <Button variant="outline" className="bg-transparent border border-white text-white hover:bg-white/20 mt-1" onClick={scrollToDiscoverSection}>
+      <Button 
+        variant="outline" 
+        className="bg-transparent border border-white text-white hover:bg-white/20" 
+        onClick={scrollToDiscoverSection}
+      >
         Explore Tours
       </Button>
     </div>

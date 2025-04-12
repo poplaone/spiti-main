@@ -1,52 +1,41 @@
 
-import { useEffect, useRef, useState, useCallback, memo } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import CarouselImages, { carouselImages } from './hero/CarouselImages';
+import CarouselImages from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
 import HeroContent from './hero/HeroContent';
-
-// Memoize components for better performance
-const MemoizedCarouselImages = memo(CarouselImages);
-const MemoizedCarouselIndicators = memo(CarouselIndicators);
-const MemoizedHeroContent = memo(HeroContent);
+import { carouselImages } from './hero/CarouselImages';
 
 const HeroCarousel = () => {
   const [current, setCurrent] = useState(0);
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
-  
-  // Directly reference carouselImages instead of computing it
-  const images = carouselImages;
-  const isFirstRender = useRef(true);
   const heroRef = useRef<HTMLDivElement>(null);
   
   // Track if component is visible to pause animations when not visible
   const isVisible = useRef(true);
-  
-  // Only run carousel when in viewport
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  const resetTimeout = useCallback(() => {
+  const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
-  }, []);
+  };
 
   // Use intersection observer to only animate when visible
   useEffect(() => {
+    // Skip animation setup for first render to prioritize initial paint
+    if (document.readyState !== 'complete') return;
+    
     observerRef.current = new IntersectionObserver(
       ([entry]) => {
         isVisible.current = entry.isIntersecting;
-        // Only start carousel when visible
         if (entry.isIntersecting && timeoutRef.current === null) {
           resetTimeout();
-          
-          // Use a longer interval for better performance
-          const interval = isMobile ? 15000 : 12000;
-          
+          const interval = 15000; // Longer interval for better performance
           timeoutRef.current = window.setTimeout(() => 
-            setCurrent(prev => (prev + 1) % images.length), 
+            setCurrent(prev => (prev + 1) % carouselImages.length), 
             interval
           );
         } else if (!entry.isIntersecting) {
@@ -67,24 +56,32 @@ const HeroCarousel = () => {
       }
       resetTimeout();
     };
-  }, [images.length, isMobile, resetTimeout]);
+  }, []);
 
-  // Start carousel on first render
+  // Start carousel after the page is fully loaded
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      // Initial timeout to start carousel
-      const interval = isMobile ? 15000 : 12000;
+    const handleLoad = () => {
+      const interval = 15000;
       timeoutRef.current = window.setTimeout(() => 
-        setCurrent(prev => (prev + 1) % images.length), 
+        setCurrent(prev => (prev + 1) % carouselImages.length), 
         interval
       );
+    };
+    
+    // Defer carousel start until page is fully loaded
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad, { once: true });
     }
     
-    return resetTimeout;
-  }, [current, images.length, resetTimeout, isMobile]);
+    return () => {
+      window.removeEventListener('load', handleLoad);
+      resetTimeout();
+    };
+  }, []);
 
-  const scrollToDiscoverSection = useCallback(() => {
+  const scrollToDiscoverSection = () => {
     const element = document.querySelector('#discover-spiti-valley');
     if (element) {
       element.scrollIntoView({ 
@@ -92,24 +89,19 @@ const HeroCarousel = () => {
         block: 'start'
       });
     }
-  }, []);
+  };
 
   return (
     <div 
       ref={heroRef}
-      className="relative w-full h-screen overflow-hidden bg-gray-900 hero-carousel"
-      style={{ 
-        height: '100vh', 
-        minHeight: isMobile ? '500px' : '600px',
-        // Set fixed dimensions to prevent layout shifts
-        aspectRatio: '16/9'
-      }}
+      className="relative w-full h-screen overflow-hidden bg-gray-900"
+      style={{ height: '100vh', minHeight: isMobile ? '500px' : '600px' }}
     >
       <div className="w-full h-full">
-        <MemoizedCarouselImages current={current} />
+        <CarouselImages current={current} />
       </div>
-      <MemoizedHeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      <MemoizedCarouselIndicators images={images} current={current} setCurrent={setCurrent} />
+      <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
+      <CarouselIndicators images={carouselImages} current={current} setCurrent={setCurrent} />
     </div>
   );
 };
