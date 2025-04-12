@@ -1,5 +1,5 @@
 
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Button } from "@/components/ui/button";
 import GoogleRatingBadge from './GoogleRatingBadge';
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -12,61 +12,35 @@ const HeroContent = memo(({
   scrollToDiscoverSection
 }: HeroContentProps) => {
   const isMobile = useIsMobile();
-  const [isVisible, setIsVisible] = useState(false);
-  
-  // Fade in content after a short delay to prioritize image LCP
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 50);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  // Optimized logo dimensions for faster loading
-  const logoSize = isMobile ? 64 : 96;
   
   return (
-    <div 
-      className={`absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4 transition-opacity duration-300 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
-      style={{ willChange: 'opacity' }}
-    >
-      {/* Pre-sized logo container to prevent layout shifts */}
-      <div 
-        className="w-16 h-16 md:w-24 md:h-24 mb-2 md:mb-4"
-        style={{ contain: 'size layout' }}
-      >
+    <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-10 p-4">
+      {/* Fixed dimensions for logo container to prevent layout shifts */}
+      <div className="w-12 h-12 md:w-16 md:h-16 mb-2 md:mb-4">
         <img 
           alt="Spiti Valley Travels Logo" 
           className="w-full h-full object-contain" 
           src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" 
-          width={logoSize} 
-          height={logoSize} 
+          width={isMobile ? 48 : 64} 
+          height={isMobile ? 48 : 64} 
           loading="eager"
           fetchPriority="high"
-          decoding="async"
         />
       </div>
       
-      {/* Fixed-size Google Rating Badge container */}
-      <div className="mb-2 md:mb-3 flex justify-center h-8 w-full">
+      {/* Google Ratings Badge - Fixed height to prevent shifts */}
+      <div className="mb-2 md:mb-3">
         <GoogleRatingBadge />
       </div>
       
-      {/* Fixed height heading to prevent layout shifts */}
-      <h1 
-        className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-3 max-w-3xl font-normal leading-tight h-10 md:h-14 lg:h-16"
-      >
+      {/* Title with responsive sizing */}
+      <h1 className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-3 max-w-3xl font-normal leading-tight">
         Spiti Valley Travels
       </h1>
       
-      {/* Fixed height paragraph */}
-      <p 
-        className="text-white text-sm md:text-base lg:text-lg max-w-xl font-medium mb-4 md:mb-6 px-4 h-6 md:h-8"
-      >
-        Begin your Spiti adventure with us
+      {/* Subheading with responsive sizing */}
+      <p className="text-white text-sm md:text-base lg:text-lg max-w-xl font-medium mb-4 md:mb-6 px-4">
+        Begin your Spiti adventure with us – your local guides to explore more...
       </p>
       
       <Button 

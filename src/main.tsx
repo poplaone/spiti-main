@@ -13,51 +13,38 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 1,
-      gcTime: 10 * 60 * 1000, // 10 minutes
-      // Remove the suspense property as it's not supported in the current version
+      gcTime: 10 * 60 * 1000 // 10 minutes
     }
   }
 });
 
-// Performance optimized render function using two-phase hydration
+// Performance optimized render function
 const renderApp = () => {
   // Create root outside of render call to avoid issues
   const rootElement = document.getElementById('root');
   if (!rootElement) throw new Error('Failed to find the root element');
   
-  // Use concurrent mode for faster initial render
   const root = ReactDOM.createRoot(rootElement);
-  
-  // Wrap in a requestAnimationFrame to defer non-critical rendering work
-  requestAnimationFrame(() => {
-    root.render(
-      <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-          <ToursProvider>
-            <App />
-          </ToursProvider>
-        </QueryClientProvider>
-      </React.StrictMode>,
-    );
-  });
+
+  // Render with error boundary
+  root.render(
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ToursProvider>
+          <App />
+        </ToursProvider>
+      </QueryClientProvider>
+    </React.StrictMode>,
+  );
 };
 
-// Progressive hydration strategy
+// Use requestIdleCallback for non-critical initialization
 if (typeof window !== 'undefined') {
-  // Check if the document is already interactive or complete
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    // Use requestIdleCallback for non-critical initialization if available
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(renderApp, { timeout: 1000 });
-    } else {
-      // Fallback to setTimeout with a short delay
-      setTimeout(renderApp, 50);
-    }
+    // If already interactive or complete, render immediately
+    renderApp();
   } else {
-    // Add event listener with passive option for better performance
-    document.addEventListener('DOMContentLoaded', () => {
-      // Slightly delay render to prioritize content painting
-      setTimeout(renderApp, 50);
-    }, { passive: true, once: true });
+    // Add as high priority task but let browser finish parsing HTML first
+    window.addEventListener('DOMContentLoaded', renderApp);
   }
 }

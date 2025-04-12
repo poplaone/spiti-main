@@ -19,23 +19,17 @@ const HeroCarousel = () => {
     }
   }, []);
 
-  // Set an explicit height for better mobile experience and to prevent CLS
+  // Adjusted height for better mobile experience
   const heroHeight = isMobile ? '100vh' : '100vh';
 
   return (
     <CarouselContainer ref={heroRef} heroHeight={heroHeight}>
-      {/* Static placeholder for instant painting, prevents CLS */}
-      <div className="absolute inset-0 w-full h-full bg-spiti-forest bg-opacity-20" aria-hidden="true" />
-      
-      {/* Image carousel, loaded after the placeholder */}
-      <div className="absolute inset-0 w-full h-full">
+      {/* Add a placeholder solid color background for fast initial render */}
+      <div className="w-full h-full bg-spiti-forest bg-opacity-20"></div>
+      <div className="w-full h-full">
         <CarouselImages current={current} />
       </div>
-      
-      {/* Hero content with fixed dimensions to prevent CLS */}
       <HeroContent scrollToDiscoverSection={scrollToDiscoverSection} />
-      
-      {/* Indicators for carousel navigation */}
       <CarouselIndicators images={carouselImages} current={current} setCurrent={setCurrent} />
     </CarouselContainer>
   );
