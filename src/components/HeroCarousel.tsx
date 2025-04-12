@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState, useCallback, memo } from 'react';
+import { useEffect, useRef, useState, useCallback, memo, lazy, Suspense } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import CarouselImages, { carouselImages } from './hero/CarouselImages';
 import CarouselIndicators from './hero/CarouselIndicators';
@@ -18,6 +18,7 @@ const HeroCarousel = () => {
   // Use the carouselImages directly instead of separate desktop/mobile sets
   const images = carouselImages;
   const isFirstRender = useRef(true);
+  const isVisible = useRef(true);
 
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
@@ -28,13 +29,13 @@ const HeroCarousel = () => {
 
   // Use a longer interval on mobile to reduce resource usage
   useEffect(() => {
-    resetTimeout();
-    
-    // Skip animation on first render for better performance
-    if (isFirstRender.current) {
+    // Skip animation if not visible or on first render
+    if (!isVisible.current || isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
+    
+    resetTimeout();
     
     // Set a longer timeout for better performance
     const interval = isMobile ? 15000 : 12000; // 15 seconds on mobile, 12 seconds on desktop
@@ -47,6 +48,27 @@ const HeroCarousel = () => {
     return resetTimeout;
   }, [current, images.length, resetTimeout, isMobile]);
 
+  // Add visibility check to pause animations when not visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible.current = entry.isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+    
+    const heroElement = document.querySelector('.hero-carousel');
+    if (heroElement) {
+      observer.observe(heroElement);
+    }
+    
+    return () => {
+      if (heroElement) {
+        observer.unobserve(heroElement);
+      }
+    };
+  }, []);
+
   const scrollToDiscoverSection = useCallback(() => {
     const element = document.querySelector('#discover-spiti-valley');
     if (element) {
@@ -58,7 +80,7 @@ const HeroCarousel = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gray-900">
+    <div className="relative w-full h-screen overflow-hidden bg-gray-900 hero-carousel">
       <div className="w-full h-full">
         <MemoizedCarouselImages current={current} />
       </div>
