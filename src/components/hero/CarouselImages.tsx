@@ -2,7 +2,7 @@
 import { memo } from 'react';
 import CarouselImage from './CarouselImage';
 
-// These images are now preloaded via <link rel="preload"> in index.html
+// Reduced to just two images for faster initial load
 const carouselImages = [
   {
     src: "/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png",
@@ -23,7 +23,6 @@ interface CarouselImagesProps {
 }
 
 const CarouselImages = memo(({ current }: CarouselImagesProps) => {
-  // Only render current and next image to reduce memory usage
   return (
     <>
       {carouselImages.map((img, index) => (

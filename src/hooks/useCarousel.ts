@@ -4,9 +4,9 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 export function useCarousel(imagesLength: number) {
   const [current, setCurrent] = useState(0);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const timeoutRef = useRef<number | null>(null);
   const isMobile = useIsMobile();
-  const isFirstRender = useRef(true);
   const isVisible = useRef(true);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -17,45 +17,46 @@ export function useCarousel(imagesLength: number) {
     }
   }, []);
 
+  // Handle initial load - delay first transition to improve LCP
+  useEffect(() => {
+    if (isInitialLoad) {
+      // Wait until after LCP before starting any animations
+      const initialTimer = window.setTimeout(() => {
+        setIsInitialLoad(false);
+      }, 2500); // Wait for LCP to complete before transitions
+      
+      return () => clearTimeout(initialTimer);
+    }
+  }, [isInitialLoad]);
+
   // Optimize carousel rotation timing for better performance
   useEffect(() => {
-    // Skip animation if not visible, or in prerender
-    if (!isVisible.current || typeof window === 'undefined') {
+    // Skip animation during initial load or if not visible
+    if (isInitialLoad || !isVisible.current) {
       return;
-    }
-    
-    // On first render, wait longer before starting animations to prioritize initial content
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      
-      // Delay first transition to improve initial load performance
-      setTimeout(() => {
-        resetTimeout();
-        
-        // Set a longer timeout for better performance
-        const interval = isMobile ? 25000 : 20000; // 25 seconds on mobile, 20 seconds on desktop
-        
-        timeoutRef.current = window.setTimeout(() => 
-          setCurrent(prevIndex => (prevIndex + 1) % imagesLength), 
-          interval
-        );
-      }, 5000); // 5 second delay on first load for better LCP
-      
-      return resetTimeout;
     }
     
     resetTimeout();
     
-    // Set a longer timeout for better performance
-    const interval = isMobile ? 20000 : 15000; // 20 seconds on mobile, 15 seconds on desktop
+    // Use longer intervals to reduce processing overhead
+    const interval = isMobile ? 30000 : 25000; // 30s on mobile, 25s on desktop
     
-    timeoutRef.current = window.setTimeout(() => 
-      setCurrent(prevIndex => (prevIndex + 1) % imagesLength), 
-      interval
-    );
+    // Defer carousel transitions to requestIdleCallback when available
+    if ('requestIdleCallback' in window) {
+      timeoutRef.current = window.setTimeout(() => {
+        window.requestIdleCallback(() => {
+          setCurrent(prevIndex => (prevIndex + 1) % imagesLength);
+        }, { timeout: 1000 });
+      }, interval);
+    } else {
+      timeoutRef.current = window.setTimeout(() => 
+        setCurrent(prevIndex => (prevIndex + 1) % imagesLength), 
+        interval
+      );
+    }
     
     return resetTimeout;
-  }, [current, imagesLength, resetTimeout, isMobile]);
+  }, [current, imagesLength, resetTimeout, isMobile, isInitialLoad]);
 
   // Optimize visibility observer to pause animations when not visible
   useEffect(() => {
@@ -64,9 +65,8 @@ export function useCarousel(imagesLength: number) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Only update if visibility changes
-        if (entries[0]?.isIntersecting !== isVisible.current) {
-          isVisible.current = !!entries[0]?.isIntersecting;
+        if (entries[0]) {
+          isVisible.current = entries[0].isIntersecting;
         }
       },
       { threshold: 0.1 }

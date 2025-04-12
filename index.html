@@ -18,99 +18,54 @@
     <!-- Favicon -->
     <link rel="icon" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" sizes="32x32" />
     
-    <!-- Critical Resource Preloading - High Priority -->
+    <!-- High priority resources - Preload critical first-view images -->
     <link rel="preload" href="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" as="image" fetchpriority="high" />
     <link rel="preload" href="/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png" as="image" fetchpriority="high" />
-    <link rel="preload" href="/lovable-uploads/895a39e1-0ac0-46b3-b0b3-a2efbcaa3157.png" as="image" fetchpriority="high" />
     
-    <!-- Preconnect to key domains -->
+    <!-- Preconnect to essential domains -->
     <link rel="preconnect" href="https://ttyhfrbubjpmzruwwihd.supabase.co" crossorigin />
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <link rel="dns-prefetch" href="https://ttyhfrbubjpmzruwwihd.supabase.co" />
+    <link rel="preconnect" href="https://cdn.gpteng.co" crossorigin />
     
-    <!-- Inline critical CSS enhanced for faster render -->
+    <!-- Inline ultra-critical CSS for first paint -->
     <style>
-      /* Critical CSS for initial render */
-      :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
+      /* Base styles for instant painting */
+      :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;}
       
-      /* Base element styling */
-      body {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0;background-color:#f5f7fa;text-rendering:optimizeSpeed;-webkit-text-size-adjust:100%;line-height:1.5;color:#333;overflow-x:hidden;}
-      #root {display:flex;flex-direction:column;min-height:100vh;width:100%;}
-      h1, h2, h3, h4, h5, h6 {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-display:swap;margin:0;line-height:1.2;}
-      img {max-width:100%;display:block;content-visibility:auto;height:auto;}
+      body,html{margin:0;padding:0;width:100%;height:100%}
+      body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;text-rendering:optimizeSpeed;-webkit-text-size-adjust:100%;line-height:1.5;background-color:#2c5282}
       
-      /* Set a solid background color first before any images for faster perceived load */
-      body {
-        background-color:#2c5282;
+      /* First Contentful Paint optimization - immediately paint a solid color background */
+      body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-color:#2c5282;z-index:-2;display:block}
+      
+      /* Largest Contentful Paint optimization - Use a color block placeholder for hero image */
+      .hero-placeholder{position:absolute;inset:0;background-color:#2c5282}
+      
+      /* Initial layout skeleton to prevent layout shifts */
+      #root{display:flex;flex-direction:column;min-height:100vh}
+      .hero-container{position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;color:white}
+      .hero-content{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:1;padding:1rem}
+      .hero-title{font-size:2rem;margin:0.5rem 0;font-weight:500}
+      .hero-logo{width:80px;height:80px;margin-bottom:1rem}
+      
+      /* Remove flash of unstyled content */
+      .invisible-until-js{opacity:0;transition:opacity 0.3s}
+      
+      /* Minimize CLS with predefined spaces */
+      .h-16{height:4rem}
+      .mb-4{margin-bottom:1rem}
+      .flex-center{display:flex;align-items:center;justify-content:center}
+      
+      @media (min-width:768px){
+        .hero-title{font-size:3rem}
+        .hero-logo{width:100px;height:100px}
       }
-      
-      /* Load background image with lower priority */
-      .bg-image-container {
-        position:fixed;
-        inset:0;
-        z-index:-1;
-        background-color:#2c5282;
-      }
-      
-      /* Optimize for fast hero section LCP with dimensions */
-      .hero-section {position:relative;min-height:100vh;color:white;width:100%;height:100vh;overflow:hidden;background-color:#2c5282;contain:layout size;}
-      .hero-content {position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:10;padding:1rem;}
-      .hero-overlay {position:absolute;inset:0;background:rgba(0,0,0,0.4);}
-      .hero-logo {margin-bottom:1rem;width:96px;height:96px;object-fit:contain;}
-      .hero-title {font-size:2rem;margin-bottom:0.75rem;font-weight:300;max-width:48rem;}
-      .hero-subtitle {margin-bottom:1rem;max-width:36rem;font-size:0.875rem;}
-      
-      /* Header and navigation styles with content-visibility improvements */
-      .header {position:fixed;top:0;left:0;right:0;z-index:50;transition:background-color 0.3s ease;contain:layout style;content-visibility:auto;}
-      .header-transparent {background-color:transparent;}
-      .header-scrolled {background-color:rgba(22, 36, 36, 0.9);backdrop-filter:blur(8px);}
-      
-      /* Anti-layout shift utility classes */
-      .fixed-height-sm {height:24px;min-height:24px;max-height:24px;}
-      .fixed-height-md {height:32px;min-height:32px;max-height:32px;}
-      .fixed-height-lg {height:48px;min-height:48px;max-height:48px;}
-      .fixed-height-xl {height:64px;min-height:64px;max-height:64px;}
-      .fixed-width-sm {width:24px;min-width:24px;max-width:24px;}
-      .fixed-width-md {width:32px;min-width:32px;max-width:32px;}
-      .fixed-width-lg {width:48px;min-width:48px;max-width:48px;}
-      .fixed-width-xl {width:64px;min-width:64px;max-width:64px;}
-      
-      /* Responsive optimizations with sizing optimizations */
-      @media (min-width: 768px) {
-        .hero-logo {width:160px;height:160px;margin-bottom:1rem;}
-        .hero-title {font-size:3.75rem;}
-        .hero-subtitle {font-size:1.125rem;margin-bottom:1.5rem;}
-      }
-      
-      /* Pre-dimensioned spaces for elements that cause layout shifts - expanded */
-      .rating-badge {height:32px;min-height:32px;margin-bottom:0.5rem;display:flex;align-items:center;justify-content:center;}
-      .hero-text-container {height:80px;min-height:80px;display:flex;align-items:center;justify-content:center;}
-      
-      /* Buttons with dimensions to prevent CLS */
-      .btn-primary {
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        border-radius:0.375rem;
-        font-weight:500;
-        padding:0.5rem 1rem;
-        background-color:rgba(255,255,255,0.2);
-        color:white;
-        border:1px solid rgba(255,255,255,0.5);
-        cursor:pointer;
-        transition:background-color 0.2s;
-        height:40px;
-        min-width:120px;
-      }
-      .btn-primary:hover {background-color:rgba(255,255,255,0.3);}
-      
-      /* Performance optimized CSS for faster first paint */
-      .hero-carousel {background-color:#2c5282;}
-      .carousel-image {opacity:0;transition:opacity 0.3s ease;}
-      .carousel-image.active {opacity:1;}
     </style>
     
-    <!-- Defer main CSS to prevent render blocking -->
+    <!-- Preload React runtime for faster application bootup -->
+    <link rel="modulepreload" href="/assets/index-xxxx.js" as="script" fetchpriority="high" />
+    
+    <!-- Defer non-critical CSS -->
     <link rel="stylesheet" href="/src/index.css" media="print" onload="this.media='all'; this.onload=null;" />
     <noscript>
       <link rel="stylesheet" href="/src/index.css" />
@@ -123,27 +78,54 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     
-    <!-- Root app mount point -->
-    <div id="root"></div>
+    <!-- Initial content shell for faster FCP, will be replaced by React -->
+    <div id="initial-content" aria-hidden="true">
+      <div class="hero-container">
+        <div class="hero-placeholder"></div>
+        <div class="hero-content">
+          <img src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" alt="Spiti Valley Travels Logo" class="hero-logo" width="80" height="80" />
+          <h1 class="hero-title">Spiti Valley Travels</h1>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Root app mount point (initially hidden) -->
+    <div id="root" class="invisible-until-js"></div>
+    
+    <!-- Optimized script loading -->
+    <script>
+      // Hide initial content and show React app once loaded
+      window.addEventListener('DOMContentLoaded', function() {
+        // Start loading background image after critical content
+        setTimeout(function() {
+          var style = document.createElement('style');
+          style.textContent = 'body::after{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)),url("/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png");background-size:cover;background-position:center;z-index:-1;opacity:0;animation:fadeIn 0.5s forwards 0.1s}@keyframes fadeIn{to{opacity:1}}';
+          document.head.appendChild(style);
+        }, 100);
+      });
+      
+      // Show the React app once it has rendered
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          var initialContent = document.getElementById('initial-content');
+          var root = document.getElementById('root');
+          
+          if (initialContent && root) {
+            // Fade in the React app
+            root.classList.remove('invisible-until-js');
+            root.style.opacity = '1';
+            
+            // Remove the initial content placeholder after React is visible
+            setTimeout(function() {
+              initialContent.style.display = 'none';
+            }, 300);
+          }
+        }, 200);
+      });
+    </script>
     
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module" defer></script>
     <script type="module" src="/src/main.tsx" defer></script>
-    
-    <!-- Improved background loading with instant color display -->
-    <script>
-      // Add solid background color immediately
-      document.body.style.backgroundColor = "#2c5282";
-      
-      // Load background image after critical content
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          document.body.style.backgroundImage = "linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop')";
-          document.body.style.backgroundAttachment = "fixed";
-          document.body.style.backgroundSize = "cover";
-          document.body.style.backgroundPosition = "center";
-        }, 300);
-      });
-    </script>
   </body>
 </html>
