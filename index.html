@@ -29,8 +29,21 @@
     <style>
       /* Critical CSS for initial render */
       :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;--sidebar-background:0 0% 98%;--sidebar-foreground:240 5.3% 26.1%;--sidebar-primary:240 5.9% 10%;--sidebar-primary-foreground:0 0% 98%;--sidebar-accent:240 4.8% 95.9%;--sidebar-accent-foreground:240 5.9% 10%;--sidebar-border:220 13% 91%;--sidebar-ring:217.2 91.2% 59.8%;}
-      body {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0;background-color:#f5f7fa;}
+      
+      /* Base element styling */
+      body {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;margin:0;padding:0;background-color:#f5f7fa;text-rendering:optimizeSpeed;-webkit-text-size-adjust:100%;}
       #root {display:flex;flex-direction:column;min-height:100vh;}
+      h1, h2, h3, h4, h5, h6 {font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-display:swap;margin:0;}
+      img {max-width:100%;display:block;content-visibility:auto;}
+      
+      /* Background optimization */
+      body {
+        background-image:linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)), url('https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?q=60&w=1280&auto=format&fit=crop');
+        background-attachment:fixed;
+        background-size:cover;
+        background-position:center;
+        background-color:#f0f4f8; /* Fallback color */
+      }
       
       /* Optimize for fast hero section LCP */
       .hero-section {position:relative;min-height:100vh;color:white;width:100%;height:100vh;overflow:hidden;background-color:#111;}
@@ -40,6 +53,35 @@
       .hero-title {font-size:2rem;margin-bottom:0.75rem;font-weight:300;max-width:48rem;}
       .hero-subtitle {margin-bottom:1rem;max-width:36rem;font-size:0.875rem;}
       
+      /* Header and navigation styles */
+      .header {position:fixed;top:0;left:0;right:0;z-index:50;transition:background-color 0.3s ease;}
+      .header-transparent {background-color:transparent;}
+      .header-scrolled {background-color:rgba(22, 36, 36, 0.9);backdrop-filter:blur(8px);}
+      
+      /* Anti-layout shift utility classes */
+      .fixed-height-sm {height:24px;min-height:24px;}
+      .fixed-height-md {height:32px;min-height:32px;}
+      .fixed-height-lg {height:48px;min-height:48px;}
+      .fixed-height-xl {height:64px;min-height:64px;}
+      .fixed-width-md {width:32px;min-width:32px;}
+      .fixed-width-xl {width:64px;min-width:64px;}
+      
+      /* Simplified animations */
+      .hero-image-placeholder {
+        position:absolute;
+        inset:0;
+        background-image:url('/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png');
+        background-size:cover;
+        background-position:center;
+        filter:blur(5px);
+        transform:scale(1.05);
+        will-change:opacity;
+      }
+      
+      /* Hero placeholder fade out */
+      .hero-placeholder.fade-out {opacity:0;transition:opacity 0.3s ease;}
+      
+      /* Responsive optimizations */
       @media (min-width: 768px) {
         .hero-logo {width:160px;height:160px;margin-bottom:1rem;}
         .hero-title {font-size:3.75rem;}
@@ -50,39 +92,30 @@
       .rating-badge {height:32px;min-height:32px;margin-bottom:0.5rem;}
       .hero-text-container {height:80px;min-height:80px;}
       
-      /* Prevent layout shifts with fixed aspect ratios */
-      .aspect-box {position:relative;width:100%;}
-      .aspect-box:before {content:'';display:block;padding-top:56.25%;}
-      .aspect-content {position:absolute;top:0;left:0;right:0;bottom:0;}
-      
-      /* Hero image placeholder */
-      .hero-image-placeholder {
-        position: absolute;
-        inset: 0;
-        background-image: url('/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png');
-        background-size: cover;
-        background-position: center;
-        filter: blur(5px);
-        transform: scale(1.05);
-      }
-      
       /* Buttons */
       .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.375rem;
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        background-color: rgba(255,255,255,0.2);
-        color: white;
-        border: 1px solid rgba(255,255,255,0.5);
-        cursor: pointer;
-        transition: background-color 0.2s;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:0.375rem;
+        font-weight:500;
+        padding:0.5rem 1rem;
+        background-color:rgba(255,255,255,0.2);
+        color:white;
+        border:1px solid rgba(255,255,255,0.5);
+        cursor:pointer;
+        transition:background-color 0.2s;
       }
-      .btn-primary:hover {
-        background-color: rgba(255,255,255,0.3);
-      }
+      .btn-primary:hover {background-color:rgba(255,255,255,0.3);}
+      
+      /* Tour packages section */
+      .tours-section {padding:2rem 1rem;}
+      .tour-card {background-color:white;border-radius:0.5rem;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:transform 0.2s,box-shadow 0.2s;}
+      .tour-card:hover {transform:translateY(-4px);box-shadow:0 10px 15px rgba(0,0,0,0.1);}
+      
+      /* Mobile navigation */
+      .mobile-menu {position:fixed;top:0;right:0;bottom:0;width:300px;max-width:100%;background-color:rgba(0,24,40,0.95);transform:translateX(100%);transition:transform 0.3s ease;z-index:100;}
+      .mobile-menu.active {transform:translateX(0);}
     </style>
     
     <!-- Defer main CSS to prevent render blocking -->
@@ -134,3 +167,4 @@
     <script type="module" src="/src/main.tsx" defer></script>
   </body>
 </html>
+

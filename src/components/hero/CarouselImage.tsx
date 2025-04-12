@@ -32,7 +32,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
         width={width}
         height={height}
         loading={loadingPriority}
-        fetchPriority={fetchPriority}
+        fetchPriority={fetchPriority as "high" | "low" | "auto"}
         className="w-full h-full object-cover"
         style={{
           aspectRatio: `${width}/${height}`,
