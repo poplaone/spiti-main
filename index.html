@@ -33,13 +33,7 @@
       :root {--background:0 0% 100%;--foreground:222.2 84% 4.9%;--card:0 0% 100%;--card-foreground:222.2 84% 4.9%;--popover:0 0% 100%;--popover-foreground:222.2 84% 4.9%;--primary:222.2 47.4% 11.2%;--primary-foreground:210 40% 98%;--secondary:210 40% 96.1%;--secondary-foreground:222.2 47.4% 11.2%;--muted:210 40% 96.1%;--muted-foreground:215.4 16.3% 46.9%;--accent:210 40% 96.1%;--accent-foreground:222.2 47.4% 11.2%;--destructive:0 84.2% 60.2%;--destructive-foreground:210 40% 98%;--border:214.3 31.8% 91.4%;--input:214.3 31.8% 91.4%;--ring:222.2 84% 4.9%;--radius:0.5rem;}
       
       body,html{margin:0;padding:0;width:100%;height:100%}
-      body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;text-rendering:optimizeSpeed;-webkit-text-size-adjust:100%;line-height:1.5;background-color:#2c5282}
-      
-      /* First Contentful Paint optimization - immediately paint a solid color background */
-      body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-color:#2c5282;z-index:-2;display:block}
-      
-      /* Largest Contentful Paint optimization - Use a color block placeholder for hero image */
-      .hero-placeholder{position:absolute;inset:0;background-color:#2c5282}
+      body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;text-rendering:optimizeSpeed;-webkit-text-size-adjust:100%;line-height:1.5}
       
       /* Initial layout skeleton to prevent layout shifts */
       #root{display:flex;flex-direction:column;min-height:100vh}
@@ -78,49 +72,20 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     
-    <!-- Initial content shell for faster FCP, will be replaced by React -->
-    <div id="initial-content" aria-hidden="true">
-      <div class="hero-container">
-        <div class="hero-placeholder"></div>
-        <div class="hero-content">
-          <img src="/lovable-uploads/1baa95d9-8696-4505-ae05-c0b4a0e805ed.png" alt="Spiti Valley Travels Logo" class="hero-logo" width="80" height="80" />
-          <h1 class="hero-title">Spiti Valley Travels</h1>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Root app mount point (initially hidden) -->
-    <div id="root" class="invisible-until-js"></div>
+    <!-- Root app mount point (initially visible) -->
+    <div id="root"></div>
     
     <!-- Optimized script loading -->
     <script>
-      // Hide initial content and show React app once loaded
-      window.addEventListener('DOMContentLoaded', function() {
-        // Start loading background image after critical content
-        setTimeout(function() {
-          var style = document.createElement('style');
-          style.textContent = 'body::after{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(to bottom, rgba(44, 82, 130, 0.15), rgba(99, 179, 237, 0.1)),url("/lovable-uploads/f602fe0d-f0de-4c62-bde1-8886b56d9783.png");background-size:cover;background-position:center;z-index:-1;opacity:0;animation:fadeIn 0.5s forwards 0.1s}@keyframes fadeIn{to{opacity:1}}';
-          document.head.appendChild(style);
-        }, 100);
-      });
-      
       // Show the React app once it has rendered
       document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
-          var initialContent = document.getElementById('initial-content');
           var root = document.getElementById('root');
-          
-          if (initialContent && root) {
-            // Fade in the React app
-            root.classList.remove('invisible-until-js');
+          if (root) {
+            // Make sure the app is visible immediately
             root.style.opacity = '1';
-            
-            // Remove the initial content placeholder after React is visible
-            setTimeout(function() {
-              initialContent.style.display = 'none';
-            }, 300);
           }
-        }, 200);
+        }, 10);
       });
     </script>
     
