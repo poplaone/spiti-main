@@ -15,7 +15,7 @@ const CarouselContainer = memo(forwardRef<HTMLDivElement, CarouselContainerProps
       maxHeight: '100vh', 
       width: '100%',
       contain: 'layout size paint',
-      backgroundColor: '#2c5282', // Match placeholder color
+      backgroundColor: 'transparent', // Changed from #2c5282 to transparent
       aspectRatio: '16/9',
       willChange: 'opacity, transform',
     };
@@ -27,12 +27,6 @@ const CarouselContainer = memo(forwardRef<HTMLDivElement, CarouselContainerProps
         style={containerStyle}
         data-lcp-candidate="true" // Hint for performance monitoring
       >
-        {/* Add a placeholder that matches exact dimensions of hero */}
-        <div 
-          aria-hidden="true" 
-          className="absolute inset-0 bg-spiti-forest" 
-          style={{ minHeight: heroHeight }}
-        />
         {children}
       </div>
     );
