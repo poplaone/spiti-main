@@ -24,7 +24,10 @@ const HeroCarousel = () => {
 
   return (
     <CarouselContainer ref={heroRef} heroHeight={heroHeight}>
-      {/* Image carousel loaded immediately */}
+      {/* Static placeholder for instant painting, prevents CLS */}
+      <div className="absolute inset-0 w-full h-full bg-spiti-forest bg-opacity-20" aria-hidden="true" />
+      
+      {/* Image carousel, loaded after the placeholder */}
       <div className="absolute inset-0 w-full h-full">
         <CarouselImages current={current} />
       </div>

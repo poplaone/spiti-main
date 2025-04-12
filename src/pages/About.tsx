@@ -8,7 +8,7 @@ import TeamSection from '@/components/about/TeamSection';
 
 const About = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-b from-spiti-forest to-spiti-blue/30">
       <Header />
       <AboutStory />
       <AboutMission />

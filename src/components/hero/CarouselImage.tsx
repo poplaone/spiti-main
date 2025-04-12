@@ -15,19 +15,19 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
   const [loaded, setLoaded] = useState(false);
   const [visible, setVisible] = useState(false);
   
-  // Load all images immediately to avoid blue screen
-  const shouldLoad = true;
+  // Only load current and next image
+  const shouldLoad = index === 0 || isCurrent || index === 1;
   
-  // Determine loading priority - high priority for all images
-  const loadingPriority = index === 0 ? "eager" : "eager";
-  const fetchPriority = index === 0 ? "high" as const : "high" as const;
+  // Determine loading priority
+  const loadingPriority = index === 0 ? "eager" : "lazy";
+  const fetchPriority = index === 0 ? "high" as const : "auto" as const;
   
   // Handle visibility updates with a slight delay to prioritize first image
   useEffect(() => {
     if (isCurrent && loaded) {
       const timer = setTimeout(() => {
         setVisible(true);
-      }, index === 0 ? 0 : 50);
+      }, index === 0 ? 0 : 100);
       
       return () => clearTimeout(timer);
     } else {
@@ -43,6 +43,7 @@ const CarouselImage = memo(({ src, alt, width, height, index, isCurrent }: Carou
       }`}
       aria-hidden={!isCurrent}
       style={{ 
+        backgroundColor: '#2c5282', // Placeholder color matching the brand
         contain: 'content',
         willChange: isCurrent ? 'opacity' : 'auto',
         aspectRatio: '16/9'
