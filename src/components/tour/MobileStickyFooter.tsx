@@ -21,7 +21,7 @@ const MobileStickyFooter: React.FC<MobileStickyFooterProps> = ({
   tourName
 }) => {
   const handleBookClick = () => {
-    trackButtonClick('Book/Customize', 'MobileStickyFooter');
+    trackButtonClick('Enquire/Customize', 'MobileStickyFooter');
   };
 
   return (
@@ -39,14 +39,14 @@ const MobileStickyFooter: React.FC<MobileStickyFooterProps> = ({
           </div>
         </div>
         
-        {/* Book/Customize Button */}
+        {/* Enquire/Customize Button */}
         <Dialog>
           <DialogTrigger asChild>
             <Button 
               className="flex-1 rounded-none rounded-l-full h-14 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold"
               onClick={handleBookClick}
             >
-              Book/Customize
+              Enquire/Customize
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">

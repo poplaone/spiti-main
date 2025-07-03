@@ -1,11 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
 import ScrollToTop from "./components/ScrollToTop";
 import { usePageTracking } from "./hooks/usePageTracking";
 import Index from "./pages/Index";
@@ -117,28 +114,14 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-  // Create a new QueryClient instance within the component function
-  // This ensures proper React context usage
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000, // 1 minute
-        retry: 1,
-        refetchOnWindowFocus: false,
-      },
-    },
-  }));
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </TooltipProvider>
   );
 };
 
