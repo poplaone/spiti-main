@@ -18,8 +18,8 @@ const RoyalSpitiValleyWholeCircuit = () => {
     [tours]
   );
   
-  // Always use the fallback image initially for faster FCP
-  const heroImage = fallbackImage;
+  // Use tour image if available, fallback otherwise
+  const heroImage = tour?.image || fallbackImage;
   
   return (
     <BaseTourDetailPage 
