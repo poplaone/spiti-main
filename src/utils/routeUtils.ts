@@ -25,6 +25,31 @@ export const tourTitleToSlug: Record<string, string> = {
 };
 
 /**
+ * Generate SEO-friendly slug from tour title
+ */
+export const generateSlugFromTitle = (title: string): string => {
+  return '/' + title
+    .toUpperCase()
+    .replace(/[^\w\s-]/g, '') // Remove special chars except hyphens and spaces
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/--+/g, '-') // Replace multiple hyphens with single
+    .trim();
+};
+
+/**
+ * Get SEO-friendly URL for any tour title
+ */
+export const getTourUrl = (title: string): string => {
+  // Check if predefined mapping exists
+  if (tourTitleToSlug[title]) {
+    return tourTitleToSlug[title];
+  }
+  
+  // Generate slug automatically
+  return generateSlugFromTitle(title);
+};
+
+/**
  * Reverse mapping from slugs to tour titles for lookup
  */
 export const slugToTourTitle: Record<string, string> = Object.entries(tourTitleToSlug).reduce(

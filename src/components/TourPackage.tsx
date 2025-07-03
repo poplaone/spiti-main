@@ -7,7 +7,7 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import LeadForm from "./LeadForm";
-import { tourTitleToSlug } from '@/utils/routeUtils';
+import { getTourUrl } from '@/utils/routeUtils';
 
 // Memoized TourPackage component to prevent unnecessary re-renders
 const TourPackage: React.FC<TourPackageProps & {
@@ -31,22 +31,8 @@ const TourPackage: React.FC<TourPackageProps & {
   const availableFrom = overviewDetails?.availableFrom || 'June';
   const availableTo = overviewDetails?.availableTo || 'October';
 
-  // Determine the URL based on the tour title
-  let detailsUrl;
-  
-  // Map specific titles to their clean URLs - adding a more direct check for exact title match
-  if (title === "BUDDHIST AND TRIBAL CIRCUIT–SPITI" || 
-      title === "BUDDHIST AND TRIBAL CIRCUIT–SPITI " || 
-      title === "BUDDHIST AND TRIBAL CIRCUIT SPITI") {
-    detailsUrl = "/BUDDHIST-AND-TRIBAL-CIRCUIT–SPITI";
-  } else if (title === "SNOW LEOPARD EXPEDITION (WINTER SPECIAL)" || 
-             title === "SNOW LEOPARD EXPEDITION (WINTER SPECIAL) " || 
-             title === "SNOW LEOPARD EXPEDITION WINTER SPECIAL") {
-    detailsUrl = "/SNOW-LEOPARD-EXPEDITION-WINTER-SPECIAL";
-  } else {
-    // For other tours, use the existing mapping from tourTitleToSlug or default to ID-based URL
-    detailsUrl = title && tourTitleToSlug[title] ? tourTitleToSlug[title] : (id ? `/tour/${id}` : "#");
-  }
+  // Generate SEO-friendly URL for the tour
+  const detailsUrl = title ? getTourUrl(title) : "#";
 
   return (
     <div className="block h-full w-full">

@@ -90,8 +90,6 @@ const AppRoutes = () => {
         <Route path="/SOULFUL-SPITI-GATEWAY" element={<SoulfulSpitiGateway />} />
         <Route path="/SPITI-COMPLETE-CIRCUIT-MOST-POPULAR" element={<SpitiCompleteCircuitMostPopular />} />
         
-        {/* Dynamic tour detail page route */}
-        <Route path="/tour/:id" element={<TourDetail />} />
         
         {/* Slug-based tour detail route */}
         <Route path="/tour-package/:slug" element={<TourDetailBySlug />} />
