@@ -37,14 +37,14 @@ export const fetchPackageData = async (packageId: string): Promise<TourPackageFo
     // Load overview details if available
     if (packageData.overview_details) {
       try {
-        const details = JSON.parse(packageData.overview_details);
-        formData.accommodation = details.accommodation || 'Hotels & Homestays';
-        formData.bestTime = details.bestTime || 'June to September';
-        formData.groupSize = details.groupSize || '2-10 People';
-        formData.terrain = details.terrain || 'Himalayan Mountain Passes';
-        formData.elevation = details.elevation || '2,000 - 4,550 meters';
-        formData.availableFrom = details.availableFrom || 'June';
-        formData.availableTo = details.availableTo || 'October';
+        const details = JSON.parse(packageData.overview_details as string) as Record<string, any>;
+        formData.accommodation = typeof details.accommodation === 'string' ? details.accommodation : 'Hotels & Homestays';
+        formData.bestTime = typeof details.bestTime === 'string' ? details.bestTime : 'June to September';
+        formData.groupSize = typeof details.groupSize === 'string' ? details.groupSize : '2-10 People';
+        formData.terrain = typeof details.terrain === 'string' ? details.terrain : 'Himalayan Mountain Passes';
+        formData.elevation = typeof details.elevation === 'string' ? details.elevation : '2,000 - 4,550 meters';
+        formData.availableFrom = typeof details.availableFrom === 'string' ? details.availableFrom : 'June';
+        formData.availableTo = typeof details.availableTo === 'string' ? details.availableTo : 'October';
       } catch (e) {
         console.error("Error parsing overview details:", e);
       }
