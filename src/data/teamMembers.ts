@@ -62,7 +62,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     name: "Sahil Verma",
-    role: "Adventure Expert
+    role: "Adventure Expert",
 ",
     imageSrc: "/lovable-uploads/0cebf3cc-4644-4b86-9e99-33de6eea80e8.jpg",
     fallback: "SK",
