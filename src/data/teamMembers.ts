@@ -1,4 +1,5 @@
 
+
 export interface TeamMember {
   name: string;
   role: string;
@@ -61,13 +62,16 @@ export const teamMembers: TeamMember[] = [
     ]
   },
   {
-    name: "Shabnam Kultwan",
-    role: "Sales Executive",
-    imageSrc: "/lovable-uploads/0cebf3cc-4644-4b86-9e99-33de6eea80e8.jpg",
-    fallback: "SK",
+    name: "Sahil Verma",
+    role: "Adventure Expert",
+    imageSrc: "/lovable-uploads/621afdcd-8e4f-409e-95a7-44500de4510e.png",
+    fallback: "SV",
     description: [
-      "A quiet and calm person who loves to observe and learn, which helps her grow every day. Being the youngest on the team, she feels blessed to have supportive seniors who guide her and help her improve both personally and professionally.",
-      "She believes that success comes from trust and strong relationships. Beyond work, she loves reading fiction. No matter what she does, she always tries to give her best and constantly pushes herself to improve and excel in her field."
+      "A die-hard mountaineer and passionate orchardist, he brings unmatched energy and deep Himalayan experience to every trip. He has successfully completed the Basic Mountaineering Course (BMC), Advanced Mountaineering Course (AMC), and Method of Instruction (MOI) from the prestigious Atal Bihari Vajpayee Institute of Mountaineering and Allied Sports (ABVIMAS).",
+      "He began his journey working with leading private adventure companies, gaining 2 years of hands-on field experience — mastering client handling, safety protocols, and real-time expedition challenges.",
+      "He joined Spiti Valley Travels over 5 years ago and now holds more than 7 years of experience in the adventure travel industry. Today, he oversees all trekking and adventure activities for groups — from planning high-altitude expeditions to ensuring every trekker has a safe, smooth, and memorable experience.",
+      "If there's one person who truly understands the pulse of the mountains — it's him."
     ]
   }
 ];
+
