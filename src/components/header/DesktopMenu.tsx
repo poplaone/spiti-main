@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -25,6 +24,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { getTourUrl } from '@/utils/routeUtils';
 
 interface DesktopMenuProps {
   roadTripsTours: TourPackageProps[];
@@ -34,11 +34,8 @@ interface DesktopMenuProps {
 
 const DesktopMenu = ({ roadTripsTours, fixedDepartureTours, customizableTours = [] }: DesktopMenuProps) => {
   const getTourRoute = (tour: TourPackageProps) => {
-    // Map to custom detail pages or tour/id routes
-    if (tour.id) {
-      return `/tour/${tour.id}`;
-    }
-    return "#";
+    // Use SEO-friendly URLs for all tours
+    return getTourUrl(tour.title);
   };
 
   const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;

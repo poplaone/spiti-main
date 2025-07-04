@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, ArrowRight } from 'lucide-react';
@@ -6,6 +5,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import LeadForm from "@/components/LeadForm";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TourPackageProps } from "@/components/TourPackage";
+import { getTourUrl } from '@/utils/routeUtils';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -25,11 +25,8 @@ const MobileMenu = ({
   if (!isOpen) return null;
   
   const getTourRoute = (tour: TourPackageProps) => {
-    // Map to custom detail pages or tour/id routes
-    if (tour.id) {
-      return `/tour/${tour.id}`;
-    }
-    return "#";
+    // Use SEO-friendly URLs for all tours
+    return getTourUrl(tour.title);
   };
   
   return (
