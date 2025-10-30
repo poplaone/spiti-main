@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import useAdminAuth from '@/hooks/useAdminAuth';
 
 interface AdminUser {
-  id: string;
+  user_id: string;
   created_at: string;
   email?: string;
 }
@@ -27,10 +27,11 @@ const AdminSettings: React.FC = () => {
   const fetchAdminUsers = async () => {
     setLoading(true);
     try {
-      // Get all admin users
+      // Get all users with admin role
       const { data: adminData, error: adminError } = await supabase
-        .from('admin_users')
-        .select('*');
+        .from('user_roles')
+        .select('*')
+        .eq('role', 'admin');
       
       if (adminError) throw adminError;
       
@@ -40,7 +41,7 @@ const AdminSettings: React.FC = () => {
       // For display purposes, try to add email to each admin user
       // Note: this is an admin interface, so we're authorized to see this data
       for (const admin of adminUsers) {
-        const { data: userData } = await supabase.auth.admin.getUserById(admin.id);
+        const { data: userData } = await supabase.auth.admin.getUserById(admin.user_id);
         if (userData?.user) {
           admin.email = userData.user.email;
         }
@@ -66,9 +67,10 @@ const AdminSettings: React.FC = () => {
       
       // Check if already an admin
       const { data: existingAdmin } = await supabase
-        .from('admin_users')
+        .from('user_roles')
         .select('*')
-        .eq('id', newAdminId)
+        .eq('user_id', newAdminId)
+        .eq('role', 'admin')
         .single();
       
       if (existingAdmin) {
@@ -76,10 +78,10 @@ const AdminSettings: React.FC = () => {
         return;
       }
       
-      // Add the new admin
+      // Add the new admin role
       const { error } = await supabase
-        .from('admin_users')
-        .insert({ id: newAdminId });
+        .from('user_roles')
+        .insert({ user_id: newAdminId, role: 'admin' });
       
       if (error) throw error;
       
@@ -103,9 +105,10 @@ const AdminSettings: React.FC = () => {
     
     try {
       const { error } = await supabase
-        .from('admin_users')
+        .from('user_roles')
         .delete()
-        .eq('id', adminId);
+        .eq('user_id', adminId)
+        .eq('role', 'admin');
       
       if (error) throw error;
       
@@ -149,19 +152,19 @@ const AdminSettings: React.FC = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {adminUsers.map((admin) => (
-                        <tr key={admin.id}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{admin.id}</td>
+                        <tr key={admin.user_id}>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{admin.user_id}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{admin.email || 'Unknown'}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(admin.created_at).toLocaleString()}</td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            {admin.id === user?.id ? (
+                            {admin.user_id === user?.id ? (
                               <span className="text-gray-400">Current User</span>
                             ) : (
                               <Button 
                                 variant="ghost" 
                                 size="sm" 
                                 className="text-red-600 hover:text-red-900"
-                                onClick={() => handleRemoveAdmin(admin.id)}
+                                onClick={() => handleRemoveAdmin(admin.user_id)}
                               >
                                 Remove
                               </Button>

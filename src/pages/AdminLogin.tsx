@@ -44,42 +44,18 @@ const AdminLogin = () => {
       
       if (error) throw error;
       
-      // Special case for the specified admin email
-      if (email.toLowerCase() === 'spitivalleytravels@gmail.com') {
-        // Check if this user is already an admin
-        const { data: adminData, error: adminError } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('id', data.user.id)
-          .single();
-        
-        // If not an admin, add them as admin
-        if (adminError && !adminData) {
-          const { error: insertError } = await supabase
-            .from('admin_users')
-            .insert({ id: data.user.id });
-          
-          if (insertError) {
-            console.error("Failed to add admin:", insertError);
-            toast.error("Failed to register as admin");
-          } else {
-            toast.success('Successfully registered as admin!');
-          }
-        }
-        
-        toast.success('Logged in successfully!');
-        navigate('/admin');
+      // Check if user has admin role using the secure has_role function
+      const { data: isAdmin, error: roleError } = await supabase
+        .rpc('has_role', { _user_id: data.user.id, _role: 'admin' });
+      
+      if (roleError) {
+        console.error("Error checking admin role:", roleError);
+        await supabase.auth.signOut();
+        toast.error("Error verifying admin privileges");
         return;
       }
       
-      // For other users, check if they are an admin
-      const { data: adminData, error: adminError } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('id', data?.user?.id)
-        .single();
-      
-      if (adminError || !adminData) {
+      if (!isAdmin) {
         // If not an admin, sign them out
         await supabase.auth.signOut();
         toast.error("You don't have admin privileges");

@@ -48,37 +48,9 @@ export const useAdminAuth = () => {
 
   const checkAdminStatus = async (userId: string, email?: string | undefined) => {
     try {
-      // Special case for the designated admin email
-      if (email && email.toLowerCase() === 'spitivalleytravels@gmail.com') {
-        // Check if this user is already an admin
-        const { data, error } = await supabase
-          .from('admin_users')
-          .select('*')
-          .eq('id', userId)
-          .single();
-        
-        // If not an admin, add them as admin
-        if (error && !data) {
-          const { error: insertError } = await supabase
-            .from('admin_users')
-            .insert({ id: userId });
-          
-          if (!insertError) {
-            setIsAdmin(true);
-            return;
-          }
-        } else if (data) {
-          setIsAdmin(true);
-          return;
-        }
-      }
-      
-      // For all other cases, check admin status normally
+      // Check if user has admin role using the secure has_role function
       const { data, error } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('id', userId)
-        .single();
+        .rpc('has_role', { _user_id: userId, _role: 'admin' });
       
       if (error) {
         console.error("Error checking admin status:", error);
